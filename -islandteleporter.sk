@@ -1,0 +1,4 @@
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "Tocarrot":
+		teleport the player to location(-165, 107, 20, world "world")

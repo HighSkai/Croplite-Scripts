@@ -1,0 +1,10 @@
+every 1 minute:
+	set {_now} to now formatted as "HH:mm"
+	if {_now} is "04:00":
+		set {dailycropsbroken::*} to 0
+		set {dailymobkills::*} to 0
+		
+on death:
+	if the attacker is a player:
+		if the victim is a mob:
+			add 1 to {dailymobkills::%attacker's uuid%}

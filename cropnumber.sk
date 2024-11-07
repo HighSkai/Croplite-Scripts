@@ -1,0 +1,29 @@
+on break:
+	if "%region at player%" is "global in world world and area1 in world world":
+		add ({cropyieldmultiplier::%player's uuid%}*1) to {cropmaterial::%player's uuid%}
+		chance of {doublecropchance::%player's uuid%}:
+			add 1 to {cropmaterial::%player's uuid%}
+		if {cropmaterial::%player's uuid%} is greater than or equal to {cropbag::%player's uuid%}:
+			set {cropmaterial::%player's uuid%} to {cropbag::%player's uuid%}
+			
+			if player is an operator:
+				make player execute command "cropsellgui"
+			else:
+				op the player
+				make player execute command "cropsellgui"
+				deop the player
+	
+on join:
+	if player is an operator:
+		if {cropmaterial::%player's uuid%} is not set:
+			set {cropmaterial::%player's uuid%} to 0
+		if {cropbag::%player's uuid%} is not set:
+			set {cropbag::%player's uuid%} to 500
+		if {cropyieldmultiplier::%player's uuid%} is not set:
+			set {cropyieldmultiplier::%player's uuid%} to 1
+		if {areaselltoggle::%player's uuid%} is not set:
+			set {areaselltoggle::%player's uuid%} to false
+		if {cropmenuselltoggle::%player's uuid%} is not set:
+			set {cropmenuselltoggle::%player's uuid%} to false
+		if {cropcash::%player's uuid%} is not set:
+			set {cropcash::%player's uuid%} to 0

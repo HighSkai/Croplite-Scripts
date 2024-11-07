@@ -1,0 +1,15 @@
+command /tutorial:
+	trigger:
+		send "&aHarvest crops with your scythe to gain farming experience&r&a!" to player
+		wait 2 seconds
+		send "&dThe more experience you get the higher your &nfarming level&r &dgoes! Every farming level gives you more skill points and a higher farming xp multiplier!" to player
+		wait 6 seconds
+		send "&aYou can buy food at the &nfood shop&r&a, it has the steak icon above it." to player
+		wait 4 seconds
+		send "&dUpgrading your farming level gives you &nskill points&r&d! These can be spent in the &nUpgrade Tree&r&d, where you can buy cool attributes for your scythe!" to player
+		wait 6 seconds
+		send "&aThe scythe upgrades can be bought at the shop with the scythe icon above it." to player
+		wait 4 seconds
+		send "&dYou can also collect &npets&r &dto boost your various stats, like &nspeed&r, &d&nmultiplier&r, &d&ncrop yield&r &dand more! Do &n/pets&r &dto open your pet bag&r&d." to player
+		wait 5 seconds
+		send "&aThat's it! We hope you enjoy the server! For any questions or comments, &njoin the discord&r &aand make a ticket!" to player

@@ -1,0 +1,32 @@
+command /stats:
+	trigger:
+		open chest inventory with 6 rows named "         &e%player%'s stats" to player
+		loop integers between 0 and 54:
+			if loop-integer = 0:
+				set {_stat1} to an iron hoe named "&f&oTotal Crops Harvested"
+				set line 1 of lore of {_stat1} to "%{totalcropsbroken::%player's uuid%}%"
+				set slot loop-integer of player's current inventory to {_stat1}
+			if loop-integer = 1:
+				set {_stat2} to an iron sword named "&f&oTotal Mob Kills"
+				set line 1 of lore of {_stat2} to "%{totalmobskilled::%player's uuid%}%"
+				set slot loop-integer of player's current inventory to {_stat2}
+			if loop-integer = 2:
+				set {_stat3} to a zombie head named "&f&oTotal Deaths"
+				set line 1 of lore of {_stat3} to "%{playerdeathslifetime::%player's uuid%}%"
+				set slot loop-integer of player's current inventory to {_stat3}
+			if loop-integer = 3:
+				set {_stat4} to a rabbit foot named "&f&oTotal Jumps"
+				set line 1 of lore of {_stat4} to "%{totaljumps::%player's uuid%}%"
+				set slot loop-integer of player's current inventory to {_stat4}
+			if loop-integer = 4:
+				set {_stat5} to wheat seeds named "&f&oCrop Double Chance"
+				set line 1 of lore of {_stat5} to "%{doublecropchance::%player's uuid%}%"
+				set slot loop-integer of player's current inventory to {_stat5}
+			if loop-integer = 5:
+				set {_stat6} to wheat named "&f&oCrop Triple Chance"
+				set line 1 of lore of {_stat6} to "%{triplecropchance::%player's uuid%}%"
+				set slot loop-integer of player's current inventory to {_stat6}
+				
+on inventory click:
+	if name of event-inventory is "         &e%player%'s stats":
+		cancel event			

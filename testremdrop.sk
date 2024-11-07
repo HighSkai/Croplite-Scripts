@@ -1,0 +1,3 @@
+on player pickup of leather armor:
+	delete event-dropped item
+	cancel event

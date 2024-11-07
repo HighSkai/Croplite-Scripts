@@ -1,0 +1,121 @@
+on break:
+	if "%region at player%" is equal to "global in world world and area1 in world world":
+		chance of {mobspawnchance::%player's uuid%}%:
+			spawn 1 zombie villager at event-block
+			equip spawned entity with a leather helmet
+			set profession of spawned entity to farmer profession
+			set name of spawned entity to "&c&lUndead Farmer &8[&cT1&8]"
+			chance of 1%:
+				set {_zombstick} to a stick
+				enchant {_zombstick} with knockback 10
+				set tool of spawned entity to {_zombstick}
+			chance of 50%:
+				equip spawned entity with a leather chestplate
+			apply potion of slowness of tier 100 to spawned entity for 1.5 seconds
+	if "%region at player%" is equal to "global in world world and area2 in world world":
+		chance of {mobspawnchance::%player's uuid%}%:
+			spawn 1 zombie villager at event-block
+			equip spawned entity with a chainmail helmet
+			set profession of spawned entity to farmer profession
+			set name of spawned entity to "&c&lUndead Farmer &8[&cT2&8]"
+			set tool of spawned entity to a wooden sword
+			chance of 1%:
+				set {_zombstick} to a stick
+				enchant {_zombstick} with knockback 10
+				set tool of spawned entity to {_zombstick}
+			chance of 50%:
+				equip spawned entity with a chainmail chestplate
+			chance of 50%:
+				equip spawned entity with chainmail boots
+			apply potion of slowness of tier 100 to spawned entity for 1.5 seconds
+	if "%region at player%" is equal to "area3 in world world and global in world world":
+		chance of {mobspawnchance::%player's uuid%}%:
+			spawn 1 zombie villager at event-block
+			equip spawned entity with a iron helmet
+			set profession of spawned entity to farmer profession
+			set name of spawned entity to "&c&lUndead Farmer &8[&cT3&8]"
+			set tool of spawned entity to a stone sword
+			chance of 1%:
+				set {_zombstick} to a stick
+				enchant {_zombstick} with knockback 10
+				set tool of spawned entity to {_zombstick}
+			chance of 30%:
+				equip spawned entity with an iron chestplate
+			chance of 30%:
+				equip spawned entity with iron boots
+			chance of 30%:
+				equip spawned entity with iron leggings
+			apply potion of slowness of tier 100 to spawned entity for 1.5 seconds
+	if "%region at player%" is equal to "area4 in world world and global in world world":
+		chance of {mobspawnchance::%player's uuid%}%:
+			spawn 1 zombie villager at event-block
+			set {_zombhelm} to an iron helmet
+			enchant {_zombhelm} with protection 2
+			equip spawned entity with {_zombhelm}
+			set profession of spawned entity to farmer profession
+			set name of spawned entity to "&c&lUndead Farmer &8[&cT4&8]"
+			set tool of spawned entity to a stone sword
+			chance of 1%:
+				set {_zombstick} to a stick
+				enchant {_zombstick} with knockback 10
+				set tool of spawned entity to {_zombstick}
+			chance of 60%:
+				equip spawned entity with an iron chestplate
+			chance of 60%:
+				equip spawned entity with iron boots
+			chance of 60%:
+				equip spawned entity with iron leggings
+			apply potion of slowness of tier 100 to spawned entity for 1.5 seconds
+	else if "%region at player%" is equal to "area5 in world world and global in world world":
+		chance of {mobspawnchance::%player's uuid%}%:
+			spawn 1 zombie villager at event-block
+			set {_zombhelm} to a diamond helmet
+			enchant {_zombhelm} with protection 1
+			equip spawned entity with {_zombhelm}
+			set profession of spawned entity to farmer profession
+			set name of spawned entity to "&c&lUndead Farmer &8[&cT5&8]"
+			set tool of spawned entity to an iron sword
+			chance of 1%:
+				set {_zombstick} to a stick
+				enchant {_zombstick} with knockback 10
+				set tool of spawned entity to {_zombstick}
+			chance of 60%:
+				equip spawned entity with an iron chestplate
+			chance of 60%:
+				equip spawned entity with iron boots
+			chance of 60%:
+				equip spawned entity with iron leggings
+			apply potion of slowness of tier 100 to spawned entity for 1.5 seconds
+			
+			
+on death:
+	if victim is a mob:
+		cancel drops
+	
+on break of cobbled deepslate:
+	set {_randomNumber2} to random integer between 1 and 900
+	if {_randomNumber2} is between 1 and 10:
+		spawn 1 silverfish at event-block
+		set name of spawned entity to "&7&lMine Rat"
+		set max health of the last spawned silverfish to 10
+		set health of the last spawned silverfish to 10
+		apply potion of glowing of tier 2 to spawned entity for 20 minutes
+	else if {_randomNumber2} is between 11 and 19:
+		spawn 1 silverfish at event-block
+		set name of spawned entity to "&f&lSuper Mine Rat"
+		set max health of the last spawned silverfish to 20
+		set health of the last spawned silverfish to 20
+		apply potion of strength of tier 1 to spawned entity for 20 minutes
+		apply potion of glowing of tier 2 to spawned entity for 20 minutes
+	else if {_randomNumber2} is between 20 and 24:
+		spawn 1 silverfish at event-block
+		set name of spawned entity to "&e&lMine Rat King"
+		set max health of last spawned silverfish to 30
+		set health of the last spawned silverfish to 30
+		apply potion of strength of tier 2 to spawned entity for 20 minutes
+		apply potion of glowing of tier 2 to spawned entity for 20 minutes
+	
+on damage:
+	if attacker is a silverfish:
+		increase damage by 2
+	

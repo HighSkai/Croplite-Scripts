@@ -1,0 +1,15 @@
+on mine:
+    if player's gamemode is survival:
+        if player has permission "telekonesis.use":
+            cancel the drops
+            set {_f} to level of fortune of player's tool
+            set {_l} to {_f} + 1
+            set {_drops} to random integer between 1 and {_l}
+            set {_d} to player's tool 
+            if event-block is dog:
+                enchant {_d} with silk touch
+
+            loop {_drops} times:
+                if player doesn't have enough space for drops of event-block using {_d}:
+                    stop
+                give drops of event-block using {_d} to player

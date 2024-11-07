@@ -1,0 +1,9 @@
+on drop:
+	if event-item is a bundle:
+		cancel event
+		send "&4&lDon't drop this you idiot" to player
+		
+on inventory click:
+	if item in event-slot is a bundle:
+		cancel event
+		send "&4&lThou shall not" to player

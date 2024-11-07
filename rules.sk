@@ -1,0 +1,15 @@
+command /rules:
+    permission: sk.rules
+    trigger:
+        send "&a&lRules:" to player
+        send " " to player
+        send "&a1. Be cool, kind, and respectful to one another" to player
+        send "&a2. Do not spam" to player
+        send "&a3. Don't bother/ping staff unless they give permission to do so" to player
+        send "&a4. No self-promotion or advertisements" to player
+        send "&a5. No spawn/spam killing" to player
+        send "&a6. No hacking, includes x ray, any hack clients, or any mods that give advantages" to player
+        send "&a7. No slurs" to player
+        send "&a8. No using alt accounts unless you're staff and got permission from Storm (owner)" to player
+        send "&a9. No impersonation of staff" to player
+        send "&a10. Rules are subject to common sense" to player

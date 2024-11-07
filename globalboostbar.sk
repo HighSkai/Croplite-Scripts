@@ -1,0 +1,28 @@
+command /globalbooster1:
+	permission: *
+	trigger:
+		if {globalxpbooster1} is not set:
+			set {globalxpbooster1} to boss bar with id "globalbar1" with title "+10%% XP Global Booster" with color yellow with progress 0
+			set bar style of {globalxpbooster1} to segmented 10
+		add all players to {globalxpbooster1}
+		if bar progress of {globalxpbooster1} is less than 100:
+			add 10 to bar progress of {globalxpbooster1}
+			loop all players:
+				if {globalxpboost1::%loop-player%} is false:
+					set {globalxpboost1::%loop-player%} to true
+					add 0.1 to {miningmultiplier::%loop-player%}
+			send "&8[&dCroplite&8] &r&a&l%player% has activated a 10%% Global XP booster for 1 hour!" to all players
+		else:
+			send "&4&lThe limit on this global booster has been reached for now!" to player
+			
+every 6 minutes:
+	if bar progress of {globalxpbooster1} is greater than or equal to 1:
+		subtract 1 from bar progress of {globalxpbooster1}
+	if bar progress of {globalxpbooster1} is less than 1:
+		loop all players:
+			if {globalxpboost1::%loop-player%} is true:
+				subtract 0.1 from {miningmultiplier::%loop-player%}
+				set {globalxpboost1::%loop-player%} to false
+				remove all loop-player from {globalxpbooster1}
+
+	

@@ -1,0 +1,16 @@
+on damage:
+	if attacker's tool is a netherite sword:
+		if tag "custom;weapon" of nbt of attacker's tool is "yes":
+			set {_xloc} to victim's x coordinate
+			set {_yloc} to victim's y coordinate
+			set {_zloc} to victim's z coordinate
+			show 1 sonic boom on location({_xloc}, {_yloc}+1.5, {_zloc}, world "world")
+			damage victim by 5
+			
+command /givecustomweapon:
+	permission: *
+	trigger:
+		set {_tempsword} to a netherite sword
+		set name of {_tempsword} to "&5&lWarden Sword"
+		set tag "custom;weapon" of nbt of {_tempsword} to "yes"
+		give player {_tempsword} 

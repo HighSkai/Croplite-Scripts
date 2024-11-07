@@ -1,0 +1,10 @@
+on death:
+	if victim is a chicken:
+		if attacker is a player:
+			add 1 to {currentkills::%attacker's uuid%}
+			if {currentkills::%attacker's uuid%} is 5:
+				apply infinite potion of glowing of tier 1 to the attacker
+				send "&c-----------------------------" to all players
+				send "&4%attacker% is on a killstreak 🔥!" to all players
+				send "&c-----------------------------" to all players
+	set {currentkills::%victim's uuid%} to 0

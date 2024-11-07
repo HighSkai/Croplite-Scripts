@@ -1,0 +1,52 @@
+options:
+	servername: Croplite #Type your server name here!
+	playergrapplename: Grappling hook #Name of what the grapple hook should be called to work!
+	opgrapplename: operator Grappling hook
+	defaultcooldowntime: 10 #How long the cooldown should be
+	opcooldowntime: 0
+on fishing:
+	if player's held item is fishing rod named "{@playergrapplename}":
+		if difference between now and {cooldown::%player%} is less than {@defaultcooldowntime} seconds:
+			cancel event
+			send "&4[&c{@servername}&4] &cYou are currently on cooldown!" to player
+		else:
+			if "%fish state%" is "CAUGHT" or "REEL_IN" or "IN_GROUND":
+				set {nofalldamage.grapplinghook.%player%} to true
+				repair player's held item
+				set {_ploc.x} to x coordinate of player
+				set {_floc.x} to x coordinate of fishing hook
+				set {_ang} to {_floc.x} - {_ploc.x}
+				set {_ploc.z} to z coordinate of player
+				set {_floc.z} to z coordinate of fishing hook
+				set {_ang.2} to {_floc.z} - {_ploc.z}
+				set velocity of player to new Vector {_ang}, 1, {_ang.2}
+				set {cooldown::%player%} to now
+	else if player's held item is fishing rod named "{@opgrapplename}":
+		if difference between now and {cooldown::%player%} is less than {@opcooldowntime} seconds:
+			cancel event
+			send "&4[&c{@servername}&4] &cYou are currently on cooldown!" to player
+		else:
+			if "%fish state%" is "CAUGHT" or "REEL_IN" or "IN_GROUND":
+				set {nofalldamage.grapplinghook.%player%} to true
+				repair player's held item
+				set {_ploc.x} to x coordinate of player
+				set {_floc.x} to x coordinate of fishing hook
+				set {_ang} to {_floc.x} - {_ploc.x}
+				set {_ploc.z} to z coordinate of player
+				set {_floc.z} to z coordinate of fishing hook
+				set {_ang.2} to {_floc.z} - {_ploc.z}
+				set velocity of player to new Vector {_ang}, 1, {_ang.2}
+				set {cooldown::%player%} to now
+command /playergrapplinghook:
+	permission: op
+	permission message: &fUnknown command. Type "/help" for help.
+	usage: &c/playergrapplinghook
+	trigger:
+		give player fishing rod named "{@playergrapplename}"
+		
+command /opgrapplinghook:
+	permission: op
+	permission message: &fUnknown command. Type "/help" for help.
+	usage: &c/opgrapplinghook
+	trigger:
+		give player fishing rod named "{@opgrapplename}"

@@ -1,0 +1,9 @@
+on rightclick:
+	if clicked entity is a villager:
+		if name of clicked entity is "Skill Tree":
+			if player is an operator:
+				make player execute command "/scythegui"
+			else:
+				op the player
+				make player execute command "/scythegui"
+				deop the player

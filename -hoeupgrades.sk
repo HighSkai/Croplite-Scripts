@@ -1,0 +1,56 @@
+on break:
+	if player's tool is a wooden hoe:
+		if event-block is wheat[age=7]:
+			add 1 to {woodhoe::%player's uuid%::%player's tool%}
+		else if event-block is carrots[age=7]:
+			add 1 to {stonehoe::%player's uuid%}
+
+every 10 seconds:
+	loop all players:
+		if loop-player's held item is a wooden hoe:
+			set line 1 of lore of loop-player's held item to "Wheat Harvested: %{woodhoe::%loop-player's uuid%::%loop-player's tool%}%"
+			if uncolored name of loop-player's held item contains "Improved Wheat Scythe [T2]":
+				set line 2 of lore of loop-player's held item to "Next Tier: 2000"
+			else if uncolored name of loop-player's held item contains "Expert Wheat Scythe [T3]":
+				set line 2 of lore of loop-player's held item to "Next Tier: 3000"
+				
+		else if loop-player's held item is a stone hoe:
+			set line 1 of lore of loop-player's held item to "Wheat Harvested: %{woodhoe::%loop-player's uuid%::%loop-player's tool%}%"
+			set line 2 of lore of loop-player's held item to "Carrots Harvested: %{stonehoe::%loop-player's uuid%}%"
+			
+on break:
+	if player's tool is a wooden hoe:
+		if event-block is wheat[age=7]:
+			if {woodhoe::%player's uuid%::%player's tool%} is between 1000 and 1999:
+				if uncolored name of the player's tool does not contain "Improved Wheat Scythe [T2]":
+					play sound "entity.player.levelup"
+					send subtitle "&e&lHarvester Level Up! [T2]" to player
+					set the name of the player's tool to "&6Improved Wheat Scythe [T2]"
+						
+			else if {woodhoe::%player's uuid%::%player's tool%} is between 2000 and 2999:
+				broadcast "works 1"
+				broadcast "works 2"
+				if uncolored name of the player's tool does not contain "Expert Wheat Scythe [T3]":
+					play sound "entity.player.levelup"
+					send subtitle "&e&lHarvester Level Up! [T3]" to player
+					set the name of the player's tool to "&6Expert Wheat Scythe [T3]"
+					enchant the player's tool with knockback 1
+						
+			else if {woodhoe::%player's uuid%::%player's tool%} is greater than or equal to 3000:
+				play sound "entity.player.levelup"
+				send subtitle "&e&lHarvester Level Up! [Stone Hoe]" to player
+				set {_tempitem} to a stone hoe
+				set the name of {_tempitem} to "&7Basic Carrot Scythe [T1]"
+				set line 1 of lore of {_tempitem} to "Wheat Harvested: %{woodhoe::%player's uuid%::%player's tool%}%"
+				set line 2 of lore of {_tempitem} to "Carrots Harvested: %{stonehoe::%player's uuid%}%"
+				set line 3 of lore of {_tempitem} to "Next Tier: 5000"
+				set player's tool to {_tempitem}
+				
+command /resetharvested:
+	trigger:
+		set {woodhoe::%player's uuid%::%player's tool%} to 0
+		
+command /upgradewoodhoe:
+	trigger:
+		add 1000 to {woodhoe::%player's uuid%::%player's tool%}
+		

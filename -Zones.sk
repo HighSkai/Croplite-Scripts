@@ -1,0 +1,33 @@
+command /customitem <text>:
+    permission: *
+    trigger:
+        if argument 1 is "2":
+            set {_temp} to paper named "&2&lArea 2 Key"
+            set tag "custom;voucher" of nbt of {_temp} to "area2"
+            give player 1 of {_temp}
+        else if argument 1 is "3":
+            set {_temp} to paper named "&c&lArea 3 &e&lKey"
+            set tag "custom;voucher" of nbt of {_temp} to "area3"
+            give player 1 of {_temp}
+        else if argument 1 is "4":
+            set {_temp} to paper named "&d&lArea 4 &b&lKey"
+            set tag "custom;voucher" of nbt of {_temp} to "area4"
+            give player 1 of {_temp}
+        else if argument 1 is "lightvoucher":
+            set {_temp} to paper named "&f&lLight Voucher"
+            set tag "custom;voucher" of nbt of {_temp} to "light"
+            give player 1 of {_temp}
+
+on right click:
+    if tag "custom;voucher" of nbt of event-item is "area2":
+        execute console command "region addmember area2block %player% -w 1"
+        remove 1 of event-item from player's inventory
+    else if tag "custom;voucher" of nbt of event-item is "end":
+        execute console command "rg addmember endzone %player%"
+        remove 1 of event-item from player's inventory
+    else if tag "custom;voucher" of nbt of event-item is "dark":
+        execute console command "region addmember darkzone %player%"
+        remove 1 of event-item from player's inventory
+    else if tag "custom;voucher" of nbt of event-item is "light":
+        execute console command "region addmember lightzone %player%"
+        remove 1 of event-item from player's inventory

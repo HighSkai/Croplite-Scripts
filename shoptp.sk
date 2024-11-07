@@ -1,0 +1,47 @@
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "shoptp in world world":
+		teleport player to location(699.5, 100, 750.5, world "world", -89, 3.9)
+		wait 5 ticks
+		send "&8[&dCroplite&8] &aYou have been teleported to the shop!" to player
+		stop
+		
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "shopbacktp in world world":
+		teleport player to location(1005.5, 102, 974.5, world "world", 0.2, 2.1)
+		wait 5 ticks
+		send "&8[&dCroplite&8] &aYou have been teleported back to spawn!" to player
+		stop
+		
+on region enter:
+	wait 1 tick
+	if "%region at player%" is equal to "tpa2 in world world":
+		teleport player to location(777.5, 101, 978.5, world "world", 0, 0)
+		wait 1.1 ticks
+		send "&8[&dCroplite&8] &aYou have been teleported!" to player
+		stop
+		
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "lbtp in world world":
+		teleport player to location(1013.5, 108, 826.5, world "world", -180, 0)
+		wait 5 ticks
+		send "&8[&dCroplite&8] &aYou have been teleported to the Lifetime Leaderboards Hall!" to player
+		stop
+		
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "lbtpback in world world":
+		teleport player to location(1005.5, 102, 974.5, world "world", 0.2, 2.1)
+		wait 5 ticks
+		send "&8[&dCroplite&8] &aYou have been teleported back to spawn!" to player
+		stop
+	
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "afkspawn in world world":
+		teleport player to location(1005.5, 102, 974.5, world "world", 0.2, 2.1)
+		wait 5 ticks
+		send "&8[&dCroplite&8] &aYou have been teleported back to spawn!" to player
+		stop

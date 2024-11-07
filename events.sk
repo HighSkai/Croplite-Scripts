@@ -1,0 +1,62 @@
+command /saveinv:
+	permission: *
+	trigger:
+		set {savedinventory::%player's uuid%::*} to all items in player's inventory
+		if player is wearing a helmet:
+			remove player's helmet from {savedinventory::%player's uuid%::*}
+			set {armorhelm::%player's uuid%} to player's helmet
+		else:
+			set {armorhelm::%player's uuid%} to false
+		if player is wearing a chestplate:
+			remove player's chestplate from {savedinventory::%player's uuid%::*}
+			set {armorchest::%player's uuid%} to player's chestplate
+		else:
+			set {armorchest::%player's uuid%} to false
+		if player is wearing leggings:
+			remove player's leggings from {savedinventory::%player's uuid%::*}
+			set {armorlegs::%player's uuid%} to player's leggings
+		else:
+			set {armorlegs::%player's uuid%} to false
+		if player is wearing boots:
+			remove player's boots from {savedinventory::%player's uuid%::*}
+			set {armorboots::%player's uuid%} to player's boots
+		else:
+			set {armorboots::%player's uuid%} to false
+		if player's offhand tool is set:
+			remove player's offhand tool from {savedinventory::%player's uuid%::*}
+			set {offhanditem::%player's uuid%} to player's offhand item
+		else:
+			set {offhanditem::%player's uuid%} to false
+		clear player's inventory
+        
+command /restoreinv:
+	permission: *
+	trigger:
+		give player {savedinventory::%player's uuid%::*}
+		if {armorhelm::%player's uuid%} is not false:
+			equip player with {armorhelm::%player's uuid%}
+		if {armorchest::%player's uuid%} is not false:
+			equip player with {armorchest::%player's uuid%}
+		if {armorlegs::%player's uuid%} is not false:
+			equip player with {armorlegs::%player's uuid%}
+		if {armorboots::%player's uuid%} is not false:
+			equip player with {armorboots::%player's uuid%}
+		if {offhanditem::%player's uuid%} is not false:
+			set player's offhand tool to {offhanditem::%player's uuid%}
+        
+command /eventstart:
+	permission: *
+	trigger:
+		send title "&4&lEvent starting in 3 minutes..." with subtitle "&c/eventinfo to learn more" to all players for 4 seconds with fade in 1 second and fade out 1 second
+		play sound "entity.ender_dragon.growl" to all players
+		wait 2 minutes
+		play sound "entity.ender_dragon.growl" to all players
+		send title "&4&lEvent starting in 1 minute..." with subtitle "&c/eventinfo to learn more" to all players for 4 seconds with fade in 1 second and fade out 1 second
+        
+command /eventinfo:
+	trigger:
+		send "&aThe current event is King Of The Hill! Players will recieve knockback 1 sticks and" to player
+		send "&awill be teleported to a map with a zone in the middle. The first person to aquire" to player
+		send "&a60 seconds worth of time inside the zone will claim the victory and win a pize." to player
+		send "&a&l<command:/eventjoin>[Click to join the event!]"
+		

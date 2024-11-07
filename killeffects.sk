@@ -1,0 +1,120 @@
+on death:
+	victim is a mob
+	if {eke1::%attacker's uuid%} is true:
+		launch flickering trailing star firework colored purple at victim's location
+		launch flickering trailing star firework colored pink at victim's location
+	if {eke2::%attacker's uuid%} is true:
+		launch flickering trailing large ball firework colored red at victim's location
+		launch flickering trailing large ball firework colored red at victim's location
+	if {eke3::%attacker's uuid%} is true:
+		strike lightning at victim's location
+	if {eke4::%attacker's uuid%} is true:
+		play sound "item.firecharge.use" at victim's location
+		execute console command "keelite %victim%"
+	if {eke5::%attacker's uuid%} is true:
+		play sound "entity.dragon_fireball.explode" at victim's location
+		show 1 sonic boom at victim's location to all players
+		show 1 sonic boom 1 meter above victim to all players
+		show 1 sonic boom 2 meters above victim to all players
+		show 1 sonic boom 3 meters above victim to all players
+		show 1 sonic boom 4 meters above victim to all players
+	
+	#Start of MVP+ kill effects
+	
+	if {mvp+ke1::%attacker's uuid%} is true:
+		launch flickering trailing small ball firework colored red at victim's location
+		launch flickering trailing large ball firework colored orange at victim's location
+	if {mvp+ke2::%attacker's uuid%} is true:
+		play sound "item.firecharge.use" at victim's location
+		execute console command "kemvp+ %victim%"
+	if {mvp+ke3::%attacker's uuid%} is true:
+		play sound "entity.cat.ambient" at victim's location
+		show 1 heart at victim's location to all players
+		show 1 heart 1 meter above victim to all players
+		show 1 heart 2 meters above victim to all players
+		show 1 heart 3 meters above victim to all players
+		show 1 heart 4 meters above victim to all players
+		show 1 heart at circle(victim's location, 1, 5, 0, 0) to all players
+		show 1 heart at circle(victim's location, 2, 5, 0, 0) to all players
+		show 1 heart at circle(victim's location, 3, 5, 0, 0) to all players
+	if {mvp+ke4::%attacker's uuid%} is true:
+		play sound "weather.rain" at victim's location
+		set {_vlocx} to victim's x coordinate
+		set {_vlocy} to victim's y coordinate
+		set {_vlocz} to victim's z coordinate
+		show 2 cloud at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 3, 5, 0, 0) to all players
+		show 2 cloud at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 2, 5, 0, 0) to all players
+		show 2 cloud at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 1, 5, 0, 0) to all players
+		show 2 cloud at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 2.5, 5, 0, 0) to all players
+		show 2 cloud at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 1.5, 5, 0, 0) to all players
+		show 2 cloud at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 0.5, 5, 0, 0) to all players
+		show 5 rain at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 3, 5, 0, 0) to all players
+		show 5 rain at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 2, 5, 0, 0) to all players
+		show 5 rain at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 1, 5, 0, 0) to all players
+		show 5 rain at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 2.5, 5, 0, 0) to all players
+		show 5 rain at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 1.5, 5, 0, 0) to all players
+		show 5 rain at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 0.5, 5, 0, 0) to all players
+		
+	#Start of MVP kill effects
+	if {mvpke1::%attacker's uuid%} is true:
+		play sound "item.firecharge.use" at victim's location
+		execute console command "kemvp %victim%"
+	if {mvpke2::%attacker's uuid%} is true:		
+		play sound "block.note_block.banjo" at victim's location
+		play sound "block.note_block.banjo" at victim's location
+		play sound "block.note_block.banjo" at victim's location
+		show 1 note at line(victim's location, location(victim's x coordinate, victim's y coordinate + 10, victim's z coordinate, victim's world)) to all players
+	if {mvpke3::%attacker's uuid%} is true:
+		spawn 1 allay at location(victim's x coordinate, victim's y coordinate + 2, victim's z coordinate, victim's world)
+		set {_tempallay} to last spawned allay
+		set name of {_tempallay} to "&e&l%victim%'s soul"
+		push {_tempallay} 0.75 blocks up
+		wait 2.5 seconds
+		push {_tempallay} 20 blocks up
+		wait 1 second
+		kill {_tempallay}
+		
+	#Start of VIP+ kill effects
+	
+	if {vip+ke1::%attacker's uuid%} is true:
+		play sound "item.firecharge.use" at victim's location
+		execute console command "kevip+ %victim%"
+	if {vip+ke2::%attacker's uuid%} is true:
+		set {_vlocx} to victim's x coordinate
+		set {_vlocy} to victim's y coordinate
+		set {_vlocz} to victim's z coordinate
+		play sound "block.fire.ambient" at victim's location
+		show 1 flame at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 3, 5, 0, 0) to all players
+		show 1 flame at circle(location({_vlocx},{_vlocy}+2.5,{_vlocz}, world "world"), 2.5, 5, 0, 0) to all players
+		show 1 flame at circle(location({_vlocx},{_vlocy}+2,{_vlocz}, world "world"), 2, 5, 0, 0) to all players
+		show 1 flame at circle(location({_vlocx},{_vlocy}+1.5,{_vlocz}, world "world"), 1.5, 5, 0, 0) to all players
+		show 1 flame at circle(location({_vlocx},{_vlocy}+1,{_vlocz}, world "world"), 1, 5, 0, 0) to all players
+		show 1 flame at circle(location({_vlocx},{_vlocy}+0.5,{_vlocz}, world "world"), 0.5, 5, 0, 0) to all players
+		show 1 flame at circle(location({_vlocx},{_vlocy},{_vlocz}, world "world"), 0.1, 5, 0, 0) to all players
+		
+	#Start of VIP kill effects
+	
+	if {vipke1::%attacker's uuid%} is true:
+		play sound "item.firecharge.use" at victim's location
+		execute console command "kevip %victim%"
+	if {vipke2::%attacker's uuid%} is true:
+		set {_vlocx} to victim's x coordinate
+		set {_vlocy} to victim's y coordinate
+		set {_vlocz} to victim's z coordinate
+		show 2 enchant at circle(location({_vlocx},{_vlocy}+2,{_vlocz}, world "world"), 2, 5, 0, 0) to all players
+		show 2 enchant at circle(location({_vlocx},{_vlocy}+2,{_vlocz}, world "world"), 1, 5, 0, 0) to all players
+		show 2 enchant at circle(location({_vlocx},{_vlocy}+2,{_vlocz}, world "world"), 2.5, 5, 0, 0) to all players
+		show 2 enchant at circle(location({_vlocx},{_vlocy}+2,{_vlocz}, world "world"), 1.5, 5, 0, 0) to all players
+		show 2 enchant at circle(location({_vlocx},{_vlocy}+2,{_vlocz}, world "world"), 0.5, 5, 0, 0) to all players
+		play sound "block.enchantment_table.use" at victim's location
+		
+on damage:
+	if victim is an allay:
+		if attacker is a player:
+			cancel event
+	if damage is caused by lightning:
+		cancel event
+			
+on right click on allay:
+	cancel event
+			
