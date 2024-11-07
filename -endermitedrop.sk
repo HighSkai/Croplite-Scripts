@@ -2,4 +2,7 @@ on death:
 	if victim is endermite:
 		clear the drops
 		set {_drop} to Prismarine Crystals named "&d&lEndermite Bits"
-		drop {_drop} at victim's location
+		drop {_drop} at victim's location asdaksdhdsfdsf 
+		sdiflhdsfdsf
+		jskdfhdsf
+		hsdiffhd;fgil
