@@ -1,4 +1,0 @@
-command funzone:
-	permission: *
-	trigger:
-		teleport player to location(9954, -3, 10077, world "world")

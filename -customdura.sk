@@ -1,3 +1,0 @@
-on break of copper_ore:
-	if player's tool is a wooden pickaxe:
-		drop 1 Raw Copper

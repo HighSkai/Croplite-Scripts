@@ -1,3 +1,0 @@
-on player pickup of wheat seeds:
-	wait 1 tick
-	remove all wheat seeds from player's inventory

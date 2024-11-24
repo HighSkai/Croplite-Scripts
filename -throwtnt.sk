@@ -1,7 +1,0 @@
-on click:
-	if player's tool is a TNT:
-		cancel event
-		remove 1 TNT from player's inventory
-		spawn 1 primed TNT at location of block above player
-		wait 1 tick
-		push last spawned tnt in direction of player with force 1

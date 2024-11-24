@@ -1,0 +1,523 @@
+on player pickup of wheat seeds:
+	wait 1 tick
+	remove all wheat seeds from player's inventory
+
+on break:
+	cancel drops
+	if "%region at player%" is equal to "global in world world and area1 in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is tall_grass
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 51 and 100: # SETTING SHORT_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to short_grass
+				else:
+					wait 1 seconds
+					set event-block to short_grass
+			else if {_random} is between 1 and 50: # SETTING TALL_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set event-block to tall_grass[half=upper]
+					set block below event-block to tall_grass[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to tall_grass[half=lower]
+					set block above event-block to tall_grass[half=upper]
+	else if "%region at player%" is equal to "global in world world area2 in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is tall_grass
+			event-block is fern
+			event-block is large_fern
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 91 and 100: #SETTING SHORT_GRASS
+				if event-block is tall_grass[half=upper] or large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to short_grass
+				else:
+					wait 1 seconds
+					set event-block to short_grass
+			else if {_random} is between 81 and 90: # SETTING TALL_GRASS
+				if event-block is tall_grass[half=upper] or large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to tall_grass[half=lower]
+					set event-block to tall_grass[half=upper]
+				else:
+					wait 1 seconds
+					set event-block to tall_grass[half=lower]
+					set block above event-block to tall_grass[half=upper]
+			else if {_random} is between 41 and 80: # SETTING FERN
+				if event-block is tall_grass[half=upper] or large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to fern
+				else:
+					wait 1 seconds
+					set event-block to fern
+			else if {_random} is between 1 and 40: # SETTING LARGE_FERN
+				if event-block is tall_grass[half=upper] or large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to large_fern[half=lower]
+					set event-block to large_fern[half=upper]
+				else:
+					wait 1 seconds
+					set event-block to large_fern[half=lower]
+					set block above event-block to large_fern[half=upper]
+	else if "%region at player%" is equal to "area3 in world world and global in world world":
+		add 1 to {totalcropsbroken::%player's uuid%}
+		add 1 to {dailycropsbroken::%player's uuid%}
+		set {_random} to a random integer between 1 and 100
+		if {_random} is less than 11:
+			if event-block is tall_grass[half=upper]:
+				wait 1 seconds
+				set block below event-block to short_grass
+			else if event-block is tall_grass[half=lower]:
+				wait 1 seconds
+				set event-block to short_grass
+			else if event-block is short grass:
+				wait 1 seconds
+				set event-block to short grass
+			else if event-block is wheat[age=7]:
+				wait 1 seconds
+				set event-block to short grass
+		else if {_random} is between 11 and 20:
+			if event-block is tall_grass[half=upper]:
+				wait 1 seconds
+				set event-block to tall_grass[half=upper]
+				set block below event-block to tall_grass[half=lower]
+			else if event-block is tall_grass[half=lower]:
+				wait 1 seconds
+				set event-block to tall_grass[half=lower]
+				set block above event-block to tall_grass[half=upper]
+			else if event-block is short grass:
+				wait 1 seconds
+				set event-block to tall_grass[half=lower]
+				set block above event-block to tall_grass[half=upper]
+			else if event-block is wheat[age=7]:
+				wait 1 seconds
+				set event-block to tall_grass[half=lower]
+				set block above event-block to tall_grass[half=upper]
+		else if {_random} is between 21 and 100:
+			if event-block is tall_grass[half=upper]:
+				wait 1 seconds
+				set block below event-block to wheat[age=7]
+			else if event-block is tall_grass[half=lower]:
+				wait 1 seconds
+				set event-block to wheat[age=7]
+			else if event-block is short grass:
+				wait 1 seconds
+				set event-block to wheat[age=7]
+			else if event-block is wheat[age=7]:
+				wait 1 seconds
+				set event-block to wheat[age=7]
+				
+			set event-block to wheat[age=7]
+	else if "%region at player%" is equal to "area4 in world world and global in world world":
+		if event-block is potatoes[age=7]:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			wait 1 seconds
+			set event-block to potatoes[age=7]
+					
+	else if "%region at player%" is equal to "area5 in world world and global in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is tall_grass
+			event-block is orange_tulip
+			event-block is red_tulip
+			event-block is fern
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 81 and 100: #SETTING SHORT_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to short_grass
+				else:
+					wait 1 seconds
+					set event-block to short_grass
+			else if {_random} is between 61 and 80: # SETTING TALL_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to tall_grass[half=lower]
+					set event-block to tall_grass[half=upper]
+				else:
+					wait 1 seconds
+					set event-block to tall_grass[half=lower]
+					set block above event-block to tall_grass[half=upper]
+			else if {_random} is between 41 and 60: # SETTING ORANGE_TULIP
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to orange_tulip
+				else:
+					wait 1 seconds
+					set event-block to orange_tulip
+			else if {_random} is between 21 and 40: # SETTING RED_TULIP
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to red_tulip
+				else:
+					wait 1 seconds
+					set event-block to red_tulip
+			else if {_random} is between 1 and 20: # SETTING Fern
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to fern
+				else:
+					wait 1 seconds
+					set event-block to fern
+	else if "%region at player%" is equal to "area6 in world world and global in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is tall_grass
+			event-block is red_mushroom
+			event-block is brown_mushroom
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 91 and 100: # SETTING SHORT_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to short grass
+				else:
+					wait 1 seconds
+					set event-block to short grass
+			else if {_random} is between 81 and 90: # SETTING TALL_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set event-block to tall_grass[half=upper]
+					set block below event-block to tall_grass[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to tall_grass[half=lower]
+					set block above event-block to tall_grass[half=upper]
+			else if {_random} is between 41 and 80: # SETTING RED_MUSHROOM
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to red_mushroom
+				else:
+					wait 1 seconds
+					set event-block to red_mushroom
+			else if {_random} is between 1 and 40: # SETTING BROWN_MUSHROOM
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to brown_mushroom
+				else:
+					wait 1 seconds
+					set event-block to brown_mushroom
+	else if "%region at player%" is equal to "area7 in world world and global in world world":
+		if at least one of:
+			event-block is fern
+			event-block is large_fern
+			event-block is cornflower
+			event-block is lily_of_the_valley
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 91 and 100: # SETTING FERN
+				if event-block is large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to fern
+				else:
+					wait 1 seconds
+					set event-block to fern
+			else if {_random} is between 81 and 90: # SETTING LARGE_FERN
+				if event-block is large_fern[half=upper]:
+					wait 1 seconds
+					set event-block to large_fern[half=upper]
+					set block below event-block to large_fern[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to large_fern[half=lower]
+					set block above event-block to large_fern[half=upper]
+			else if {_random} is between 41 and 80: # SETTING CORNFLOWER
+				if event-block is large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to cornflower
+				else:
+					wait 1 seconds
+					set event-block to cornflower
+			else if {_random} is between 1 and 40: # SETTING LILY_OF_THE_VALLEY
+				if event-block is large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to lily_of_the_valley
+				else:
+					wait 1 seconds
+					set event-block to lily_of_the_valley
+	else if "%region at player%" is equal to "area8 in world world and global in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is sunflower
+			event-block is oxeye_daisy
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 81 and 100: # SETTING SHORT_GRASS
+				if event-block is sunflower[half=upper]:
+					wait 1 seconds
+					set block below event-block to short_grass
+				else:
+					wait 1 seconds
+					set event-block to short_grass
+			else if {_random} is between 41 and 80: # SETTING SUNFLOWER
+				if event-block is sunflower[half=upper]:
+					wait 1 seconds
+					set event-block to sunflower[half=upper]
+					set block below event-block to sunflower[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to sunflower[half=lower]
+					set block above event-block to sunflower[half=upper]
+			else if {_random} is between 1 and 40: # SETTING OXEYE_DAISY
+				if event-block is sunflower[half=upper]:
+					wait 1 seconds
+					set block below event-block to oxeye_daisy
+				else:
+					wait 1 seconds
+					set event-block to oxeye_daisy
+	else if "%region at player%" is equal to "area9 in world world and global in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is tall_grass
+			event-block is dead_bush
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 68 and 100: # SETTING SHORT_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to short_grass
+				else:
+					wait 1 seconds
+					set event-block to short_grass
+			else if {_random} is between 35 and 67: # SETTING TALL_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set event-block to tall_grass[half=upper]
+					set block below event-block to tall_grass[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to tall_grass[half=lower]
+					set block above event-block to tall_grass[half=upper]
+			else if {_random} is between 1 and 34: # SETTING DEAD_BUSH
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to dead_bush
+				else:
+					wait 1 seconds
+					set event-block to dead_bush
+	else if "%region at player%" is equal to "area10 in world world and global in world world":
+		if at least one of:
+			event-block is tall_grass
+			event-block is acacia_sapling
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 51 and 100: #SETTING TALL_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set event-block to tall_grass[half=upper]
+					set block below event-block to tall_grass[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to tall_grass[half=lower]
+					set block above event-block to tall_grass[half=upper]
+			else if {_random} is between 1 and 50: #SETTING ACACIA_SAPLING
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to acacia_sapling
+				else:
+					wait 1 seconds
+					set event-block to acacia_sapling
+	else if "%region at player%" is equal to "area11 in world world and global in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is dandelion
+			event-block is birch_sapling
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 61 and 100: #SETTING SHORT_GRASS
+				wait 1 seconds
+				set event-block to short_grass
+			else if {_random} is between 31 and 60: # SETTING DANDELION
+				wait 1 seconds
+				set event-block to dandelion
+			else if {_random} is between 1 and 30: # SETTING BIRCH_SAPLING
+				wait 1 seconds
+				set event-block to birch_sapling
+	else if "%region at player%" is equal to "area12 in world world and global in world world":
+		if at least one of:
+			event-block is wheat
+			event-block is carrots[age=7]
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 51 and 100: #SETTING WHEAT
+				wait 1 seconds
+				set event-block to wheat[age=7]
+			else if {_random} is between 1 and 50: #SETTING CARROTS
+				wait 1 seconds
+				set event-block to carrots[age=7]
+	else if "%region at player%" is equal to "area13 in world world and global in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is fern
+			event-block is wither_rose
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 76 and 100: #SETTING SHORT_GRASS
+				wait 1 seconds
+				set event-block to short_grass
+			else if {_random} is between 51 and 75: #SETTING FERN
+				wait 1 seconds
+				set event-block to fern
+			else if {_random} is between 1 and 50: #SETTING WITHER_ROSE
+				wait 1 seconds
+				set event-block to wither_rose
+	else if "%region at player%" is equal to "area14 in world world and global in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is peony
+			event-block is pink_petals
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 81 and 100: # SETTING SHORT_GRASS
+				if event-block is peony[half=upper]:
+					wait 1 seconds
+					set block below event-block to short_grass
+				else:
+					wait 1 seconds
+					set event-block to short_grass
+			else if {_random} is between 41 and 80: # SETTING PEONY
+				if event-block is peony[half=upper]:
+					wait 1 seconds
+					set event-block to peony[half=upper]
+					set block below event-block to peony[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to peony[half=lower]
+					set block above event-block to peony[half=upper]
+			else if {_random} is between 1 and 40: # SETTING PINK_PETALS
+				if event-block is peony[half=upper]:
+					wait 1 seconds
+					set block below event-block to pink_petals[flower_amount=4]
+				else:
+					wait 1 seconds
+					set event-block to pink_petals[flower_amount=4]
+	else if "%region at player%" is equal to "area15 in world world and global in world world":
+		if at least one of:
+			event-block is tall_grass
+			event-block is fern
+			event-block is cornflower
+			event-block is blue_orchid
+			event-block is nether_sprouts
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 81 and 100: # SETTING TALL_GRASS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set event-block to tall_grass[half=upper]
+					set block below event-block to tall_grass[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to tall_grass[half=lower]
+					set block above event-block to tall_grass[half=upper]
+			if {_random} is between 61 and 80: # SETTING FERN
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to fern
+				else:
+					wait 1 seconds
+					set event-block to fern
+			else if {_random} is between 41 and 60: # SETTING CORNFLOWER
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to cornflower
+				else:
+					wait 1 seconds
+					set event-block to cornflower
+			else if {_random} is between 21 and 40: # SETTING BLUE_ORCHID
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to blue_orchid
+				else:
+					wait 1 seconds
+					set event-block to blue_orchid
+			else if {_random} is between 1 and 20: # SETTING NETHER_SPROUTS
+				if event-block is tall_grass[half=upper]:
+					wait 1 seconds
+					set block below event-block to nether_sprouts
+				else:
+					wait 1 seconds
+					set event-block to nether_sprouts
+	else if "%region at player%" is equal to "area16 in world world and global in world world":
+		if at least one of:
+			event-block is short_grass
+			event-block is fern
+			event-block is large_fern
+			event-block is big_dripleaf
+		then:
+			add 1 to {totalcropsbroken::%player's uuid%}
+			add 1 to {dailycropsbroken::%player's uuid%}
+			set {_random} to a random integer between 1 and 100
+			if {_random} is between 81 and 100: # SETTING SHORT_GRASS
+				if event-block is large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to short_grass
+				else:
+					wait 1 seconds
+					set event-block to short_grass
+			if {_random} is between 61 and 80: # SETTING FERN
+				if event-block is large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to fern
+				else:
+					wait 1 seconds
+					set event-block to fern
+			else if {_random} is between 41 and 60: # SETTING LARGE_FERN
+				if event-block is large_fern[half=upper]:
+					wait 1 seconds
+					set event-block to large_fern[half=upper]
+					set block below event-block to large_fern[half=lower]
+				else:
+					wait 1 seconds
+					set event-block to large_fern[half=lower]
+					set block above event-block to large_fern[half=upper]
+			else if {_random} is between 1 and 40: # SETTING BIG_DRIPLEAF
+				if event-block is large_fern[half=upper]:
+					wait 1 seconds
+					set block below event-block to big_dripleaf
+				else:
+					wait 1 seconds
+					set event-block to big_dripleaf
+
+			
+on block interact:
+	if player is not an operator:
+		if event-block is farmland:
+			cancel event
+			stop
+on break:
+	add 1 to {brokencrops::%player's uuid%}
+	

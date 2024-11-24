@@ -1,5 +1,0 @@
-on damage:
-    loop all blocks in radius 3 of attacker:
-        if loop-block = wheat[age=7]:
-            stop
-    cancel event

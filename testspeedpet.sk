@@ -1,7 +1,0 @@
-on jump:
-	set {_ja} to player's x coordinate
-	set {_jaa} to player's y coordinate
-	set {_jaaa} to player's z coordinate
-	if block at location({_ja}, ({_jaa}-1), {_jaaa}, world "world") is lime wool:
-		execute console command "broadcast penis"
-		

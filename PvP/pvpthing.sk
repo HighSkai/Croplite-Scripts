@@ -1,0 +1,23 @@
+command /togglepvp:
+	trigger:
+		if {pvpstatus::%player's uuid%} is false:
+			set {pvpstatus::%player's uuid%} to true
+		else if {pvpstatus::%player's uuid%} is true:
+			set {pvpstatus::%player's uuid%} to false
+		
+		if {pvpstatus::%player's uuid%} is true:
+			add 0.2 to {miningmultiplier::%player's uuid%}
+			send "&8[&dCroplite&8] &aEnjoy your bonus! (+0.2x multiplier)" to player
+		if {pvpstatus::%player's uuid%} is false:
+			subtract 0.2 from {miningmultiplier::%player's uuid%}
+			send "&8[&dCroplite&8] &aFarm in peace! (without the 20%% xp bonus)"
+		
+on damage:
+	victim is a player
+	if {pvpstatus::%victim's uuid%} is false:
+		cancel event
+		send "&4&lThis player has PVP turned off!" to attacker
+	if {pvpstatus::%attacker's uuid%} is false:
+		cancel event
+		send "&4&lYou have PVP turned off! Enable pvp using /togglepvp" to attacker
+		

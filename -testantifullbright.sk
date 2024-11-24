@@ -1,6 +1,0 @@
-on block place:
-	if player is an operator:
-		set {_placedBlock} to type of block at event-block
-		if {_placedBlock} is not a torch or cobblestone or stone or cobbled deepslate:
-			cancel event
-			send "&cYou are not permitted to place that here!" to player

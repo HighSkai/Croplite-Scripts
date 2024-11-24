@@ -1,4 +1,0 @@
-command /afk:
-    permission: sk.afkcmd
-    trigger:
-        teleport player to location(1007.5,115,967.5, world "world",0,0)

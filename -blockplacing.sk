@@ -1,5 +1,0 @@
-on place:
-	if "%region at event-block%" is "wood":
-		if event-block is stone:
-			set event-block to stone
-			remove 1 stone from player's inventory

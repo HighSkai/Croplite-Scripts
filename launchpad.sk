@@ -1,3 +1,0 @@
-on step on slime block:
-	push player up at speed 1.1
-	push player forward at speed 1.5

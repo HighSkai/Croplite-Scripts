@@ -1,4 +1,0 @@
-command /math:
-	trigger:
-		set {_2} to a random integer between 5 and 10
-		send "%{_2}%" to player

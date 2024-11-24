@@ -1,4 +1,0 @@
-command /lesskbtest:
-	trigger:
-		set {kbres::%player's uuid%} to 10
-		set player's knockback resistance to {kbres::%player's uuid%}

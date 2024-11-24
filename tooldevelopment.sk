@@ -1,6 +1,0 @@
-on damage:
-	if attacker is a player:
-		if attacker's held item is a stone hoe:
-			if {tooldev1::%attacker's uuid%} is true:
-				chance of 20%:
-					apply potion of slowness of tier 2 to the victim for 2 seconds

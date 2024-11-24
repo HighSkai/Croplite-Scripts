@@ -1,0 +1,2 @@
+on step on emerald block:
+	push player forward with speed 4
