@@ -59,6 +59,7 @@ on inventory close:
 		set {_atemp12} to 0
 		set {_atemp13} to 0
 		set {_atemp14} to 0
+		set {_atemp15} to 0
 		loop integers between 0 and 8:
 			if uncolored name of item in slot loop-number of event-inventory is "Weak Harvest Spirit":
 				set {harvestspirit1::%player's uuid%} to true
@@ -211,6 +212,16 @@ on inventory close:
 				else:
 					set {harvestspirit4::%player's uuid%} to false
 					set {_atemp3} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Decent Expander Pet":
+				set {decentexpanderpet::%player's uuid%} to true
+				add 1 to {_atemp15}
+			if loop-number = 8:
+				if {_atemp15} is greater than or equal to 1:
+					set {decentexpanderpet::%player's uuid%} to true
+					set {_atemp15} to 0
+				else:
+					set {decentexpanderpet::%player's uuid%} to false
+					set {_atemp15} to 0
 			
 					
 on inventory click:
