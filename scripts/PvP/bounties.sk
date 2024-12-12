@@ -1,0 +1,49 @@
+on death:
+	if victim is player:
+		if attacker is player:
+			if {bountykills::%attacker's uuid%} is greater than 9:
+				if {haseffect::%attacker's uuid%} is false:
+					apply infinite glowing 2 to the attacker
+					set {haseffect::%attacker's uuid%} to true
+			if {bountykills::%attacker's uuid%} is less than 100:
+				add 1 to {bountykills::%attacker's uuid%}
+			if {bountykills::%victim's uuid%} is greater than 0:
+				add (({bountykills::%victim's uuid%}/100)*{cropbag::%player's uuid%}) to {cropmaterial::%player's uuid%}
+				if {cropmaterial::%player's uuid%} is greater than {cropbag::%player's uuid%}:
+					set {cropmaterial::%player's uuid%} to {cropbag::%player's uuid%}
+				if {bountykills::%victim's uuid%} is greater than 4:
+					send "&c&l%attacker% has collected a bounty of %{bountykills::%victim's uuid%}% on %victim%!" to all players
+				set {bountykills::%victim's uuid%} to 0
+				set {haseffect::%victim's uuid%} to false
+			
+on first join:
+	set {bountykills::%player's uuid%} to 0
+	
+command /bountyset <player> <int>:
+	trigger:
+		if player has arg-2 of sunflowers:
+			if arg-2 is greater than 0:
+				remove arg-2 of sunflowers from player's inventory
+				add arg-2 to {bountykills::%arg-1's uuid%}
+				send "&4&l%player% has just set a bounty on %arg-1% for %arg-2% coins!" to all players
+				if {bountykills::%arg-1's uuid%} is greater than 9:
+					apply infinite glowing 2 to arg-1
+			else:
+				send "&c&lYou cannot set a negative bounty on someone!" to player
+		else:
+			send "&c&lYou do not have that many coins in your inventory!" to player
+			
+command /bounty <player>:
+	trigger:
+		send "&a%arg-1% has a bounty of %{bountykills::%arg-1's uuid%}%" to player
+		
+command /bountytop:
+	aliases: /bt
+	trigger:
+		loop indices of {bountykills::*} in descending order:
+			add 1 to {_n}
+			set {_top10::%{_n}%} to {bountykills::%loop-value%}
+			set {_plr} to loop-value parsed as offline player
+			send "&a&l%{_n}%, %{_plr}%: &r&a%{_top10::%{_n}%}%" to player
+			if {_n} = 10:
+				exit loop

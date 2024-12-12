@@ -1,0 +1,2 @@
+on death:
+	set {_players::*} to 0

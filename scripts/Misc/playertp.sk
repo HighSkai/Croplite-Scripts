@@ -1,0 +1,35 @@
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "lbtp in world world":
+		teleport player to location(1017.5, 117, 661.5, world "world", 0, -20)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Lifetime Leaderboards Hall." to player
+		stop
+		
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "lbtpback in world world":
+		teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported back to Spawn." to player
+		stop
+	
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "portaltoarea2 in world world":
+		teleport player to location(792.5, 99, 1039.5, world "world", 135, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Spruce Farm." to player
+		stop
+		
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "portaltoarea3 in world world":
+		teleport player to location(289.5, 98, 906.5, world "world", 39.5, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Desert Farm." to player
+		stop
+		
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "portaltoarea4 in world world":
+		teleport player to location(-378.5, 101, 857.5, world "world", -45, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Cave Farm." to player
+		stop
+		

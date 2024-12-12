@@ -1,0 +1,38 @@
+command /manaupgrade:
+	permission: *
+	trigger:
+		if {openedmuinv::%player's uuid%} is not set:
+			set {openedmuinv::%player's uuid%} to false
+		if {openedmuinv::%player's uuid%} is false:
+			loop integers between 0 and 8:
+				if at least one of:
+					loop-integer is between 0 and 2
+					loop-integer is between 6 and 8
+					loop-integer is 4
+				then:
+					set {manaupgradegui::%player's uuid%::%loop-integer%} to light blue stained glass pane
+				if loop-integer = 3:
+					set {manaupgradegui::%player's uuid%::%loop-integer%} to water bottle named "&bMana Replenish Rate"
+					# set lore for pricing and resultant information here
+				if loop-integer = 5:
+					set {manaupgradegui::%player's uuid%::%loop-integer%} to cauldron named "&1Mana Maximum Capacity"
+					# set lore for pricing and resultant information here
+			set {openedmuinv::%player's uuid%} to true
+			open chest inventory with 1 row named "&b&lMana Upgrades" to player
+			loop integers between 0 and 8:
+				set slot loop-value of player's current inventory to {manaupgradegui::%player's uuid%::%loop-integer%}
+		else:	
+			open chest inventory with 1 row named "&b&lMana Upgrades" to player
+			loop integers between 0 and 8:
+				set slot loop-value of player's current inventory to {manaupgradegui::%player's uuid%::%loop-integer%}
+				
+on inventory close:
+	if name of event-inventory is "&b&lMana Upgrades":
+		loop integers between 0 and 8:
+			set {manaupgradegui::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
+			
+on inventory click:
+	if name of event-inventory is "&b&lMana Upgrades":
+		event-inventory is not player's inventory
+		cancel event
+		# Need more information as of what else to do here (prices, increases, etc.)

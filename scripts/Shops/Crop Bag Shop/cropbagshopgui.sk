@@ -1,0 +1,121 @@
+command /cropbagupgrades: # The crop bag shop click command
+	permission: *
+	trigger:
+		open chest inventory with 6 rows named "      &e&lCrop Bag Upgrades " to player
+		loop integers between 0 and 54:
+			set slot loop-value of player's current inventory to {cbu::%player's uuid%::%loop-integer%}
+			
+on inventory close: 
+	if name of event-inventory is "      &e&lCrop Bag Upgrades ":
+		loop integers between 0 and 54:
+			if loop-integer = 0:
+				set {_bg1} to a flower pot named "&2Beginners' Bag"
+				set line 1 of lore of {_bg1} to "&7----------"
+				set line 2 of lore of {_bg1} to "Cost: 1000©"
+				set line 3 of lore of {_bg1} to "+250 crop bag capacity"
+				set line 4 of lore of {_bg1} to "&7----------"
+				if {bag1upgrade::%player's uuid%} is not true:
+					set line 5 of lore of {_bg1} to "&cNot purchased"
+				else:
+					set line 5 of lore of {_bg1} to "&aPurchased"
+				set slot loop-integer of event-inventory to {_bg1}
+			if loop-integer = 1:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 2:
+				set {_bg2} to a bucket named "&fIron Bag"
+				set line 1 of lore of {_bg2} to "&7----------"
+				set line 2 of lore of {_bg2} to "Cost: 2800©"
+				set line 3 of lore of {_bg2} to "+350 crop bag capacity"
+				set line 4 of lore of {_bg2} to "&7----------"
+				if {bag2upgrade::%player's uuid%} is not true:
+					set line 5 of lore of {_bg2} to "&cNot purchased"
+				else:
+					set line 5 of lore of {_bg2} to "&aPurchased"
+				set slot loop-integer of event-inventory to {_bg2}
+			if loop-integer = 3:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 4:
+				set {_bg3} to a decorated pot named "&6Upgraded Beginners' Bag"
+				set line 1 of lore of {_bg3} to "&7----------"
+				set line 2 of lore of {_bg3} to "Cost: 2800©"
+				set line 3 of lore of {_bg3} to "+350 crop bag capacity"
+				set line 4 of lore of {_bg3} to "&7----------"
+				if {bag3upgrade::%player's uuid%} is not true:
+					set line 5 of lore of {_bg3} to "&cNot purchased"
+				else:
+					set line 5 of lore of {_bg3} to "&aPurchased"
+				set slot loop-integer of event-inventory to {_bg3}
+			if loop-integer = 5:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 6:
+				set {_bg4} to a bundle named "&9Crop Satchel"
+				set slot loop-integer of event-inventory to {_bg4}
+			if loop-integer = 7:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 8:
+				set {_bg5} to a minecart named "&7Crop Cart"
+				set slot loop-integer of event-inventory to {_bg5}
+			if loop-integer = 19:
+				set {_bg6} to a composter named "&6Crop Crate"
+				set slot loop-integer of event-inventory to {_bg6}
+			if loop-integer = 20:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 21:
+				set {_bg7} to a chest named "&cCrop Chest"
+				set slot loop-integer of event-inventory to {_bg7}
+			if loop-integer = 22:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 23:
+				set {_bg8} to a hopper named "&8Vat of Crops"
+				set slot loop-integer of event-inventory to {_bg8}
+			if loop-integer = 24:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 25:
+				set {_bg9} to a barrel named "&1Barry's Bottomless Barrel"
+				set slot loop-integer of event-inventory to {_bg9}
+			if loop-integer = 38:
+				set {_bg10} to an ender chest named "&5Ethereal Ender Storage"
+				set slot loop-integer of event-inventory to {_bg10}
+			if loop-integer = 39:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 40:
+				set {_bg11} to a pink shulker box named "&dShulker's Void Container"
+				set slot loop-integer of event-inventory to {_bg11}
+			if loop-integer = 41:
+				set slot loop-integer of event-inventory to dark gray glass pane named "&8→"
+			if loop-integer = 42:
+				set {_bg12} to a nether star named "&eDwarf Star Vault"
+				set slot loop-integer of event-inventory to {_bg12}
+			set {cbu::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
+			
+on inventory click:
+	if name of event-inventory is "      &e&lCrop Bag Upgrades ":
+		if event-clicktype is number key:
+			cancel event
+		event-inventory is not player's inventory
+		cancel event
+		if event-slot = 0:
+			if {bag1upgrade::%player's uuid%} is not true:
+				if {cropcash::%player's uuid%} is greater than or equal to 1000:
+					add 250 to {cropbag::%player's uuid%}
+					subtract 1000 from {cropcash::%player's uuid%}
+					set {bag1upgrade::%player's uuid%} to true
+					send "&a&lUpgrade Purchased" to player
+					close player's inventory
+				else:
+					send "&c&lYou do not have enough money for this upgrade!" to player
+			else:
+				send "&c&lYou have already purchased this upgrade!" to player
+		if event-slot = 2:
+			if {bag2upgrade::%player's uuid%} is not true:
+				if {cropcash::%player's uuid%} is greater than or equal to 2800:
+					add 350 to {cropbag::%player's uuid%}
+					subtract 2800 from {cropcash::%player's uuid%}
+					set {bag2upgrade::%player's uuid%} to true
+					send "&a&lUpgrade Purchased" to player
+					close player's inventory
+				else:
+					send "&c&lYou do not have enough money for this upgrade!" to player
+			else:
+				send "&c&lYou have already purchased this upgrade!" to player
+			

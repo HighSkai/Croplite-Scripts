@@ -1,0 +1,15 @@
+command /track <player>:                                     
+	trigger:                                             
+		set {target::%player's uuid%} to arg 1                             
+		send "&eYou are tracking %arg-1%"
+ 
+on rightclick with a compass:
+	uncolored name of event-player's held item is "Blood Thirsty Compass"
+	if event-player and {target::%player's uuid%} is in world "world":                         
+		set {tracklocation} to location of {target::%player's uuid%}                         
+		set event-player's compass target to {tracklocation}
+		send "&aCompass is now pointing to %{target::%player's uuid%}%" to event-player
+	else if {target::%player's uuid%} is in world "world":
+		send "&c%{target::%player%::*}%&c is not in the Overworld" to event-player
+	else:
+		send "&cThe compass does not work in this dimension." to event-player

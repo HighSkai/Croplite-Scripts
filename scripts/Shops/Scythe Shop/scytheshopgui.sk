@@ -1,0 +1,30 @@
+command /scytheshopgui:
+	permission: *
+	trigger:
+		if player's tool is a hoe:
+			open chest inventory with 1 row named "&b&lScythe Shop" to player
+			loop integers between 0 and 9:
+				set slot loop-value of player's current inventory to {scytheshopgui::%player's uuid%::%loop-integer%}
+		else:
+			send "&8[&d&lCroplite&8] &aYou must hold your Scythe to interact with the Scythe Shop." to player
+			
+on inventory close:
+	if name of event-inventory contains "&b&lScythe Shop":
+		loop integers between 0 and 8:
+			if loop-integer = 0:
+				set slot loop-integer of event-inventory to cyan stained glass pane
+			if loop-integer = 1:
+				set slot loop-integer of event-inventory to light blue stained glass pane
+			if loop-integer = 2:
+				set slot loop-integer of event-inventory to {stonehoeshopdisplay}
+			
+on inventory click: # Click Changes
+	if name of event-inventory contains "&b&lScythe Shop":
+		if event-clicktype is number key:
+			cancel event
+		event-inventory is not player's inventory
+		cancel event
+		
+command /setvars:
+	trigger:
+		set {stonehoeshopdisplay} to player's held item

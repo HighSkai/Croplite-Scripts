@@ -1,0 +1,27 @@
+on chat:
+    if {nonothin::%player's uuid%} is true:
+        if player is not an operator:
+            cancel event
+            send "&c&lChat is locked!" to player
+
+on command:
+    if {nonothin::%player's uuid%} is true:
+        if player is not an operator:
+            cancel event
+            send "&c&lChat is locked!" to player
+            
+command /lockchat:
+    permission: *
+    trigger:
+        loop indices of {nonothin::*}:
+            set {nonothin::%loop-value%} to true
+        set {lockedchat} to true
+        send "&c&l%player% has locked chat!"
+        
+command /unlockchat:
+    permission: *
+    trigger:
+        loop indices of {nonothin::*}:
+            set {nonothin::%loop-value%} to false
+        set {lockedchat} to false
+        send "&c&l%player% has unlocked chat!"
