@@ -11,7 +11,8 @@ command /openrpetshop:
 command /addrarepet:
 	permission: *
 	trigger:
-		add player's held item to {pets::uncommon::*}
+		set player's held item to {pets::rare::*}
+		#After first pet is set, replace the line above with the add expression
 
 on inventory close:
 	if name of event-inventory is "&9&lRare Pet Shop":
