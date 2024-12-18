@@ -1,17 +1,58 @@
 function cpetshop(p: player):
-	if {cpetshopneup::%{_p}'s uuid%} is true:
-		open chest inventory with 6 rows named "&8&lCommon Pet Shop" to {_p}
-		wait 1 tick
-		close {_p}'s inventory
-		wait 1 tick
-		open chest inventory with 1 row named "&8&lCommon Pet Shop" to {_p}
-		loop integers between 0 and 53:
-			set slot loop-value of {_p}'s current inventory to {cpetshop::%{_p}'s uuid%::%loop-integer%}
-			set {cpetshopneup::%{_p}'s uuid%} to false
-	else:
-		open chest inventory with 6 rows named "&8&lCommon Pet Shop" to {_p}
-		loop integers between 0 and 53:
-			set slot loop-value of {_p}'s current inventory to {cpetshop::%{_p}'s uuid%::%loop-integer%}
+	open chest inventory with 6 rows named "&8&lCommon Pet Shop" to {_p}
+	loop integers between 0 and 53:
+		set slot loop-value of {_p}'s current inventory to {cpetshop::%{_p}'s uuid%::%loop-integer%}
+			
+function petgive(p: player, n: number, rarity: text):
+	# Common Pet Give
+	if {_rarity} is "common":
+		if {_p} has 1 honeycomb named "&6&l&nPet Token":
+			remove 1 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
+			send "&8[&dCroplite&8] &aPurchase successful" to {_p}
+		else:
+			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
+	# Uncommon Pet Give
+	else if {_rarity} is "uncommon":
+		if {_p} has 2 honeycomb named "&6&l&nPet Token":
+			remove 2 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
+			send "&8[&dCroplite&8] &aPurchase successful" to {_p}
+		else:
+			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
+	# Rare Pet Give
+	else if {_rarity} is "rare":
+		if {_p} has 4 honeycomb named "&6&l&nPet Token":
+			remove 4 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
+			send "&8[&dCroplite&8] &aPurchase successful" to {_p}
+		else:
+			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
+	# Refined Pet Give
+	else if {_rarity} is "refined":
+		if {_p} has 6 honeycomb named "&6&l&nPet Token":
+			remove 6 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
+			send "&8[&dCroplite&8] &aPurchase Successful" to {_p}
+		else:
+			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
+	# Epic Pet Give
+	else if {_rarity} is "epic":
+		if {_p} has 8 honeycomb named "&6&l&nPet Token":
+			remove 8 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
+			send "&8[&dCroplite&8] &aPurchase Successful" to {_p}
+		else:
+			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
+	# Legendary Pet Give
+	else if {_rarity} is "legendary":
+		if {_p} has 10 honeycomb named "&6&l&nPet Token":
+			remove 10 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
+			send "&8[&dCroplite&8] &aPurchase Successful" to {_p}
+		else:
+			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
+			
 			
 command /opencpetshop:
 	permission: *
@@ -22,17 +63,12 @@ command /addcommonpet:
 	permission: *
 	trigger:
 		add player's held item to {pets::common::*}
-		
 
 on inventory close:
 	if name of event-inventory is "&8&lCommon Pet Shop":
 		if event-inventory is not player's inventory:
 			loop integers between 0 and 53:
-				if loop-integer = 0:
-					delete line 6 of lore of {pets::common::1}
-					set slot loop-integer of event-inventory to {pets::common::1}
-				if loop-integer = 1:
-					set slot loop-integer of event-inventory to {pets::common::2}
+				set slot loop-integer of event-inventory to {pets::common::%loop-integer+1%}
 				set {cpetshop::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
 				
 on inventory click:
@@ -41,5 +77,7 @@ on inventory click:
 			cancel event
 		cancel event
 		event-inventory is not player's inventory
+		if event-slot is 0:
+			petgive(player, 1, "common")
 		if event-slot is 1:
-			
+			petgive(player, 2, "common")
