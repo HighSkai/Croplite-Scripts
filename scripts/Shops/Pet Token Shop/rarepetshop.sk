@@ -1,1 +1,34 @@
-temp
+function ucpetshop(p: player):
+	open chest inventory with 6 rows named "&a&lUncommon Pet Shop" to {_p}
+	loop integers between 0 and 53:
+		set slot loop-value of {_p}'s current inventory to {ucpetshop::%{_p}'s uuid%::%loop-integer%}
+			
+command /openucpetshop:
+	permission: *
+	trigger:
+		ucpetshop(player)
+
+command /adduncommonpet:
+	permission: *
+	trigger:
+		add player's held item to {pets::uncommon::*}
+
+on inventory close:
+	if name of event-inventory is "&a&lUncommon Pet Shop":
+		if event-inventory is not player's inventory:
+			loop integers between 0 and 53:
+				set slot loop-integer of event-inventory to {pets::uncommon::%loop-integer+1%}
+				set {ucpetshop::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
+				
+on inventory click:
+	if name of event-inventory is "&a&lUncommon Pet Shop":
+		if event-clicktype is number key:
+			cancel event
+		cancel event
+		event-inventory is not player's inventory
+		if event-slot is 0:
+			petgive(player, 1, "uncommon")
+		if event-slot is 1:
+			petgive(player, 2, "uncommon")
+		if event-slot is 2:
+			petgive(player, 3, "uncommon")
