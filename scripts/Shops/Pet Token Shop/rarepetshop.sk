@@ -1,12 +1,12 @@
-function rpetshop(p: player):
+function rapetshop(p: player):
 	open chest inventory with 6 rows named "&9&lRare Pet Shop" to {_p}
 	loop integers between 0 and 53:
-		set slot loop-value of {_p}'s current inventory to {rpetshop::%{_p}'s uuid%::%loop-integer%}
+		set slot loop-value of {_p}'s current inventory to {rapetshop::%{_p}'s uuid%::%loop-integer%}
 			
-command /openrpetshop:
+command /openrapetshop:
 	permission: *
 	trigger:
-		rpetshop(player)
+		rapetshop(player)
 
 command /addrarepet:
 	permission: *
@@ -19,7 +19,7 @@ on inventory close:
 		if event-inventory is not player's inventory:
 			loop integers between 0 and 53:
 				set slot loop-integer of event-inventory to {pets::rare::%loop-integer+1%}
-				set {rpetshop::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
+				set {rapetshop::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
 				
 on inventory click:
 	if name of event-inventory is "&9&lRare Pet Shop":
