@@ -11,8 +11,7 @@ command /openepetshop:
 command /addepicpet:
 	permission: *
 	trigger:
-		set player's held item to {pets::epic::*}
-		#After first pet is set, replace the line above with the add expression
+		add player's held item to {pets::epic::*}
 
 on inventory close:
 	if name of event-inventory is "&d&lEpic Pet Shop":
@@ -33,3 +32,5 @@ on inventory click:
 			petgive(player, 2, "epic")
 		if event-slot is 2:
 			petgive(player, 3, "epic")
+		if event-slot is 3:
+			petgive(player, 4, "epic")

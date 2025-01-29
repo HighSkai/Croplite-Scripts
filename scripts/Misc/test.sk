@@ -1,2 +1,11 @@
-on death:
-	set {_players::*} to 0
+command /nick [<text>]:
+    description: Change your nickname
+    usage: /nick <new nickname>
+    permission: nick.change
+    trigger:
+        if arg-1 is set:
+            set {_newnick} to arg-1
+            set player's display name to {_newnick}
+            send "&aYour nickname has been changed to %{_newnick}%."
+        else:
+            send "&cUsage: /nick <new nickname>"

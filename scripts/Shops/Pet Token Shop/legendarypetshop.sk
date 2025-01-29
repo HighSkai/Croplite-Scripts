@@ -11,8 +11,7 @@ command /openlpetshop:
 command /addlegendarypet:
 	permission: *
 	trigger:
-		set player's held item to {pets::legendary::*}
-		#After first pet is set, replace the line above with the add expression
+		add player's held item to {pets::legendary::*}
 
 on inventory close:
 	if name of event-inventory is "&6&lLegendary Pet Shop":
@@ -33,3 +32,7 @@ on inventory click:
 			petgive(player, 2, "legendary")
 		if event-slot is 2:
 			petgive(player, 3, "legendary")
+		if event-slot is 3:
+			petgive(player, 4, "legendary")
+		if event-slot is 4:
+			petgive(player, 5, "legendary")

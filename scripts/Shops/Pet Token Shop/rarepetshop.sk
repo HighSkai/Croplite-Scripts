@@ -11,8 +11,7 @@ command /openrapetshop:
 command /addrarepet:
 	permission: *
 	trigger:
-		set player's held item to {pets::rare::*}
-		#After first pet is set, replace the line above with the add expression
+		add player's held item to {pets::rare::*}
 
 on inventory close:
 	if name of event-inventory is "&9&lRare Pet Shop":
@@ -33,3 +32,7 @@ on inventory click:
 			petgive(player, 2, "rare")
 		if event-slot is 2:
 			petgive(player, 3, "rare")
+		if event-slot is 3:
+			petgive(player, 4, "rare")
+		if event-slot is 4:
+			petgive(player, 5, "rare")

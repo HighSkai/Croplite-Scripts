@@ -64,4 +64,16 @@ on inventory click: # Click Changes
 			cancel event
 		event-inventory is not player's inventory
 		cancel event
-		
+		if event-slot = 0:
+			cpetshop(player)
+		if event-slot = 1:
+			ucpetshop(player)
+		if event-slot = 2:
+			rapetshop(player)
+		if event-slot = 3:
+			repetshop(player)
+		if event-slot = 4:
+			epetshop(player)
+		if event-slot = 5:
+			lpetshop(player)
+			

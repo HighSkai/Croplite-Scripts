@@ -81,3 +81,5 @@ on inventory click:
 			petgive(player, 1, "common")
 		if event-slot is 1:
 			petgive(player, 2, "common")
+		if event-slot is 2:
+			petgive(player, 3, "common")

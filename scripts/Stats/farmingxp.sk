@@ -60,11 +60,9 @@ command /resetstats:
 		set {crlevel::%player's uuid%} to 0
 		set {xplevel::%player's uuid%} to 0
 		set {mobxp::%player's uuid%} to 0
-		set {fireballupgradespeed::%player's uuid%} to 0.1
-		set {fireballshoothoe::%player's uuid%} to false
 		set {amountofskills::%player's uuid%} to 0
 		set {cropcash::%player's uuid%} to 0
-		set {cropbag::%player's uuid%} to 500
+		set {cropbag::%player's uuid%} to 100
 		set {cropreapamount::%player's uuid%} to 0
 		set {cropreapskill::%player's uuid%} to false
 		set {bag1upgrade::%player's uuid%} to false
@@ -98,13 +96,36 @@ command /resetstats:
 		set {vip+ke2::%player's uuid%} to false
 		set {vipke1::%player's uuid%} to false
 		set {vipke2::%player's uuid%} to false
+		set {cropbaglevel::%player's uuid%} to 0
+		set {expanderfactor3::%player's uuid%} to 0.0
+		set {expandernumber3::%player's uuid%} to 0.0
+		set {expanderfactor4::%player's uuid%} to 0.0
+		set {expandernumber4::%player's uuid%} to 0.0
+		set {expanderfactor5::%player's uuid%} to 0.0
+		set {expandernumber5::%player's uuid%} to 0.0
+		set {expanderfactor6::%player's uuid%} to 0.0
+		set {expandernumber6::%player's uuid%} to 0.0
+		set {chek11::%player's uuid%} to false
+		set {chek12::%player's uuid%} to false
+		set {chek13::%player's uuid%} to false
+		set {chek14::%player's uuid%} to false
+		set {chek15::%player's uuid%} to false
+		set {chek16::%player's uuid%} to false
+		set {chek17::%player's uuid%} to false
+		set {chek18::%player's uuid%} to false
+		set {chek19::%player's uuid%} to false
+		set {chek20::%player's uuid%} to false
+		set {basecropbag::%player's uuid%} to 100
 		send "stats reset" to player
 		
 command /totalcropsbroken:
 	trigger:
 		send "%{totalcropsbroken::%player's uuid%}%" to player
 		
-on break:
+on break:	
+	if "%region at location of player%" is not "%region at location of event-block%":
+		cancel event
+		send "&cYou cannot break blocks outside your current area!" to player
 	if at least one of:
 		event-block is short grass
 		event-block is tall grass

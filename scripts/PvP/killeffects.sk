@@ -83,6 +83,7 @@ on death:
 		set {_vlocy} to victim's y coordinate
 		set {_vlocz} to victim's z coordinate
 		play sound "block.fire.ambient" at victim's location
+		play sound "block.fire.extinguish" at victim's location
 		show 1 flame at circle(location({_vlocx},{_vlocy}+3,{_vlocz}, world "world"), 3, 5, 0, 0) to all players
 		show 1 flame at circle(location({_vlocx},{_vlocy}+2.5,{_vlocz}, world "world"), 2.5, 5, 0, 0) to all players
 		show 1 flame at circle(location({_vlocx},{_vlocy}+2,{_vlocz}, world "world"), 2, 5, 0, 0) to all players

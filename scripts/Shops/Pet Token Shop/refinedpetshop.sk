@@ -11,8 +11,7 @@ command /openrepetshop:
 command /addrefinedpet:
 	permission: *
 	trigger:
-		set player's held item to {pets::refined::*}
-		#After first pet is set, replace the line above with the add expression
+		add player's held item to {pets::refined::*}
 
 on inventory close:
 	if name of event-inventory is "&c&lRefined Pet Shop":
@@ -31,5 +30,3 @@ on inventory click:
 			petgive(player, 1, "refined")
 		if event-slot is 1:
 			petgive(player, 2, "refined")
-		if event-slot is 2:
-			petgive(player, 3, "refined")

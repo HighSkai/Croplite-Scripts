@@ -1,4 +1,8 @@
-on inventory close: # Pet 1
+on inventory close: 
+	
+	# Crop Double Chance Pets ---------------------------------------------
+	
+	# Seedling Harvest Pet
 	if name of event-inventory is "&d&lPet Bag":
 		if {harvestspirit1::%player's uuid%} = true:
 			if {doublecropchance::%player's uuid%} is not set:
@@ -11,239 +15,15 @@ on inventory close: # Pet 1
 				add 5 to {doublecropchance::%player's uuid%}
 				set {chek0::%player's uuid%} to true
 				set {noharvestspirit1::%player's uuid%} to false
-		else if {harvestspirit1::%player's uuid%} = false:
+		else:
 			{noharvestspirit1::%player's uuid%} is not set:
 				set {noharvestspirit1::%player's uuid%} to false
 			{noharvestspirit1::%player's uuid%} is false:
 				set {chek0::%player's uuid%} to false
 				subtract 5 from {doublecropchance::%player's uuid%}
 				set {noharvestspirit1::%player's uuid%} to true
-                
- # Pet 2
-	if name of event-inventory is "&d&lPet Bag":
-		if {wheatfishboost::%player's uuid%} = true:
-			if {chek::%player's uuid%} is not set:
-				set {chek::%player's uuid%} to false
-			if {chek::%player's uuid%} = true:
-				stop
-			else:
-				add 0.05 to {miningmultiplier::%player's uuid%}
-				set {chek::%player's uuid%} to true
-				set {nofishpet::%player's uuid%} to false
-		else if {wheatfishboost::%player's uuid%} = false:
-			{nofishpet::%player's uuid%} is not set:
-				set {nofishpet::%player's uuid%} to false
-			{nofishpet::%player's uuid%} is false:
-				set {chek::%player's uuid%} to false
-				subtract 0.05 from {miningmultiplier::%player's uuid%}
-				set {nofishpet::%player's uuid%} to true
-
- # Pet 3
-	if name of event-inventory is "&d&lPet Bag":
-		if {exppetboost::%player's uuid%} = true:
-			if {chek1::%player's uuid%} is not set:
-				set {chek1::%player's uuid%} to false
-			if {chek1::%player's uuid%} = true:
-				stop
-			else:
-				add 0.1 to {miningmultiplier::%player's uuid%}
-				set {chek1::%player's uuid%} to true
-				set {noexppet::%player's uuid%} to false
-		else if {exppetboost::%player's uuid%} = false:
-			{noexppet::%player's uuid%} is not set:
-				set {noexppet::%player's uuid%} to false
-			{noexppet::%player's uuid%} is false:
-				set {chek1::%player's uuid%} to false
-				subtract 0.1 from {miningmultiplier::%player's uuid%}
-				set {noexppet::%player's uuid%} to true
-				
- # Pet 4
-	if name of event-inventory is "&d&lPet Bag":
-		if {slowspeedpet::%player's uuid%} = true:
-			if {chek3::%player's uuid%} is not set:
-				set {chek3::%player's uuid%} to false
-			if {chek3::%player's uuid%} = true:
-				stop
-			else:
-				add 0.01 to player's walking speed
-				add 0.05 to {playerwalkspeed::%player's uuid%}
-				set {chek3::%player's uuid%} to true
-				set {noslowspeedpet::%player's uuid%} to false
-		else if {slowspeedpet::%player's uuid%} = false:
-			{noslowspeedpet::%player's uuid%} is not set:
-				set {noslowspeedpet::%player's uuid%} to false
-			{noslowspeedpet::%player's uuid%} is false:
-				set {chek3::%player's uuid%} to false
-				subtract 0.01 from player's walking speed
-				subtract 0.05 from {playerwalkspeed::%player's uuid%}
-				set {noslowspeedpet::%player's uuid%} to true
-				
- # Pet 5
-	if name of event-inventory is "&d&lPet Bag":
-		if {quickspeedpet::%player's uuid%} = true:
-			if {chek4::%player's uuid%} is not set:
-				set {chek4::%player's uuid%} to false
-			if {chek4::%player's uuid%} = true:
-				stop
-			else:
-				add 0.05 to player's walking speed
-				add 0.25 to {playerwalkspeed::%player's uuid%}
-				set {chek4::%player's uuid%} to true
-				set {noquickspeedpet::%player's uuid%} to false
-		else if {quickspeedpet::%player's uuid%} = false:
-			{noquickspeedpet::%player's uuid%} is not set:
-				set {noquickspeedpet::%player's uuid%} to false
-			{noquickspeedpet::%player's uuid%} is false:
-				set {chek4::%player's uuid%} to false
-				subtract 0.05 from player's walking speed
-				subtract 0.25 from {playerwalkspeed::%player's uuid%}
-				set {noquickspeedpet::%player's uuid%} to true
-			
- # Pet 6
-	if name of event-inventory is "&d&lPet Bag":
-		if {antigravpet::%player's uuid%} = true:
-			if {chek5::%player's uuid%} is not set:
-				set {chek5::%player's uuid%} to false
-			if {chek5::%player's uuid%} = true:
-				stop
-			else:
-				apply infinite potion of speed of tier 1 to the player
-				apply infinite potion of jump boost of tier 1 to the player
-				set {chek5::%player's uuid%} to true
-				set {noantigravpet::%player's uuid%} to false
-		else if {antigravpet::%player's uuid%} = false:
-			{noantigravpet::%player's uuid%} is not set:
-				set {noantigravpet::%player's uuid%} to false
-			{noantigravpet::%player's uuid%} is false:
-				set {chek5::%player's uuid%} to false
-				remove speed from the player
-				remove jump boost from the player
-				set {noantigravpet::%player's uuid%} to true
-
- # Pet 7
-	if name of event-inventory is "&d&lPet Bag":
-		if {swiftspeedpet::%player's uuid%} = true:
-			if {chek6::%player's uuid%} is not set:
-				set {chek6::%player's uuid%} to false
-			if {chek6::%player's uuid%} = true:
-				stop
-			else:
-				add 0.02 to player's walking speed
-				add 0.10 to {playerwalkspeed::%player's uuid%}
-				set {chek6::%player's uuid%} to true
-				set {noswiftspeedpet::%player's uuid%} to false
-		else if {swiftspeedpet::%player's uuid%} = false:
-			{noswiftspeedpet::%player's uuid%} is not set:
-				set {noswiftspeedpet::%player's uuid%} to false
-			{noswiftspeedpet::%player's uuid%} is false:
-				set {chek6::%player's uuid%} to false
-				subtract 0.02 from player's walking speed
-				subtract 0.10 from {playerwalkspeed::%player's uuid%}
-				set {noswiftspeedpet::%player's uuid%} to true
-				
-on inventory close: # Pet 8
-	if name of event-inventory is "&d&lPet Bag":
-		if {godlyexppet::%player's uuid%} = true:
-			if {chek7::%player's uuid%} is not set:
-				set {chek7::%player's uuid%} to false
-			if {chek7::%player's uuid%} = true:
-				stop
-			else:
-				add 0.5 to {miningmultiplier::%player's uuid%}
-				set {chek7::%player's uuid%} to true
-				set {nogodlyexppet::%player's uuid%} to false
-		else if {godlyexppet::%player's uuid%} = false:
-			{nogodlyexppet::%player's uuid%} is not set:
-				set {nogodlyexppet::%player's uuid%} to false
-			{nogodlyexppet::%player's uuid%} is false:
-				set {chek7::%player's uuid%} to false
-				subtract 0.5 from {miningmultiplier::%player's uuid%}
-				set {nogodlyexppet::%player's uuid%} to true
-
-on inventory close: # Pet 9
-	if name of event-inventory is "&d&lPet Bag":
-		if {strengthpet::%player's uuid%} = true:
-			if {chek8::%player's uuid%} is not set:
-				set {chek8::%player's uuid%} to false
-			if {chek8::%player's uuid%} = true:
-				stop
-			else:
-				apply infinite potion of strength of tier 1 to the player
-				set {chek8::%player's uuid%} to true
-				set {nostrengthpet::%player's uuid%} to false
-		else if {strengthpet::%player's uuid%} = false:
-			{nostrengthpet::%player's uuid%} is not set:
-				set {nostrengthpet::%player's uuid%} to false
-			{nostrengthpet::%player's uuid%} is false:
-				set {chek8::%player's uuid%} to false
-				remove strength from the player
-				set {nostrengthpet::%player's uuid%} to true
-				
-on inventory close: # Pet 10
-	if name of event-inventory is "&d&lPet Bag":
-		if {simpleexpander::%player's uuid%} = true:
-			if {chek9::%player's uuid%} is not set:
-				set {chek9::%player's uuid%} to false
-			if {chek9::%player's uuid%} = true:
-				stop
-			else:
-				set {expanderfactor1::%player's uuid%} to 0.05
-				set {expandernumber1::%player's uuid%} to ({cropbag::%player's uuid%} * {expanderfactor1::%player's uuid%})
-				add {expandernumber1::%player's uuid%} to {cropbag::%player's uuid%}
-				set {chek9::%player's uuid%} to true
-				set {nosimpleexpander::%player's uuid%} to false
-		else if {simpleexpander::%player's uuid%} = false:
-			{nosimpleexpander::%player's uuid%} is not set:
-				set {nosimpleexpander::%player's uuid%} to false
-			{nosimpleexpander::%player's uuid%} is false:
-				set {chek9::%player's uuid%} to false
-				subtract {expandernumber1::%player's uuid%} from {cropbag::%player's uuid%}
-				set {nosimpleexpander::%player's uuid%} to true
-				
-on inventory close: # Pet 11
-	if name of event-inventory is "&d&lPet Bag":
-		if {largeexpander::%player's uuid%} = true:
-			if {chek10::%player's uuid%} is not set:
-				set {chek10::%player's uuid%} to false
-			if {chek10::%player's uuid%} = true:
-				stop
-			else:
-				set {expanderfactor2::%player's uuid%} to 0.1
-				set {expandernumber2::%player's uuid%} to ({cropbag::%player's uuid%} * {expanderfactor2::%player's uuid%})
-				add {expandernumber2::%player's uuid%} to {cropbag::%player's uuid%}
-				set {chek10::%player's uuid%} to true
-				set {nolargeexpander::%player's uuid%} to false
-		else if {largeexpander::%player's uuid%} = false:
-			{nolargeexpander::%player's uuid%} is not set:
-				set {nolargeexpander::%player's uuid%} to false
-			{nolargeexpander::%player's uuid%} is false:
-				set {chek10::%player's uuid%} to false
-				subtract {expandernumber2::%player's uuid%} from {cropbag::%player's uuid%}
-				set {nolargeexpander::%player's uuid%} to true
-
-on inventory close: # Pet 12
-	if name of event-inventory is "&d&lPet Bag":
-		if {colossalexpander::%player's uuid%} = true:
-			if {chek11::%player's uuid%} is not set:
-				set {chek11::%player's uuid%} to false
-			if {chek11::%player's uuid%} = true:
-				stop
-			else:
-				set {expanderfactor3::%player's uuid%} to 0.2
-				set {expandernumber3::%player's uuid%} to ({cropbag::%player's uuid%} * {expanderfactor3::%player's uuid%})
-				add {expandernumber3::%player's uuid%} to {cropbag::%player's uuid%}
-				set {chek11::%player's uuid%} to true
-				set {nocolossalexpander::%player's uuid%} to false
-		else if {colossalexpander::%player's uuid%} = false:
-			{nocolossalexpander::%player's uuid%} is not set:
-				set {nocolossalexpander::%player's uuid%} to false
-			{nocolossalexpander::%player's uuid%} is false:
-				set {chek11::%player's uuid%} to false
-				subtract {expandernumber3::%player's uuid%} from {cropbag::%player's uuid%}
-				set {nocolossalexpander::%player's uuid%} to true
-				
-on inventory close: # Pet 13
-	if name of event-inventory is "&d&lPet Bag":
+							
+		# Sprout Harvest Pet
 		if {harvestspirit2::%player's uuid%} = true:
 			if {doublecropchance::%player's uuid%} is not set:
 				set {doublecropchance::%player's uuid%} to 0
@@ -255,7 +35,7 @@ on inventory close: # Pet 13
 				add 10 to {doublecropchance::%player's uuid%}
 				set {chek12::%player's uuid%} to true
 				set {noharvestspirit2::%player's uuid%} to false
-		else if {harvestspirit2::%player's uuid%} = false:
+		else:
 			{noharvestspirit2::%player's uuid%} is not set:
 				set {noharvestspirit2::%player's uuid%} to false
 			{noharvestspirit2::%player's uuid%} is false:
@@ -263,8 +43,7 @@ on inventory close: # Pet 13
 				subtract 10 from {doublecropchance::%player's uuid%}
 				set {noharvestspirit2::%player's uuid%} to true
 				
-on inventory close: # Pet 14
-	if name of event-inventory is "&d&lPet Bag":
+		# Verdant Harvest Pet
 		if {harvestspirit3::%player's uuid%} = true:
 			if {doublecropchance::%player's uuid%} is not set:
 				set {doublecropchance::%player's uuid%} to 0
@@ -273,19 +52,18 @@ on inventory close: # Pet 14
 			if {chek13::%player's uuid%} = true:
 				stop
 			else:
-				add 25 to {doublecropchance::%player's uuid%}
+				add 20 to {doublecropchance::%player's uuid%}
 				set {chek13::%player's uuid%} to true
 				set {noharvestspirit3::%player's uuid%} to false
-		else if {harvestspirit3::%player's uuid%} = false:
+		else:
 			{noharvestspirit3::%player's uuid%} is not set:
 				set {noharvestspirit3::%player's uuid%} to false
 			{noharvestspirit3::%player's uuid%} is false:
 				set {chek13::%player's uuid%} to false
-				subtract 25 from {doublecropchance::%player's uuid%}
+				subtract 20 from {doublecropchance::%player's uuid%}
 				set {noharvestspirit3::%player's uuid%} to true
-				
-on inventory close: # Pet 15
-	if name of event-inventory is "&d&lPet Bag":
+					
+		# Evergreen Harvest Pet
 		if {harvestspirit4::%player's uuid%} = true:
 			if {doublecropchance::%player's uuid%} is not set:
 				set {doublecropchance::%player's uuid%} to 0
@@ -294,14 +72,339 @@ on inventory close: # Pet 15
 			if {chek14::%player's uuid%} = true:
 				stop
 			else:
-				add 45 to {doublecropchance::%player's uuid%}
+				add 30 to {doublecropchance::%player's uuid%}
 				set {chek14::%player's uuid%} to true
 				set {noharvestspirit4::%player's uuid%} to false
-		else if {harvestspirit4::%player's uuid%} = false:
+		else:
 			{noharvestspirit4::%player's uuid%} is not set:
 				set {noharvestspirit4::%player's uuid%} to false
 			{noharvestspirit4::%player's uuid%} is false:
 				set {chek14::%player's uuid%} to false
-				subtract 45 from {doublecropchance::%player's uuid%}
+				subtract 30 from {doublecropchance::%player's uuid%}
 				set {noharvestspirit4::%player's uuid%} to true
+                
+	# Speed Boosting Pets ------------------------------------------------------			
+							
+		# Slow Speed Pet
+		if {slowspeedpet::%player's uuid%} = true:
+			if {chek3::%player's uuid%} is not set:
+				set {chek3::%player's uuid%} to false
+			if {chek3::%player's uuid%} = true:
+				stop
+			else:
+				add 0.01 to player's walking speed
+				add 0.05 to {playerwalkspeed::%player's uuid%}
+				set {chek3::%player's uuid%} to true
+				set {noslowspeedpet::%player's uuid%} to false
+		else:
+			{noslowspeedpet::%player's uuid%} is not set:
+				set {noslowspeedpet::%player's uuid%} to false
+			{noslowspeedpet::%player's uuid%} is false:
+				set {chek3::%player's uuid%} to false
+				subtract 0.01 from player's walking speed
+				subtract 0.05 from {playerwalkspeed::%player's uuid%}
+				set {noslowspeedpet::%player's uuid%} to true
 				
+		# Average Speed Pet
+		if {avgspeedpet::%player's uuid%} = true:
+			if {chek15::%player's uuid%} is not set:
+				set {chek15::%player's uuid%} to false
+			if {chek15::%player's uuid%} = true:
+				stop
+			else:
+				add 0.016 to player's walking speed
+				add 0.08 to {playerwalkspeed::%player's uuid%}
+				set {chek15::%player's uuid%} to true
+				set {noavgspeedpet::%player's uuid%} to false
+		else:
+			{noavgspeedpet::%player's uuid%} is not set:
+				set {noavgspeedpet::%player's uuid%} to false
+			{noavgspeedpet::%player's uuid%} is false:
+				set {chek15::%player's uuid%} to false
+				subtract 0.016 from player's walking speed
+				subtract 0.08 from {playerwalkspeed::%player's uuid%}
+				set {noavgspeedpet::%player's uuid%} to true
+				
+		# Quick Speed Pet
+		if {quickspeedpet::%player's uuid%} = true:
+			if {chek4::%player's uuid%} is not set:
+				set {chek4::%player's uuid%} to false
+			if {chek4::%player's uuid%} = true:
+				stop
+			else:
+				add 0.02 to player's walking speed
+				add 0.10 to {playerwalkspeed::%player's uuid%}
+				set {chek4::%player's uuid%} to true
+				set {noquickspeedpet::%player's uuid%} to false
+		else:
+			{noquickspeedpet::%player's uuid%} is not set:
+				set {noquickspeedpet::%player's uuid%} to false
+			{noquickspeedpet::%player's uuid%} is false:
+				set {chek4::%player's uuid%} to false
+				subtract 0.02 from player's walking speed
+				subtract 0.10 from {playerwalkspeed::%player's uuid%}
+				set {noquickspeedpet::%player's uuid%} to true
+
+		# Swift Speed Pet
+		if {swiftspeedpet::%player's uuid%} = true:
+			if {chek6::%player's uuid%} is not set:
+				set {chek6::%player's uuid%} to false
+			if {chek6::%player's uuid%} = true:
+				stop
+			else:
+				add 0.05 to player's walking speed
+				add 0.25 to {playerwalkspeed::%player's uuid%}
+				set {chek6::%player's uuid%} to true
+				set {noswiftspeedpet::%player's uuid%} to false
+		else:
+			{noswiftspeedpet::%player's uuid%} is not set:
+				set {noswiftspeedpet::%player's uuid%} to false
+			{noswiftspeedpet::%player's uuid%} is false:
+				set {chek6::%player's uuid%} to false
+				subtract 0.05 from player's walking speed
+				subtract 0.25 from {playerwalkspeed::%player's uuid%}
+				set {noswiftspeedpet::%player's uuid%} to true
+				
+		# Hasteful Speed Pet
+		if {hastespeedpet::%player's uuid%} = true:
+			if {chek16::%player's uuid%} is not set:
+				set {chek16::%player's uuid%} to false
+			if {chek16::%player's uuid%} = true:
+				stop
+			else:
+				add 0.06 to player's walking speed
+				add 0.30 to {playerwalkspeed::%player's uuid%}
+				set {chek16::%player's uuid%} to true
+				set {nohastespeedpet::%player's uuid%} to false
+		else:
+			{nohastespeedpet::%player's uuid%} is not set:
+				set {nohastespeedpet::%player's uuid%} to false
+			{nohastespeedpet::%player's uuid%} is false:
+				set {chek16::%player's uuid%} to false
+				subtract 0.06 from player's walking speed
+				subtract 0.30 from {playerwalkspeed::%player's uuid%}
+				set {nohastespeedpet::%player's uuid%} to true
+				
+	# XP Boosting Pets -------------------------------------------------------			
+
+		# Wheat Fish Pet
+		if {wheatfishboost::%player's uuid%} = true:
+			if {chek::%player's uuid%} is not set:
+				set {chek::%player's uuid%} to false
+			if {chek::%player's uuid%} = true:
+				stop
+			else:
+				add 0.02 to {miningmultiplier::%player's uuid%}
+				set {chek::%player's uuid%} to true
+				set {nofishpet::%player's uuid%} to false
+		else:
+			{nofishpet::%player's uuid%} is not set:
+				set {nofishpet::%player's uuid%} to false
+			{nofishpet::%player's uuid%} is false:
+				set {chek::%player's uuid%} to false
+				subtract 0.02 from {miningmultiplier::%player's uuid%}
+				set {nofishpet::%player's uuid%} to true
+
+	# Scholarly Experience Pet
+		if {exppetboost::%player's uuid%} = true:
+			if {chek1::%player's uuid%} is not set:
+				set {chek1::%player's uuid%} to false
+			if {chek1::%player's uuid%} = true:
+				stop
+			else:
+				add 0.1 to {miningmultiplier::%player's uuid%}
+				set {chek1::%player's uuid%} to true
+				set {noexppet::%player's uuid%} to false
+		else:
+			{noexppet::%player's uuid%} is not set:
+				set {noexppet::%player's uuid%} to false
+			{noexppet::%player's uuid%} is false:
+				set {chek1::%player's uuid%} to false
+				subtract 0.1 from {miningmultiplier::%player's uuid%}
+				set {noexppet::%player's uuid%} to true
+				
+	# Adept Experience Pet			
+		if {adexppet::%player's uuid%} = true:
+			if {chek17::%player's uuid%} is not set:
+				set {chek17::%player's uuid%} to false
+			if {chek17::%player's uuid%} = true:
+				stop
+			else:
+				add 0.15 to {miningmultiplier::%player's uuid%}
+				set {chek17::%player's uuid%} to true
+				set {noadexppet::%player's uuid%} to false
+		else:
+			{noadexppet::%player's uuid%} is not set:
+				set {noadexppet::%player's uuid%} to false
+			{noadexppet::%player's uuid%} is false:
+				set {chek17::%player's uuid%} to false
+				subtract 0.15 from {miningmultiplier::%player's uuid%}
+				set {noadexppet::%player's uuid%} to true
+				
+	# Visionary Experience Pet
+		if {godlyexppet::%player's uuid%} = true:
+			if {chek7::%player's uuid%} is not set:
+				set {chek7::%player's uuid%} to false
+			if {chek7::%player's uuid%} = true:
+				stop
+			else:
+				add 0.35 to {miningmultiplier::%player's uuid%}
+				set {chek7::%player's uuid%} to true
+				set {nogodlyexppet::%player's uuid%} to false
+		else:
+			{nogodlyexppet::%player's uuid%} is not set:
+				set {nogodlyexppet::%player's uuid%} to false
+			{nogodlyexppet::%player's uuid%} is false:
+				set {chek7::%player's uuid%} to false
+				subtract 0.35 from {miningmultiplier::%player's uuid%}
+				set {nogodlyexppet::%player's uuid%} to true
+				
+	# Potion Effect Pets --------------------------------------------------		
+			
+		if {antigravpet::%player's uuid%} = true:
+			if {chek5::%player's uuid%} is not set:
+				set {chek5::%player's uuid%} to false
+			if {chek5::%player's uuid%} = true:
+				stop
+			else:
+				apply infinite potion of speed of tier 1 to the player
+				apply infinite potion of jump boost of tier 2 to the player
+				set {chek5::%player's uuid%} to true
+				set {noantigravpet::%player's uuid%} to false
+		else:
+			{noantigravpet::%player's uuid%} is not set:
+				set {noantigravpet::%player's uuid%} to false
+			{noantigravpet::%player's uuid%} is false:
+				set {chek5::%player's uuid%} to false
+				remove speed from the player
+				remove jump boost from the player
+				set {noantigravpet::%player's uuid%} to true
+
+		if {strengthpet::%player's uuid%} = true:
+			if {chek8::%player's uuid%} is not set:
+				set {chek8::%player's uuid%} to false
+			if {chek8::%player's uuid%} = true:
+				stop
+			else:
+				apply infinite potion of strength of tier 1 to the player
+				set {chek8::%player's uuid%} to true
+				set {nostrengthpet::%player's uuid%} to false
+		else:
+			{nostrengthpet::%player's uuid%} is not set:
+				set {nostrengthpet::%player's uuid%} to false
+			{nostrengthpet::%player's uuid%} is false:
+				set {chek8::%player's uuid%} to false
+				remove strength from the player
+				set {nostrengthpet::%player's uuid%} to true
+				
+	# Crop Bag Expander Pets -------------------------------------------------------------
+	if name of event-inventory is "&d&lPet Bag":
+	# Extra Small Expander Pet
+		if {simpleexpander::%player's uuid%} = true:
+			if {chek9::%player's uuid%} is not set:
+				set {chek9::%player's uuid%} to false
+			if {chek9::%player's uuid%} = false:
+				set {expanderfactor1::%player's uuid%} to 0.01
+				set {expandernumber1::%player's uuid%} to ({basecropbag::%player's uuid%} * {expanderfactor1::%player's uuid%})
+				add {expandernumber1::%player's uuid%} to {cropbag::%player's uuid%}
+				set {chek9::%player's uuid%} to true
+				set {nosimpleexpander::%player's uuid%} to false
+		else:
+			{nosimpleexpander::%player's uuid%} is not set:
+				set {nosimpleexpander::%player's uuid%} to false
+			{nosimpleexpander::%player's uuid%} is false:
+				set {chek9::%player's uuid%} to false
+				subtract {expandernumber1::%player's uuid%} from {cropbag::%player's uuid%}
+				set {nosimpleexpander::%player's uuid%} to true
+				
+	
+	# Large Expander Pet
+		if {largeexpander::%player's uuid%} = true:
+			if {chek10::%player's uuid%} is not set:
+				set {chek10::%player's uuid%} to false
+			if {chek10::%player's uuid%} = false:
+				set {expanderfactor2::%player's uuid%} to 0.07
+				set {expandernumber2::%player's uuid%} to ({basecropbag::%player's uuid%} * {expanderfactor2::%player's uuid%})
+				add {expandernumber2::%player's uuid%} to {cropbag::%player's uuid%}
+				set {chek10::%player's uuid%} to true
+				set {nolargeexpander::%player's uuid%} to false
+		else:
+			{nolargeexpander::%player's uuid%} is not set:
+				set {nolargeexpander::%player's uuid%} to false
+			{nolargeexpander::%player's uuid%} is false:
+				set {chek10::%player's uuid%} to false
+				subtract {expandernumber2::%player's uuid%} from {cropbag::%player's uuid%}
+				set {nolargeexpander::%player's uuid%} to true
+
+	# XXL Expander Pet
+		if {colossalexpander::%player's uuid%} = true:
+			if {chek11::%player's uuid%} is not set:
+				set {chek11::%player's uuid%} to false
+			if {chek11::%player's uuid%} = false:
+				set {expanderfactor3::%player's uuid%} to 0.15
+				set {expandernumber3::%player's uuid%} to ({basecropbag::%player's uuid%} * {expanderfactor3::%player's uuid%})
+				add {expandernumber3::%player's uuid%} to {cropbag::%player's uuid%}
+				set {chek11::%player's uuid%} to true
+				set {nocolossalexpander::%player's uuid%} to false
+		else:
+			{nocolossalexpander::%player's uuid%} is not set:
+				set {nocolossalexpander::%player's uuid%} to false
+			{nocolossalexpander::%player's uuid%} is false:
+				set {chek11::%player's uuid%} to false
+				subtract {expandernumber3::%player's uuid%} from {cropbag::%player's uuid%}
+				set {nocolossalexpander::%player's uuid%} to true
+				
+	if name of event-inventory is "&d&lPet Bag":
+		# Extra Large Expander Pet		
+		if {xlexpander::%player's uuid%} = true:
+			if {chek18::%player's uuid%} is not set:
+				set {chek18::%player's uuid%} to false
+			if {chek18::%player's uuid%} = false:
+				set {expanderfactor4::%player's uuid%} to 0.1
+				set {expandernumber4::%player's uuid%} to ({basecropbag::%player's uuid%} * {expanderfactor4::%player's uuid%})
+				add {expandernumber4::%player's uuid%} to {cropbag::%player's uuid%}
+				set {chek18::%player's uuid%} to true
+				set {noxlexpander::%player's uuid%} to false
+		else:
+			{noxlexpander::%player's uuid%} is not set:
+				set {noxlexpander::%player's uuid%} to false
+			{noxlexpander::%player's uuid%} is false:
+				set {chek18::%player's uuid%} to false
+				subtract {expandernumber4::%player's uuid%} from {cropbag::%player's uuid%}
+				set {noxlexpander::%player's uuid%} to true
+				
+		# Medium Expander Pet		
+		if {medexpander::%player's uuid%} = true:
+			if {chek19::%player's uuid%} is not set:
+				set {chek19::%player's uuid%} to false
+			if {chek19::%player's uuid%} = false:
+				set {expanderfactor5::%player's uuid%} to 0.05
+				set {expandernumber5::%player's uuid%} to ({basecropbag::%player's uuid%} * {expanderfactor5::%player's uuid%})
+				add {expandernumber5::%player's uuid%} to {cropbag::%player's uuid%}
+				set {chek19::%player's uuid%} to true
+				set {nomedexpander::%player's uuid%} to false
+		else:
+			{nomedexpander::%player's uuid%} is not set:
+				set {nomedexpander::%player's uuid%} to false
+			{nomedexpander::%player's uuid%} is false:
+				set {chek19::%player's uuid%} to false
+				subtract {expandernumber5::%player's uuid%} from {cropbag::%player's uuid%}
+				set {nomedexpander::%player's uuid%} to true
+				
+				
+		if {smallexpander::%player's uuid%} = true:
+			if {chek20::%player's uuid%} is not set:
+				set {chek20::%player's uuid%} to false
+			if {chek20::%player's uuid%} = false:
+				set {expanderfactor6::%player's uuid%} to 0.03
+				set {expandernumber6::%player's uuid%} to ({basecropbag::%player's uuid%} * {expanderfactor6::%player's uuid%})
+				add {expandernumber6::%player's uuid%} to {cropbag::%player's uuid%}
+				set {chek20::%player's uuid%} to true
+				set {nosmallexpander::%player's uuid%} to false
+		else:
+			{nosmallexpander::%player's uuid%} is not set:
+				set {nosmallexpander::%player's uuid%} to false
+			{nosmallexpander::%player's uuid%} is false:
+				set {chek20::%player's uuid%} to false
+				subtract {expandernumber6::%player's uuid%} from {cropbag::%player's uuid%}
+				set {nosmallexpander::%player's uuid%} to true

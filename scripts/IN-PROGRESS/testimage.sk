@@ -1,0 +1,5 @@
+command /setimage:
+	permission: *
+	trigger:
+		set {_image2} to image from url "https://www.google.com/url?sa=i&url=https%%3A%%2F%%2Fstock.adobe.com%%2Fsearch%%2Fimages%%3Fk%%3Dcheese&psig=AOvVaw1vuuv1YRjWpdwk2beYG0vQ&ust=1737332849267000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCNDQoq7DgIsDFQAAAAAdAAAAABAE"
+		give player 1 of {_image2} parsed as map

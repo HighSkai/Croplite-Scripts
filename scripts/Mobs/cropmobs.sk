@@ -2,9 +2,31 @@ on break:
 	loop integers between 0 and 16:
 		if "%region at player%" contains "area%loop-integer%":
 			chance of {mobspawnchance::%player's uuid%}%:
-				set {_num} to a random integer between 3 and 10
-				set {_val} to loop-integer
-				if {_num}^{_val} < 10:
+				chance of 0.5%:
+					spawn zombie at event-block
+					set name of spawned entity to "&clNightmare Fuel"
+					set {_temp} to {_loop-integer}/4
+					ceil({_temp})
+					set {_tool} to a leather helmet
+					enchant {_tool} with protection {_temp}
+					equip spawned entity with {_tool}
+					set {_tool} to a leather chestplate
+					enchant {_tool} with protection {_temp}
+					equip spawned entity with {_tool}
+					set {_tool} to leather leggings
+					enchant {_tool} with protection {_temp}
+					equip spawned entity with {_tool}
+					set {_tool} to leather boots
+					enchant {_tool} with protection {_temp}
+					equip spawned entity with {_tool}
+					set {_tool} to a stick
+					enchant {_tool} with knockback 100
+					set tool of spawned entity to {_tool}
+					stop
+				set {_num} to a random integer between 5 and 10
+				set {_num} to {_num}*loop-integer
+				set {_num} to {_num}/4
+				if {_num} <= 3:
 					spawn 1 zombie villager at event-block
 					set profession of spawned entity to farmer profession
 					set name of spawned entity to "&clUndead Farmer"
@@ -14,14 +36,34 @@ on break:
 					equip spawned entity with leather boots
 					chance of 25%:
 						set {_item} to a wooden hoe
-						enchant {_wooden hoe} with sharpness 1
+						enchant {_item} with sharpness 1
 						set tool of spawned entity to {_item}
-					
+					else if {_num} <= 5:
+						spawn 1 zombie villager at event-block
+						set profession of spawned entity to farmer profession
+						set name of spawned entity to "&clScarecrow"
+						equip spawned entity with a chainmail helmet
+						equip spawned entity with a chainmail chestplate
+						equip spawned entity with chainmail leggings
+						equip spawned entity with chainmail boots
+						set {_temp} to a random integer between 1 and 6
+						if {_temp} is less than or equal to 4:
+							set {_item} to a stone hoe
+							set tool of spawned entity to {_item}
+						else if {_temp} is 5:
+							set {_item} to a stone hoe
+							enchant {_item} with sharpness 1
+							set tool of spawned entity to {_item}
+						else if {_temp} is 6:
+							set {_item} to a stone sword
+							set tool of spawned entity to {_item}
+                		
+                    
 on death:
-	if victim is a mob:
-		cancel drops
-	
+    if victim is a mob:
+        cancel drops
+    
 on damage:
-	if attacker is a silverfish:
-		increase damage by 2
-	
+    if attacker is a silverfish:
+        increase damage by 2
+    
