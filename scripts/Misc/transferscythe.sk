@@ -1,0 +1,49 @@
+# Command to save the player's held item to a specified slot (1-6)
+command /saveloreitem <number>:
+    description: Save the held item to the specified slot (1-6)
+    usage: /saveloreitem <number>
+    trigger:
+        if arg-1 is between 1 and 6:
+            if player's tool is not air:
+                set {savedItems::%player's uuid%::%arg-1%} to player's tool
+                send "&aItem saved to slot %arg-1%."
+            else:
+                send "&cYou must be holding an item to save."
+        else:
+            send "&cInvalid slot number. Please choose a number between 1 and 6."
+
+# Command to retrieve the item from a specified slot (1-6)
+command /viewloreitem <number>:
+    description: Retrieve the item saved in the specified slot (1-6)
+    usage: /viewloreitem <number>
+    trigger:
+        if arg-1 is between 1 and 6:
+            if {savedItems::%player's uuid%::%arg-1%} is set:
+                give player {savedItems::%player's uuid%::%arg-1%}
+                send "&aItem from slot %arg-1% has been given to you."
+            else:
+                send "&cNo saved item in slot %arg-1%."
+        else:
+            send "&cInvalid slot number. Please choose a number between 1 and 6."
+
+# Command to transfer enchantments from the held item to the saved item in the specified slot (1-6)
+command /transferscythe <number>:
+    description: Transfer enchantments from the held item to the saved item in the specified slot (1-6)
+    usage: /transferscythe <number>
+    trigger:
+        if arg-1 is between 1 and 6:
+            if player's tool is not air:
+                set {_heldItem} to player's tool
+                set {_heldEnchantments::*} to enchantments of {_heldItem}
+                if {savedItems::%player's uuid%::%arg-1%} is set:
+                    set {_savedItem} to {savedItems::%player's uuid%::%arg-1%}
+                    loop {_heldEnchantments::*}:
+                        enchant {_savedItem} with loop-value
+                    give player {_savedItem}
+                    send "&aEnchantments transferred to the item from slot %arg-1%."
+                else:
+                    send "&cNo saved item in slot %arg-1%."
+            else:
+                send "&cYou must be holding an item to transfer enchantments."
+        else:
+            send "&cInvalid slot number. Please choose a number between 1 and 6."

@@ -6,17 +6,17 @@ function loadEnchanterGui(p: player):
 		set slot {_slot} of {_gui} to purple stained glass pane
 
 		if {_slot} is 14:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&d&lSharpness Skill&8]"
+			set slot {_slot} of {_gui} to enchanted book named "&8[&4&lSharpness Skill&8]"
 		if {_slot} is 15:
-			set slot {_slot} of {_gui} to enchanted book
+			set slot {_slot} of {_gui} to enchanted book named "&8[&6&lFire Aspect Skill&8]"
 		if {_slot} is 16:
-			set slot {_slot} of {_gui} to enchanted book
+			set slot {_slot} of {_gui} to enchanted book named "&8[&8&lCrop Reap Skill&8]"
 		if {_slot} is 23:
-			set slot {_slot} of {_gui} to enchanted book
+			set slot {_slot} of {_gui} to enchanted book named "&8[&a&lExperience Skill&8]"
 		if {_slot} is 24:
-			set slot {_slot} of {_gui} to enchanted book
+			set slot {_slot} of {_gui} to enchanted book named "&8[&2&lMob Spawn Skill&8]"
 		if {_slot} is 25 or 32 or 33 or 34:
-			set slot {_slot} of {_gui} to enchanted book
+			set slot {_slot} of {_gui} to book named " "
 		if {_slot} is 20:
 			set slot {_slot} of {_gui} to {_p}'s tool
 
@@ -30,7 +30,7 @@ on inventory click:
 		event-inventory is not player's inventory
 		if event-slot is 14:
 			close player's inventory
-			wait 1 tick
+			cancel event
 			sharpnessskill(player)
 		if event-slot is 15:
 			close player's inventory
@@ -49,7 +49,7 @@ on inventory click:
 			cancel event
 			mobspawnskill(player)
 		if event-slot is 25 or 32 or 33 or 34:
-			send "&cEnchantment coming soon!"
+			send "&8[&dCroplite&8] &aEnchantment is coming soon..."
 
 command /enchanter:
 	permission: *

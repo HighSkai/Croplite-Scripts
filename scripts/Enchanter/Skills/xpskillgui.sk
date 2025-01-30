@@ -189,7 +189,7 @@ on inventory close:
 							set line 5 of lore of {_tempxp3} to "&aPurchased"
 							set slot loop-integer of event-inventory to {_tempxp3}
 				if loop-integer = 8:
-					set slot loop-integer of event-inventory to a nether star named "&cBack to &3&nSkill Tree"
+					set slot loop-integer of event-inventory to a nether star named "&cBack to &3&nEnchants"
 				set {xpskill::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
 				
 on inventory click:
@@ -201,7 +201,7 @@ on inventory click:
 		if event-slot is 8:
 			close player's inventory
 			op the player
-			make player execute command "/scythegui"
+			make player execute command "/enchanter"
 			deop the player
 		if event-slot is 0:
 			if:

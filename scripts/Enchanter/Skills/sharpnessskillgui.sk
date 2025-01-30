@@ -21,7 +21,7 @@ on inventory close:
 		if event-inventory is not player's inventory:
 			loop integers between 0 and 9:
 				if loop-integer = 8:
-					set slot loop-integer of event-inventory to a nether star named "&cBack to &3&nSkill Tree"
+					set slot loop-integer of event-inventory to a nether star named "&cBack to &3&nEnchants"
 				if loop-integer = 0:
 					set {_temper} to a wooden sword named "&fSharpness &8[&fT1&8]"
 					set line 1 of lore of {_temper} to "&7----------"
@@ -191,7 +191,7 @@ on inventory click:
 			if event-slot is 8:
 				close player's inventory
 				op the player
-				make player execute command "/scythegui"
+				make player execute command "/enchanter"
 				deop the player
 			if event-slot is 0:
 				if {shlevel::%player's uuid%} = 0:
