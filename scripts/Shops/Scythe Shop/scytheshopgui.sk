@@ -1,30 +1,77 @@
+function loadScytheShopGui(p: player):
+    set {_gui} to chest inventory with 3 rows named "&b&lScythe Shop"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
+    
+    loop integers between 11 and 15:
+        if {persistent::scytheshopgui::%loop-number%} is set:
+            set {_item} to {persistent::scytheshopgui::%loop-number%}
+            if {scytheprice::%loop-number%} is set:
+                set {_price} to {scytheprice::%loop-number%}
+            else:
+                set {_price} to 1000
+
+            set {_displayItem} to {_item}
+            set {_lore::*} to lore of {_displayItem}
+            if {_lore::*} is not set:
+                set {_lore::*} to ""
+            add "§7Price: §a$%{_price}%" to {_lore::*}
+            set lore of {_displayItem} to {_lore::*}
+            
+            set slot loop-number of {_gui} to {_displayItem}
+    
+    open {_gui} to {_p}
+
+on inventory click:
+    if event-inventory's name contains "&b&lScythe Shop":
+        cancel event
+        
+        if event-slot is between 11 and 15:
+            set {_clicked-slot} to index of event-slot
+            set {_tempnewscythevalue} to ({_clicked-slot} - 10)
+            if {scytheupgrade::%{_tempnewscythevalue}%::bought::%player's uuid%} is equal to false:
+                set {persistent::scytheshopgui::%event-slot%::%player's uuid%} to event-slot
+                if {persistent::scytheshopgui::%event-slot%::%player's uuid%} is set:
+                    set {_item} to {persistent::scytheshopgui::%event-slot%::%player's uuid%}
+                    if {scytheprice::%{_clicked-slot}%} is set:
+                        set {_price} to {scytheprice::%{_clicked-slot}%}
+                    else:
+                        set {_price} to 1000
+                
+                    if {cropcash::%player's uuid%} < {_price}:
+                        send "&8[&d&lCroplite&8] &cYou don't have enough money to buy this item!" to player
+                        stop
+                    else:
+                        set {scytheupgrade::%{_tempnewscythevalue}%::bought::%player's uuid%} to true
+                        remove {_price} from {cropcash::%player's uuid%}
+                        execute player command "transferscythe %{_tempnewscythevalue}%"
+                        send "&8[&d&lCroplite&8] &aYou have upgraded your scythe for $%{_price}%!" to player
+            else:
+                send "&8[&d&lCroplite&8] &cYou have already bought this Scythe upgrade." to player
+
+command /setscytheitem <number>:
+    trigger:
+        if argument 1 is not between 11 and 15:
+            send "&cSlot must be between 11 and 15!" to player
+            stop
+        
+        if player's tool is air:
+            send "&cHold the item you want to set in your hand!" to player
+            stop
+        
+        set {persistent::scytheshopgui::%argument 1%} to player's tool
+        save {persistent::scytheshopgui::*}
+        send "&aItem set in slot %argument 1% of the Scythe Shop!" to player
+
+command /setscytheprice <number> <number>:
+    trigger:
+        set {persistent::scytheprice::%arg-1%} to arg-2
+        send "&aPrice for slot %argument 1% set to $%argument 2%!" to player
+
 command /scytheshopgui:
-	permission: *
-	trigger:
-		if player's tool is a hoe:
-			open chest inventory with 1 row named "&b&lScythe Shop" to player
-			loop integers between 0 and 9:
-				set slot loop-value of player's current inventory to {scytheshopgui::%player's uuid%::%loop-integer%}
-		else:
-			send "&8[&d&lCroplite&8] &aYou must hold your Scythe to interact with the Scythe Shop." to player
-			
-on inventory close:
-	if name of event-inventory contains "&b&lScythe Shop":
-		loop integers between 0 and 8:
-			if loop-integer = 0:
-				set slot loop-integer of event-inventory to cyan stained glass pane
-			if loop-integer = 1:
-				set slot loop-integer of event-inventory to light blue stained glass pane
-			if loop-integer = 2:
-				set slot loop-integer of event-inventory to {stonehoeshopdisplay}
-			
-on inventory click: # Click Changes
-	if name of event-inventory contains "&b&lScythe Shop":
-		if event-clicktype is number key:
-			cancel event
-		event-inventory is not player's inventory
-		cancel event
-		
-command /setvars:
-	trigger:
-		set {stonehoeshopdisplay} to player's held item
+    trigger:
+        if player's tool is a hoe:
+            loadScytheShopGui(player)
+        else:
+            send "&8[&d&lCroplite&8] &cYou must hold your Scythe to access the shop!" to player

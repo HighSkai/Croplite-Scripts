@@ -116,6 +116,11 @@ command /resetstats:
 		set {chek19::%player's uuid%} to false
 		set {chek20::%player's uuid%} to false
 		set {basecropbag::%player's uuid%} to 100
+		set {scytheupgrade::1::bought::%player's uuid%} to false
+		set {scytheupgrade::2::bought::%player's uuid%} to false
+		set {scytheupgrade::3::bought::%player's uuid%} to false
+		set {scytheupgrade::4::bought::%player's uuid%} to false
+		set {scytheupgrade::5::bought::%player's uuid%} to false
 		send "stats reset" to player
 		
 command /totalcropsbroken:
