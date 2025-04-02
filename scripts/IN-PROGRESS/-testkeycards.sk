@@ -1,0 +1,91 @@
+function open1Door(b: block):
+	open {_b}
+	play sound "block.iron_door.open" at {_b}
+	wait 1 second
+	close {_b}
+	play sound "block.iron_door.close" at {_b}
+	
+function open2DoorLeft(b: block):
+	open block to the left of {_b}
+	open {_b}
+	play sound "block.iron_door.open" at {_b}
+	wait 1 second
+	close block to the left of {_b}
+	close {_b}
+	play sound "block.iron_door.close" at {_b}
+	
+function open2DoorRight(b: block):
+	open block to the right of {_b}
+	open {_b}
+	play sound "block.iron_door.open" at {_b}
+	wait 1 second
+	close block to the right of {_b}
+	close {_b}
+	play sound "block.iron_door.close" at {_b}
+
+command /newkeycard <text> <number> <number>:
+	usage: /newkeycard <name> <weight> <number of doors>
+	permission: *
+	trigger:
+		player's held item is set
+		set string tag "minecraft:custom_data;keycard" of nbt of player's held item to arg-1
+		set int tag "minecraft:custom_data;kcweight" of nbt of player's held item to arg-2
+		set {dooramount::%player's uuid%} to arg-3
+		set {doorselect::%player's uuid%} to true
+		set {tempdoornbt1::%player's uuid%} to arg-1
+		set {tempdoornbt2::%player's uuid%} to arg-2
+		send "&aThe next %{dooramount::%player's uuid%}% iron door &l&nhalves&r&a you select will be the doors that correspond to the keycard" to player
+		send "&bDoor Selection is now &a&nON" to player
+		
+on right click on iron door:
+	if {doorselect::%player's uuid%} is true:
+		if {doorschosen::%player's uuid%} is not set:
+			set {doorschosen::%player's uuid%} to 0
+		if {doorschosen::%player's uuid%} < ({dooramount::%player's uuid%}-1):
+			set string tag "minecraft:custom_data;keydoor" of nbt of clicked block to {tempdoornbt1::%player's uuid%}
+			set int tag "minecraft:custom_data;doorweight" of nbt of clicked block to {tempdoornbt2::%player's uuid%}
+			add 1 to {doorschosen::%player's uuid%}
+			send "&a%clicked block% &fis now set as a door that can be unlocked with a &a%{tempdoornbt1::%player's uuid%}% &fkeycard or above, with a weight of %{tempdoornbt2::%player's uuid%}%" to player
+			send "&bDoor Selection needs %({dooramount::%player's uuid%}-{doorschosen::%player's uuid%})% more doors to be selected" to player
+			send "chosen: %{doorschosen::%player's uuid%}% amount: %{dooramount::%player's uuid%}%" to player
+		else:
+			set string tag "minecraft:custom_data;keydoor" of nbt of clicked block to {tempdoornbt1::%player's uuid%}
+			set int tag "minecraft:custom_data;doorweight" of nbt of clicked block to {tempdoornbt2::%player's uuid%}
+			send "&a%clicked block% &fis now set as a door that can be unlocked with a &a%{tempdoornbt1::%player's uuid%}% &fkeycard or above, with a weight of %{tempdoornbt2::%player's uuid%}%" to player
+			send "&bDoor Selection is now &a&nOFF" to player
+			set {doorschosen::%player's uuid%} to 0
+			set {dooramount::%player's uuid%} to 0
+			set {doorselect::%player's uuid%} to false
+			set {tempdoornbt2::%player's uuid%} to 0
+			set {tempdoornbt1::%player's uuid%} to " "
+	else:
+		if: 
+			string tag "minecraft:custom_data;keycard" of nbt of player's held item is set
+			string tag "minecraft:custom_data;keydoor" of nbt of clicked block is set
+		then:
+			set {_keyweight} to int tag "minecraft:custom_data;kcweight" of nbt of player's held item
+			set {_doorweight} to int tag "minecraft:custom_data;doorweight" of nbt of clicked block
+			if {_keyweight} >= {_doorweight}:
+				if block to the left of clicked block is an iron door:
+					open2DoorLeft(clicked block)
+				else if block to the right of clicked block is an iron door:
+					open2DoorRight(clicked block)
+				else:
+					open1Door(clicked block)
+					
+			else:
+				set {_keydoor} to string tag "minecraft:custom_data;keydoor" of nbt of clicked block
+				send "&cYou need a &n%{_keydoor}%&r&c keycard or above to access this room!" to player
+		else:
+			set {_keydoor} to string tag "minecraft:custom_data;keydoor" of nbt of clicked block
+			send "&cYou need a &n%{_keydoor}%&r&c keycard or above to access this room!" to player
+			
+command /viewcardinfo:
+	permission: *
+	trigger:
+		if string tag "minecraft:custom_data;keydoor" of nbt of player's held item is set:
+			set {_keyweight} to int tag "minecraft:custom_data;kcweight" of nbt of player's held item
+			set {_keyname} to string tag "minecraft:custom_data;keydoor" of nbt of player's held item
+			send "&aThis card has a weight of &n%{_keyweight}%&r&a, and is named &n%{_keyname}%" to player
+		else:
+			send "&cThis item is not a keycard" to player

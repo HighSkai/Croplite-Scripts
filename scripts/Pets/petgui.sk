@@ -1,0 +1,328 @@
+command /pets:
+	trigger:
+		open chest inventory with 1 row named "&d&lPet Bag" to player
+		
+		# Loop through inventory slots
+		loop 9 times:
+			set {_slot} to loop-number - 1
+			
+			# Handle the elite pet slot (last slot)
+			if {_slot} is equal to 8:
+				if player has permission "petbag.elite":
+					# Check if there's a pet in the slot
+					if {pets::%player's uuid%::%{_slot}%} is set:
+						set slot {_slot} of player's current inventory to {pets::%player's uuid%::%{_slot}%}
+					else:
+						set slot {_slot} of player's current inventory to air
+				else:
+					# Player doesn't have elite permission
+					broadcast "cheese1"
+					set slot {_slot} of player's current inventory to red stained glass pane named "&4Elite Pet Slot"
+			
+			# Handle regular pet slots
+			else:
+				if {pets::%player's uuid%::%{_slot}%} is set:
+					set slot {_slot} of player's current inventory to {pets::%player's uuid%::%{_slot}%}
+				else:
+					set slot {_slot} of player's current inventory to air
+			if loop-value is equal to 7:
+				if player does not have permission "petbag.mvp+":
+					set slot loop-value of player's current inventory to orange stained glass pane named "&6MVP+ Pet Slot"
+				else:
+					if slot loop-value of player's current inventory is not a player head:
+						set slot loop-value of player's current inventory to air
+					else:
+						set slot loop-value of player's current inventory to {pets::%player's uuid%::%loop-integer%}
+			else if loop-value is equal to 6:
+				if player does not have permission "petbag.vip+":
+					set slot loop-value of player's current inventory to green stained glass pane named "&2VIP+ Pet Slot"
+				else:
+					if slot loop-value of player's current inventory is not a player head:
+						set slot loop-value of player's current inventory to air
+					else:
+						set slot loop-value of player's current inventory to {pets::%player's uuid%::%loop-integer%}
+			else if loop-value is equal to 5:
+				if player does not have permission "petbag.extra1":
+					set slot loop-value of player's current inventory to gray stained glass pane named "&7Extra Pet Slot"
+				else:
+					if slot loop-value of player's current inventory is not a player head:
+						set slot loop-value of player's current inventory to air
+					else:
+						set slot loop-value of player's current inventory to {pets::%player's uuid%::%loop-integer%}
+			else if loop-value is between 0 and 4:
+				set slot loop-value of player's current inventory to {pets::%player's uuid%::%loop-integer%}
+        
+on inventory close:
+	if name of event-inventory is "&d&lPet Bag":
+		loop integers between 0 and 8:
+			set {pets::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
+    
+on inventory close:
+	if name of event-inventory is "&d&lPet Bag":
+		loop integers between 0 and 8:
+			if uncolored name of item in slot loop-number of event-inventory is "Seedling Harvest Pet":
+				set {_atemp} to 0
+				set {harvestspirit1::%player's uuid%} to true
+				add 1 to {_atemp}
+			if loop-number = 8:
+				if {_atemp} is greater than or equal to 1:
+					set {harvestspirit1::%player's uuid%} to true
+					set {_atemp} to 0
+				else:
+					set {harvestspirit1::%player's uuid%} to false
+					set {_atemp} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Wheat Fish Pet":
+				set {_atemp1} to 0
+				set {wheatfishboost::%player's uuid%} to true
+				add 1 to {_atemp1}
+			if loop-number = 8:
+				if {_atemp1} is greater than or equal to 1:
+					set {wheatfishboost::%player's uuid%} to true
+					set {_atemp1} to 0
+				else:
+					set {wheatfishboost::%player's uuid%} to false
+					set {_atemp1} to 0
+					# EXP PET 
+			if uncolored name of item in slot loop-number of event-inventory contains "Scholarly Experience Pet":
+				set {_atemp2} to 0
+				set {exppetboost::%player's uuid%} to true
+				add 1 to {_atemp2}
+			if loop-number = 8:
+				if {_atemp2} is greater than or equal to 1:
+					set {exppetboost::%player's uuid%} to true
+					set {_atemp2} to 0
+				else:
+					set {exppetboost::%player's uuid%} to false
+					set {_atemp2} to 0
+			if name of item in slot loop-number of event-inventory contains "&7Slow Speed Pet":
+				set {_atemp4} to 0
+				set {slowspeedpet::%player's uuid%} to true
+				add 1 to {_atemp4}
+			if loop-number = 8:
+				if {_atemp4} is greater than or equal to 1:
+					set {slowspeedpet::%player's uuid%} to true
+					set {_atemp4} to 0
+				else:
+					set {slowspeedpet::%player's uuid%} to false
+					set {_atemp4} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Quick Speed Pet":
+				set {_atemp5} to 0
+				set {quickspeedpet::%player's uuid%} to true
+				add 1 to {_atemp5}
+			if loop-number = 8:
+				if {_atemp5} is greater than or equal to 1:
+					set {quickspeedpet::%player's uuid%} to true
+					set {_atemp5} to 0
+				else:
+					set {quickspeedpet::%player's uuid%} to false
+					set {_atemp5} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Anti-Gravity Pet":
+				set {_atemp6} to 0
+				set {antigravpet::%player's uuid%} to true
+				add 1 to {_atemp6}
+			if loop-number = 8:
+				if {_atemp6} is greater than or equal to 1:
+					set {antigravpet::%player's uuid%} to true
+					set {_atemp6} to 0
+				else:
+					set {antigravpet::%player's uuid%} to false
+					set {_atemp6} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Swift Speed Pet":
+				set {_atemp7} to 0
+				set {swiftspeedpet::%player's uuid%} to true
+				add 1 to {_atemp7}
+			if loop-number = 8:
+				if {_atemp7} is greater than or equal to 1:
+					set {swiftspeedpet::%player's uuid%} to true
+					set {_atemp7} to 0
+				else:
+					set {swiftspeedpet::%player's uuid%} to false
+					set {_atemp7} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Visionary Experience Pet":
+				set {_atemp8} to 0
+				set {godlyexppet::%player's uuid%} to true
+				add 1 to {_atemp8}
+			if loop-number = 8:
+				if {_atemp8} is greater than or equal to 1:
+					set {godlyexppet::%player's uuid%} to true
+					set {_atemp8} to 0
+				else:
+					set {godlyexppet::%player's uuid%} to false
+					set {_atemp8} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Strength Pet":
+				set {_atemp9} to 0
+				set {strengthpet::%player's uuid%} to true
+				add 1 to {_atemp9}
+			if loop-number = 8:
+				if {_atemp9} is greater than or equal to 1:
+					set {strengthpet::%player's uuid%} to true
+					set {_atemp9} to 0
+				else:
+					set {strengthpet::%player's uuid%} to false
+					set {_atemp9} to 0
+			if uncolored name of item in slot loop-number of event-inventory is "Extra Small Expander Pet":
+				set {_atemp10} to 0
+				set {simpleexpander::%player's uuid%} to true
+				add 1 to {_atemp10}
+			if loop-number = 8:
+				if {_atemp10} is greater than or equal to 1:
+					set {simpleexpander::%player's uuid%} to true
+					set {_atemp10} to 0
+				else:
+					set {simpleexpander::%player's uuid%} to false
+					set {_atemp10} to 0
+			if uncolored name of item in slot loop-number of event-inventory is "Large Expander Pet":
+				set {_atemp11} to 0
+				set {largeexpander::%player's uuid%} to true
+				add 1 to {_atemp11}
+			if loop-number = 8:
+				if {_atemp11} is greater than or equal to 1:
+					set {largeexpander::%player's uuid%} to true
+					set {_atemp11} to 0
+				else:
+					set {largeexpander::%player's uuid%} to false
+					set {_atemp11} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "XXL Expander Pet":
+				set {_atemp12} to 0
+				set {colossalexpander::%player's uuid%} to true
+				add 1 to {_atemp12}
+			if loop-number = 8:
+				if {_atemp12} is greater than or equal to 1:
+					set {colossalexpander::%player's uuid%} to true
+					set {_atemp12} to 0
+				else:
+					set {colossalexpander::%player's uuid%} to false
+					set {_atemp12} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Sprout Harvest Pet":
+				set {_atemp13} to 0
+				set {harvestspirit2::%player's uuid%} to true
+				add 1 to {_atemp13}
+			if loop-number = 8:
+				if {_atemp13} is greater than or equal to 1:
+					set {harvestspirit2::%player's uuid%} to true
+					set {_atemp13} to 0
+				else:
+					set {harvestspirit2::%player's uuid%} to false
+					set {_atemp13} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Verdant Harvest Pet":
+				set {_atemp14} to 0
+				set {harvestspirit3::%player's uuid%} to true
+				add 1 to {_atemp14}
+			if loop-number = 8:
+				if {_atemp14} is greater than or equal to 1:
+					set {harvestspirit3::%player's uuid%} to true
+					set {_atemp14} to 0
+				else:
+					set {harvestspirit3::%player's uuid%} to false
+					set {_atemp14} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Evergreen Harvest Pet":
+				set {_atemp3} to 0
+				set {harvestspirit4::%player's uuid%} to true
+				add 1 to {_atemp3}
+			if loop-number = 8:
+				if {_atemp3} is greater than or equal to 1:
+					set {harvestspirit4::%player's uuid%} to true
+					set {_atemp3} to 0
+				else:
+					set {harvestspirit4::%player's uuid%} to false
+					set {_atemp3} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Average Speed Pet":
+				set {_atemp15} to 0
+				set {avgspeedpet::%player's uuid%} to true
+				add 1 to {_atemp15}
+			if loop-number = 8:
+				if {_atemp15} is greater than or equal to 1:
+					set {avgspeedpet::%player's uuid%} to true
+					set {_atemp15} to 0
+				else:
+					set {avgspeedpet::%player's uuid%} to false
+					set {_atemp15} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Hasteful Speed Pet":
+				set {_atemp16} to 0
+				set {hastespeedpet::%player's uuid%} to true
+				add 1 to {_atemp16}
+			if loop-number = 8:
+				if {_atemp16} is greater than or equal to 1:
+					set {hastespeedpet::%player's uuid%} to true
+					set {_atemp16} to 0
+				else:
+					set {hastespeedpet::%player's uuid%} to false
+					set {_atemp16} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Adept Experience Pet":
+				set {_atemp17} to 0
+				set {adexppet::%player's uuid%} to true
+				add 1 to {_atemp17}
+			if loop-number = 8:
+				if {_atemp17} is greater than or equal to 1:
+					set {adexppet::%player's uuid%} to true
+					set {_atemp17} to 0
+				else:
+					set {adexppet::%player's uuid%} to false
+					set {_atemp17} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Extra Large Expander Pet":
+				set {_atemp18} to 0
+				set {xlexpander::%player's uuid%} to true
+				add 1 to {_atemp18}
+			if loop-number = 8:
+				if {_atemp18} is greater than or equal to 1:
+					set {xlexpander::%player's uuid%} to true
+					set {_atemp18} to 0
+				else:
+					set {xlexpander::%player's uuid%} to false
+					set {_atemp18} to 0
+			if uncolored name of item in slot loop-number of event-inventory contains "Medium Expander Pet":
+				set {_atemp19} to 0
+				set {medexpander::%player's uuid%} to true
+				add 1 to {_atemp19}
+			if loop-number = 8:
+				if {_atemp19} is greater than or equal to 1:
+					set {medexpander::%player's uuid%} to true
+					set {_atemp19} to 0
+				else:
+					set {medexpander::%player's uuid%} to false
+					set {_atemp19} to 0
+			if uncolored name of item in slot loop-number of event-inventory is "Small Expander Pet":
+				set {_atemp20} to 0
+				set {smallexpander::%player's uuid%} to true
+				add 1 to {_atemp20}
+			if loop-number = 8:
+				if {_atemp20} is greater than or equal to 1:
+					set {smallexpander::%player's uuid%} to true
+					set {_atemp20} to 0
+				else:
+					set {smallexpander::%player's uuid%} to false
+					set {_atemp20} to 0
+			
+					
+on inventory click:
+	if name of event-inventory is "&d&lPet Bag":
+		if event-inventory is not player's inventory:
+			if event-slot = 6:
+				if player does not have permission "petbag.vip+":
+					if event-clicktype is number key:
+						cancel event
+					cancel event
+					send "&cVIP+ rank or higher is required to unlock this pet slot!" to player
+			if event-slot = 7:
+				if player does not have permission "petbag.mvp+":
+					if event-clicktype is number key:
+						cancel event
+					cancel event
+					send "&cMVP+ rank or higher is required to unlock this pet slot!" to player
+			if event-slot = 8:
+				if player does not have permission "petbag.elite":
+					if event-clicktype is number key:
+						cancel event
+					cancel event
+					send "&cElite rank or higher is required to unlock this pet slot!" to player
+			if event-slot = 5:
+				if player does not have permission "petbag.extra1":
+					if event-clicktype is number key:
+						cancel event
+					cancel event
+					send "&cUnlock this pet slot by purchasing it with Crop Cash!" to player
+command /sayhelditem:
+	permission: *
+	trigger:
+		set {_cheese} to player's held item
+		broadcast "%{_cheese}%"

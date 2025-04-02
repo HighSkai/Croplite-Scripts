@@ -29,36 +29,36 @@ on inventory close:
 			if loop-integer = 1:
 				set {_pettokenitem} to lime wool named "&a&lUncommon Pets"
 				set line 1 of lore of {_pettokenitem} to "&7----------"
-				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n2 Pet Tokens"
+				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n3 Pet Tokens"
 				set line 3 of lore of {_pettokenitem} to "&7----------"
 				set slot loop-integer of event-inventory to {_pettokenitem}
 			if loop-integer = 2:
 				set {_pettokenitem} to light blue wool named "&9&lRare Pets"
 				set line 1 of lore of {_pettokenitem} to "&7----------"
-				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n4 Pet Tokens"
+				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n5 Pet Tokens"
 				set line 3 of lore of {_pettokenitem} to "&7----------"
 				set slot loop-integer of event-inventory to {_pettokenitem}
 			if loop-integer = 3:
 				set {_pettokenitem} to red wool named "&c&lRefined Pets"
 				set line 1 of lore of {_pettokenitem} to "&7----------"
-				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n6 Pet Tokens"
+				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n7 Pet Tokens"
 				set line 3 of lore of {_pettokenitem} to "&7----------"
 				set slot loop-integer of event-inventory to {_pettokenitem}
 			if loop-integer = 4:
 				set {_pettokenitem} to purple wool named "&5&lEpic Pets"
 				set line 1 of lore of {_pettokenitem} to "&7----------"
-				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n8 Pet Tokens"
+				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n10 Pet Tokens"
 				set line 3 of lore of {_pettokenitem} to "&7----------"
 				set slot loop-integer of event-inventory to {_pettokenitem}
 			if loop-integer = 5:
 				set {_pettokenitem} to orange wool named "&6&lLegendary Pets"
 				set line 1 of lore of {_pettokenitem} to "&7----------"
-				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n10 Pet Tokens"
+				set line 2 of lore of {_pettokenitem} to "&fCost: &6&n13 Pet Tokens"
 				set line 3 of lore of {_pettokenitem} to "&7----------"
 				set slot loop-integer of event-inventory to {_pettokenitem}
 			set {pettokengui::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
 			
-on inventory click: # Click Changes
+on inventory click:
 	if name of event-inventory contains "&6&lPet Token Shop":
 		if event-clicktype is number key:
 			cancel event

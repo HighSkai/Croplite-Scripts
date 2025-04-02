@@ -14,40 +14,40 @@ function petgive(p: player, n: number, rarity: text):
 			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
 	# Uncommon Pet Give
 	else if {_rarity} is "uncommon":
-		if {_p} has 2 honeycomb named "&6&l&nPet Token":
-			remove 2 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+		if {_p} has 3 honeycomb named "&6&l&nPet Token":
+			remove 3 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
 			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
 			send "&8[&dCroplite&8] &aPurchase successful" to {_p}
 		else:
 			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
 	# Rare Pet Give
 	else if {_rarity} is "rare":
-		if {_p} has 4 honeycomb named "&6&l&nPet Token":
-			remove 4 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+		if {_p} has 5 honeycomb named "&6&l&nPet Token":
+			remove 5 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
 			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
 			send "&8[&dCroplite&8] &aPurchase successful" to {_p}
 		else:
 			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
 	# Refined Pet Give
 	else if {_rarity} is "refined":
-		if {_p} has 6 honeycomb named "&6&l&nPet Token":
-			remove 6 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+		if {_p} has 7 honeycomb named "&6&l&nPet Token":
+			remove 7 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
 			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
 			send "&8[&dCroplite&8] &aPurchase Successful" to {_p}
 		else:
 			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
 	# Epic Pet Give
 	else if {_rarity} is "epic":
-		if {_p} has 8 honeycomb named "&6&l&nPet Token":
-			remove 8 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+		if {_p} has 10 honeycomb named "&6&l&nPet Token":
+			remove 10 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
 			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
 			send "&8[&dCroplite&8] &aPurchase Successful" to {_p}
 		else:
 			send "&8[&dCroplite&8] &cYou do not have enough pet tokens for this pet!" to {_p}
 	# Legendary Pet Give
 	else if {_rarity} is "legendary":
-		if {_p} has 10 honeycomb named "&6&l&nPet Token":
-			remove 10 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
+		if {_p} has 13 honeycomb named "&6&l&nPet Token":
+			remove 13 honeycomb named "&6&l&nPet Token" from {_p}'s inventory
 			give 1 of {pets::%{_rarity}%::%{_n}%} to {_p}
 			send "&8[&dCroplite&8] &aPurchase Successful" to {_p}
 		else:

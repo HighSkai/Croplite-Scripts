@@ -1,0 +1,118 @@
+function initializePlayerStuff(p: player):
+    set slot 0 of {_p} to {scythe::Starter-Scythe}
+    set slot 8 of {_p} to nether star named "&8[&b&lPlayer Menu&8]"
+
+command /getplayerstuff:
+    trigger:
+        initializePlayerStuff(player)
+
+local function loadPlayerMenuGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&b&lPlayer Menu"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
+
+    set {_skull} to {_p}'s skull named "%{prefix::%{_p}'s uuid%}% %{_p}'s name%"
+    set line 1 of lore of {_skull} to "&eRank %{rank::%uuid of {_p}%}%"
+    set line 2 of lore of {_skull} to "&aPlaytime %{h::%uuid of {_p}%}%:%{m::%uuid of {_p}%}%:%{s::%uuid of {_p}%}%"
+    set slot 4 of {_gui} to {_skull}
+
+    set slot 11 of {_gui} to emerald named "&8[&a&lShops&8]"
+    set slot 13 of {_gui} to compass named "&8[&a&lNavigate&8]"
+    set slot 15 of {_gui} to book named "&8[&c&lStats&8]"
+    set slot 16 of {_gui} to slot 0 of {_p}
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+    set slot 23 of {_gui} to short grass named "&8[&a&lSell Crops&8]"
+
+    open {_gui} to {_p}
+
+local function loadShopsGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&5&lShops"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to purple stained glass pane named " "
+
+    set slot 11 of {_gui} to iron hoe named "&8[&b&lScythe Shop&8]"
+    set slot 12 of {_gui} to diamond chestplate named "&8[&f&lArmorer&8]"
+    set slot 13 of {_gui} to enchanted book named "&8[&5&lEnchanter&8]"
+    set slot 14 of {_gui} to gold ingot named "&8[&6&lPet Token Shop&8]"
+    set slot 15 of {_gui} to short grass named "&8[&c&lCrop Bag Shop&8]"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadPlayerStatsGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&c&lPlayer Stats"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to red stained glass pane named " "
+
+    set {_level} to paper named "&8[&9&lLevel&8]&r"
+    set line 1 of lore of {_level} to "&9&lLevel &8[&9&l%{level::%uuid of {_p}%}%&8]"
+    set line 2 of lore of {_level} to "&6&lExp &8[&6&l%abbreviateNumber({exp::%uuid of {_p}%})%&8/&6&l%abbreviateNumber({expreq::%uuid of {_p}%})%&8]"
+    set line 3 of lore of {_level} to "&e&lExp Multi &8[&e&lx%{miningmultiplier::%uuid of {_p}%}%&8]"
+    set slot 11 of {_gui} to {_level}
+
+    set {_crops} to short grass named "&8[&2&lCrops&8]"
+    set line 1 of lore of {_crops} to "&2&lCrops &8[&2&l%abbreviateNumber({cropmaterial::%uuid of {_p}%})%&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8]"
+    set line 2 of lore of {_crops} to "&5&lCrop Cash &8[&5&l%abbreviateNumber({cropcash::%uuid of {_p}%})%&8]"
+    set slot 12 of {_gui} to {_crops}
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+on right click:
+    if name of player's tool is "&8[&b&lPlayer Menu&8]":
+        loadPlayerMenuGUI(player)
+
+#player Menu inventory
+on inventory click:
+    if event-inventory's name is "&b&lPlayer Menu":
+        event-inventory is not player's inventory
+        cancel event
+    
+        if event-slot is 11:
+            loadShopsGUI(player)
+        else if event-slot is 15:
+            loadPlayerStatsGUI(player)
+        else if event-slot is 22:
+            close player's inventory
+        else if event-slot is 23:
+            sellCrops(player)
+
+    else if event-inventory's name contains "&c&lPlayer Stats":
+        event-inventory is not player's inventory
+        cancel event
+    
+        if event-slot is 22:
+            close player's inventory
+
+    else if event-inventory's name contains "&5&lShops":
+        event-inventory is not player's inventory
+        cancel event
+
+        if event-slot is 11:
+            loadScytheShopGui(player)
+        else if event-slot is 12:   
+            loadArmorShopGUI(player)
+        else if event-slot is 13:
+            loadEnchanterGui(player)
+        else if event-slot is 14:
+
+        else if event-slot is 15:
+
+
+        else if event-slot is 22:
+            close player's inventory
+
+#player inventory
+on inventory click:
+    if event-inventory is player's inventory:
+        if player is not an operator:
+            if event-slot is 8:
+                cancel event
+
+            if event-slot is 0:
+                cancel event

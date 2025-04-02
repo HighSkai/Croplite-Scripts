@@ -1,0 +1,524 @@
+command /killeffects:
+	trigger:
+		open chest inventory with 6 rows named "        &1>> &4&lKill Effects&1 <<" to player
+		loop integers between 0 and 54:
+			set slot loop-value of player's current inventory to {killeffects::%player's uuid%::%loop-integer%}
+			
+on inventory close: 
+	if name of event-inventory contains "        &1>> &4&lKill Effects&1 <<":
+		loop integers between 0 and 54:
+			if loop-integer = 0:
+				set {_default} to gray dye named "&7&lMember"
+				set slot loop-integer of player's current inventory to {_default}
+			if loop-integer = 9:
+				set {_vip} to lime dye named "&a&lVIP"
+				set slot loop-integer of player's current inventory to {_vip}
+			if loop-integer = 18:
+				set {_vip+} to green dye named "&2&lVIP+"
+				set slot loop-integer of player's current inventory to {_vip+}
+			if loop-integer = 27:
+				set {_mvp} to yellow dye named "&e&lMVP"
+				set slot loop-integer of player's current inventory to {_mvp}
+			if loop-integer = 36:
+				set {_mvp+} to orange dye named "&6&lMVP+"
+				set slot loop-integer of player's current inventory to {_mvp+}
+			if loop-integer = 45:
+				set {_elite} to red dye named "&c&lElite"
+				set slot loop-integer of player's current inventory to {_elite}
+			if loop-integer = 46:
+				set {_eliteke1} to a firework rocket named "&dPurple Rocket Explosion"
+				set line 1 of lore of {_eliteke1} to "Suggested by Drywall64"
+				set slot loop-integer of player's current inventory to {_eliteke1}
+			if loop-integer = 47:
+				set {_eliteke2} to a firework rocket named "&4Crimson Rocket Explosion"
+				set slot loop-integer of player's current inventory to {_eliteke2}
+			if loop-integer = 48:
+				set {_eliteke3} to a lightning rod named "&eLightning Bolt"
+				set slot loop-integer of player's current inventory to {_eliteke3}
+			if loop-integer = 49:
+				set {_eliteke4} to a red candle named "&cElite Beam"
+				set line 1 of lore of {_eliteke4} to "&4This kill effect will not execute on mobs"
+				set slot loop-integer of player's current inventory to {_eliteke4}
+			if loop-integer = 50:
+				set {_eliteke5} to a cyan candle named "&3Sonic Burst"
+				set slot loop-integer of player's current inventory to {_eliteke5}
+			if loop-integer = 37:
+				set {_mvp+ke1} to a firework rocket named "&6MVP+ Rocket Explosion"
+				set slot loop-integer of player's current inventory to {_mvp+ke1}
+			if loop-integer = 38:
+				set {_mvp+ke2} to a orange candle named "&6MVP+ beam"
+				set line 1 of lore of {_mvp+ke2} to "&4This kill effect will not execute on mobs"
+				set slot loop-integer of player's current inventory to {_mvp+ke2}
+			if loop-integer = 39:
+				set {_mvp+ke3} to a rose bush named "&cLove Bomb"
+				set slot loop-integer of player's current inventory to {_mvp+ke3}
+			if loop-integer = 40:
+				set {_mvp+ke4} to a water bottle named "&9Rain"
+				set slot loop-integer of player's current inventory to {_mvp+ke4}
+			if loop-integer = 28:
+				set {_mvpke1} to a orange carpet named "&6MVP Ritual"
+				set line 1 of lore of {_mvpke1} to "&4This kill effect will not execute on mobs"
+				set slot loop-integer of player's current inventory to {_mvpke1}
+			if loop-integer = 29:
+				set {_mvpke2} to a note block named "&7Noted"
+				set slot loop-integer of player's current inventory to {_mvpke2}
+			if loop-integer = 30:
+				set {_mvpke3} to a elytra named "&fAscending Angel"
+				set slot loop-integer of player's current inventory to {_mvpke3}
+			if loop-integer = 19:
+				set {_vip+ke1} to a green carpet named "&2VIP+ Ritual"
+				set line 1 of lore of {_vip+ke1} to "&4This kill effect will not execute on mobs"
+				set slot loop-integer of player's current inventory to {_vip+ke1}
+			if loop-integer = 20:
+				set {_vip+ke1} to a campfire named "&cFire &6Tornado"
+				set slot loop-integer of player's current inventory to {_vip+ke1}
+			if loop-integer = 10:
+				set {_vipke1} to a lime carpet named "&aVIP Ritual"
+				set line 1 of lore of {_vipke1} to "&4This kill effect will not execute on mobs"
+				set slot loop-integer of player's current inventory to {_vipke1}
+			if loop-integer = 11:
+				set {_vipke2} to a book named "&dInscription of Life"
+				set slot loop-integer of player's current inventory to {_vipke2}
+			if loop-integer = 1:
+				set {_memke1} to a barrier named "&7none"
+				set slot loop-integer of player's current inventory to {_memke1}
+			set {killeffects::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
+			
+on inventory click:
+	if name of event-inventory is "        &1>> &4&lKill Effects&1 <<":
+		cancel event
+		event-inventory is not player's inventory
+		if event-slot = 46:
+			if player has permission "sk.elite":
+				set {eke1::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase Elite rank to equip this effect!" to player
+		if event-slot = 47:
+			if player has permission "sk.elite":
+				set {eke2::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase Elite rank to equip this effect!" to player
+		if event-slot = 48:
+			if player has permission "sk.elite":
+				set {eke3::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase Elite rank to equip this effect!" to player
+		if event-slot = 49:
+			if player has permission "sk.elite":
+				set {eke4::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase Elite rank to equip this effect!" to player
+		if event-slot = 50:
+			if player has permission "sk.elite":
+				set {eke5::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase Elite rank to equip this effect!" to player
+				
+								
+		#Start of MVP+ kill effects v
+				
+				
+		if event-slot = 37:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+			then:
+				set {mvp+ke1::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase MVP+ rank or higher to equip this effect!" to player
+		if event-slot = 38:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+			then:
+				set {mvp+ke2::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase MVP+ rank or higher to equip this effect!" to player
+		if event-slot = 39:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+			then:
+				set {mvp+ke3::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase MVP+ rank or higher to equip this effect!" to player
+		if event-slot = 40:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+			then:
+				set {mvp+ke4::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase MVP+ rank or higher to equip this effect!" to player
+		
+	#Start of MVP kill effects
+	
+		if event-slot = 28:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+				player has permission "sk.mvp"
+			then:
+				set {mvpke1::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase MVP rank or higher to equip this effect!" to player
+		if event-slot = 29:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+				player has permission "sk.mvp"
+			then:
+				set {mvpke2::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase MVP rank or higher to equip this effect!" to player
+		if event-slot = 30:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+				player has permission "sk.mvp"
+			then:
+				set {mvpke3::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase MVP rank or higher to equip this effect!" to player
+				
+	#Start of VIP+ kill effects
+	
+		if event-slot = 19:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+				player has permission "sk.mvp"
+				player has permission "sk.vip+"
+			then:
+				set {vip+ke1::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase VIP+ rank or higher to equip this effect!" to player
+		if event-slot = 20:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+				player has permission "sk.mvp"
+				player has permission "sk.vip+"
+			then:
+				set {vip+ke2::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase VIP+ rank or higher to equip this effect!" to player
+			
+	#Start of VIP kill effects
+	
+		if event-slot = 10:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+				player has permission "sk.mvp"
+				player has permission "sk.vip+"
+				player has permission "sk.vip"
+			then:
+				set {vipke1::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke2::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase VIP+ rank or higher to equip this effect!" to player
+		if event-slot = 11:
+			if at least one of:
+				player has permission "sk.elite"
+				player has permission "sk.mvp+"
+				player has permission "sk.mvp"
+				player has permission "sk.vip+"
+				player has permission "sk.vip"
+			then:
+				set {vipke2::%player's uuid%} to true
+				send "&a&lKill Effect Equipped!" to player
+				set {eke1::%player's uuid%} to false
+				set {eke2::%player's uuid%} to false
+				set {eke3::%player's uuid%} to false
+				set {eke4::%player's uuid%} to false
+				set {eke5::%player's uuid%} to false
+				set {mvp+ke1::%player's uuid%} to false
+				set {mvp+ke2::%player's uuid%} to false
+				set {mvp+ke3::%player's uuid%} to false
+				set {mvp+ke4::%player's uuid%} to false
+				set {mvpke1::%player's uuid%} to false
+				set {mvpke2::%player's uuid%} to false
+				set {mvpke3::%player's uuid%} to false
+				set {vip+ke1::%player's uuid%} to false
+				set {vip+ke2::%player's uuid%} to false
+				set {vipke1::%player's uuid%} to false
+				close player's inventory
+			else:
+				send "&c&lYou must purchase VIP+ rank or higher to equip this effect!" to player
+			
+	#Start of Member kill effects
+	
+		if event-slot = 1:
+			send "&a&lNo Kill Effect Active!" to player
+			set {eke1::%player's uuid%} to false
+			set {eke2::%player's uuid%} to false
+			set {eke3::%player's uuid%} to false
+			set {eke4::%player's uuid%} to false
+			set {eke5::%player's uuid%} to false
+			set {mvp+ke1::%player's uuid%} to false
+			set {mvp+ke2::%player's uuid%} to false
+			set {mvp+ke3::%player's uuid%} to false
+			set {mvp+ke4::%player's uuid%} to false
+			set {mvpke1::%player's uuid%} to false
+			set {mvpke2::%player's uuid%} to false
+			set {mvpke3::%player's uuid%} to false
+			set {vip+ke1::%player's uuid%} to false
+			set {vip+ke2::%player's uuid%} to false
+			set {vipke1::%player's uuid%} to false
+			set {vipke2::%player's uuid%} to false
+			close player's inventory

@@ -1,0 +1,110 @@
+function loadFireAspectEnchantGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&4&lFire Aspect Enchant &8| Page 1"
+	
+	loop 27 times:
+		set {_slot} to loop-number - 1
+		set slot {_slot} of {_gui} to red stained glass pane named " "
+
+	set slot 10 of {_gui} to {_p}'s tool
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+	loop integers from 12 to 16:
+		set {_slot} to loop-number
+
+		if {fireaspect::%loop-integer - 11%::unlocked::%uuid of {_p}%} is equal to true:
+
+			if {fireaspect::%loop-integer - 10%::unlocked::%uuid of {_p}%} is equal to true:
+				set {_item} to redstone named "&4&lFire Aspect &8[&4&l%romanNumeralConversion(loop-integer - 11)%&8] | [&a&lUnlocked&8]"
+				make {_item} glint
+			else:
+				set {_item} to redstone named "&4&lFire Aspect &8[&4&l%romanNumeralConversion(loop-integer - 11)%&8]"
+				
+			loop values "Fire Aspect %loop-integer - 11%" of {enchants-Json}: 
+				add json-value to {_lore::*}
+				
+			add "&ePrice:" to {_lore::*}
+			add "&e&lEnchant Points &8[&e&l%{fireaspect::%loop-integer - 11%::price}%&8]" to {_lore::*}
+
+			delete {_lore::1}
+			set lore of {_item} to colored {_lore::*}
+			delete {_lore::*}
+								
+			set slot {_slot} of {_gui} to {_item}
+
+	open {_gui} to {_p}
+
+# local function loadFireAspectEnchantGUI2(p: player):
+# 	set {_gui} to chest inventory with 3 rows named "&4&lFire Aspect Enchant &8| Page 2"
+		
+# 	loop 27 times:
+# 		set {_slot} to loop-number - 1
+# 		set slot {_slot} of {_gui} to red stained glass pane named " "
+	
+# 	set slot 10 of {_gui} to {_p}'s tool
+# 	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+# 	set slot 18 of {_gui} to nether star named "&8[&a&lBack&8]"
+	
+# 	loop integers from 12 to 16:
+# 		set {_slot} to loop-number
+	
+# 		if {fireaspect::%loop-integer - 6%::unlocked::%uuid of {_p}%} is equal to true:
+	
+# 			if {fireaspect::%loop-integer - 5%::unlocked::%uuid of {_p}%} is equal to true:
+# 				set {_item} to redstone named "&4&lFire Aspect &8[&4&l%romanNumeralConversion(loop-integer - 6)%&8] | [&a&lUnlocked&8]"
+# 				make {_item} glint
+# 			else:
+# 				set {_item} to redstone named "&4&lFire Aspect &8[&4&l%romanNumeralConversion(loop-integer - 6)%&8]"
+					
+# 			loop values "Fire Aspect %loop-integer - 6%" of {enchants-Json}: 
+# 				add json-value to {_lore::*}
+					
+# 			add "&ePrice:" to {_lore::*}
+# 			add "&e&lEnchant Points &8[&e&l%{fireaspect::%loop-integer - 6%::price}%&8]" to {_lore::*}
+	
+# 			delete {_lore::1}
+# 			set lore of {_item} to colored {_lore::*}
+# 			delete {_lore::*}
+									
+# 			set slot {_slot} of {_gui} to {_item}
+	
+# 	open {_gui} to {_p}
+
+on inventory click:
+	if event-inventory's name contains "&4&lFire Aspect Enchant &8| Page 1":
+		cancel event
+		
+		if event-slot is 22:
+			close player's inventory
+
+		set {_eventslots::*} to 1, 2, 3, 4, and 5
+		set {_event-slot} to index of event-slot - 11
+
+		if {_eventslots::*} contain {_event-slot}:
+			if {fireaspect::%{_event-slot} + 1%::unlocked::%player's uuid%} is equal to false:
+				if {fireaspect::%{_event-slot}%::unlocked::%player's uuid%} is equal to true:
+					if {enchantpoints::%player's uuid%} >= {fireaspect::%{_event-slot}%::price}:
+						remove {fireaspect::%{_event-slot}%::price} from {enchantpoints::%player's uuid%}
+						set {fireaspect::%{_event-slot} + 1%::unlocked::%player's uuid%} to true
+						add "1:%{_event-slot}%" to string list tag "Croplite:enchants" of custom nbt of player's tool
+						make player's tool glint
+						addEnchantLore(player)
+						loadFireAspectEnchantGUI(player)
+						send "&8[&d&lCroplite&8] &aYour scythe has been enchanted with &4&lFire Aspect &8[&4&l%romanNumeralConversion({_event-slot})%&8] &afor &e&lEnchant Points &8[&r&e&l%{fireaspect::%{_event-slot}%::price}%&r&8]" to player
+					else:
+						send "&8[&d&lCroplite&8] &cYou don't have enough &e&lEnchant Points &cto purchase this enchant" to player
+			else:
+				send "&8[&d&lCroplite&8] &cYou have already purchased this enchant" to player
+
+command /resetfireaspect:
+	trigger:
+		set {fireaspect::1::unlocked::%player's uuid%} to true
+		set {fireaspect::2::unlocked::%player's uuid%} to false
+		set {fireaspect::3::unlocked::%player's uuid%} to false
+		set {fireaspect::4::unlocked::%player's uuid%} to false
+		set {fireaspect::5::unlocked::%player's uuid%} to false
+		set {fireaspect::6::unlocked::%player's uuid%} to false
+		set {fireaspect::7::unlocked::%player's uuid%} to false
+		set {fireaspect::8::unlocked::%player's uuid%} to false
+		set {fireaspect::9::unlocked::%player's uuid%} to false
+		set {fireaspect::10::unlocked::%player's uuid%} to false
+		set {fireaspect::11::unlocked::%player's uuid%} to false

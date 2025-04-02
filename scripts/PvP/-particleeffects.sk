@@ -1,0 +1,131 @@
+command /ke1:
+	permission: killeffect.1
+	trigger:
+		draw 5 of dust using dustOption(orange, 1) at regularPolygon(player's location, 1.5, 6, 0.25, 1, player's yaw, player's pitch)
+
+command /ke2:
+	permission: killeffect.2
+	trigger:
+		set {_v4} to player's pitch - (player's pitch * 2) + 90
+		set {_v5} to location 1.5 block above and 2 block in front of player
+		set {_v7} to location 1.5 block above and 1.5 block in front of player
+		wait 1 tick
+		draw 5 of dust using dustOption(blue, 1) at circle({_v5}, 1, 5, player's yaw, {_v4})
+		draw 5 of dust using dustOption(cyan, 1) at circle({_v5}, 0.5, 5, player's yaw, {_v4})
+		draw 5 of dust using dustOption(white, 1) at regularPolygon({_v5}, 1.5, 4, 0.25, 1, player's yaw, {_v4})
+		draw 5 of dust using dustOption(lime, 1) at regularPolygon({_v5}, 2.5, 5, 0.25, 1, player's yaw, {_v4})
+		
+command /keroyal <player>:
+    permission: killeffect.royal
+    trigger:
+        set {_v4} to arg-1's pitch - (player's pitch * 2) + 90
+        set {_v5} to location 1.5 block above and 2 block in front of player
+        set {_v7} to location 1.5 block above and 1.5 block in front of player
+        wait 1 tick
+        draw 10 of dust using dustOption(light blue, 1) at line(arg-1's location, location(arg-1's x coordinate, arg-1's y coordinate + 100, arg-1's z coordinate, arg-1's world))
+        draw 5 of dust using dustOption(white, 1) at line(arg-1's location, location(arg-1's x coordinate, arg-1's y coordinate + 100, arg-1's z coordinate, arg-1's world))
+        draw 5 of dust using dustOption(white, 1) at circle(arg-1's location, 1, 5, 0, 0)
+        draw 5 of dust using dustOption(cyan, 1) at circle(arg-1's location, 0.5, 5, 0, 0)
+        draw 5 of dust using dustOption(white, 1) at regularPolygon(arg-1's location, 1.5, 4, 0.25, 1, 0, 0)
+        draw 5 of dust using dustOption(cyan, 1) at regularPolygon(arg-1's location, 2.5, 5, 0.25, 1, 0, 0) 
+        draw 3 of electric spark at regularPolygon((arg-1's location), 4, 3, 0.25, 60, 0, player's pitch) with extra 0
+		
+command /keelite <player>:
+	permission: killeffect.elite
+	trigger:
+		draw 3 of dust using dustOption(dark red, 1) at line(arg-1's location, location(arg-1's x coordinate, arg-1's y coordinate + 20, arg-1's z coordinate, arg-1's world))
+		draw 5 of dust using dustOption(red, 1) at circle(arg-1's location, 1, 5, 0, 0)
+		draw 5 of dust using dustOption(dark red, 1) at circle(arg-1's location, 0.5, 5, 0, 0)
+		draw 5 of dust using dustOption(red, 1) at regularPolygon(arg-1's location, 1.5, 4, 0.25, 1, 0, 0)
+		draw 5 of dust using dustOption(dark red, 1) at regularPolygon(arg-1's location, 2.5, 5, 0.25, 1, 0, 0)
+		draw 3 of electric spark at regularPolygon((arg-1's location), 4, 3, 0.25, 60, 0, player's pitch) with extra 0
+		
+command /kemvp+ <player>:
+	permission: killeffect.mvp+
+	trigger:
+		draw 2 of dust using dustOption(orange, 1) at line(arg-1's location, location(arg-1's x coordinate, arg-1's y coordinate + 10, arg-1's z coordinate, arg-1's world))
+		draw 5 of dust using dustOption(orange, 1) at circle(arg-1's location, 1, 5, 0, 0)
+		draw 5 of dust using dustOption(red, 1) at circle(arg-1's location, 0.5, 5, 0, 0)
+		draw 5 of dust using dustOption(orange, 1) at regularPolygon(arg-1's location, 1.5, 4, 0.25, 1, 0, 0)
+		draw 5 of dust using dustOption(red, 1) at regularPolygon(arg-1's location, 2.5, 5, 0.25, 1, 0, 0)
+		
+command /kemvp <player>:
+	permission: killeffect.mvp
+	trigger:
+		draw 5 of dust using dustOption(yellow, 1) at circle(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 1, 5, 0, 0)
+		draw 5 of dust using dustOption(orange, 1) at circle(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 0.5, 5, 0, 0)
+		draw 5 of dust using dustOption(yellow, 1) at regularPolygon(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 1.5, 4, 0.25, 1, 0, 0)
+		draw 5 of dust using dustOption(orange, 1) at regularPolygon(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 2.5, 5, 0.25, 1, 0, 0)
+		
+command /kevip+ <player>:
+	permission: killeffect.vip+
+	trigger:
+		draw 5 of dust using dustOption(dark green, 1) at circle(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 1, 5, 0, 0)
+		draw 5 of dust using dustOption(lime, 1) at circle(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 0.5, 5, 0, 0)
+		draw 5 of dust using dustOption(lime, 1) at regularPolygon(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 1.5, 4, 0.25, 1, 0, 0)
+		
+command /kevip <player>:
+	permission: killeffect.vip
+	trigger:
+		draw 5 of dust using dustOption(lime, 1) at circle(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 1, 5, 0, 0)
+		draw 5 of dust using dustOption(lime, 1) at circle(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 0.5, 5, 0, 0)
+		draw 5 of dust using dustOption(lime, 1) at regularPolygon(location(arg-1's x coordinate,arg-1's y coordinate + 3, arg-1's z coordinate, world "world"), 1.5, 4, 0.25, 1, 0, 0)
+
+function line(loc1: location, loc2: location, step-size: number=0.25) :: locations:
+    # set up step vector
+    set {_v} to vector from {_loc1} to {_loc2}
+    set vector length of {_v} to {_step-size}
+
+    # total distance / step size = number of steps needed
+    loop floor((distance between {_loc1} and {_loc2}) / {_step-size}) times:
+        # store location and move a step
+        set {_locs::%loop-number%} to {_loc1}
+        set {_loc1} to {_loc1} ~ {_v}
+
+    # return list of locations
+    return {_locs::*}
+
+function circle(center: location, radius: number, step-size: number = 10, yaw: number = 0, pitch: number = 0) :: locations:
+    # refernce vector for rotation around
+    set {_reference} to vector from yaw {_yaw} + 90 and pitch 0
+    # vector to get locations with
+    set {_v} to spherical vector with radius {_radius}, yaw 0, pitch 0
+
+    # 360 degrees / step size = number of steps needed
+    loop floor(360 / {_step-size}) times:
+        # copy vector for rotation
+        set {_temp-v} to {_v}
+        # rotate if necessary
+        if {_pitch} is not 0:
+            rotate {_temp-v} around {_reference} by {_pitch}
+        # store location and move a step
+        set {_locs::%loop-number%} to {_center} ~ {_temp-v}
+        add {_step-size} to yaw of {_v} 
+
+    # return list of locations
+    return {_locs::*}
+
+function regularPolygon(center: location, radius: number, sides: number, step-size: number = 0.25, offset: number = 0, yaw: number = 0, pitch: number = 0) :: locations:
+    # refernce vector for rotation around
+    set {_reference} to vector from yaw {_yaw} + 90 and pitch 0
+    # vector to get locations with
+    set {_v} to spherical vector radius {_radius}, yaw {_offset}, pitch 0
+    loop {_sides} times:
+        # get point
+        set {_temp-v} to {_v}
+        # rotate if necessary
+        if {_pitch} is not 0:
+            rotate {_temp-v} around {_reference} by {_pitch}
+        set {_loc::%loop-number%} to {_center} ~ {_temp-v}
+        # move to next point
+        add 360 / {_sides} to yaw of {_v}
+
+    # get all the lines
+    loop {_sides} times:
+        if loop-number != {_sides}:
+            add line({_loc::%loop-number%}, {_loc::%loop-number + 1%}) to {_locs::*}
+        else:
+            add line({_loc::%loop-number%}, {_loc::1}) to {_locs::*}
+
+    # return list of locations along the lines
+    return {_locs::*}

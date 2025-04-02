@@ -1,25 +1,16 @@
 command /armorshop:
-	permission: *
 	trigger:
-		open chest inventory with 6 rows named "&f&lArmor Shop" to player
-		loop integers between 0 and 53:
-			set slot loop-value of player's current inventory to {armorshop::%loop-integer%}
-			
-on inventory close:
-	if name of event-inventory is "&f&lArmor Shop":
-		loop integers between 0 and 53:
-			set {armorshop::%loop-integer%} to slot loop-integer of event-inventory
-			
+		loadArmorShopGUI(player)
+
+function loadArmorShopGUI(p: player):
+	set {_gui} to chest inventory with 5 rows named "&6&lArmorer"
+
+	loop 27 times:
+		set slot (loop-number - 1) of {_gui} to orange stained glass pane named " "
+
+	open {_gui} to {_p}
+
 on inventory click:
-	if name of event-inventory is "&f&lArmor Shop":
-		if event-clicktype is number key:
-			player is not an operator
-			cancel event
+	if event-inventory's name is "&6&lArmorer":
 		event-inventory is not player's inventory
-		player is not an operator
 		cancel event
-		if event-slot = 10: #Leather Helmet
-			if {cropcash::%player's uuid%} <= 100:
-				subtract 100 from {cropcash::%player's uuid%}
-				give player 1 of item in event-slot
-			

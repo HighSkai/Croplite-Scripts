@@ -1,0 +1,90 @@
+local function updateLeaderboards(officialleaderboardname: text, leaderboardtext: text, variablename: text):
+    set {_player::*} to sorted indices of {%{_variablename}%::*} in descending order
+    loop {_player::*}:
+        set {_playerparsed::%loop-index%} to {_player::%loop-index%} parsed as offline player
+            
+    loop integers from 1 to 10:
+        set {_line::%loop-value%} to "%{prefix::%{_player::%loop-value%}%}% %{_playerparsed::%loop-value%}%:&r %{%{_variablename}%::%{_player::%loop-value%}%}%"
+        
+        if {%{_variablename}%::%{_player::%loop-value%}%} is not set:
+            set {_line::%loop-value%} to "--:-"
+        else if {%{_variablename}%::%{_player::%loop-value%}%} < 1:
+            set {_line::%loop-value%} to "--:-"
+
+    console command "fholo edit %{_officialleaderboardname}% setline 1 %{_leaderboardtext}%&r"
+    console command "fholo edit %{_officialleaderboardname}% setline 2 %{_line::1}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 3 %{_line::2}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 4 %{_line::3}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 5 %{_line::4}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 6 %{_line::5}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 7 %{_line::6}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 8 %{_line::7}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 9 %{_line::8}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 10 %{_line::9}%"
+    console command "fholo edit %{_officialleaderboardname}% setline 11 %{_line::10}%"
+
+local function clearLeaderboards(leaderboardname: text, leaderboardtext: text):
+    console command "fholo edit %{_officialleaderboardname}% setline 1 %{_leaderboardtext}%&r"
+    console command "fholo edit %{_officialleaderboardname}% setline 2 --:-"    
+    console command "fholo edit %{_officialleaderboardname}% setline 3 --:-"
+    console command "fholo edit %{_officialleaderboardname}% setline 4 --:-"
+    console command "fholo edit %{_officialleaderboardname}% setline 5 --:-"
+    console command "fholo edit %{_officialleaderboardname}% setline 6 --:-"
+    console command "fholo edit %{_officialleaderboardname}% setline 7 --:-"
+    console command "fholo edit %{_officialleaderboardname}% setline 8 --:-"
+    console command "fholo edit %{_officialleaderboardname}% setline 9 --:-"
+    console command "fholo edit %{_officialleaderboardname}% setline 10 --:-"
+    console command "fholo edit %{_officialleaderboardname}% setline 11 --:-"
+
+local function resetDailyLeaderboards():
+    delete {dailycropsbroken::*}
+    delete {dailymobkills::*}
+
+    clearLeaderboards("DailyMobKills", "&8[&4&kMM&c&lDaily Mob Kills&4&kMM&r&8]")
+    clearLeaderboards("DailyCropsBroken", "&8[&4&kMM&c&lDaily Crops Broken&4&kMM&r&8]")
+
+every 5 minutes:
+    updateLeaderboards("DailyMobKills", "&8[&4&kMM&c&lDaily Mob Kills&4&kMM&r&8]", "dailymobkills")
+    wait 5 seconds
+    updateLeaderboards("DailyCropsBroken", "&8[&4&kMM&c&lDaily Crops Broken&4&kMM&r&8]", "dailycropsbroken")
+    wait 5 seconds
+    updateLeaderboards("LifetimeCropsBroken", "&8[&4&kMM&c&lLifetime Crops Broken&4&kMM&r&8]", "lifetimecropsbroken")
+    wait 5 seconds
+    updateLeaderboards("LifetimeMobKills", "&8[&4&kMM&c&lLifetime Mob Kills&4&kMM&r&8]", "lifetimemobkills")
+    wait 5 seconds
+    updateLeaderboards("LifetimePlayerKills", "&8[&4&kMM&c&lLifetime Player Kills&4&kMM&r&8]", "lifetimeplayerkills")
+    wait 5 seconds
+    updateLeaderboards("cropcash", "&8[&4&kMM&c&lLifetime Crop Cash&4&kMM&r&8]", "cropcash")
+    wait 5 seconds
+    updateLeaderboards("h", "&8[&4&kMM&c&lLifetime Play Time&4&kMM&r&8]", "h")
+
+every second:
+    set {_now} to now formatted as "HH:mm"
+    if {_now} is equal to "05:00": 
+        if {dailiesreset} is false:
+            resetDailyLeaderboards()
+            set {dailiesreset} to true
+    else if {_now} is equal to "05:01":
+        if {dailiesreset} is true:
+            set {dailiesreset} to false
+
+    loop all players:
+        add 1 to {s::%uuid of loop-player%}
+        if {s::%loop-player's uuid%} > 59:
+            remove 60 from {s::%uuid of loop-player%} 
+            add 1 to {m::%uuid of loop-player%}
+        if {m::%loop-player's uuid%} > 59:
+            remove 60 from {m::%uuid of loop-player%}
+            add 1 to {h::%uuid of loop-player%}
+
+command /updateLeaderboards:
+    trigger: 
+        updateLeaderboards("DailyMobKills", "&8[&4&kMM&c&lDaily Mob Kills&4&kMM&r&8]", "dailymobkills")
+        updateLeaderboards("DailyCropsBroken", "&8[&4&kMM&c&lDaily Crops Broken&4&kMM&r&8]", "dailycropsbroken")
+        updateLeaderboards("LifetimeCropsBroken", "&8[&4&kMM&c&lLifetime Crops Broken&4&kMM&r&8]", "lifetimecropsbroken")
+        updateLeaderboards("LifetimeMobKills", "&8[&4&kMM&c&lLifetime Mob Kills&4&kMM&r&8]", "lifetimemobkills")
+        updateLeaderboards("LifetimePlayerKills", "&8[&4&kMM&c&lLifetime Player Kills&4&kMM&r&8]", "lifetimeplayerkills")
+        updateLeaderboards("cropcash", "&8[&4&kMM&c&lLifetime Crop Cash&4&kMM&r&8]", "cropcash")
+        updateLeaderboards("h", "&8[&4&kMM&c&lLifetime Play Time&4&kMM&r&8]", "h")
+        
+        send "Leaderboards updated." to player

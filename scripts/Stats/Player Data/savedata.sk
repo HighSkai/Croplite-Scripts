@@ -1,0 +1,9 @@
+local function savePlayerData(p: player):
+    if {playerData-Json} has key "%{_p}%":
+        broadcast "yes"
+    else:
+        broadcast "no"
+
+command /savePlayerData <player>:
+    trigger:
+        savePlayerData(arg-1)

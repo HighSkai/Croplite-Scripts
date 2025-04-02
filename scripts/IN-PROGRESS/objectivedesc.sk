@@ -1,0 +1,14 @@
+every 3 seconds:
+    loop all players:
+        if {objective::%loop-player%} is "none":
+            stop
+        else if {objective::%loop-player%} is "Some Skillz":
+            if {objcount::%loop-player%} = 0:
+                set {objdesc::%loop-player%} to "Upgrade or unlock 2"
+                add 1 to {objcount::%loop-player%}
+            else if {objcount::%loop-player%} = 1:
+                set {objdesc::%loop-player%} to "skills in the Enchanter"
+                subtract 1 from {objcount::%loop-player%}
+        
+
+    

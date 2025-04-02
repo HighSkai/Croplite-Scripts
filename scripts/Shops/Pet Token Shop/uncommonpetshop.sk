@@ -12,6 +12,16 @@ command /adduncommonpet:
 	permission: *
 	trigger:
 		add player's held item to {pets::uncommon::*}
+		
+command /removeuncommonpet:
+	permission: *
+	trigger:
+		delete {pets::uncommon::*}
+		
+command /setuncommonpet:
+	permission: *
+	trigger:
+		set {pets::uncommon::1} to player's held item
 
 on inventory close:
 	if name of event-inventory is "&a&lUncommon Pet Shop":

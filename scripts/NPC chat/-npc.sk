@@ -1,0 +1,30 @@
+command /createnpc <text>:
+    trigger:
+        spawn a villager at player
+        set {_npc} to last spawned entity
+        set name of {_npc} to arg-1
+        set {npc::%arg-1%} to {_npc}
+
+command /deletenpc <text>:
+    trigger:
+        loop all entities in radius 40 around player:
+            if name of loop-entity is "%arg-1%":
+                kill loop-entity
+                remove arg-1 from {npc::*}
+
+command /listnpc:
+    trigger:
+        loop {npc::*}:
+            broadcast "%name of loop-value%: %location of loop-value%"
+
+# on entity move:
+#     if entity is a villager:
+#         cancel event
+
+# on damage:
+#     if victim is a villager:
+#         cancel event
+
+# on rightclick:
+#     if clicked entity is {npc::shop}:
+#         make player execute command "/scytheshopgui"

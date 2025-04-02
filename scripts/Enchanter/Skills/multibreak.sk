@@ -1,0 +1,3 @@
+#on break:
+    #loop blocks within event-block offset by vector(-1, 0, -1) and event-block offset by vector(1, 1, 1):
+        #set loop-block to diamond block

@@ -1,9 +1,14 @@
 every 300 seconds:
-	send "&7------------------------------------------------" to all players
-	send "&7- Enjoying the server?" to all players
+	send "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to all players
+	send "&5Enjoying the server?" to all players
 	send "" to all players
-	send "&7- Make sure to check out the discord for" to all players
-	send "&7 updates, announcements, sneak peaks and more!" to all players
+	send "&5Make sure to check out the Discord for" to all players
+	send "&5Updates, Announcements, Sneak Peaks and more!" to all players
 	send "" to all players
-	send "&7- &9&n/discord &7to join the discord!" to all players
-	send "&7------------------------------------------------" to all players
+	send "&7- &9&n/discord &7to join the Discord!" to all players
+	send "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to all players
+
+command /discord:
+	permission: sk.discord
+	trigger:
+		send "&d&lLink to the discord: <link:https://discord.gg/zQd2ssuBBx>&c&l&nClick here." to player

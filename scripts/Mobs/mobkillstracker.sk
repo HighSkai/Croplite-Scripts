@@ -4,6 +4,3 @@ on death:
 			add 1 to {totalmobskilled::%attacker's uuid%}
 	if victim is a player:
 		add 1 to {playerdeathslifetime::%victim's uuid%}
-		
-on jump:
-	add 1 to {totaljumps::%player's uuid%}

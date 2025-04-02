@@ -1,0 +1,71 @@
+on right click:
+	if name of clicked entity is "&6&lChuck Woodstock":
+		if {chatmessage::Chuck::%player's uuid%} is not set:
+			set {chatmessage::Chuck::%player's uuid%} to 0
+		if {chatmessage::Chuck::%player's uuid%} = 0:
+			if {objective::%player's uuid%} is "objectivenone":
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: Haven't seen you here before. You must be new.                                                                                                  " to player
+				wait 4 seconds
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: Welcome to &d&lCroplite&r&f, unlike the other folks 'round here my respect is earned, not given.                                                                " to player
+				wait 5 seconds
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: Tell you what, if you unlock or upgrade 2 skills from the &5&lEnchanter&f in the shop, you'll have my respect.                                                                                      " to player
+				wait 5 seconds
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: &e&lSkill Points &r&fare earned through leveling up and completing &2&lObjectives&r&f.                                                                     " to player
+				wait 4 seconds 
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: Heck, I'll even throw in a little reward if you can get this done.                                                                          " to player
+				wait 3 seconds
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: Now get outta my face! You've been here long enough.                                                                                   " to player
+				wait 3 seconds
+				send "&7------------------------------" to player
+				send "&8[&2&lObjective&r&8] &5Some Skillz: &r&eUpgrade or                                  unlock 2 skills in the Enchanter" to player
+				send "&7------------------------------" to player
+				play sound "block.amethyst_block.resonate" to player
+				set {objective::%player's uuid%} to "Some Skillz"
+				set {objprogressreq::%player's uuid%} to 2
+				set {objprogress::%player's uuid%} to {amountofskills::%player's uuid%}
+			else:
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: You've already got an objective, get outta my face!                                                                       " to player
+		else if {chatmessage::Chuck::%player's uuid%} = 1:
+			if {objective::%player's uuid%} is "Some Skillz":
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: Wow, I didn't think you would actually do it.                                                                " to player
+				wait 4 seconds
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: I guess you've earned my respect. Here's a little something for your troubles.                                                                        " to player
+				wait 4 seconds
+				play sound "entity.player.levelup" to player
+				send "&7------------------------------" to player
+				send "&8[&2Objective Rewards&8]" to player
+				send "&8 - &5150 Crop Cash" to player
+				send "&8 - &6200 Experience" to player
+				send "&8 - &e1 Skill Point" to player
+				send "&8 - &6&l1x Pet Crate Key" to player
+				send "&7------------------------------" to player
+				add 1 to {enchantpoints::%player's uuid%}
+				add 150 to {cropcash::%player's uuid%}
+				add 200 to {exp::%player's uuid%}
+				execute console command "/crate key give %player% pet 1"
+				set {objective::%player's uuid%} to "objectivenone"
+				set {objprogressreq::%player's uuid%} to 0
+				set {objprogress::%player's uuid%} to 0
+				set {objdesc::%player's uuid%} to " "
+				add 1 to {chatmessage::Chuck::%player's uuid%}
+			else:
+				play sound "entity.villager.ambient" to player
+				send "&7[&6Chuck Woodstock&7]&f: You've already got an objective, get outta my face!                                                                       " to player
+		else:
+			play sound "entity.villager.ambient" to player
+			send "&7[&6Chuck Woodstock&7]&f: Sorry, ain't got nothin for you right now                                                                " to player
+			
+command /resettracktormessage:
+	permission: *
+	trigger:
+		set {chatmessage::Chuck::%player's uuid%} to 0
+		send "&8[&dCroplite&8] &aYou have reset Chuck Woodstock's chat message!" to player

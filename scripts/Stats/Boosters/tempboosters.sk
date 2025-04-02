@@ -74,6 +74,17 @@ command /givedoublecm <player> <number>:
 		set line 3 of lore of {_givedoublecm} to "&4&lWarning: time will go down &neven if you are offline"
 		set line 4 of lore of {_givedoublecm} to "&7----------"
 		give arg-2 of {_givedoublecm} to arg-1
+
+command /giveonepointfivecm <player> <number>:
+	permission: *
+	trigger:
+		set {_giveonepointfivecm} to bone meal
+		set name of {_giveonepointfivecm} to "&e&l1.5x crop material &8(&c6m&8)"
+		set line 1 of lore of {_giveonepointfivecm} to "&7----------"
+		set line 2 of lore of {_giveonepointfivecm} to "&a&oGives the player 1.5x crop material for 6 minutes"
+		set line 3 of lore of {_giveonepointfivecm} to "&4&lWarning: time will go down &neven if you are offline"
+		set line 4 of lore of {_giveonepointfivecm} to "&7----------"
+		give arg-2 of {_giveonepointfivecm} to arg-1
 		
 on rightclick with experience bottle:
 	if name of player's held item is "&e&lDouble XP &8(&c5m&8)":
@@ -86,9 +97,8 @@ on rightclick with experience bottle:
 			add {_tempcurrentxpmultiplier::%player's uuid%} to {miningmultiplier::%player's uuid%}
 			set {tempxpboost::%player's uuid%} to true
 			send "&8[&dCroplite&8] &aBooster applied!" to player
-			wait 5 minutes
-			subtract {_tempcurrentxpmultiplier::%player's uuid%} from {miningmultiplier::%player's uuid%}
-			set {tempxpboost::%player's uuid%} to false
+			set {xpboosttype::%player's uuid%} to "5m"
+			set {xpboosttime::%player's uuid%} to 300
 			
 	if name of player's held item is "&e&l1.5x XP &8(&c8m&8)":
 		cancel event
@@ -100,9 +110,8 @@ on rightclick with experience bottle:
 			add {_tempcurrentxpmultiplier::%player's uuid%} to {miningmultiplier::%player's uuid%}
 			set {tempxpboost::%player's uuid%} to true
 			send "&8[&dCroplite&8] &aBooster applied!" to player
-			wait 8 minutes
-			subtract {_tempcurrentxpmultiplier::%player's uuid%} from {miningmultiplier::%player's uuid%}
-			set {tempxpboost::%player's uuid%} to false
+			set {xpboosttype::%player's uuid%} to "8m"
+			set {xpboosttime::%player's uuid%} to 480
 			
 	if name of player's held item is "&e&l+25%% XP (20s)":
 		cancel event
@@ -113,10 +122,8 @@ on rightclick with experience bottle:
 			add 0.25 to {miningmultiplier::%player's uuid%}
 			set {tempxpboost::%player's uuid%} to true
 			send "&8[&dCroplite&8] &aBooster applied!" to player
-			wait 20 seconds
-			subtract 0.25 from {miningmultiplier::%player's uuid%}
-			set {tempxpboost::%player's uuid%} to false
-			send "&8[&dCroplite&8] &aBooster has ended" to player
+			set {tempxpboosttype::%player's uuid%} to "20s"
+			set {tempxpboosttime::%player's uuid%} to 20
 			
 	if name of player's held item is "&e&l+15%% XP (1m)":
 		cancel event
@@ -127,12 +134,10 @@ on rightclick with experience bottle:
 			add 0.15 to {miningmultiplier::%player's uuid%}
 			set {tempxpboost::%player's uuid%} to true
 			send "&8[&dCroplite&8] &aBooster applied!" to player
-			wait 1 minute
-			subtract 0.15 from {miningmultiplier::%player's uuid%}
-			set {tempxpboost::%player's uuid%} to false
-			send "&8[&dCroplite&8] &aBooster has ended" to player
+			set {tempxpboosttype::%player's uuid%} to "1m"
+			set {tempxpboosttime::%player's uuid%} to 60
 			
-on rightclick: #tempbooster
+on rightclick: 
 	if player's held item is sugar:
 		if name of player's held item is "&e&l+50%% speed &8(&c15m&8)":
 			if {tempspeedboost::%player's uuid%} is true:
@@ -143,11 +148,8 @@ on rightclick: #tempbooster
 				add 0.1 to player's walking speed
 				set {tempspeedboost::%player's uuid%} to true
 				send "&8[&dCroplite&8] &aBooster applied!" to player
-				wait 15 minutes
-				subtract 0.5 from {playerwalkspeed::%player's uuid%}
-				subtract 0.1 from player's walking speed
-				set {tempspeedboost::%player's uuid%} to false
-				send "&8[&dCroplite&8] &aBooster has ended" to player
+				set {speedboosttype::%player's uuid%} to "15m"
+				set {tempspeedboosttime::%player's uuid%} to 900
 				
 		if name of player's held item is "&e&l+25%% speed &8(&c20m&8)":
 			if {tempspeedboost::%player's uuid%} is true:
@@ -158,11 +160,8 @@ on rightclick: #tempbooster
 				add 0.05 to player's walking speed
 				set {tempspeedboost::%player's uuid%} to true
 				send "&8[&dCroplite&8] &aBooster applied!" to player
-				wait 20 minutes
-				subtract 0.25 from {playerwalkspeed::%player's uuid%}
-				subtract 0.05 from player's walking speed
-				set {tempspeedboost::%player's uuid%} to false
-				send "&8[&dCroplite&8] &aBooster has ended" to player
+				set {tempspeedboosttime::%player's uuid%} to 1200
+				set {speedboosttype::%player's uuid%} to "20m"
 		
 		if name of player's held item is "&f&l+15%% Speed (45s)":
 			if {tempspeedboost::%player's uuid%} is true:
@@ -173,11 +172,8 @@ on rightclick: #tempbooster
 				add 0.03 to player's walking speed
 				set {tempspeedboost::%player's uuid%} to true
 				send "&8[&dCroplite&8] &aBooster applied!" to player
-				wait 45 seconds
-				subtract 0.15 from {playerwalkspeed::%player's uuid%}
-				subtract 0.03 from player's walking speed
-				set {tempspeedboost::%player's uuid%} to false
-				send "&8[&dCroplite&8] &aBooster has ended" to player
+				set {tempspeedboosttime::%player's uuid%} to 45
+				set {speedboosttype::%player's uuid%} to "45s"
 				
 		if name of player's held item is "&f&l+25%% Speed (30s)":
 			if {tempspeedboost::%player's uuid%} is true:
@@ -188,11 +184,8 @@ on rightclick: #tempbooster
 				add 0.05 to player's walking speed
 				set {tempspeedboost::%player's uuid%} to true
 				send "&8[&dCroplite&8] &aBooster applied!" to player
-				wait 30 seconds
-				subtract 0.25 from {playerwalkspeed::%player's uuid%}
-				subtract 0.05 from player's walking speed
-				set {tempspeedboost::%player's uuid%} to false
-				send "&8[&dCroplite&8] &aBooster has ended" to player
+				set {tempspeedboosttime::%player's uuid%} to 30
+				set {speedboosttype::%player's uuid%} to "30s"
 				
 	if player's held item is bread:
 		if name of player's held item is "&e&l2x crop cash on sell &8(&c3x&8)":
@@ -204,12 +197,11 @@ on rightclick: #tempbooster
 		if name of player's held item is "&e&l+10%% global XP booster &8(&c1h&8)":
 			if player is an operator:
 				make player execute command "/globalbooster1"
-				remove 1 netherite upgrade smithing template named "&e&l+10%% global XP booster &8(&c1h&8)" from player's inventory
 			else:
 				op the player
 				make player execute command "/globalbooster1"
 				deop the player
-				remove 1 netherite upgrade smithing template named "&e&l+10%% global XP booster &8(&c1h&8)" from player's inventory
+				
 	
 	if player's held item is an emerald:
 		if name of player's held item is "&a&l1.5x Crop Cash on Sell":
@@ -218,3 +210,209 @@ on rightclick: #tempbooster
 			add 1 to {1point5ccboost::%player's uuid%}
 			remove 1 emerald named "&a&l1.5x Crop Cash on Sell" from player's inventory
 			send "&8[&dCroplite&8] &aBooster applied!" to player
+
+	if player's held item is bone meal:
+		if name of player's held item is "&e&l2x crop material &8(&c4m&8)":
+			if {tempcmboost::%player's uuid%} is true:
+				send "&c&lYou can only have 1 crop material booster active at a time!" to player
+			else:
+				remove 1 bone meal named "&e&l2x crop material &8(&c4m&8)" from player's inventory
+				set {tempcmboost::%player's uuid%} to true
+				send "&8[&dCroplite&8] &aBooster applied!" to player
+				set {cmbtime::%player's uuid%} to 240
+				set {cmboosttype::%player's uuid%} to "4m"
+
+		if name of player's held item is "&e&l1.5x crop material &8(&c6m&8)":
+			if {tempcmboost::%player's uuid%} is true:
+				send "&c&lYou can only have 1 crop material booster active at a time!" to player
+			else:
+				remove 1 bone meal named "&e&l1.5x crop material &8(&c6m&8)" from player's inventory
+				set {tempcmboost::%player's uuid%} to true
+				send "&8[&dCroplite&8] &aBooster applied!" to player
+				set {cmbtime::%player's uuid%} to 360
+				set {cmboosttype::%player's uuid%} to "6m"
+
+every 1 second:
+	loop all players:
+		if {tempspeedboost::%loop-player%} is true:
+			if {speedboosttype::%loop-player%} is "20m":
+				subtract 1 from {tempspeedboosttime::%loop-player%}
+				if {tempspeedboosttime::%loop-player%} = 0:
+					subtract 0.25 from {playerwalkspeed::%loop-player%}
+					subtract 0.05 from loop-player's walking speed
+					set {tempspeedboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesSpeed} to floor({tempspeedboosttime::%loop-player%} / 60)
+					set {_secondsSpeed} to mod({tempspeedboosttime::%loop-player%}, 60)
+					if {_secondsSpeed} < 10:
+						set {_formattedSpeed} to "%{_minutesSpeed}%:0%{_secondsSpeed}%"
+					else:
+						set {_formattedSpeed} to "%{_minutesSpeed}%:%{_secondsSpeed}%"
+					set {_speedText} to "&8[&r&f&l+25%% Speed&r &8(&6&l%{_formattedSpeed}%&8/&6&l20:00&r&8)]"
+			else if {speedboosttype::%loop-player%} is "15m":
+				subtract 1 from {tempspeedboosttime::%loop-player%}
+				if {tempspeedboosttime::%loop-player%} = 0:
+					subtract 0.5 from {playerwalkspeed::%loop-player%}
+					subtract 0.1 from loop-player's walking speed
+					set {tempspeedboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesSpeed} to floor({tempspeedboosttime::%loop-player%} / 60)
+					set {_secondsSpeed} to mod({tempspeedboosttime::%loop-player%}, 60)
+					if {_secondsSpeed} < 10:
+						set {_formattedSpeed} to "%{_minutesSpeed}%:0%{_secondsSpeed}%"
+					else:
+						set {_formattedSpeed} to "%{_minutesSpeed}%:%{_secondsSpeed}%"
+					set {_speedText} to "&8[&r&f&l+50%% Speed&r &8(&6&l%{_formattedSpeed}%&8/&6&l15:00&r&8)]"
+			else if {speedboosttype::%loop-player%} is "45s":
+				subtract 1 from {tempspeedboosttime::%loop-player%}
+				if {tempspeedboosttime::%loop-player%} = 0:
+					subtract 0.15 from {playerwalkspeed::%loop-player%}
+					subtract 0.03 from loop-player's walking speed
+					set {tempspeedboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesSpeed} to floor({tempspeedboosttime::%loop-player%} / 60)
+					set {_secondsSpeed} to mod({tempspeedboosttime::%loop-player%}, 60)
+					if {_secondsSpeed} < 10:
+						set {_formattedSpeed} to "%{_minutesSpeed}%:0%{_secondsSpeed}%"
+					else:
+						set {_formattedSpeed} to "%{_minutesSpeed}%:%{_secondsSpeed}%"
+					set {_speedText} to "&8[&r&f&l+15%% Speed&r &8(&6&l%{_formattedSpeed}%&8/&6&l00:45&r&8)]"
+			else if {speedboosttype::%loop-player%} is "30s":
+				subtract 1 from {tempspeedboosttime::%loop-player%}
+				if {tempspeedboosttime::%loop-player%} = 0:
+					subtract 0.25 from {playerwalkspeed::%loop-player%}
+					subtract 0.05 from loop-player's walking speed
+					set {tempspeedboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesSpeed} to floor({tempspeedboosttime::%loop-player%} / 60)
+					set {_secondsSpeed} to mod({tempspeedboosttime::%loop-player%}, 60)
+					if {_secondsSpeed} < 10:
+						set {_formattedSpeed} to "%{_minutesSpeed}%:0%{_secondsSpeed}%"
+					else:
+						set {_formattedSpeed} to "%{_minutesSpeed}%:%{_secondsSpeed}%"
+					set {_speedText} to "&8[&r&f&l+25%% Speed&r &8(&6&l%{_formattedSpeed}%&8/&6&l00:30&r&8)]"
+		else:
+			set {_speedText} to ""
+		
+		# Build the XP Boost text (center)
+		if {tempxpboost::%loop-player%} is true:
+			if {tempxpboosttype::%loop-player%} is "5m":
+				subtract 1 from {tempxpboosttime::%loop-player%}
+				if {tempxpboosttime::%loop-player%} = 0:
+					subtract {_tempcurrentxpmultiplier::%loop-player%} from {miningmultiplier::%loop-player%}
+					set {tempxpboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesXP} to floor({tempxpboosttime::%loop-player%} / 60)
+					set {_secondsXP} to mod({tempxpboosttime::%loop-player%}, 60)
+					if {_secondsXP} < 10:
+						set {_formattedXP} to "%{_minutesXP}%:0%{_secondsXP}%"
+					else:
+						set {_formattedXP} to "%{_minutesXP}%:%{_secondsXP}%"
+					set {_xpText} to "&8[&r&2x XP&r &8(&6&l%{_formattedXP}%&8/&6&l5:00&r&8)]"
+			else if {tempxpboosttype::%loop-player%} is "8m":
+				subtract 1 from {xpboosttime::%loop-player%}
+				if {xpboosttime::%loop-player%} = 0:
+					subtract {_tempcurrentxpmultiplier::%loop-player%} from {miningmultiplier::%loop-player%}
+					set {tempxpboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesXP} to floor({tempxpboosttime::%loop-player%} / 60)
+					set {_secondsXP} to mod({tempxpboosttime::%loop-player%}, 60)
+					if {_secondsXP} < 10:
+						set {_formattedXP} to "%{_minutesXP}%:0%{_secondsXP}%"
+					else:
+						set {_formattedXP} to "%{_minutesXP}%:%{_secondsXP}%"
+					set {_xpText} to "&8[&r&1.5x XP&r &8(&6&l%{_formattedXP}%&8/&6&l8:00&r&8)]"
+			else if {tempxpboosttype::%loop-player's uuid%} is "20s":
+				subtract 1 from {tempxpboosttime::%loop-player%}
+				if {tempxpboosttime::%loop-player%} = 0:
+					subtract 0.25 from {miningmultiplier::%loop-player%}
+					set {tempxpboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesXP} to floor({tempxpboosttime::%loop-player%} / 60)
+					set {_secondsXP} to mod({tempxpboosttime::%loop-player%}, 60)
+					if {_secondsXP} < 10:
+						set {_formattedXP} to "%{_minutesXP}%:0%{_secondsXP}%"
+					else:
+						set {_formattedXP} to "%{_minutesXP}%:%{_secondsXP}%"
+					set {_xpText} to "&8[&r&61.25x XP&r &8(&6&l%{_formattedXP}%&8/&6&l0:20&r&8)]"
+			else if {tempxpboosttype::%loop-player%} is "1m":
+				subtract 1 from {tempxpboosttime::%loop-player%}
+				if {tempxpboosttime::%loop-player%} = 0:
+					subtract 0.15 from {miningmultiplier::%loop-player%}
+					set {tempxpboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesXP} to floor({tempxpboosttime::%loop-player%} / 60)
+					set {_secondsXP} to mod({tempxpboosttime::%loop-player%}, 60)
+					if {_secondsXP} < 10:
+						set {_formattedXP} to "%{_minutesXP}%:0%{_secondsXP}%"
+					else:
+						set {_formattedXP} to "%{_minutesXP}%:%{_secondsXP}%"
+					set {_xpText} to "&8[&r&61.15x XP&r &8(&6&l%{_formattedXP}%&8/&6&l1:00&r&8)]"
+		else:
+			set {_xpText} to ""
+		
+		# Build the CM Boost text (right)
+		if {tempcmboost::%loop-player%} is true:
+			if {cmboosttype::%loop-player%} is "6m":
+				subtract 1 from {cmbtime::%loop-player%}
+				if {cmbtime::%loop-player%} = 0:
+					set {tempcmboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesCM} to floor({cmbtime::%loop-player%} / 60)
+					set {_secondsCM} to mod({cmbtime::%loop-player%}, 60)
+					if {_secondsCM} < 10:
+						set {_formattedCM} to "%{_minutesCM}%:0%{_secondsCM}%"
+					else:
+						set {_formattedCM} to "%{_minutesCM}%:%{_secondsCM}%"
+					set {_cmText} to "&8[&r&21.5x Crops&r &8(&6&l%{_formattedCM}%&8/&6&l6:00&r&8)]"
+			else if {cmboosttype::%loop-player%} is "4m":
+				subtract 1 from {cmbtime::%loop-player%}
+				if {cmbtime::%loop-player%} = 0:
+					set {tempcmboost::%loop-player%} to false
+					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
+				else:
+					set {_minutesCM} to floor({cmbtime::%loop-player%} / 60)
+					set {_secondsCM} to mod({cmbtime::%loop-player%}, 60)
+					if {_secondsCM} < 10:
+						set {_formattedCM} to "%{_minutesCM}%:0%{_secondsCM}%"
+					else:
+						set {_formattedCM} to "%{_minutesCM}%:%{_secondsCM}%"
+					set {_minutesCM} to floor({cmbtime::%loop-player%} / 60)
+					set {_secondsCM} to mod({cmbtime::%loop-player%}, 60)
+					if {_secondsCM} < 10:
+						set {_formattedCM} to "%{_minutesCM}%:0%{_secondsCM}%"
+					else:
+						set {_formattedCM} to "%{_minutesCM}%:%{_secondsCM}%"
+					set {_cmText} to "&8[&r&22x Crops&r &8(&6&l%{_formattedCM}%&8/&6&l4:00&r&8)]"
+		else:
+			set {_cmText} to ""
+
+		if {_cmText} is "":
+			if {_xpText} is "":
+				if {_speedText} is not "":
+					send action bar "%{_speedText}%" to loop-player
+			else:
+				if {_speedText} is "":
+					send action bar "%{_xpText}%" to loop-player
+				else:
+					send action bar "%{_speedText}%	 %{_xpText}%" to loop-player
+		else if {_xpText} is "":
+			if {_speedText} is "":
+				send action bar "%{_cmText}%" to loop-player
+			else:
+				send action bar "%{_speedText}%	 %{_cmText}%" to loop-player
+		else if {_speedText} is "":
+			send action bar "%{_xpText}%	 %{_cmText}%" to loop-player
+		else:
+			send action bar "%{_speedText}%	 %{_xpText}%	 %{_cmText}%" to loop-player
+
+

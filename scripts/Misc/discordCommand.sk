@@ -1,4 +1,0 @@
-command /discord:
-	permission: sk.discord
-	trigger:
-		send "&d&lLink to the discord: <link:https://discord.gg/zQd2ssuBBx>&c&l&nClick here." to player

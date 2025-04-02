@@ -1,0 +1,109 @@
+function runEvent():
+    if {chatgame::active} is false:
+        set {_randomevent} to random integer from 1 to 2
+
+        if {_randomevent} is 1:
+            set {_targetNumber} to random integer from 1 to 25
+            broadcast "&8[&a&lEvent&8] &a&lRandom number challenge! Guess the random number between 1 and 25."
+            set {chatgame::number} to {_targetNumber}
+            set {chatgame::active} to true
+
+            wait 1 minute
+            if {chatgame::active} is true:
+                broadcast "&8[&a&lEvent&8] &a&lRandom number challenge has ended. No one guessed the correct number &8[&9&l%{chatgame::number}%&8]&a."
+                delete {chatgame::number}
+                set {chatgame::active} to false
+
+        else if {_randomevent} is 2:
+            set {_num1} to random integer from 1 to 20
+            set {_num2} to random integer from 1 to 20
+            set {_operation} to random integer from 1 to 6
+
+            if {_operation} is 1:
+                set {_symbol} to "+"
+                set {_answer} to {_num1} + {_num2}
+            if {_operation} is 2:
+                set {_symbol} to "-"
+                set {_answer} to {_num1} - {_num2}
+            if {_operation} is 3:
+                set {_symbol} to "*"
+                set {_answer} to {_num1} * {_num2}
+            if {_operation} is 4:
+                set {_symbol} to "÷"
+                set {_answer} to round({_num1} / {_num2})
+
+            set {_list::*} to 1 and 2 and 3 and 4
+            if {_list::*} contains {_operation}:
+                broadcast "&8[&a&lEvent&8] &a&lMath challenge! Solve: &e%{_num1}% %{_symbol}% %{_num2}%"
+                set {chatgame::mathAnswer} to {_answer}
+            else:
+                set {_piMultiples::*} to "π" and "π/2" and "3π/2" and "2π"
+                set {_selectedPi} to random element out of {_piMultiples::*}
+                
+                if {_operation} is 5:
+                    set {_symbol} to "sin"
+                    if {_selectedPi} is "π":
+                        set {_answer} to 0
+                    if {_selectedPi} is "π/2":
+                        set {_answer} to 1
+                    if {_selectedPi} is "3π/2":
+                        set {_answer} to -1
+                    if {_selectedPi} is "2π":
+                        set {_answer} to 0
+
+                if {_operation} is 6:
+                    set {_symbol} to "cos"
+                    if {_selectedPi} is "π":
+                        set {_answer} to -1
+                    if {_selectedPi} is "π/2":
+                        set {_answer} to 0
+                    if {_selectedPi} is "3π/2":
+                        set {_answer} to 0
+                    if {_selectedPi} is "2π":
+                        set {_answer} to 1
+
+                broadcast "&8[&a&lEvent&8] &a&lMath challenge! Solve: &e%{_symbol}%(%{_selectedPi}%)"
+                set {chatgame::mathAnswer} to {_answer}
+
+            set {chatgame::active} to true
+
+            wait 1 minute
+            if {chatgame::active} is true:
+                broadcast "&8[&a&lEvent&8] &a&lMath challenge has ended. No one guessed the correct answer &8[&9&l%{chatgame::mathAnswer}%&8]&a."
+                delete {chatgame::mathAnswer}
+                set {chatgame::active} to false
+    else:
+        broadcast "chat game already happening"
+
+on chat:
+    if {chatgame::active} is true:
+        if message is "%{chatgame::number}%":
+            cancel event
+            broadcast "&8[&a&lEvent&8] &a&l%player% has guessed the correct number &8[&9&l%{chatgame::number}%&8]&a!"
+            send "&8[&a&lEvent&8] &aYou have been awarded &6&lExp &8[&6&l300&8]&a."
+            add 300 to {exp::%player's uuid%}
+            delete {chatgame::number}
+            set {chatgame::active} to false
+        if message is "%{chatgame::mathAnswer}%":
+            cancel event
+            broadcast "&8[&a&lEvent&8] &a&l%player% has solved the math challenge correctly &8[&9&l%{chatgame::mathAnswer}%&8]&a!"
+            send "&8[&a&lEvent&8] &aYou have been awarded &6&lExp &8[&6&l300&8]&a."
+            add 300 to {exp::%player's uuid%}
+            delete {chatgame::mathAnswer}
+            set {chatgame::active} to false
+
+command /cancelevent:
+    trigger:
+        if {chatgame::active} is true:
+            broadcast "&8[&a&lEvent&8] &a&lRandom number challenge has ended. No one guessed the correct number &8[&9&l%{chatgame::number}%&8]&a."
+            delete {chatgame::number}
+            set {chatgame::active} to false
+
+        else if {chatgame::active} is true:
+            broadcast "&8[&a&lEvent&8] &a&lMath challenge has ended. No one guessed the correct answer &8[&9&l%{chatgame::mathAnswer}%&8]&a."
+            delete {chatgame::mathAnswer}
+            set {chatgame::active} to false
+
+command /runevent:
+    trigger:
+        runEvent()

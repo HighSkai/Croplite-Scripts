@@ -1,60 +1,114 @@
 function loadEnchanterGui(p: player):
-	set {_gui} to chest inventory with 5 rows named "&4&lEnchanter &8[&e&lPoints: %{skillpoints::%{_p}'s uuid%}%&r&8]"
+	set {_gui} to chest inventory with 5 rows named "&5&lEnchanter &8| &e&lEnchant Points &8[&r&e&l%{enchantpoints::%{_p}'s uuid%}%&r&8]"
 	
 	loop 54 times:
 		set {_slot} to loop-number - 1
-		set slot {_slot} of {_gui} to purple stained glass pane
+		set slot {_slot} of {_gui} to purple stained glass pane named " "
 
 		if {_slot} is 14:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&4&lSharpness Skill&8]"
+			set slot {_slot} of {_gui} to enchanted book named "&8[&4&lSharpness Enchant&8]"
 		if {_slot} is 15:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&6&lFire Aspect Skill&8]"
+			set slot {_slot} of {_gui} to enchanted book named "&8[&6&lFire Aspect Enchant&8]"
 		if {_slot} is 16:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&8&lCrop Reap Skill&8]"
+			set slot {_slot} of {_gui} to enchanted book named "&8[&8&lCrop Reap Enchant&8]"
 		if {_slot} is 23:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&a&lExperience Skill&8]"
+			set slot {_slot} of {_gui} to enchanted book named "&8[&a&lExperience Enchant&8]"
 		if {_slot} is 24:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&2&lMob Spawn Skill&8]"
+			set slot {_slot} of {_gui} to enchanted book named "&8[&2&lMob Spawn Enchant&8]"
 		if {_slot} is 25 or 32 or 33 or 34:
-			set slot {_slot} of {_gui} to book named " "
+			set slot {_slot} of {_gui} to book named "&8[&4&lComing Soon&8] "
 		if {_slot} is 20:
-			set slot {_slot} of {_gui} to {_p}'s tool
+			set slot {_slot} of {_gui} to slot 0 of {_p}
+		
+	set slot 40 of {_gui} to barrier named "&8[&4&lClose&8]"
 
 	open {_gui} to {_p}
 
 on inventory click:
-	if event-inventory's name contains "&4&lEnchanter":
-		if event-clicktype is number key:
-			cancel event
+	if event-inventory's name contains "&5&lEnchanter":
 		cancel event
-		event-inventory is not player's inventory
+
 		if event-slot is 14:
 			close player's inventory
-			cancel event
-			sharpnessskill(player)
+			loadSharpnessEnchantGUI(player)
 		if event-slot is 15:
 			close player's inventory
-			cancel event
-			fireaspectskill(player)
+			loadFireAspectEnchantGUI(player)
 		if event-slot is 16:
 			close player's inventory
-			cancel event
-			cropreapskill(player)
 		if event-slot is 23:
 			close player's inventory
-			cancel event
-			experienceskill(player)
 		if event-slot is 24:
 			close player's inventory
-			cancel event
-			mobspawnskill(player)
 		if event-slot is 25 or 32 or 33 or 34:
 			send "&8[&dCroplite&8] &aEnchantment is coming soon..."
 
+		if event-slot is 40:
+			close player's inventory
+
+function addEnchantLore(p: player):
+	set {_item} to slot 0 of {_p}
+	set {_tags::*} to string list tag "Croplite:enchants" of custom nbt of slot 0 of {_p}
+	if {_tags::*} is set:
+		make {_item} glint
+
+	set {_highestSharpnessLevel} to 0
+	set {_highestFireAspectLevel} to 0
+
+	loop {_tags::*}:
+		set {_parts::*} to loop-value split at ":"
+		set {_enchantID} to {_parts::1}
+
+		if {_enchantID} is "0":
+			set {_sharpnessLevel} to {_parts::2} parsed as number
+			if {_sharpnessLevel} > {_highestSharpnessLevel}:
+				set {_highestSharpnessLevel} to {_sharpnessLevel} 
+
+		if {_enchantID} is "1":
+			set {_fireAspectLevel} to {_parts::2} parsed as number
+			if {_fireAspectLevel} > {_highestFireAspectLevel}:
+				set {_highestFireAspectLevel} to {_fireAspectLevel}
+
+	set {_size} to size of {_tags::*}
+	set {_i} to {_size}
+	while {_i} > 0:
+		set {_entry} to {_tags::%{_i}%}
+		set {_parts::*} to {_entry} split at ":"
+		if {_parts::1} is "0":
+			set {_sharpnessLevel} to {_parts::2} parsed as number
+			if {_sharpnessLevel} < {_highestSharpnessLevel}:
+				remove "0:%{_sharpnessLevel}%" from string list tag "Croplite:enchants" of custom nbt of slot 0 of {_p}
+
+		if {_parts::1} is "1":
+			set {_fireAspectLevel} to {_parts::2} parsed as number
+			if {_fireAspectLevel} < {_highestFireAspectLevel}:
+				remove "1:%{_fireAspectLevel}%" from string list tag "Croplite:enchants" of custom nbt of slot 0 of {_p}
+
+		remove 1 from {_i}
+
+	set {_lore::*} to lore of slot 0 of {_p}
+	set {_size} to size of {_lore::*}
+	set {_rarity} to {_lore::%{_size}%}
+
+	set {_newlore::*} to "&7---------------"
+	loop integers from 2 to {_size}:
+		if {_lore::%loop-integer%} is not equal to "&7---------------":
+			add {_lore::%loop-integer%} to {_newlore::*}
+		else:
+			stop 1 loop
+	add "&7---------------" to {_newlore::*}
+
+	loop values "Sharpness %{_highestSharpnesslevel}%" of {enchants-Json}:
+		add json-value to {_newlore::*}
+
+	loop values "Fire Aspect %{_highestFireAspectlevel}%" of {enchants-Json}:
+		add json-value to {_newlore::*}
+	
+	add {_rarity} to {_newlore::*}
+	set lore of {_item} to colored {_newlore::*}
+	set slot 0 of {_p} to {_item}
+		
 command /enchanter:
 	permission: *
 	trigger:
-		if player's tool is a hoe:
-			loadEnchanterGui(player)
-		else:
-			send "&8[&d&lCroplite&8] &aYou must hold your Scythe to interact with the Enchanter." to player
+		loadEnchanterGui(player)

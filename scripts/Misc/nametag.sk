@@ -1,0 +1,14 @@
+on join:
+    set join message to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%&r has joined."
+on quit:
+    set quit message to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%&r has left."
+on death of player:
+    set death message to "&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r has died."
+
+on chat:
+    set the chat format to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%: &r%colored message%"
+
+function setPrefix(p: player):
+    console command "tab player %{_p}% tagprefix '&8[&9&l%{level::%{_p}'s uuid%}%&8]%{prefix::%uuid of {_p}%}% '"
+
+    set {_p}'s tab list name to "&8[&9&l%{level::%{_p}'s uuid%}%&8]%colored {prefix::%{_p}'s uuid%}% %colored {_p}'s name%"

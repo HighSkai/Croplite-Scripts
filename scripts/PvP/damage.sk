@@ -1,0 +1,116 @@
+on damage:
+    if attacker's tool is tagged as item tag "minecraft:hoes":
+        set {_scytheenchants::*} to string list tag "Croplite:enchants" of custom nbt of attacker's tool
+        set {_scythestats::*} to string list tag "Croplite:scythe-stats" of custom nbt of attacker's tool
+
+        loop {_scythestats::*}:
+            set {_parts::*} to loop-value split at ":"
+            set {_id} to {_parts::1}
+
+            if {_id} is "damage":
+                set {_damage} to {_parts::2} parsed as number
+            
+        loop {_scytheenchants::*}:
+            set {_parts::*} to loop-value split at ":"
+            set {_id} to {_parts::1}
+        
+            if {_id} is "0":
+                add {_parts::2} parsed as number to {_damage}
+            
+            if {_id} is "1":
+                set {_time} to timespan({_parts::2} parsed as number, seconds)
+                if victim is a mob:
+                    ignite victim for {_time}
+                else:
+                    if {pvpstatus::%victim's uuid%} is true:
+                        ignite victim for {_time}
+
+        if hit is not critical:
+            {_damage} = {_damage} / 2
+
+        {_damage} = {_damage} - armorEnchantDamage(damage, victim)
+
+        set damage to {_damage}
+
+        if damage < 0:
+            set damage to 0.5
+
+        if victim is a armor stand:
+            spawnDamageDisplay(victim, damage)
+        else if victim is a mob:
+            spawnDamageDisplay(victim, damage)
+        else if victim is a player:
+            if {pvpstatus::%victim's uuid%} is true:
+                if {pvpstatus::%attacker's uuid%} is true:
+                    spawnDamageDisplay(victim, damage)
+    else:
+        set damage to 0.5
+        spawnDamageDisplay(victim, damage)
+        
+local function spawnDamageDisplay(victim: entity, damage: number):
+    set {_random-vector-offset} to a random vector
+    set standard length of {_random-vector-offset} to 0.6
+    summon text display 0.7 block in front of {_victim}'s head offset by {_random-vector-offset}
+    set {_damageDisplay} to last spawned entity
+
+    set display text of {_damageDisplay} to "&8[&4&l%{_damage}%&8]"
+    apply drop shadow to {_damageDisplay}
+
+    set display billboard of {_damageDisplay} to center
+    set display text background color of {_damageDisplay} to bukkitColor(40,0,0,0)
+
+    wait 0.5 seconds
+    kill {_damageDisplay}
+
+local function armorEnchantDamage(damage: number, victim: entity) ::number: 
+    if helmet of {_victim} is not air:
+        set {_helmet-tags::*} to string list tag "Croplite:enchants" of custom nbt of {_victim}'s helmet
+    if chestplate of {_victim} is not air:
+        set {_chestplate-tags::*} to string list tag "Croplite:enchants" of custom nbt of {_victim}'s chestplate
+    if leggings of {_victim} is not air:
+        set {_leggings-tags::*} to string list tag "Croplite:enchants" of custom nbt of {_victim}'s leggings
+    if boots of {_victim} is not air:
+        set {_boots-tags::*} to string list tag "Croplite:enchants" of custom nbt of {_victim}'s boots
+
+    if {_helmet-tags::*} is set:
+        loop {_helmet-tags::*}:
+            set {_parts::*} to loop-value split at ":"
+            set {_id} to {_parts::1}
+        if {_id} is "prot":
+            set {_helmet-defense} to {_parts::2} parsed as number
+
+    if {_chestplate-tags::*} is set:      
+        loop {_chestplate-tags::*}:
+            set {_parts::*} to loop-value split at ":"
+            set {_id} to {_parts::1}
+        if {_id} is "prot":
+            set {_chestplate-defense} to {_parts::2} parsed as number
+
+    if {_leggings-tags::*} is set:
+        loop {_leggings-tags::*}:
+            set {_parts::*} to loop-value split at ":"
+            set {_id} to {_parts::1}
+        if {_id} is "prot":
+            set {_leggings-defense} to {_parts::2} parsed as number
+
+    if {_boots-tags::*} is set:
+        loop {_boots-tags::*}:
+            set {_parts::*} to loop-value split at ":"
+            set {_id} to {_parts::1}
+        if {_id} is "prot":
+            set {_boots-defense} to {_parts::2} parsed as number
+
+    broadcast "helmet defense : %{_helmet-defense}%"
+    broadcast "chestplate defense : %{_chestplate-defense}%"
+    broadcast "leggings defense : %{_leggings-defense}%"
+    broadcast "boots defense : %{_boots-defense}%"
+    return {_helmet-defense} + {_chestplate-defense} + {_leggings-defense} + {_boots-defense}
+
+command /spawntestdummy:
+    trigger:
+        spawn a armor stand 5 meters above the player
+        set {_stand} to last spawned entity
+        set name of {_stand} to "test_dummy"
+
+on death of armor stand:
+    #cancel event

@@ -1,0 +1,22 @@
+on right click:
+	if name of clicked entity is "&d&lCarlo":
+		if {chatmessage::Carlo::%player's uuid%} is not set:
+			set {chatmessage::Carlo::%player's uuid%} to 0
+		if {chatmessage::Carlo::%player's uuid%} = 0:
+			send "&7[&dCarlo&7]&f: Mrrrow?" to player
+			wait 2 seconds
+			play sound "ui.toast.challenge_complete" to player
+			send title "&2Objective &l&nComplete!" with subtitle "&eReturn to the Fisherman" to player for 4 seconds
+			send "&7------------------------------" to player
+			send "&8[&2Objective &l&nComplete!&8]" to player
+			send "&7------------------------------" to player
+			add 1 to {chatmessage::Carlo::%player's uuid%}
+			add 1 to {chatmessage::Mackerel::%player's uuid%}
+			set {objprogress::%player's uuid%} to 1
+		else:
+			send "&7[&dCarlo&7]&f: Meoww!" to player
+		
+command /resetcarlomessage:
+	permission: *
+	trigger:
+		set {chatmessage::Carlo::%player's uuid%} to 0

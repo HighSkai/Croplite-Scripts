@@ -5,13 +5,14 @@ command /globalbooster1:
             set {globalxpbooster1} to boss bar with id "globalbar1" with title "+10%% XP Global Booster" with color yellow with progress 0
             set bar style of {globalxpbooster1} to segmented 10
         add all players to {globalxpbooster1}
-        if bar progress of {globalxpbooster1} is less than 100:
+        if bar progress of {globalxpbooster1} is less than 90:
             add 10 to bar progress of {globalxpbooster1}
             loop all players:
                 if {globalxpboost1::%loop-player's uuid%} is not true:
                     set {globalxpboost1::%loop-player's uuid%} to true
                     add 0.1 to {miningmultiplier::%loop-player's uuid%}
             send "&8[&dCroplite&8] &r&a&l%player% has activated a 10%% Global XP booster for 1 hour!" to all players
+            remove 1 netherite upgrade smithing template named "&e&l+10%% global XP booster &8(&c1h&8)" from player's inventory
         else:
             send "&4&lThe limit on this global booster has been reached for now!" to player
 

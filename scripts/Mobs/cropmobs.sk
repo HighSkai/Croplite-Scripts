@@ -1,69 +1,607 @@
-on break:
-	loop integers between 0 and 16:
-		if "%region at player%" contains "area%loop-integer%":
-			chance of {mobspawnchance::%player's uuid%}%:
-				chance of 0.5%:
-					spawn zombie at event-block
-					set name of spawned entity to "&clNightmare Fuel"
-					set {_temp} to {_loop-integer}/4
-					ceil({_temp})
-					set {_tool} to a leather helmet
-					enchant {_tool} with protection {_temp}
-					equip spawned entity with {_tool}
-					set {_tool} to a leather chestplate
-					enchant {_tool} with protection {_temp}
-					equip spawned entity with {_tool}
-					set {_tool} to leather leggings
-					enchant {_tool} with protection {_temp}
-					equip spawned entity with {_tool}
-					set {_tool} to leather boots
-					enchant {_tool} with protection {_temp}
-					equip spawned entity with {_tool}
-					set {_tool} to a stick
-					enchant {_tool} with knockback 100
-					set tool of spawned entity to {_tool}
-					stop
-				set {_num} to a random integer between 5 and 10
-				set {_num} to {_num}*loop-integer
-				set {_num} to {_num}/4
-				if {_num} <= 3:
-					spawn 1 zombie villager at event-block
-					set profession of spawned entity to farmer profession
-					set name of spawned entity to "&clUndead Farmer"
-					equip spawned entity with a leather helmet
-					equip spawned entity with a leather chestplate
-					equip spawned entity with leather leggings
-					equip spawned entity with leather boots
-					chance of 25%:
-						set {_item} to a wooden hoe
-						enchant {_item} with sharpness 1
-						set tool of spawned entity to {_item}
-					else if {_num} <= 5:
-						spawn 1 zombie villager at event-block
-						set profession of spawned entity to farmer profession
-						set name of spawned entity to "&clScarecrow"
-						equip spawned entity with a chainmail helmet
-						equip spawned entity with a chainmail chestplate
-						equip spawned entity with chainmail leggings
-						equip spawned entity with chainmail boots
-						set {_temp} to a random integer between 1 and 6
-						if {_temp} is less than or equal to 4:
-							set {_item} to a stone hoe
-							set tool of spawned entity to {_item}
-						else if {_temp} is 5:
-							set {_item} to a stone hoe
-							enchant {_item} with sharpness 1
-							set tool of spawned entity to {_item}
-						else if {_temp} is 6:
-							set {_item} to a stone sword
-							set tool of spawned entity to {_item}
-                		
-                    
-on death:
-    if victim is a mob:
-        cancel drops
-    
-on damage:
-    if attacker is a silverfish:
-        increase damage by 2
-    
+function spawnCropMob(farm: number, b: block):
+	if {_farm} = 1:
+		if chance of 50%:
+			spawn a zombie villager at {_b}
+			set {_mob} to last spawned entity
+			set villager profession of {_mob} to farmer profession
+			set name of {_mob} to "&c&lUndead Farmer &8[&c&lT1&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+		else if chance of 30%:
+			spawn a zombie at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&2&lZombie Farmer &8[&2&lT1&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+		else:
+			spawn a skeleton at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&f&lFarmer Bones &8[&f&lT1&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+	else if {_farm} = 2:
+		if chance of 50%:
+			spawn a zombie villager at {_b}
+			set {_mob} to last spawned entity
+			set villager profession of {_mob} to farmer profession
+			set name of {_mob} to "&c&lUndead Farmer &8[&c&lT2&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+		else if chance of 30%:
+			spawn a pillager at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&2&lZombie Farmer &8[&2&lT2&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+		else:
+			spawn a skeleton at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&f&lFarmer Bones &8[&f&lT2&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+	else if {_farm} = 3:
+		if chance of 50%:
+			spawn a zombie villager at {_b}
+			set {_mob} to last spawned entity
+			set villager profession of {_mob} to farmer profession
+			set name of {_mob} to "&c&lUndead Farmer &8[&c&lT3&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+		else if chance of 30%:
+			spawn a husk at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&2&lZombie Farmer &8[&2&lT3&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+		else:
+			spawn a wither skeleton at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&f&lFarmer Bones &8[&f&lT3&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+	else if {_farm} = 4:
+		if chance of 50%:
+			spawn a zombie villager at {_b}
+			set {_mob} to last spawned entity
+			set villager profession of {_mob} to farmer profession
+			set name of {_mob} to "&c&lUndead Farmer &8[&c&lT4&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+		else if chance of 30%:
+			spawn a wither skeleton at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&f&lFarmer Bones &8[&f&lT4&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+		else:
+			spawn a evoker at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&5&lUndead Mage &8[&5&lT4&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+
+			spawn a ravager at {_b}
+			set {_mob} to last spawned entity
+			set name of {_mob} to "&5&lUndead Ravager &8[&5&lT4&r&8]"
+			equipArmor({_farm}, {_mob})
+			equipSword({_farm}, {_mob})
+			spawn {_mob} at {_b}
+
+function unequipArmor(mob: entity):
+	set helmet of {_mob} to air
+	set chestplate of {_mob} to air
+	set leggings of {_mob} to air
+	set boots of {_mob} to air
+
+function equipArmor(farm: number, mob: entity):
+	unequipArmor({_mob})
+	if {_farm} = 1:
+		set {_random} to a random integer between 1 and 4
+		set {_prot} to a random integer between 0 and 1
+		if chance of 60%:
+			set {_helmet} to unbreakable leather helmet
+			if {_prot} = 1:
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			else:
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable leather chestplate
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				dye {_chestplate} green
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable leather leggings
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable leather boots
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				dye {_boots} green
+				set boots of {_mob} to {_boots}
+		else if chance of 25%:
+			set {_helmet} to unbreakable golden helmet
+			if {_prot} = 1:
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			else:
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable golden chestplate
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable golden leggings
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable golden boots
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				set boots of {_mob} to {_boots}
+		else:
+			set {_helmet} to unbreakable chainmail helmet
+			if {_prot} = 1:
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			else:
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable chainmail chestplate
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable chainmail leggings
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable chainmail boots
+				if {_prot} = 1:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				else:
+					add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+				set boots of {_mob} to {_boots}
+	else if {_farm} = 2:
+		set {_random} to a random integer between 2 and 4
+		set {_prot} to a random integer between 1 and 2
+		set {_fire-prot} to a random integer between 0 and 1
+		if chance of 10%:
+			set {_helmet} to unbreakable leather helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			if {_fire-prot} = 1:
+				enchant {_helmet} with fire protection 1
+			dye {_helmet} dark green
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable leather chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				if {_fire-prot} = 1:
+					enchant {_chestplate} with fire protection 1
+				dye {_chestplate} dark green
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable leather leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				if {_fire-prot} = 1:
+					enchant {_leggings} with fire protection 1
+				dye {_leggings} dark green
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable leather boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				if {_fire-prot} = 1:
+					enchant {_boots} with fire protection 1
+				dye {_boots} dark green
+				set boots of {_mob} to {_boots}
+		else if chance of 20%:
+			set {_helmet} to unbreakable golden helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			if {_fire-prot} = 1:
+				enchant {_helmet} with fire protection 1
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable golden chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				if {_fire-prot} = 1:
+					enchant {_chestplate} with fire protection 1
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable golden leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				if {_fire-prot} = 1:
+					enchant {_leggings} with fire protection 1
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable golden boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				if {_fire-prot} = 1:
+					enchant {_boots} with fire protection 1
+				set boots of {_mob} to {_boots}
+		else if chance of 30%:
+			set {_helmet} to unbreakable chainmail helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			if {_fire-prot} = 1:
+				enchant {_helmet} with fire protection 1
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable chainmail chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				if {_fire-prot} = 1:
+					enchant {_chestplate} with fire protection 1
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable chainmail leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				if {_fire-prot} = 1:
+					enchant {_leggings} with fire protection 1
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable chainmail boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				if {_fire-prot} = 1:
+					enchant {_boots} with fire protection 1
+				set boots of {_mob} to {_boots}
+		else:
+			set {_helmet} to unbreakable iron helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			if {_fire-prot} = 1:
+				enchant {_helmet} with fire protection 1
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 3:
+				set {_chestplate} to unbreakable iron chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				if {_fire-prot} = 1:
+					enchant {_chestplate} with fire protection 1
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable iron leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				if {_fire-prot} = 1:
+					enchant {_leggings} with fire protection 1
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable iron boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				if {_fire-prot} = 1:
+					enchant {_boots} with fire protection 1
+				set boots of {_mob} to {_boots}
+	else if {_farm} = 3:
+		set {_random} to a random integer between 3 and 4
+		set {_prot} to a random integer between 3 and 4
+		set {_fire-prot} to a random integer between 1 and 2
+		if chance of 5%:
+			set {_helmet} to unbreakable leather helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			dye {_helmet} rgb(210,180,140)
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable leather chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				dye {_chestplate} rgb(210,180,140)
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable leather leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				dye {_leggings} rgb(210,180,140)
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable leather boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				dye {_boots} rgb(210,180,140)
+				set boots of {_mob} to {_boots}
+		else if chance of 10%:
+			set {_helmet} to unbreakable golden helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable golden chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable golden leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable golden boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set boots of {_mob} to {_boots}
+		else if chance of 10%:
+			set {_helmet} to unbreakable chainmail helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable chainmail chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable chainmail leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable chainmail boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set boots of {_mob} to {_boots}
+		else if chance of 30%:
+			set {_helmet} to unbreakable iron helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable iron chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable iron leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable iron boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set boots of {_mob} to {_boots}
+		else:
+			set {_helmet} to unbreakable unbreakable diamond helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+			if {_random} is greater than or equal to 4:
+				set {_chestplate} to unbreakable diamond chestplate
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+				enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set chestplate of {_mob} to {_chestplate}
+			if {_random} is greater than or equal to 3:
+				set {_leggings} to unbreakable diamond leggings
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+				enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set leggings of {_mob} to {_leggings}
+			if {_random} is greater than or equal to 2:
+				set {_boots} to unbreakable diamond boots
+				add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+				enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+				set boots of {_mob} to {_boots}
+	else if {_farm} = 4:
+		set {_prot} to a random integer between 3 and 4
+		set {_fire-prot} to a random integer between 2 and 4
+		set {_thorns} to a random integer between 1 and 3
+		if chance of 5%:
+			set {_helmet} to unbreakable unbreakable golden helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_helmet} with "thorns %{_thorns}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+
+			set {_chestplate} to unbreakable golden chestplate
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+			enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_chestplate} with "thorns %{_thorns}%" parsed as enchantment type
+			set chestplate of {_mob} to {_chestplate}
+
+			set {_leggings} to unbreakable golden leggings
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+			enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_leggings} with "thorns %{_thorns}%" parsed as enchantment type
+			set leggings of {_mob} to {_leggings}
+
+			set {_boots} to unbreakable golden boots
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+			enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_boots} with "thorns %{_thorns}%" parsed as enchantment type
+			set boots of {_mob} to {_boots}
+		else if chance of 5%:
+			set {_helmet} to unbreakable unbreakable chainmail helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_helmet} with "thorns %{_thorns}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+
+			set {_chestplate} to unbreakable chainmail chestplate
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+			enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_chestplate} with "thorns %{_thorns}%" parsed as enchantment type
+			set chestplate of {_mob} to {_chestplate}
+
+			set {_leggings} to unbreakable chainmail leggings
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+			enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_leggings} with "thorns %{_thorns}%" parsed as enchantment type
+			set leggings of {_mob} to {_leggings}
+
+			set {_boots} to unbreakable chainmail boots
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+			enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_boots} with "thorns %{_thorns}%" parsed as enchantment type
+			set boots of {_mob} to {_boots}
+		else if chance of 15%:
+			set {_helmet} to unbreakable unbreakable iron helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_helmet} with "thorns %{_thorns}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+
+			set {_chestplate} to unbreakable iron chestplate
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+			enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_chestplate} with "thorns %{_thorns}%" parsed as enchantment type
+			set chestplate of {_mob} to {_chestplate}
+
+			set {_leggings} to unbreakable iron leggings
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+			enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_leggings} with "thorns %{_thorns}%" parsed as enchantment type
+			set leggings of {_mob} to {_leggings}
+
+			set {_boots} to unbreakable iron boots
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+			enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_boots} with "thorns %{_thorns}%" parsed as enchantment type
+			set boots of {_mob} to {_boots}
+		else if chance of 35%:
+			set {_helmet} to unbreakable unbreakable diamond helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_helmet} with "thorns %{_thorns}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+
+			set {_chestplate} to unbreakable diamond chestplate
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+			enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_chestplate} with "thorns %{_thorns}%" parsed as enchantment type
+			set chestplate of {_mob} to {_chestplate}
+
+			set {_leggings} to unbreakable diamond leggings
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+			enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_leggings} with "thorns %{_thorns}%" parsed as enchantment type
+			set leggings of {_mob} to {_leggings}
+
+			set {_boots} to unbreakable diamond boots
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+			enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_boots} with "thorns %{_thorns}%" parsed as enchantment type
+			set boots of {_mob} to {_boots}
+		else:
+			set {_helmet} to unbreakable unbreakable netherite helmet
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_helmet}
+			enchant {_helmet} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_helmet} with "thorns %{_thorns}%" parsed as enchantment type
+			set helmet of {_mob} to {_helmet}
+
+			set {_chestplate} to unbreakable netherite chestplate
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+			enchant {_chestplate} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_chestplate} with "thorns %{_thorns}%" parsed as enchantment type
+			set chestplate of {_mob} to {_chestplate}
+
+			set {_leggings} to unbreakable netherite leggings
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+			enchant {_leggings} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_leggings} with "thorns %{_thorns}%" parsed as enchantment type
+			set leggings of {_mob} to {_leggings}
+
+			set {_boots} to unbreakable netherite boots
+			add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+			enchant {_boots} with "fire protection %{_fire-prot}%" parsed as enchantment type
+			enchant {_boots} with "thorns %{_thorns}%" parsed as enchantment type
+			set boots of {_mob} to {_boots}
+
+local function unequipSword(mob: entity):
+	set held item of {_mob} to air
+
+function equipSword(farm: number, mob: entity):
+	unequipSword({_mob})
+	if {_farm} = 1:
+		if chance of 75%:
+			set {_sword} to unbreakable wooden sword
+			set tool of {_mob} to {_sword}
+		else:
+			set {_sword} to unbreakable stick
+			enchant {_sword} with knockback 2
+			set tool of {_mob} to {_sword}
+	else if {_farm} = 2:
+		if chance of 75%:
+			set {_sword} to unbreakable stone sword
+			enchant {_sword} with sharpness 1
+			enchant {_sword} with fire aspect 1
+			set tool of {_mob} to {_sword}
+		else:
+			set {_sword} to unbreakable stick
+			enchant {_sword} with knockback 2
+			enchant {_sword} with sharpness 1
+			set tool of {_mob} to {_sword}
+	else if {_farm} = 3:
+		if chance of 75%:
+			set {_sword} to unbreakable diamond sword
+			enchant {_sword} with sharpness 2
+			enchant {_sword} with fire aspect 2
+			set tool of {_mob} to {_sword}
+		else:
+			set {_sword} to unbreakable stick
+			enchant {_sword} with knockback 2
+			enchant {_sword} with sharpness 2
+			set tool of {_mob} to {_sword}
+	else if {_farm} = 4:
+		if chance of 75%:
+			set {_sword} to unbreakable netherite sword
+			enchant {_sword} with sharpness 4
+			enchant {_sword} with fire aspect 2
+			set tool of {_mob} to {_sword}
+		else:
+			set {_sword} to unbreakable stick
+			enchant {_sword} with knockback 2
+			enchant {_sword} with sharpness 4
+			set tool of {_mob} to {_sword}
+
+command /addcustomnbttest:
+	trigger:
+		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of player's helmet
+		add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
+		add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
+		add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
+		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of player's chestplate
+		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of player's leggings
+		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of player's boots
+
+command /getdatastick:
+	trigger:
+		give the player stick named "&6DataStick"
+on rightclick:
+	if player's tool is a stick named "&6DataStick":
+		set {_nbt} to nbt of target block
+		set {_nbt2} to nbt of target entity
+		if {_nbt} is set:
+			broadcast "&7NBT Data of clicked block: &e%{_nbt}%"
+		else:
+			broadcast "&cNo NBT data found on this block!"
+		if {_nbt2} is set:
+			broadcast "&7NBT Data of clicked entity: &e%{_nbt2}%"
+		else:
+			broadcast "&cNo NBT data found on this entity!"
