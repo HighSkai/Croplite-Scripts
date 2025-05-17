@@ -26,9 +26,10 @@ on right click:
 				send "&8[&2&lObjective&r&8] &5Some Skillz: &r&eUpgrade or                                  unlock 2 skills in the Enchanter" to player
 				send "&7------------------------------" to player
 				play sound "block.amethyst_block.resonate" to player
+				set {objcomplete::%player's uuid%} to false
 				set {objective::%player's uuid%} to "Some Skillz"
 				set {objprogressreq::%player's uuid%} to 2
-				set {objprogress::%player's uuid%} to {amountofskills::%player's uuid%}
+				set {objprogress::%player's uuid%} to 0
 			else:
 				play sound "entity.villager.ambient" to player
 				send "&7[&6Chuck Woodstock&7]&f: You've already got an objective, get outta my face!                                                                       " to player
@@ -56,6 +57,7 @@ on right click:
 				set {objprogressreq::%player's uuid%} to 0
 				set {objprogress::%player's uuid%} to 0
 				set {objdesc::%player's uuid%} to " "
+				set {objcomplete::%player's uuid%} to "none"
 				add 1 to {chatmessage::Chuck::%player's uuid%}
 			else:
 				play sound "entity.villager.ambient" to player
@@ -63,9 +65,31 @@ on right click:
 		else:
 			play sound "entity.villager.ambient" to player
 			send "&7[&6Chuck Woodstock&7]&f: Sorry, ain't got nothin for you right now                                                                " to player
+
+function checkTrackorChat(p: player):
+	if {objective::%uuid of {_p}%} is "Some Skillz":
+		if {objprogress::%uuid of {_p}%} = 0 or 1:
+			add 1 to {objprogress::%uuid of {_p}%}
+			if {objprogress::%uuid of {_p}%} = 2:
+				{objcomplete::%uuid of {_p}%} is false
+				set {objcomplete::%uuid of {_p}%} to true
+				play sound "ui.toast.challenge_complete" to {_p}
+				send title "&2Objective &l&nComplete!" with subtitle "&eReturn to the tractor" to {_p} for 4 seconds
+				send "&7------------------------------" to {_p}
+				send "&8[&2Objective &l&nComplete!&8]" to {_p}
+				send "&7------------------------------" to {_p}
+				add 1 to {chatmessage::Chuck::%uuid of {_p}%}
 			
 command /resettracktormessage:
 	permission: operator
 	trigger:
 		set {chatmessage::Chuck::%player's uuid%} to 0
 		send "&8[&dCroplite&8] &aYou have reset Chuck Woodstock's chat message!" to player
+
+command /resetobjective:
+	permission: operator
+	trigger:
+		set {objective::%player's uuid%} to "objectivenone"
+		set {objprogressreq::%player's uuid%} to 0
+		set {objprogress::%player's uuid%} to 0
+		set {objdesc::%player's uuid%} to " "

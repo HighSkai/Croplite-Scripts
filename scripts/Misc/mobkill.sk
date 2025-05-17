@@ -1,7 +1,8 @@
 on entity move:
     loop blocks in radius 1 around entity:
         if loop-block is red_concrete:
-            kill entity
+            if entity is not a player:
+                kill entity
 
 every 2 ticks: 
     loop {redconcrete::*}:
@@ -37,7 +38,3 @@ command /loopconcrete:
         loop blocks in radius 10 around player:
             if loop-block is red_concrete:
                 add loop-block's location to {redconcrete::*}
-
-on damage:
-    damage cause is wither effect
-    cancel event

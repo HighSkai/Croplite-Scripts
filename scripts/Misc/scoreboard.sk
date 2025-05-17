@@ -48,7 +48,7 @@ function updateCropCash(p: player):
     set line 7 of {_p}'s fastboard to "&8| &5&lCrop Cash &8[&5&l%abbreviateNumber({cropcash::%uuid of {_p}%})%&8]"
 
 function updateSpeed(p: player):
-    set line 9 of {_p}'s fastboard to "&8| &f&lSpeed &8[&f&lx%{_p}'s walk speed + 0.8%&8]"
+    set line 9 of {_p}'s fastboard to "&8| &f&lSpeed &8[&f&lx%{_p}'s walk speed * 5%&8]"
 
 function updateObjective(p: player):
     if "%{objective::%uuid of {_p}%}%" is not equal to "objectivenone":

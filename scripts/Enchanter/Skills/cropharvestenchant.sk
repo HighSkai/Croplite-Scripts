@@ -1,0 +1,193 @@
+function loadCropHarvestEnchantGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&e&lCrop Harvest Enchant &8| Page 1"
+	
+	loop 27 times:
+		set {_slot} to loop-number - 1
+		set {_item} to yellow stained glass pane
+		hide {_item}'s tooltip
+		set slot {_slot} of {_gui} to {_item}
+
+	set slot 10 of {_gui} to slot 0 of {_p}'s inventory
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+	set slot 26 of {_gui} to nether star named "&8[&a&lNext Page&8]"
+
+	loop integers from 12 to 16:
+		set {_slot} to loop-number
+
+		if {cropharvest::%loop-integer - 11%::unlocked::%uuid of {_p}%} is equal to true:
+			if {cropharvest::%loop-integer - 10%::unlocked::%uuid of {_p}%} is equal to true:
+				set {_item} to wheat named "&e&lCrop Harvest &8[&e&l%romanNumeralConversion(loop-integer - 11)%&8] | [&a&lUnlocked&8]"
+				make {_item} glint
+			else:
+				set {_item} to wheat named "&e&lCrop Harvest &8[&e&l%romanNumeralConversion(loop-integer - 11)%&8]"
+				
+			loop values "Crop Harvest %loop-integer - 11%" of {enchants-Json}: 
+				add json-value to {_lore::*}
+
+			add "&ePrice:" to {_lore::*}
+			add "&e&lEnchant Points &8[&e&l%{cropharvest::%loop-integer - 11%::price}%&8]" to {_lore::*}
+
+			delete {_lore::1}
+			set lore of {_item} to colored {_lore::*}
+			delete {_lore::*}
+								
+			set slot {_slot} of {_gui} to {_item}
+		else:
+			set {_item} to gray stained glass pane
+			hide {_item}'s tooltip
+			set slot {_slot} of {_gui} to {_item}
+
+	open {_gui} to {_p}
+
+function loadCropHarvestEnchantGUI2(p: player):
+	set {_gui} to chest inventory with 3 rows named "&e&lCrop Harvest Enchant &8| Page 2"
+	
+	loop 27 times:
+		set {_slot} to loop-number - 1
+		set {_item} to yellow stained glass pane
+		hide {_item}'s tooltip
+		set slot {_slot} of {_gui} to {_item}
+
+	set slot 10 of {_gui} to slot 0 of {_p}'s inventory
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+	set slot 18 of {_gui} to nether star named "&8[&a&lPrevious Page&8]"
+
+	loop integers from 12 to 16:
+		set {_slot} to loop-number
+
+		if {cropharvest::%loop-integer - 6%::unlocked::%uuid of {_p}%} is equal to true:
+			if {cropharvest::%loop-integer - 5%::unlocked::%uuid of {_p}%} is equal to true:
+				set {_item} to wheat named "&e&lCrop Harvest &8[&e&l%romanNumeralConversion(loop-integer - 6)%&8] | [&a&lUnlocked&8]"
+				make {_item} glint
+			else:
+				set {_item} to wheat named "&e&lCrop Harvest &8[&e&l%romanNumeralConversion(loop-integer - 6)%&8]"
+				
+			loop values "Crop Harvest %loop-integer - 6%" of {enchants-Json}: 
+				add json-value to {_lore::*}
+
+			add "&ePrice:" to {_lore::*}
+			add "&e&lEnchant Points &8[&e&l%{cropharvest::%loop-integer - 6%::price}%&8]" to {_lore::*}
+
+			delete {_lore::1}
+			set lore of {_item} to colored {_lore::*}
+			delete {_lore::*}
+								
+			set slot {_slot} of {_gui} to {_item}
+		else:
+			set {_item} to gray stained glass pane
+			hide {_item}'s tooltip
+			set slot {_slot} of {_gui} to {_item}
+
+	open {_gui} to {_p}
+
+command /getcropharvest:
+	trigger:
+		broadcast {cropharvest::%player's uuid%}
+
+on inventory click:
+	if event-inventory is not player's inventory:
+		if event-inventory's name contains "&e&lCrop Harvest Enchant &8| Page 1":
+			cancel event
+			
+			if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
+			if event-slot is 26:
+				play sound "minecraft:ui.button.click" to player
+				loadCropHarvestEnchantGUI2(player)
+
+			set {_slots::*} to 12, 13, 14, 15, and 16
+			set {_slot} to index of event-slot - 11
+
+			if {_slots::*} contains event-slot:
+				if {cropharvest::%{_slot} + 1%::unlocked::%player's uuid%} is equal to false:
+					if {cropharvest::%{_slot}%::unlocked::%player's uuid%} is equal to true:
+						if {enchant-points::%player's uuid%} >= {cropharvest::%{_slot}%::price}:
+							remove {cropharvest::%{_slot}%::price} from {enchant-points::%player's uuid%}
+							set {cropharvest::%{_slot} + 1%::unlocked::%player's uuid%} to true
+							add "cropharvest:%{_slot}%" to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
+							
+							add 10 to {cropharvest::%player's uuid%}
+
+							addEnchantLore(player)
+							loadCropHarvestEnchantGUI(player)
+
+							checkTrackorChat(player)
+
+							play sound "entity.experience_orb.pickup" to player
+							send "&d&lCroplite &aYou've unlocked &e&lCrop Harvest &8[&e&l%romanNumeralConversion({_slot})%&8]&a." to player
+						else:
+							play sound "minecraft:entity.villager.no" to player
+							send "&d&lCroplite &cYou don't have enough &e&lEnchant Points &cto unlock this enchant." to player
+				else:
+					play sound "minecraft:entity.villager.no" to player
+					send "&d&lCroplite &cYou've already unlocked this enchant." to player
+
+		if event-inventory's name contains "&e&lCrop Harvest Enchant &8| Page 2":
+			cancel event
+			
+			if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
+			if event-slot is 18:
+				play sound "minecraft:ui.button.click" to player
+				loadCropHarvestEnchantGUI(player)
+
+			set {_slots::*} to 12, 13, 14, 15, and 16
+			set {_slot} to index of event-slot - 6
+
+			if {_slots::*} contains event-slot:
+				if {cropharvest::%{_slot} + 1%::unlocked::%player's uuid%} is equal to false:
+					if {cropharvest::%{_slot}%::unlocked::%player's uuid%} is equal to true:
+						if {enchant-points::%player's uuid%} >= {cropharvest::%{_slot}%::price}:
+							remove {cropharvest::%{_slot}%::price} from {enchant-points::%player's uuid%}
+							set {cropharvest::%{_slot} + 1%::unlocked::%player's uuid%} to true
+							add "cropharvest:%{_slot}%" to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
+
+							add 10 to {cropharvest::%player's uuid%}
+
+							addEnchantLore(player)
+							loadCropHarvestEnchantGUI2(player)
+
+							checkTrackorChat(player)
+
+							play sound "entity.experience_orb.pickup" to player
+							send "&d&lCroplite &aYou've unlocked &e&lCrop Harvest &8[&e&l%romanNumeralConversion({_slot})%&8]&a." to player
+						else:
+							play sound "minecraft:entity.villager.no" to player
+							send "&d&lCroplite &cYou don't have enough &e&lEnchant Points &cto unlock this enchant." to player
+				else:
+					play sound "minecraft:entity.villager.no" to player
+					send "&d&lCroplite &cYou've already unlocked this enchant." to player
+
+function setCropHarvestEnchantPrices():
+    set {cropharvest::1::price} to 1
+    set {cropharvest::2::price} to 2
+    set {cropharvest::3::price} to 3
+    set {cropharvest::4::price} to 4
+    set {cropharvest::5::price} to 5
+    set {cropharvest::6::price} to 6
+    set {cropharvest::7::price} to 7
+    set {cropharvest::8::price} to 8
+    set {cropharvest::9::price} to 9
+    set {cropharvest::10::price} to 10
+
+function resetCropHarvestEnchant(p: player):
+	set {cropharvest::1::unlocked::%uuid of {_p}%} to true
+	set {cropharvest::2::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::3::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::4::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::5::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::6::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::7::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::8::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::9::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::10::unlocked::%uuid of {_p}%} to false
+	set {cropharvest::11::unlocked::%uuid of {_p}%} to false
+
+command /reset-cropharvestenchant [<player>]:
+    trigger:
+        if arg-1 is set:
+            resetCropHarvestEnchant(arg-1)
+        else:
+            resetCropHarvestEnchant(player)

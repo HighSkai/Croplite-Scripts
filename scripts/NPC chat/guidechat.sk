@@ -72,6 +72,30 @@ on right click:
 						send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
 				else:
 					send "&7[&6Buck Wheatly&7]&f: You don't have enough! I needed 100 crop cash, you only have %{cropcash::%player's uuid%}%!" to player
+			else if {chatmessage::Buck::%player's uuid%} = 2:
+				if "%nbt of clicked entity%" contains "-310123331,-205175493,-1682220350,2014369278":
+					play sound "entity.villager.ambient" to player
+					send "&7[&6Buck Wheatly&7]&f: Welcome to the &2&lSpruce Farm!                                         " to player
+					wait 2 seconds
+					play sound "entity.villager.ambient" to player
+					send "&7[&6Buck Wheatly&7]&f: The guys around here are much nicer than ol' &6Chuck&f I can tell you that.                                                                           " to player 
+					wait 3 seconds
+					play sound "entity.villager.ambient" to player
+					send "&7[&6Buck Wheatly&7]&f: There's also a larger variety of plants to harvest at this farm.                                                                          " to player
+					wait 3 seconds
+					play sound "entity.villager.ambient" to player
+					send "&7[&6Buck Wheatly&7]&f: I would try the tulips first, come back when you've unlocked &e&lField 6&f!                                                                           " to player
+					add 1 to {chatmessage::Buck::%player's uuid%}
+				else:
+					send "&7[&6Buck Wheatly&7]&f: Ain't got nothin' else for ya on this farm. Talk to me at &2&lFarm 2&f.                                                                            " to player
+			else if {chatmessage::Buck::%player's uuid%} = 3:
+				if {objective::%player's uuid%} is "objectivenone":
+					if ({fieldunlocked::6::%player's uuid%}) is equal to true:
+						broadcast "work"
+					else:
+						send "&7[&6Buck Wheatly&7]&f: Didn't I tell you to unlock &e&lField 6&f first?" to player
+				else:
+					send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
 			else:
 				play sound "entity.villager.ambient" to player
 				send "&7[&6Buck Wheatly&7]&f: Ain't got nothin' else for ya right now, try talkin to some of the other folks 'round here." to player
@@ -87,16 +111,20 @@ command /setguidechat <number>:
 command /resetnpcchats:
 	permission: operator
 	trigger:
-		set {chatmessage::Buck::%player's uuid%} to 0
-		set {chatmessage::Mackerel::%player's uuid%} to 0
-		set {chatmessage::Chuck::%player's uuid%} to 0
-		set {chatmessage::Carlo::%player's uuid%} to 0
-		set {chatmessage::Denver::%player's uuid%} to 0
-		delete {chatmessage::Denver::%player's uuid%::talking}
-		send "&8[&dCroplite&8]&a: All NPC chats have been reset!" to player
-		set {objective::%player's uuid%} to "objectivenone"
-		set {objprogressreq::%player's uuid%} to 0
-		set {objprogress::%player's uuid%} to 0
-		set {objdesc::%player's uuid%} to " "
-		updateObjective(player)
-		send "&8[&dCroplite&8]&a: Your current objective has been reset!" to player
+		resetnpcchats(player)
+
+function resetnpcchats(p: player):
+	set {chatmessage::Buck::%uuid of {_p}%} to 0
+	set {chatmessage::Mackerel::%uuid of {_p}%} to 0
+	set {chatmessage::Chuck::%uuid of {_p}%} to 0
+	set {chatmessage::Carlo::%uuid of {_p}%} to 0
+	set {chatmessage::Denver::%uuid of {_p}%} to 0
+	set {chatmessage::Fin::%uuid of {_p}%} to 0
+	delete {chatmessage::Denver::%uuid of {_p}%::talking}
+	send "&8[&dCroplite&8]&a: All NPC chats have been reset!" to {_p}
+	set {objective::%uuid of {_p}%} to "objectivenone"
+	set {objprogressreq::%uuid of {_p}%} to 0
+	set {objprogress::%uuid of {_p}%} to 0
+	set {objdesc::%uuid of {_p}%} to " "
+	updateObjective({_p})
+	send "&8[&dCroplite&8]&a: Your current objective has been reset!" to {_p}

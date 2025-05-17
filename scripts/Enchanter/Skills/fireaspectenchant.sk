@@ -1,0 +1,95 @@
+function loadFireAspectEnchantGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&6&lFire Aspect Enchant &8| Page 1"
+	
+	loop 27 times:
+		set {_slot} to loop-number - 1
+		set {_item} to orange stained glass pane
+		hide {_item}'s tooltip
+		set slot {_slot} of {_gui} to {_item}
+
+	set slot 10 of {_gui} to slot 0 of {_p}'s inventory
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+	loop integers from 12 to 16:
+		set {_slot} to loop-number
+
+		if {fireaspect::%loop-integer - 11%::unlocked::%uuid of {_p}%} is equal to true:
+			if {fireaspect::%loop-integer - 10%::unlocked::%uuid of {_p}%} is equal to true:
+				set {_item} to blaze powder named "&6&lFire Aspect &8[&6&l%romanNumeralConversion(loop-integer - 11)%&8] | [&a&lUnlocked&8]"
+				make {_item} glint
+			else:
+				set {_item} to blaze powder named "&6&lFire Aspect &8[&6&l%romanNumeralConversion(loop-integer - 11)%&8]"
+				
+			loop values "Fire Aspect %loop-integer - 11%" of {enchants-Json}: 
+				add json-value to {_lore::*}
+
+			add "&ePrice:" to {_lore::*}
+			add "&e&lEnchant Points &8[&e&l%{fireaspect::%loop-integer - 11%::price}%&8]" to {_lore::*}
+
+			delete {_lore::1}
+			set lore of {_item} to colored {_lore::*}
+			delete {_lore::*}
+								
+			set slot {_slot} of {_gui} to {_item}
+		else:
+			set {_item} to gray stained glass pane
+			hide {_item}'s tooltip
+			set slot {_slot} of {_gui} to {_item}
+
+	open {_gui} to {_p}
+
+on inventory click:
+	if event-inventory is not player's inventory:
+		if event-inventory's name contains "&6&lFire Aspect Enchant &8| Page 1":
+			cancel event
+			
+			if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
+
+			set {_slots::*} to 12, 13, 14, 15, and 16
+			set {_slot} to index of event-slot - 11
+
+			if {_slots::*} contains event-slot:
+				if {fireaspect::%{_slot} + 1%::unlocked::%player's uuid%} is equal to false:
+					if {fireaspect::%{_slot}%::unlocked::%player's uuid%} is equal to true:
+						if {enchant-points::%player's uuid%} >= {fireaspect::%{_slot}%::price}:
+							remove {fireaspect::%{_slot}%::price} from {enchant-points::%player's uuid%}
+							set {fireaspect::%{_slot} + 1%::unlocked::%player's uuid%} to true
+							add "fireaspect:%{_slot}%" to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
+
+							addEnchantLore(player)
+							loadFireAspectEnchantGUI(player)
+
+							checkTrackorChat(player)
+
+							play sound "entity.experience_orb.pickup" to player
+							send "&d&lCroplite &aYou've unlocked &6&lFire Aspect &8[&6&l%romanNumeralConversion({_slot})%&8]&a." to player
+						else:
+							play sound "minecraft:entity.villager.no" to player
+							send "&d&lCroplite &cYou don't have enough &e&lEnchant Points &cto unlock this enchant." to player
+				else:
+					play sound "minecraft:entity.villager.no" to player
+					send "&d&lCroplite &cYou've already unlocked this enchant." to player
+
+function setFireAspectEnchantPrices():
+    set {fireaspect::1::price} to 1
+    set {fireaspect::2::price} to 2
+    set {fireaspect::3::price} to 3
+    set {fireaspect::4::price} to 4
+    set {fireaspect::5::price} to 5
+
+function resetFireAspectEnchant(p: player):
+	set {fireaspect::1::unlocked::%uuid of {_p}%} to true
+	set {fireaspect::2::unlocked::%uuid of {_p}%} to false
+	set {fireaspect::3::unlocked::%uuid of {_p}%} to false
+	set {fireaspect::4::unlocked::%uuid of {_p}%} to false
+	set {fireaspect::5::unlocked::%uuid of {_p}%} to false
+	set {fireaspect::6::unlocked::%uuid of {_p}%} to false
+
+command /reset-fireaspectenchant [<player>]:
+    trigger:
+        if arg-1 is set:
+            resetFireAspectEnchant(arg-1)
+        else:
+            resetFireAspectEnchant(player)

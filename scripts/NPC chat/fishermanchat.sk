@@ -27,6 +27,7 @@ on right click:
 				send "&8[&2Objective&8] &5&lCat Whisperer: &r&eFind &d&nCarlo&r&e the cat" to player
 				send "&7------------------------------" to player
 				play sound "block.amethyst_block.resonate" to player
+				set {objcomplete::%player's uuid%} to false
 				set {objective::%player's uuid%} to "Cat Whisperer"
 				set {objprogressreq::%player's uuid%} to 1
 				set {objprogress::%player's uuid%} to 0
@@ -157,6 +158,7 @@ on right click:
 				add 200 to {exp::%player's uuid%}
 				add 1 to {enchant-points::%player's uuid%}
 				execute console command "/crate key give %player% pet 1"
+				remove 1 fishing rod from player's inventory
 				if player is an operator:
 					make player execute command "developedgrapplinghook"
 				else:

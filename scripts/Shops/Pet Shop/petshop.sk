@@ -1,6 +1,7 @@
 command /open-petshopgui:
-    trigger:
-        loadPetShopGui(player)
+	trigger:
+		play sound "minecraft:ui.button.click" to player
+		loadPetShopGui(player)
 
 function loadPetShopGui(p: player):
 	set {_gui} to chest inventory with 3 rows named "&6&lPet Shop"
@@ -8,13 +9,42 @@ function loadPetShopGui(p: player):
 	loop 27 times:
 		set slot (loop-number - 1) of {_gui} to orange stained glass pane named " "
 
-	
-	set slot 10 of {_gui} to sugar named "&f&lSpeed Pet Shop"
-	set slot 11 of {_gui} to emerald named "&a&lExperience Pet Shop"
-	set slot 12 of {_gui} to iron sword named "&c&lStrength Pet Shop"
-	set slot 13 of {_gui} to orange bundle named "&6&lExpander Pet Shop"
-	set slot 14 of {_gui} to short grass named "&9&lHarvest Pet Shop"
-	set slot 15 of {_gui} to coal named "&8&lMiscellaneous Pet Shop"
+	set {_item} to {pets::speedpet1} named "&f&lSpeed Pet Shop"
+	set lore of {_item} to ""
+	set line 1 of lore of {_item} to "&7Increases player's movement"
+	set line 2 of lore of {_item} to "&7speed."
+	set slot 10 of {_gui} to {_item}
+
+	set {_item} to {pets::experiencepet1} named "&a&lExperience Pet Shop"
+	set lore of {_item} to ""
+	set line 1 of lore of {_item} to "&7Increases experience gain"
+	set line 2 of lore of {_item} to "&7from farming."
+	set slot 11 of {_gui} to {_item}
+
+	set {_item} to {pets::strengthpet1} named "&c&lStrength Pet Shop"
+	set lore of {_item} to ""
+	set line 1 of lore of {_item} to "&7Increases players attack"
+	set line 2 of lore of {_item} to "&7damage."
+	set slot 12 of {_gui} to {_item}
+
+	set {_item} to {pets::expanderpet1} named "&6&lExpander Pet Shop"
+	set lore of {_item} to ""
+	set line 1 of lore of {_item} to "&7Increases experience gain"
+	set line 2 of lore of {_item} to "&7from farming."
+	set slot 13 of {_gui} to {_item}
+
+	set {_item} to {pets::harvestpet1} named "&9&lHarvest Pet Shop"
+	set lore of {_item} to ""
+	set line 1 of lore of {_item} to "&7Increases experience gain"
+	set line 2 of lore of {_item} to "&7from farming."
+	set slot 14 of {_gui} to {_item}
+
+	set {_item} to {pets::anti-gravitypet1} named "&9&lMiscellaneous Pet Shop"
+	set lore of {_item} to ""
+	set line 1 of lore of {_item} to "&7Miscellaneous pets."
+	set slot 15 of {_gui} to {_item}
+
+	set slot 16 of {_gui} to barrier named "&4&lComing Soon..."
 
 	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
      
@@ -211,18 +241,25 @@ on inventory click:
 			cancel event
 
 			if event-slot is 10:
+				play sound "minecraft:ui.button.click" to player
 				loadSpeedPetShopGUI(player)
 			else if event-slot is 11:
+				play sound "minecraft:ui.button.click" to player
 				loadExperiencePetShopGUI(player)
 			else if event-slot is 12:
+				play sound "minecraft:ui.button.click" to player
 				loadStrengthPetShopGUI(player)
 			else if event-slot is 13:
+				play sound "minecraft:ui.button.click" to player
 				loadExpanderPetShopGUI(player)
 			else if event-slot is 14:
+				play sound "minecraft:ui.button.click" to player
 				loadHarvestPetShopGUI(player)
 			else if event-slot is 15:
+				play sound "minecraft:ui.button.click" to player
 				loadMiscPetShopGUI(player)
 			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
 				close player's inventory
 
 		else if event-inventory's name is "&f&lSpeed Pet Shop":
@@ -243,7 +280,11 @@ on inventory click:
 				
 					loadSpeedPetShopGUI(player)
 				else:
+					play sound "minecraft:entity.villager.no" to player
 					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
+			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
 
 		else if event-inventory's name is "&a&lExperience Pet Shop":
 			cancel event
@@ -264,7 +305,11 @@ on inventory click:
 					loadExperiencePetShopGUI(player)
 					
 				else:
+					play sound "minecraft:entity.villager.no" to player
 					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
+			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
 
 		else if event-inventory's name is "&c&lStrength Pet Shop":
 			cancel event
@@ -284,7 +329,11 @@ on inventory click:
 
 					loadStrengthPetShopGUI(player)
 				else:
+					play sound "minecraft:entity.villager.no" to player
 					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
+			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
 
 		else if event-inventory's name is "&6&lExpander Pet Shop":
 			cancel event
@@ -304,7 +353,11 @@ on inventory click:
 
 					loadExpanderPetShopGUI(player)
 				else:
+					play sound "minecraft:entity.villager.no" to player
 					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
+			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
 
 		else if event-inventory's name is "&9&lHarvest Pet Shop":
 			cancel event
@@ -324,7 +377,11 @@ on inventory click:
 
 					loadHarvestPetShopGUI(player)
 				else:
+					play sound "minecraft:entity.villager.no" to player
 					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
+			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
 
 		else if event-inventory's name is "&8&lMiscellaneous Pet Shop":
 			cancel event
@@ -344,6 +401,7 @@ on inventory click:
 
 						loadMiscPetShopGUI(player)
 					else:
+						play sound "minecraft:entity.villager.no" to player
 						send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
 				else if event-slot is 13:
 					if {_player::pet-tokens} >= {pets::wheatfishpet1::tokens}:
@@ -355,4 +413,8 @@ on inventory click:
 
 						loadMiscPetShopGUI(player)
 					else:
+						play sound "minecraft:entity.villager.no" to player
 						send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
+			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory

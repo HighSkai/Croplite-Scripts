@@ -1,7 +1,5 @@
 on right click:
     if name of clicked entity is "&6&lDenver":
-        broadcast "%{chatmessage::Denver::%player's uuid%::talking}% talking"
-        broadcast "%{chatmessage::Denver::%player's uuid%}% number"
         if {chatmessage::Denver::%player's uuid%::talking} is set:
             send "&7[&6Denver&7]&f: Do not interrupt!" to player
         set {chatmessage::Denver::%player's uuid%::talking} to true

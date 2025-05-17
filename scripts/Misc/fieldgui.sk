@@ -97,11 +97,64 @@ on enter of region "portaltofarm4":
     if {farmunlocked::4::%player's uuid%} is false:
         cancel event
         loadFarmUnlockGui(player, 4)
-        
 
+on region exit:
+    if {in-combat::%player's uuid%} > 0:
+        cancel event
+
+        send "&5&lCroplite &cCan't leave cause ur in combat." to player
+
+on region enter:
+    wait 1 tick
+    if "%region at player%" contains "lbtp in world world":
+        teleport player to location(1017.5, 117, 661.5, world "world", 0, -20)
+        send "&8[&dCroplite&8] &aYou have been teleported to the Lifetime Leaderboards Hall." to player 
+        stop
+		
+    else if "%region at player%" contains "lbtpback in world world":
+        teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
+        send "&8[&dCroplite&8] &aYou have been teleported back to Spawn." to player
+        stop
+	
+    else if "%region at player%" contains "portaltofarm2 in world world":
+        teleport player to location(792.5, 99, 1039.5, world "world", 135, 0)
+        send "&8[&dCroplite&8] &aYou have been teleported to the Spruce Farm." to player
+        stop
+		
+    else if "%region at player%" contains "portaltofarm3 in world world":
+        teleport player to location(226.5, 98, 1037.5, world "world", -37, 0)
+        send "&8[&dCroplite&8] &aYou have been teleported to the Desert Farm." to player
+        stop
+
+    else if "%region at player%" contains "portaltofarm4 in world world":
+        teleport player to location(-378.5, 101, 857.5, world "world", -45, 0)
+        send "&8[&dCroplite&8] &aYou have been teleported to the Cave Farm." to player
+        stop
+
+    else if region at player contains "backtofarm1":
+        teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
+        send "&8[&dCroplite&8] &aYou have been teleported back to Spawn." to player
+
+    else if region at player contains "backtofarm2":
+        teleport player to location(792.5, 99, 1039.5, world "world", 135, 0)
+        send "&8[&dCroplite&8] &aYou have been teleported to the Spruce Farm." to player
+
+    else if region at player contains "backtofarm3":
+        teleport player to location(226.5, 98, 1037.5, world "world", -37, 0)
+        send "&8[&dCroplite&8] &aYou have been teleported to the Desert Farm." to player   
+
+    else if "%region at player%" contains "global in world world and wheatleyzone in world world":
+        if {chatmessage::Buck::%player's uuid%} = 0:
+            send "&7[&6Buck Wheatly&7]&f: Click me!" to player
+    
+    else if "%region at player%" contains "finchat in world world":
+        if {chatmessage::Fin::%player's uuid%} = 0:
+            send "&7[&6Fin&7]&f: Help me!" to player   
+
+        
 on inventory click:
     if event-inventory is not player's inventory:
-        if event-inventory's name contains "&e&lUnlock Field":
+        if event-inventory's name contains "&e&lField &8[":
             cancel event
             if event-slot is 4:
                 set {_message} to 0
@@ -129,16 +182,13 @@ on inventory click:
 
 on inventory click:
     if event-inventory is not player's inventory:
-        if event-inventory's name contains "&e&lUnlock Farm":
+        if event-inventory's name contains "&e&lFarm &8[":
             cancel event
             if event-slot is 4:
                 set {_message} to 0
                 if {level::%player's uuid%} < {farm::%{currentfield-number::%{player's uuid}%}%::level}:
                     add 1 to {_message}
-                if {cropcash::%player's uuid%} < {farm::%{currentfield-number::%{player's uuid}%}%::price}:
-                    add 2 to {_message}
                 if {_message} is 0:
-                    subtract {farm::%{currentfield-number::%{player's uuid}%}%::price} from {cropcash::%player's uuid%}
                     set {farmunlocked::%{currentfield-number::%{player's uuid}%}%::%player's uuid%} to true
                     close player's inventory
                     play sound "entity.player.levelup" to player
@@ -147,38 +197,37 @@ on inventory click:
 
                     send "&d&lCroplite &aYou have unlocked &eFarm &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&a." to player
                 
-                else if {_message} is 3:
-                    send "&d&lCroplite &cYou don't meet any of the requirements to unlock &eFarm &8[&e&l%{currentfield-number::%{p's uuid}%}%&8]&c." to player
                 else if {_message} is 1:
                     send "&d&lCroplite &cYou're not high enough &9&lLevel &cto unlock &eFarm &8[&e&l%{currentfield-number::%{p's uuid}%}%&8]&c." to player
-                else if {_message} is 2:
-                    send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto unlock &eFarm &8[&e&l%{currentfield-number::%{p's uuid}%}%&8]&c." to player
 
 function loadFieldUnlockGui(p: player, n: number):
     set {currentfield-number::%{player's uuid}%} to {_n}
 
-    set {_gui} to a dispenser inventory named "&e&lUnlock Field &8[&e&l%{_n}%&8]"
+    set {_gui} to a dispenser inventory named "&e&lField &8[&e&l%{_n}%&8]"
         
     loop 9 times:
         set slot (loop-number - 1) of {_gui} to blue stained glass pane named " "
 
-    set slot 4 of {_gui} to nether star named "&9&lLevel &8[&9%{field::%{_n}%::level}%&8]"
-    set {_lore} to "&5Crop Cash: &8[&5%abbreviateNumber({field::%{_n}%::price})%&8]"
-    set lore of slot 4 of {_gui} to {_lore}
+    set {_item} to nether star named "&eRequirements:"
+    set line 1 of lore of {_item} to "&9&lLevel &8[&9%{field::%{_n}%::level}%&8]"
+    set line 2 of lore of {_item} to "&5&lCrop Cash &8[&5%abbreviateNumber({field::%{_n}%::price})%&8]"
+    set slot 4 of {_gui} to {_item}
 
     open {_gui} to {_p}
 
 function loadFarmUnlockGui(p: player, n: number):
     set {currentfield-number::%{player's uuid}%} to {_n}
 
-    set {_gui} to a dispenser inventory named "&e&lUnlock Farm %{_n}%"
+    set {_gui} to a dispenser inventory named "&e&lFarm &8[&e&l%{_n}%&8]"
         
     loop 9 times:
         set slot (loop-number - 1) of {_gui} to blue stained glass pane named " "
 
         set slot 4 of {_gui} to nether star named "&9&lLevel &8[&9%{farm::%{_n}%::level}%&8]"
-        set {_lore} to "&5Crop Cash: &8[&5%abbreviateNumber({farm::%{_n}%::price})%&8]"
-        set lore of slot 4 of {_gui} to {_lore}
+
+        set {_item} to nether star named "&eRequirement:"
+        set line 1 of lore of {_item} to "&9&lLevel &8[&9%{farm::%{_n}%::level}%&8]"
+        set slot 4 of {_gui} to {_item}
 
     open {_gui} to {_p}
 
@@ -186,17 +235,17 @@ command /setareareqs:
     trigger:
         if player is an operator:
             set {field::1::price} to 0
-            set {field::2::price} to 500
-            set {field::3::price} to 2000
-            set {field::4::price} to 5000
-            set {field::5::price} to 10000
+            set {field::2::price} to 1000
+            set {field::3::price} to 3500
+            set {field::4::price} to 7500
+            set {field::5::price} to 12500
             set {field::6::price} to 25000
             set {field::7::price} to 50000
             set {field::8::price} to 75000
-            set {field::9::price} to 100000
-            set {field::10::price} to 250000
-            set {field::11::price} to 500000
-            set {field::12::price} to 750000
+            set {field::9::price} to 125000
+            set {field::10::price} to 200000
+            set {field::11::price} to 350000
+            set {field::12::price} to 550000
             set {field::13::price} to 1000000
             set {field::14::price} to 2500000
             set {field::15::price} to 5000000
@@ -208,7 +257,7 @@ command /setareareqs:
             set {field::4::level} to 15
             set {field::5::level} to 25
             set {field::6::level} to 30
-            set {field::7::level} to 34
+            set {field::7::level} to 35
             set {field::8::level} to 40
             set {field::9::level} to 50
             set {field::10::level} to 55
@@ -219,13 +268,9 @@ command /setareareqs:
             set {field::15::level} to 85
             set {field::16::level} to 90
 
-            set {farm::2::price} to 7500
-            set {farm::3::price} to 85000
-            set {farm::4::price} to 850000
-
-            set {farm::2::level} to 20
-            set {farm::3::level} to 45
-            set {farm::4::level} to 70
+            set {farm::2::level} to 25
+            set {farm::3::level} to 50
+            set {farm::4::level} to 75
         
             send "&d&lCroplite &aAll field requirements have been set." to player
 
@@ -233,15 +278,15 @@ function abbreviateNumber(n: number) :: text:
     set {_num} to {_n}
     set {_suffix} to ""
     
-    if {_num} >= 1000000000:
-        set {_num} to {_num} / 1000000000
+    if {_num} >= 1000000000.00:
+        set {_num} to {_num} / 1000000000.00
         set {_suffix} to "B"
-    else if {_num} >= 1000000:
-        set {_num} to {_num} / 1000000
+    else if {_num} >= 1000000.00:
+        set {_num} to {_num} / 1000000.00
         set {_suffix} to "M"
-    else if {_num} >= 1000:
-        set {_num} to {_num} / 1000
-        set {_suffix} to "K"
+    else if {_num} >= 1000.00:
+        set {_num} to {_num} / 1000.00
+        set {_suffix} to "k"
     
-    set {_num} to ({_num} * 10) / 10
+    set {_num} to ({_num} * 10.00) / 10.00
     return "%{_num}%%{_suffix}%"

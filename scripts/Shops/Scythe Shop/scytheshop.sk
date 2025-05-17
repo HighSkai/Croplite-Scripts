@@ -8,14 +8,16 @@ function loadScytheShopGui(p: player):
     set {_gui} to chest inventory with 3 rows named "&b&lScythe Shop"
 
     loop 27 times:
-        set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
+        set {_item} to light blue stained glass pane
+        hide {_item}'s tooltip
+        set slot (loop-number - 1) of {_gui} to {_item}
     
     loop integers from 11 to 15:
         set slot loop-integer of {_gui} to {scythe::%loop-integer - 10%}
 
     set {_highest_tier} to 0
     loop integers between 1 and 5:
-        if {scytheupgrade::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
+        if {scythe::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
             if loop-integer > {_highest_tier}:
                 set {_highest_tier} to loop-integer
 
@@ -23,14 +25,14 @@ function loadScytheShopGui(p: player):
         set {_num} to loop-integer - 10
         set {_item} to slot loop-integer of {_gui}
 
-        if {scytheupgrade::%{_num}%::bought::%uuid of {_p}%} is equal to true:
+        if {scythe::%{_num}%::bought::%uuid of {_p}%} is equal to true:
             set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
             make {_item} glint
 
         set {_lore::*} to lore of {_item}
         add "" to {_lore::*}
         add "&ePrice:" to {_lore::*}
-        add "&5&lCrop Cash &8[&5&l%{scythe::%{_num}%::price}%&8]" to {_lore::*}
+        add "&5&lCrop Cash &8[&5&l%abbreviateNumber({scythe::%{_num}%::price})%&8]" to {_lore::*}
         set lore of {_item} to {_lore::*}
             
         set slot loop-integer of {_gui} to {_item}
@@ -53,52 +55,59 @@ on inventory click:
         if event-inventory's name is "&b&lScythe Shop":
             cancel event
             
-            if event-slot is between 11 and 15:
+            set {_slots::*} to 11 and 12 and 13 and 14 and 15
+            if {_slots::*} contains event-slot:
                 set {_num} to index of event-slot - 10
                 
                 set {_highest_tier} to 0
                 loop integers between 1 and 5:
-                    if {scytheupgrade::%loop-integer%::bought::%player's uuid%} is equal to true:
+                    if {scythe::%loop-integer%::bought::%player's uuid%} is equal to true:
                         if loop-integer > {_highest_tier}:
                             set {_highest_tier} to loop-integer
                 
                 if {_num} < {_highest_tier}:
                     send "&d&lCroplite &cYou cannot downgrade your scythe." to player
-                else if {scytheupgrade::%{_num}%::bought::%player's uuid%} is equal to false:
+                    play sound "minecraft:entity.villager.no" to player
+                else if {scythe::%{_num}%::bought::%player's uuid%} is equal to false:
                     if {cropcash::%player's uuid%} < {scythe::%{_num}%::price}:
                         send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this item" to player
+                        play sound "minecraft:entity.villager.no" to player
                     else:
-                        set {scytheupgrade::%{_num}%::bought::%player's uuid%} to true
+                        set {scythe::%{_num}%::bought::%player's uuid%} to true
                         remove {scythe::%{_num}%::price} from {cropcash::%player's uuid%}
                         
                         loop integers between 1 and {_num}:
-                            set {scytheupgrade::%loop-integer%::bought::%player's uuid%} to true
+                            set {scythe::%loop-integer%::bought::%player's uuid%} to true
                         
                         upgradeScythe(player, {_num})
                         loadScytheShopGui(player)
 
                         play sound "entity.experience_orb.pickup" to player
 
-                        send "&d&lCroplite &aYou have upgraded your scythe for %{scythe::%{_num}%::price}% &5&lCrop Cash" to player
+                        send "&d&lCroplite &aYou have upgraded your scythe." to player
                 else:
                     send "&d&lCroplite &cYou have already bought this scythe upgrade" to player
+                    play sound "minecraft:entity.villager.no" to player
+            else if event-slot is 22:
+                play sound "minecraft:ui.button.click" to player
+                close player's inventory
 
 function resetScythes(p: player):
-    set {scytheupgrade::1::bought::%uuid of {_p}%} to false
-    set {scytheupgrade::2::bought::%uuid of {_p}%} to false
-    set {scytheupgrade::3::bought::%uuid of {_p}%} to false
-    set {scytheupgrade::4::bought::%uuid of {_p}%} to false
-    set {scytheupgrade::5::bought::%uuid of {_p}%} to false
+    set {scythe::1::bought::%uuid of {_p}%} to false
+    set {scythe::2::bought::%uuid of {_p}%} to false
+    set {scythe::3::bought::%uuid of {_p}%} to false
+    set {scythe::4::bought::%uuid of {_p}%} to false
+    set {scythe::5::bought::%uuid of {_p}%} to false
 
 command /setscytheprices:
     permission: operator
     trigger:
         set {scythe::0::price} to 0
-        set {scythe::1::price} to 1
-        set {scythe::2::price} to 2
-        set {scythe::3::price} to 3
-        set {scythe::4::price} to 4
-        set {scythe::5::price} to 5
+        set {scythe::1::price} to 1000
+        set {scythe::2::price} to 10000
+        set {scythe::3::price} to 100000
+        set {scythe::4::price} to 350000
+        set {scythe::5::price} to 1000000
 
 command /setscythes:
     permission: operator
@@ -127,6 +136,7 @@ command /setscythes:
         set line 5 of lore of {scythe::1} to "&7---------------"
         set line 6 of lore of {scythe::1} to "&a&lUNCOMMON HOE"
         add "damage:2" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::1}
+        add "experiencemulti:0.2" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::1}
         add hide unbreakable to item flags of {scythe::1}
         apply attribute modifier to {scythe::1}:
             id: "minecraft:base_attack_speed"
@@ -143,6 +153,7 @@ command /setscythes:
         set line 5 of lore of {scythe::2} to "&7---------------"
         set line 6 of lore of {scythe::2} to "&9&lRARE HOE"
         add "damage:4" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::2}
+        add "experiencemulti:0.4" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::2}
         add hide unbreakable to item flags of {scythe::2}
         apply attribute modifier to {scythe::2}:
             id: "minecraft:base_attack_speed"
@@ -159,6 +170,7 @@ command /setscythes:
         set line 5 of lore of {scythe::3} to "&7---------------"
         set line 6 of lore of {scythe::3} to "&c&lREFIND HOE"
         add "damage:6" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::3}
+        add "experiencemulti:0.5" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::3}
         add hide unbreakable to item flags of {scythe::3}
         apply attribute modifier to {scythe::3}:
             id: "minecraft:base_attack_speed"
@@ -175,6 +187,7 @@ command /setscythes:
         set line 5 of lore of {scythe::4} to "&7---------------"
         set line 6 of lore of {scythe::4} to "&5&lEPIC HOE"
         add "damage:8" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::4}
+        add "experiencemulti:0.8" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::4}
         add hide unbreakable to item flags of {scythe::4}
         apply attribute modifier to {scythe::4}:
             id: "minecraft:base_attack_speed"
@@ -191,6 +204,7 @@ command /setscythes:
         set line 5 of lore of {scythe::5} to "&7---------------"
         set line 6 of lore of {scythe::5} to "&6&lLEGENDARY HOE"
         add "damage:10" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::5}
+        add "experiencemulti:1.0" to string list tag "Croplite:scythe-stats" of custom nbt of {scythe::5}
         add hide unbreakable to item flags of {scythe::5}
         apply attribute modifier to {scythe::5}:
             id: "minecraft:base_attack_speed"

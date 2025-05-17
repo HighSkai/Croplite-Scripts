@@ -1,55 +1,86 @@
 command /open-enchantergui:
 	permission: operator
 	trigger:
+		play sound "minecraft:ui.button.click" to player
 		loadEnchanterGui(player)
 
 function loadEnchanterGui(p: player):
-	set {_gui} to chest inventory with 5 rows named "&5&lEnchanter &8| &e&lEnchant Points &8[&r&e&l%{enchant-points::%uuid of {_p}%}%&r&8]"
+	set {_gui} to chest inventory with 5 rows named "&5&lEnchanter &8| &e&lEnch Points &8[&r&e&l%{enchant-points::%uuid of {_p}%}%&r&8]"
 	
 	loop 54 times:
 		set {_slot} to loop-number - 1
 		set slot {_slot} of {_gui} to purple stained glass pane named " "
 
-		if {_slot} is 14:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&4&lSharpness Enchant&8]"
-		if {_slot} is 15:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&6&lFire Aspect Enchant&8]"
-		if {_slot} is 16:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&8&lCrop Reap Enchant&8]"
-		if {_slot} is 23:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&a&lExperience Enchant&8]"
-		if {_slot} is 24:
-			set slot {_slot} of {_gui} to enchanted book named "&8[&2&lMob Spawn Enchant&8]"
-		if {_slot} is 25 or 32 or 33 or 34:
-			set slot {_slot} of {_gui} to book named "&8[&4&lComing Soon&8] "
-		if {_slot} is 20:
-			set slot {_slot} of {_gui} to slot 0 of {_p}
+		if {_slot} is 32 or 33 or 34:
+			set slot {_slot} of {_gui} to book named "&4&lComing Soon..."
+
+	set {_item} to enchanted book named "&4&lSharpness Enchant"
+	set line 1 of lore of {_item} to "&7Increases melee attack"
+	set line 2 of lore of {_item} to "&7damage."
+	set slot 14 of {_gui} to {_item}
+
+	set {_item} to enchanted book named "&6&lFire Aspect Enchant"
+	set line 1 of lore of {_item} to "&7Lights mobs and player"
+	set line 2 of lore of {_item} to "&7on fire when attacked."
+	set slot 15 of {_gui} to {_item}
+
+	set {_item} to enchanted book named "&a&lExperience Enchant"
+	set line 1 of lore of {_item} to "&7Increases experience gained"
+	set line 2 of lore of {_item} to "&7from farming and killing"
+	set line 3 of lore of {_item} to "&7mobs."
+	set slot 16 of {_gui} to {_item}
+
+	set {_item} to enchanted book named "&e&lCrop Harvest Enchant"
+	set line 1 of lore of {_item} to "&7Increases harvested crops"
+	set line 2 of lore of {_item} to "&7from farming."
+	set slot 23 of {_gui} to {_item}
+	
+	set {_item} to enchanted book named "&8&lCrop Reap Enchant"
+	set line 1 of lore of {_item} to "&7Reaps crops from"
+	set line 2 of lore of {_item} to "&7killed players."
+	set slot 24 of {_gui} to {_item}
+
+	set {_item} to enchanted book named "&2&lMob Spawn Enchant"
+	set line 1 of lore of {_item} to "&7Increases the chance of"
+	set line 2 of lore of {_item} to "&7spawning a crop mob"
+	set line 3 of lore of {_item} to "&7from farming."
+	set slot 25 of {_gui} to {_item}
+	
+	set slot 20 of {_gui} to slot 0 of {_p}
 		
 	set slot 40 of {_gui} to barrier named "&8[&4&lClose&8]"
 
 	open {_gui} to {_p}
 
 on inventory click:
-	if event-inventory's name contains "&5&lEnchanter":
-		cancel event
+	if event-inventory is not player's inventory:
+		if event-inventory's name contains "&5&lEnchanter":
+			cancel event
 
-		if event-slot is 14:
-			close player's inventory
-			loadSharpnessEnchantGUI(player)
-		else if event-slot is 15:
-			close player's inventory
-			loadFireAspectEnchantGUI(player)
-		else if event-slot is 16:
-			loadCropReapEnchantGUI(player)
-		else if event-slot is 23:
-			loadExperienceEnchantGUI(player)
-		else if event-slot is 24:
-			close player's inventory
-		else if event-slot is 25 or 32 or 33 or 34:
-			send "&8[&dCroplite&8] &aEnchantment is coming soon..."
+			if event-slot is 14:
+				play sound "minecraft:ui.button.click" to player
+				loadSharpnessEnchantGUI(player)
+			else if event-slot is 15:
+				play sound "minecraft:ui.button.click" to player
+				loadFireAspectEnchantGUI(player)
+			else if event-slot is 16:
+				play sound "minecraft:ui.button.click" to player
+				loadExperienceEnchantGUI(player)
+			else if event-slot is 23:
+				play sound "minecraft:ui.button.click" to player
+				loadCropHarvestEnchantGUI(player)
+			else if event-slot is 24:
+				play sound "minecraft:ui.button.click" to player
+				loadCropReapEnchantGUI(player)
+			else if event-slot is 25:
+				play sound "minecraft:ui.button.click" to player
+				loadMobSpawnEnchantGUI(player)
 
-		else if event-slot is 40:
-			close player's inventory
+			else if event-slot is 32 or 33 or 34:
+				send "&d&lCroplite &4Coming soon..."
+
+			else if event-slot is 40:
+				close player's inventory
 
 function addEnchantLore(p: player):
 	set {_item} to slot 0 of {_p}
@@ -60,7 +91,9 @@ function addEnchantLore(p: player):
 	set {_highestSharpnessLevel} to 0
 	set {_highestFireAspectLevel} to 0
 	set {_highestExperienceLevel} to 0
+	set {_highestCropHarvestLevel} to 0
 	set {_highestCropReapLevel} to 0
+	set {_highestMobSpawnLevel} to 0
 
 	loop {_tags::*}:
 		set {_parts::*} to loop-value split at ":"
@@ -81,10 +114,20 @@ function addEnchantLore(p: player):
 			if {_experienceLevel} > {_highestExperienceLevel}:
 				set {_highestExperienceLevel} to {_experienceLevel}
 
+		if {_enchantID} is "cropharvest":
+			set {_cropHarvestLevel} to {_parts::2} parsed as number
+			if {_cropHarvestLevel} > {_highestCropHarvestLevel}:
+				set {_highestCropHarvestLevel} to {_cropHarvestLevel}
+
 		if {_enchantID} is "cropreap":
-			set {_cropreapLevel} to {_parts::2} parsed as number
-			if {_cropreapLevel} > {_highestCropReapLevel}:
-				set {_highestCropReapLevel} to {_cropreapLevel}
+			set {_cropReapLevel} to {_parts::2} parsed as number
+			if {_cropReapLevel} > {_highestCropReapLevel}:
+				set {_highestCropReapLevel} to {_cropReapLevel}
+
+		if {_enchantID} is "mobspawn":
+			set {_mobSpawnLevel} to {_parts::2} parsed as number
+			if {_mobSpawnLevel} > {_highestMobSpawnLevel}:
+				set {_highestMobSpawnLevel} to {_mobSpawnLevel}
 
 	set {_size} to size of {_tags::*}
 	set {_i} to {_size}
@@ -106,10 +149,20 @@ function addEnchantLore(p: player):
 			if {_experienceLevel} < {_highestExperienceLevel}:
 				remove "experience:%{_experienceLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}
 
+		if {_parts::1} is "cropharvest":
+			set {_cropHarvestLevel} to {_parts::2} parsed as number
+			if {_cropHarvestLevel} < {_highestCropHarvestLevel}:
+				remove "cropharvest:%{_experienceLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}
+
 		if {_parts::1} is "cropreap":
-			set {_cropreapLevel} to {_parts::2} parsed as number
-			if {_cropreapLevel} < {_highestCropReapLevel}:
-				remove "cropreap:%{_cropreapLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}		
+			set {_cropReapLevel} to {_parts::2} parsed as number
+			if {_cropReapLevel} < {_highestCropReapLevel}:
+				remove "cropreap:%{_cropReapLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}
+
+		if {_parts::1} is "mobspawn":
+			set {_mobSpawnLevel} to {_parts::2} parsed as number
+			if {_mobSpawnLevel} < {_highestMobSpawnLevel}:
+				remove "cropreap:%{_mobSpawnLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}
 
 		remove 1 from {_i}
 
@@ -132,50 +185,43 @@ function addEnchantLore(p: player):
 		add json-value to {_newlore::*}
 
 	loop values "Experience %{_highestExperienceLevel}%" of {enchants-Json}:
+		add json-value to {_newlore::*}	
+
+	loop values "Crop Harvest %{_highestCropHarvestLevel}%" of {enchants-Json}:
 		add json-value to {_newlore::*}
 
 	loop values "Crop Reap %{_highestCropReapLevel}%" of {enchants-Json}:
+		add json-value to {_newlore::*}
+
+	loop values "Mob Spawn %{_highestMobSpawnLevel}%" of {enchants-Json}:
 		add json-value to {_newlore::*}
 	
 	add {_rarity} to {_newlore::*}
 	set lore of {_item} to colored {_newlore::*}
 	set slot 0 of {_p} to {_item}
 
-function resetEnchantments(p: player):
-	set {sharpness::1::unlocked::%uuid of {_p}%} to true
-	set {sharpness::2::unlocked::%uuid of {_p}%} to false
-	set {sharpness::3::unlocked::%uuid of {_p}%} to false
-	set {sharpness::4::unlocked::%uuid of {_p}%} to false
-	set {sharpness::5::unlocked::%uuid of {_p}%} to false
-	set {sharpness::6::unlocked::%uuid of {_p}%} to false
-	set {sharpness::7::unlocked::%uuid of {_p}%} to false
-	set {sharpness::8::unlocked::%uuid of {_p}%} to false
-	set {sharpness::9::unlocked::%uuid of {_p}%} to false
-	set {sharpness::10::unlocked::%uuid of {_p}%} to false
-	set {sharpness::11::unlocked::%uuid of {_p}%} to false # required extra
+function setEnchantPrices():
+	setSharpnessEnchantPrices()
+	setFireAspectEnchantPrices()
+	setExperienceEnchantPrices()
+	setCropHarvestEnchantPrices()
+	setCropReapEnchantPrices()
+	setMobSpawnEnchantPrices()
 
-	set {fireaspect::1::unlocked::%uuid of {_p}%} to true
-	set {fireaspect::2::unlocked::%uuid of {_p}%} to false
-	set {fireaspect::3::unlocked::%uuid of {_p}%} to false
-	set {fireaspect::4::unlocked::%uuid of {_p}%} to false
-	set {fireaspect::5::unlocked::%uuid of {_p}%} to false
-	set {fireaspect::6::unlocked::%uuid of {_p}%} to false # required extra
+function resetEnchants(p: player):
+	resetSharpnessEnchant({_p})
+	resetFireAspectEnchant({_p})
+	resetExperienceEnchant({_p})
+	resetCropHarvestEnchant({_p})
+	resetCropReapEnchant({_p})
+	resetMobSpawnEnchant({_p})
 
-	set {experience::1::unlocked::%uuid of {_p}%} to true
-	set {experience::2::unlocked::%uuid of {_p}%} to false
-	set {experience::3::unlocked::%uuid of {_p}%} to false
-	set {experience::4::unlocked::%uuid of {_p}%} to false
-	set {experience::5::unlocked::%uuid of {_p}%} to false
-	set {experience::6::unlocked::%uuid of {_p}%} to false
-	set {experience::7::unlocked::%uuid of {_p}%} to false
-	set {experience::8::unlocked::%uuid of {_p}%} to false
-	set {experience::9::unlocked::%uuid of {_p}%} to false
-	set {experience::10::unlocked::%uuid of {_p}%} to false
-	set {experience::11::unlocked::%uuid of {_p}%} to false # required extra
+function romanNumeralConversion(number: number) :: text:
+	return value "%{_number}%" of {romanNumeral-Json}
 
-	set {cropreap::1::unlocked::%uuid of {_p}%} to true
-	set {cropreap::2::unlocked::%uuid of {_p}%} to false
-	set {cropreap::3::unlocked::%uuid of {_p}%} to false
-	set {cropreap::4::unlocked::%uuid of {_p}%} to false
-	set {cropreap::5::unlocked::%uuid of {_p}%} to false
-	set {cropreap::6::unlocked::%uuid of {_p}%} to false # required extra
+command /getnbt:
+	trigger:
+		set {_nbt} to nbt of player's held item
+		broadcast "==============================="
+		broadcast "%{_nbt}%"
+		broadcast "==============================="

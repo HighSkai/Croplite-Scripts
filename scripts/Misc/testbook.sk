@@ -5,25 +5,29 @@ command /book:
 local function createGuideBook(p: player):
     set {guidebook::%uuid of {_p}%} to a written book
 
-    set {guidebook::buck-wheatley::%uuid of {_p}%} to "&6»&6&lBuck Wheatley &c☐"
-    set {_buck-wheately} to a new text component from {guidebook::buck-wheatley::%uuid of {_p}%}
+    set {guidebook::buck-wheatley::%uuid of {_p}%} to a new text component from "&6»Talk to &6&lBuck Wheatley &c☐"
+    set {guidebook::harvest100crops::%uuid of {_p}%} to a new text component from "&6»&2Harvest 100 crops from Field 1 &c☐"
 
-    create a callback for {_buck-wheately}:
-        checkBuckWheatley({_p})
 
-    set page 1 of book {guidebook::%uuid of {_p}%} to {_buck-wheately}
+    create a callback for {guidebook::buck-wheatley::%uuid of {_p}%}:
+        checkBuckWheatley({_p}, {guidebook::buck-wheatley::%uuid of {_p}%})
+
+    create a callback for {guidebook::harvest100crops::%uuid of {_p}%}:
+        checkBuckWheatley({_p}, {guidebook::harvest100crops::%uuid of {_p}%})
+
+    set page 1 of book {guidebook::%uuid of {_p}%} to merge components {guidebook::buck-wheatley::%uuid of {_p}%} and {guidebook::harvest100crops::%uuid of {_p}%} joined with newline
 
     set book title of {guidebook::%uuid of {_p}%} to "Guide Book"
     set book author of {guidebook::%uuid of {_p}%} to "Croplite"
 
     give {_p} {guidebook::%uuid of {_p}%}
 
-local function checkBuckWheatley(p: player):
-    component replace "☐" with "&a☑" in {guidebook::buck-wheatley::%uuid of {_p}%}
-    set page 1 of book {guidebook::%uuid of {_p}%} to {guidebook::buck-wheatley::%uuid of {_p}%}
+        # @3rdStorm just lock in don't study 
+    
+
+local function checkBuckWheatley(p: player, penis: textcomponent):
+    component replace "☐" with "&a☑" in {_penis}
+    set {_temp} to page 1 of book {guidebook::%uuid of {_p}%}
+    set page 1 of book {guidebook::%uuid of {_p}%} to merge components {_penis} and {_temp} joined with newline
     set {_p}'s held item to {guidebook::%uuid of {_p}%}
     open book {guidebook::%uuid of {_p}%} to {_p}
-
-function updateGuideBook(p: player):
-
-    set {guidebook::buck-wheatley::%uuid of {_p}%}

@@ -1,0 +1,12 @@
+on death:
+	if {killeffect-active::%victim's uuid%} is true:
+		killEffect(location of victim)
+
+command /togglekilleffect:
+	trigger:
+		if {killeffect-active::%player's uuid%} is true:
+			set {killeffect-active::%player's uuid%} to false
+			broadcast "deactive"
+		else:
+			set {killeffect-active::%player's uuid%} to true
+			broadcast "active"

@@ -1,4 +1,5 @@
 command /open-armorshopgui:
+	permission: operator
 	trigger:
 		loadArmorShopGUI(player)
 
@@ -74,7 +75,7 @@ local function loadHelmetShopGUI(p: player):
 		set {_lore::*} to lore of {_item}
 		add "" to {_lore::*}
 		add "&ePrice:" to {_lore::*}
-		add "&5&lCrop Cash &8[&5&l%{helmet::%{_num}%::price}%&8]" to {_lore::*}
+		add "&5&lCrop Cash &8[&5&l%abbreviateNumber({helmet::%{_num}%::price})%&8]" to {_lore::*}
 		set lore of {_item} to {_lore::*}
 
 		set slot loop-integer of {_gui} to {_item}
@@ -109,7 +110,7 @@ local function loadChestplateShopGUI(p: player):
 		set {_lore::*} to lore of {_item}
 		add "" to {_lore::*}
 		add "&ePrice:" to {_lore::*}
-		add "&5&lCrop Cash &8[&5&l%{chestplate::%{_num}%::price}%&8]" to {_lore::*}
+		add "&5&lCrop Cash &8[&5&l%abbreviateNumber({chestplate::%{_num}%::price})%&8]" to {_lore::*}
 		set lore of {_item} to {_lore::*}
 
 		set slot loop-integer of {_gui} to {_item}
@@ -144,7 +145,7 @@ local function loadLeggingsShopGUI(p: player):
 		set {_lore::*} to lore of {_item}
 		add "" to {_lore::*}
 		add "&ePrice:" to {_lore::*}
-		add "&5&lCrop Cash &8[&5&l%{leggings::%{_num}%::price}%&8]" to {_lore::*}
+		add "&5&lCrop Cash &8[&5&l%abbreviateNumber({leggings::%{_num}%::price})%&8]" to {_lore::*}
 		set lore of {_item} to {_lore::*}
 	
 		set slot loop-integer of {_gui} to {_item}
@@ -179,7 +180,7 @@ local function loadBootsShopGUI(p: player):
 		set {_lore::*} to lore of {_item}
 		add "" to {_lore::*}
 		add "&ePrice:" to {_lore::*}
-		add "&5&lCrop Cash &8[&5&l%{boots::%{_num}%::price}%&8]" to {_lore::*}
+		add "&5&lCrop Cash &8[&5&l%abbreviateNumber({boots::%{_num}%::price})%&8]" to {_lore::*}
 		set lore of {_item} to {_lore::*}
 	
 		set slot loop-integer of {_gui} to {_item}
@@ -219,9 +220,9 @@ on inventory click:
 				if {_num} < {_highest_tier}:
 					send "&d&lCroplite &cYou cannot downgrade your armor." to player
 				else if {helmet::%{_num}%::bought::%player's uuid%} is equal to false:
-					if {cropcash::%player's uuid%} >= {helmet::%{_num}%::price}:
+					if {cropcash::%player's uuid%} >= abbreviateNumber({helmet::%{_num}%::price}):
 						set {helmet::%{_num}%::bought::%player's uuid%} to true
-						remove {helmet::%{_num}%::price} from {cropcash::%player's uuid%}
+						remove abbreviateNumber({helmet::%{_num}%::price}) from {cropcash::%player's uuid%}
 						set helmet of player to {helmet::%{_num}%}
 
 						play sound "entity.experience_orb.pickup" to player
@@ -230,7 +231,7 @@ on inventory click:
 							set {helmet::%loop-integer%::bought::%player's uuid%} to true
 							
 						loadHelmetShopGUI(player)
-						send "&d&lCroplite &aYou have bought a new helmet for %{helmet::%{_num}%::price}% &5&lCrop Cash&a." to player
+						send "&d&lCroplite &aYou have bought a new helmet for %abbreviateNumber({helmet::%{_num}%::price})% &5&lCrop Cash&a." to player
 					else:
 						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this helmet." to player
 				else:
@@ -254,9 +255,9 @@ on inventory click:
 				if {_num} < {_highest_tier}:
 					send "&d&lCroplite &cYou cannot downgrade your armor." to player
 				else if {chestplate::%{_num}%::bought::%player's uuid%} is equal to false:
-					if {cropcash::%player's uuid%} >= {chestplate::%{_num}%::price}:
+					if {cropcash::%player's uuid%} >= abbreviateNumber({chestplate::%{_num}%::price}):
 						set {chestplate::%{_num}%::bought::%player's uuid%} to true
-						remove {chestplate::%{_num}%::price} from {cropcash::%player's uuid%}
+						remove abbreviateNumber({chestplate::%{_num}%::price}) from {cropcash::%player's uuid%}
 						set chestplate of player to {chestplate::%{_num}%}
 
 						play sound "entity.experience_orb.pickup" to player
@@ -265,7 +266,7 @@ on inventory click:
 							set {chestplate::%loop-integer%::bought::%player's uuid%} to true
 							
 						loadChestplateShopGUI(player)
-						send "&d&lCroplite &aYou have bought a new chestplate for %{chestplate::%{_num}%::price}% &5&lCrop Cash&a." to player
+						send "&d&lCroplite &aYou have bought a new chestplate for %abbreviateNumber({chestplate::%{_num}%::price})% &5&lCrop Cash&a." to player
 					else:
 						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this chestplate." to player
 				else:
@@ -288,9 +289,9 @@ on inventory click:
 				if {_num} < {_highest_tier}:
 					send "&d&lCroplite &cYou cannot downgrade your armor." to player
 				else if {leggings::%{_num}%::bought::%player's uuid%} is equal to false:
-					if {cropcash::%player's uuid%} >= {leggings::%{_num}%::price}:
+					if {cropcash::%player's uuid%} >= abbreviateNumber({leggings::%{_num}%::price}):
 						set {leggings::%{_num}%::bought::%player's uuid%} to true
-						remove {leggings::%{_num}%::price} from {cropcash::%player's uuid%}
+						remove abbreviateNumber({leggings::%{_num}%::price}) from {cropcash::%player's uuid%}
 						set leggings of player to {leggings::%{_num}%}
 
 						play sound "entity.experience_orb.pickup" to player
@@ -299,7 +300,7 @@ on inventory click:
 							set {leggings::%loop-integer%::bought::%player's uuid%} to true
 							
 						loadLeggingsShopGUI(player)
-						send "&d&lCroplite &aYou have bought a new leggings for %{leggings::%{_num}%::price}% &5&lCrop Cash&a." to player
+						send "&d&lCroplite &aYou have bought a new leggings for %abbreviateNumber({leggings::%{_num}%::price})% &5&lCrop Cash&a." to player
 					else:
 						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this leggings." to player
 				else:
@@ -322,9 +323,9 @@ on inventory click:
 				if {_num} < {_highest_tier}:
 					send "&d&lCroplite &cYou cannot downgrade your armor." to player
 				else if {boots::%{_num}%::bought::%player's uuid%} is equal to false:
-					if {cropcash::%player's uuid%} >= {boots::%{_num}%::price}:
+					if {cropcash::%player's uuid%} >= abbreviateNumber({boots::%{_num}%::price}):
 						set {boots::%{_num}%::bought::%player's uuid%} to true
-						remove {boots::%{_num}%::price} from {cropcash::%player's uuid%}
+						remove abbreviateNumber({boots::%{_num}%::price}) from {cropcash::%player's uuid%}
 						set boots of player to {boots::%{_num}%}
 
 						play sound "entity.experience_orb.pickup" to player
@@ -333,7 +334,7 @@ on inventory click:
 							set {boots::%loop-integer%::bought::%player's uuid%} to true
 							
 						loadBootsShopGUI(player)
-						send "&d&lCroplite &aYou have bought a new boots for %{boots::%{_num}%::price}% &5&lCrop Cash&a." to player
+						send "&d&lCroplite &aYou have bought a new boots for %abbreviateNumber({boots::%{_num}%::price})% &5&lCrop Cash&a." to player
 					else:
 						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this boots." to player
 				else:
@@ -371,29 +372,29 @@ command /resetarmor:
 command /setarmorprice:
 	permission: operator
 	trigger:
-		set {helmet::1::price} to 100
-		set {helmet::2::price} to 200
-		set {helmet::3::price} to 300
-		set {helmet::4::price} to 400
-		set {helmet::5::price} to 500
+		set {helmet::1::price} to 1000
+		set {helmet::2::price} to 2500
+		set {helmet::3::price} to 5000
+		set {helmet::4::price} to 10000
+		set {helmet::5::price} to 100000
 
-		set {chestplate::1::price} to 100
-		set {chestplate::2::price} to 200
-		set {chestplate::3::price} to 300
-		set {chestplate::4::price} to 400
-		set {chestplate::5::price} to 500
+		set {chestplate::1::price} to 1000
+		set {chestplate::2::price} to 2500
+		set {chestplate::3::price} to 5000
+		set {chestplate::4::price} to 10000
+		set {chestplate::5::price} to 100000
 
-		set {leggings::1::price} to 100
+		set {leggings::1::price} to 1000
 		set {leggings::2::price} to 200
-		set {leggings::3::price} to 300
-		set {leggings::4::price} to 400
-		set {leggings::5::price} to 500
+		set {leggings::3::price} to 5000
+		set {leggings::4::price} to 10000
+		set {leggings::5::price} to 100000
 
-		set {boots::1::price} to 100
-		set {boots::2::price} to 200
-		set {boots::3::price} to 300
-		set {boots::4::price} to 400
-		set {boots::5::price} to 500
+		set {boots::1::price} to 1000
+		set {boots::2::price} to 2500
+		set {boots::3::price} to 5000
+		set {boots::4::price} to 10000
+		set {boots::5::price} to 100000
 
 command /setarmor:
 	permission: operator

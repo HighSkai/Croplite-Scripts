@@ -125,6 +125,66 @@
         "&r&7Significantly increases the experience earned.",
         ""
     ],
+    "Crop Harvest 1": [
+        "&e&lCrop Harvest &8[&e&lI&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 2": [
+        "&e&lCrop Harvest &8[&e&lII&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 3": [
+        "&e&lCrop Harvest &8[&e&lIII&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 4": [
+        "&e&lCrop Harvest &8[&e&lIV&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 5": [
+        "&e&lCrop Harvest &8[&e&lV&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 6": [
+        "&e&lCrop Harvest &8[&e&lVI&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 7": [
+        "&e&lCrop Harvest &8[&e&lVII&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 8": [
+        "&e&lCrop Harvest &8[&e&lVIII&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 9": [
+        "&e&lCrop Harvest &8[&e&lIX&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
+    "Crop Harvest 10": [
+        "&e&lCrop Harvest &8[&e&lX&8]",
+        "&r&7Increases harvested crops",
+        "&r&7by 10% when farming.",
+        ""
+    ],
     "Crop Reap 1": [
         "&8&lCrop Reap &8[&8&lI&8]",
         "&r&7Increases the crops gained from a kill.",
@@ -148,6 +208,36 @@
     "Crop Reap 5": [
         "&8&lCrop Reap &8[&8&lV&8]",
         "&r&7Increases the crops gained from a kill.",
+        ""
+    ],
+    "Mob Spawn 1": [
+        "&2&lMob Spawn &8[&2&lI&8]",
+        "&r&7Increases the chance of",
+        "&7a mob spawn when farming.",
+        ""
+    ],
+    "Mob Spawn 2": [
+        "&2&lMob Spawn &8[&2&lII&8]",
+        "&r&7Increases the chance of",
+        "&7a mob spawn when farming.",
+        ""
+    ],
+    "Mob Spawn 3": [
+        "&2&lMob Spawn &8[&2&lIII&8]",
+        "&r&7Increases the chance of",
+        "&7a mob spawn when farming.",
+        ""
+    ],
+    "Mob Spawn 4": [
+        "&2&lMob Spawn &8[&2&lIV&8]",
+        "&r&7Increases the chance of",
+        "&7a mob spawn when farming.",
+        ""
+    ],
+    "Mob Spawn 5": [
+        "&2&lMob Spawn &8[&2&lV&8]",
+        "&r&7Increases the chance of",
+        "&7a mob spawn when farming.",
         ""
     ]
 }

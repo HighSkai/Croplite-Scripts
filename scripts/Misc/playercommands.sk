@@ -1,46 +1,3 @@
-on region enter:
-	wait 1 tick
-	if "%region at player%" contains "lbtp in world world":
-		teleport player to location(1017.5, 117, 661.5, world "world", 0, -20)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Lifetime Leaderboards Hall." to player
-		stop
-		
-	else if "%region at player%" contains "lbtpback in world world":
-		teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported back to Spawn." to player
-		stop
-	
-	else if "%region at player%" contains "portaltofarm2 in world world":
-		teleport player to location(792.5, 99, 1039.5, world "world", 135, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Spruce Farm." to player
-		stop
-		
-	else if "%region at player%" contains "portaltofarm3 in world world":
-		teleport player to location(226.5, 98, 1037.5, world "world", -37, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Desert Farm." to player
-		stop
-
-	else if "%region at player%" contains "portaltofarm4 in world world":
-		teleport player to location(-378.5, 101, 857.5, world "world", -45, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Cave Farm." to player
-		stop
-
-	else if region at player contains "backtofarm1":
-		teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported back to Spawn." to player
-
-	else if region at player contains "backtofarm2":
-		teleport player to location(792.5, 99, 1039.5, world "world", 135, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Spruce Farm." to player
-
-	else if region at player contains "backtofarm3":
-		teleport player to location(226.5, 98, 1037.5, world "world", -37, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Desert Farm." to player
-		
-	else if "%region at player%" contains "global in world world and wheatleyzone in world world":
-		if {chatmessage::Buck::%player's uuid%} = 0:
-			send "&7[&6Buck Wheatly&7]&f: Click me!" to player
-	
 command /afk: 
 	trigger:
 		teleport player to location(1195.5, 117, 942.5,"world", 0, 0)
@@ -66,6 +23,25 @@ command /leaderboards:
 	trigger:
 		teleport player to location(1017.5, 117, 661.5, world "world", 0, -10)
 		send "&8[&dCroplite&8] &aYou have been teleported to the Lifetime Leaderboards." to player
+
+command /enderchest:
+	aliases: /ec
+	trigger:
+		open player's ender chest to player
+
+command /pay <offline player> <integer>:
+	trigger:
+		if {cropcash::%player's uuid%} >= arg-2:
+			add arg-2 to {cropcash::%arg-1's uuid%} 
+			remove arg-2 from {cropcash::%player's uuid%}
+
+			send "You have paid %arg-1% %arg-2% crop cash" to player
+			send "You have been paid %arg-2% crop cash." to arg-1
+			play sound "entity.experience_orb.pickup" to player
+			play sound "entity.experience_orb.pickup" to arg-1
+		else:
+			send "Insufficient crop cash." to player
+			play sound "minecraft:entity.villager.no" to player
 
 command /field <integer>:
 	permission: operator

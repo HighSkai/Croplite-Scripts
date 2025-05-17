@@ -44,6 +44,22 @@ command /fly [<player>]:
             else:
                 make player fly
 
+command /invsee [<offline player>]:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            open arg-1 to player
+        else:
+            open player to player
+
+command /ecsee [<offline player>]:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            open arg-1's ender chest to player
+        else:
+            open player's ender chest to player
+
 command /unlock <text> <number> [<offline player>]:
     permission: operator
     trigger:
@@ -87,72 +103,82 @@ on tab complete:
 command /set-rank <text> [<offline player>]:
     permission: operator
     trigger:
+        if arg-2 is set:
+            set {_player} to arg-2
+        else:
+            set {_player} to player
+
         if arg-1 is "member":
-            set {rank::%uuid of arg-2%} to "Member"
-            set {prefix::%uuid of arg-2%} to {member-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 0
-            set {rankexpmulti::%arg-2's uuid%} to 1
+            set {rank::%uuid of {_player}%} to "Member"
+            set {prefix::%uuid of {_player}%} to {member-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 0
+            set {rankexpmulti::%{_player}'s uuid%} to 1
         else if arg-1 is "vip":
-            set {rank::%uuid of arg-2%} to "Vip"
-            set {prefix::%uuid of arg-2%} to {vip-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 1
-            set {rankexpmulti::%arg-2's uuid%} to 1.1
+            set {rank::%uuid of {_player}%} to "Vip"
+            set {prefix::%uuid of {_player}%} to {vip-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 1
+            set {rankexpmulti::%{_player}'s uuid%} to 1.1
         else if arg-1 is "vip+":
-            set {rank::%uuid of arg-2%} to "Vip+"
-            set {prefix::%uuid of arg-2%} to {vip+-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 2
-            set {rankexpmulti::%arg-2's uuid%} to 1.2
+            set {rank::%uuid of {_player}%} to "Vip+"
+            set {prefix::%uuid of {_player}%} to {vip+-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 2
+            set {rankexpmulti::%{_player}'s uuid%} to 1.2
         else if arg-1 is "mvp":
-            set {rank::%uuid of arg-2%} to "Mvp"
-            set {prefix::%uuid of arg-2%} to {mvp-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 3
-            set {rankexpmulti::%arg-2's uuid%} to 1.3
+            set {rank::%uuid of {_player}%} to "Mvp"
+            set {prefix::%uuid of {_player}%} to {mvp-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 3
+            set {rankexpmulti::%{_player}'s uuid%} to 1.3
         else if arg-1 is "mvp+":
-            set {rank::%uuid of arg-2%} to "Mvp+"
-            set {prefix::%uuid of arg-2%} to {mvp+-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 4
-            set {rankexpmulti::%arg-2's uuid%} to 1.4
+            set {rank::%uuid of {_player}%} to "Mvp+"
+            set {prefix::%uuid of {_player}%} to {mvp+-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 4
+            set {rankexpmulti::%{_player}'s uuid%} to 1.4
         else if arg-1 is "elite":
-            set {rank::%uuid of arg-2%} to "Elite"
-            set {prefix::%uuid of arg-2%} to {elite-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 5
-            set {rankexpmulti::%arg-2's uuid%} to 1.5
+            set {rank::%uuid of {_player}%} to "Elite"
+            set {prefix::%uuid of {_player}%} to {elite-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 5
+            set {rankexpmulti::%{_player}'s uuid%} to 1.5
         else if arg-1 is "helper":
-            set {rank::%uuid of arg-2%} to "Helper"
-            set {prefix::%uuid of arg-2%} to {helper-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 999
-            set {rankexpmulti::%arg-2's uuid%} to 1
+            set {rank::%uuid of {_player}%} to "Helper"
+            set {prefix::%uuid of {_player}%} to {helper-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 999
+            set {rankexpmulti::%{_player}'s uuid%} to 1
         else if arg-1 is "builder":
-            set {rank::%uuid of arg-2%} to "Builder"
-            set {prefix::%uuid of arg-2%} to {builder-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 999
-            set {rankexpmulti::%arg-2's uuid%} to 1
+            set {rank::%uuid of {_player}%} to "Builder"
+            set {prefix::%uuid of {_player}%} to {builder-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 999
+            set {rankexpmulti::%{_player}'s uuid%} to 1
         else if arg-1 is "developer":
-            set {rank::%uuid of arg-2%} to "Developer"
-            set {prefix::%uuid of arg-2%} to {developer-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 999
-            set {rankexpmulti::%arg-2's uuid%} to 1
+            set {rank::%uuid of {_player}%} to "Developer"
+            set {prefix::%uuid of {_player}%} to {developer-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 999
+            set {rankexpmulti::%{_player}'s uuid%} to 1
         else if arg-1 is "owner":
-            set {rank::%uuid of arg-2%} to "Owner"
-            set {prefix::%uuid of arg-2%} to {owner-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 999
-            set {rankexpmulti::%arg-2's uuid%} to 1
+            set {rank::%uuid of {_player}%} to "Owner"
+            set {prefix::%uuid of {_player}%} to {owner-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 999
+            set {rankexpmulti::%{_player}'s uuid%} to 1
 
         else if arg-1 is "staff":
-            set {rank::%uuid of arg-2%} to "Staff"
-            set {prefix::%uuid of arg-2%} to {staff-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 999
-            set {rankexpmulti::%arg-2's uuid%} to 1
+            set {rank::%uuid of {_player}%} to "Staff"
+            set {prefix::%uuid of {_player}%} to {staff-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 999
+            set {rankexpmulti::%{_player}'s uuid%} to 1
         else if arg-1 is "croplite":
-            set {rank::%uuid of arg-2%} to "Croplite"
-            set {prefix::%uuid of arg-2%} to {croplite-Prefix}
-            set {ranknumber::%uuid of arg-2%} to 999
-            set {rankexpmulti::%arg-2's uuid%} to 1
+            set {rank::%uuid of {_player}%} to "Croplite"
+            set {prefix::%uuid of {_player}%} to {croplite-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 999
+            set {rankexpmulti::%{_player}'s uuid%} to 1
+        else if arg-1 is "ihelp":
+            set {rank::%uuid of {_player}%} to "Ihelp"
+            set {prefix::%uuid of {_player}%} to {ihelp-Prefix}
+            set {ranknumber::%uuid of {_player}%} to 999
+            set {rankexpmulti::%{_player}'s uuid%} to 1
 
-        setPrefix(arg-2)
-        send "done" to player
+        setPrefix({_player})
+        send "done" to {_player}
 
-command /set-level [<offline player>] <integer>:
+command /set-level [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -160,7 +186,7 @@ command /set-level [<offline player>] <integer>:
         else:
             set {level::%player's uuid%} to arg-2
 
-command /set-exp [<offline player>] <integer>:
+command /set-exp [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -168,7 +194,7 @@ command /set-exp [<offline player>] <integer>:
         else:
             set {exp::%player's uuid%} to arg-2
 
-command /set-expmulti [<offline player>] <integer>:
+command /set-expmulti [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -176,7 +202,7 @@ command /set-expmulti [<offline player>] <integer>:
         else:
             set {expmulti::%player's uuid%} to arg-2
 
-command /set-expreq [<offline player>] <integer>:
+command /set-expreq [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -184,7 +210,7 @@ command /set-expreq [<offline player>] <integer>:
         else:
             set {expreq::%player's uuid%} to arg-2
 
-command /set-crops [<offline player>] <integer>:
+command /set-crops [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -192,7 +218,7 @@ command /set-crops [<offline player>] <integer>:
         else:
             set {crops::%player's uuid%} to arg-2
 
-command /set-cropbag [<offline player>] <integer>:
+command /set-cropbag [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -200,7 +226,7 @@ command /set-cropbag [<offline player>] <integer>:
         else:
             set {cropbag::%player's uuid%} to arg-2
 
-command /set-cropcash [<offline player>] <integer>:
+command /set-cropcash [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -208,7 +234,7 @@ command /set-cropcash [<offline player>] <integer>:
         else:
             set {cropcash::%player's uuid%} to arg-2
 
-command /set-speed [<offline player>] <integer>:
+command /set-speed [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -216,7 +242,7 @@ command /set-speed [<offline player>] <integer>:
         else:
             set player's walking speed to arg-2
 
-command /set-enchantpoints [<offline player>] <integer>:
+command /set-enchantpoints [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -224,7 +250,7 @@ command /set-enchantpoints [<offline player>] <integer>:
         else:
             set {enchant-points::%player's uuid%} to arg-2
 
-command /give-level [<offline player>] <integer>:
+command /give-level [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -232,7 +258,7 @@ command /give-level [<offline player>] <integer>:
         else:
             add arg-2 to {level::%player's uuid%}
 
-command /give-exp [<offline player>] <integer>:
+command /give-exp [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -240,7 +266,7 @@ command /give-exp [<offline player>] <integer>:
         else:
             add arg-2 to {exp::%player's uuid%}
 
-command /give-expmulti [<offline player>] <integer>:
+command /give-expmulti [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -248,7 +274,7 @@ command /give-expmulti [<offline player>] <integer>:
         else:
             add arg-2 to {expmulti::%player's uuid%}
 
-command /give-crops [<offline player>] <integer>:
+command /give-crops [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -256,7 +282,7 @@ command /give-crops [<offline player>] <integer>:
         else:
             add arg-2 to {crops::%player's uuid%}
 
-command /give-cropcash [<offline player>] <integer>:
+command /give-cropcash [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
@@ -264,13 +290,21 @@ command /give-cropcash [<offline player>] <integer>:
         else:
             add arg-2 to {cropcash::%player's uuid%}
 
-command /give-enchantpoints [<offline player>] <integer>:
+command /give-enchantpoints [<offline player>] <number>:
     permission: operator
     trigger:
         if arg-1 is set:
-            add arg-2 to {enchant-points::%uuid of {_p}%}
+            add arg-2 to {enchant-points::%uuid of arg-1%}
         else:
             add arg-2 to {enchant-points::%player's uuid%}
+
+command /give-pettoken [<player>] <number>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            give arg-2 of {pet-token} to arg-1
+        else:
+            give arg-2 of {pet-token} to player
 
 on tab complete:
     if event-string is "/set-rank":

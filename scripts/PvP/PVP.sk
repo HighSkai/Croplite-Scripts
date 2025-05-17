@@ -24,21 +24,47 @@ command /optogglepvp <player>:
 			add 0.2 to {expmulti::%arg-1's uuid%}
 		if {pvpstatus::%arg-1's uuid%} is false:
 			subtract 0.2 from {expmulti::%arg-1's uuid%}
+
+command /adddamage <integer>:
+	permission: operator
+	trigger:
+		add "damage:%arg-1%" to string list tag "Croplite:scythe-stats" of custom nbt of player's held item
 		
 on damage:
-	if victim is a player:
-		if {pvpstatus::%victim's uuid%} is not true:
-			cancel event
-		if {pvpstatus::%attacker's uuid%} is not true:
-			cancel event
-		if {pvpstatus::%victim's uuid%} is false:
-			add 1 to {_temp}
-		if {pvpstatus::%attacker's uuid%} is false:
-			add 2 to {_temp}	
+	if attacker is a mob:
+		set victim's health to victim's health - int tag "Croplite:crop-mob-damage" of custom nbt of attacker
+	else if attacker is a player:
+		if victim is a player:
+			if {pvpstatus::%victim's uuid%} is false:
+				add 1 to {_temp}
+				cancel event
+			if damage cause is burning:
+				if {pvpstatus::%{last-fire-attacker::%victim's uuid%}'s uuid%} is false:
+					add 2 to {_temp}
+					cancel event
+			else:
+				if {pvpstatus::%attacker's uuid%} is false:
+					add 2 to {_temp}
+					cancel event
 
-		if {_temp} is 1:
-			send "&8[&dCroplite&8] &cThis farmer has PvP disabled." to attacker
-		else if {_temp} is 2:
-			send "&8[&dCroplite&8] &cYou have PvP turned off. Enable PvP using /togglepvp." to attacker
-		else if {_temp} is 3:
-			send "&8[&dCroplite&8] &cBoth you and this farmer have PvP disabled. Enable PvP using /togglepvp." to attacker
+			if {_temp} is 1:
+				send "&8[&dCroplite&8] &cThis farmer has PvP disabled." to attacker
+			else if {_temp} is 2:
+				send "&8[&dCroplite&8] &cYou have PvP turned off. Enable PvP using /togglepvp." to attacker
+			else if {_temp} is 3:
+				send "&8[&dCroplite&8] &cBoth you and this farmer have PvP disabled. Enable PvP using /togglepvp." to attacker
+
+on death:
+	if attacker is a player:
+		if victim is a player:
+			if {cropreap::%attacker's uuid%} > 0:
+				if {crops::%victim's uuid%} > 0:
+					set {_reap} to {cropreap::%attacker's uuid%} percent of {crops::%victim's uuid%}
+					set {_reap} to floor({_reap})
+
+					if {_reap} > 0:
+						add {_reap} to {crops::%attacker's uuid%}
+						send "You have reaped %{_reap}% crops from %victim%." to attacker
+					
+						remove {_reap} from {crops::%victim's uuid%}
+						send "%attacker% has reaped %{_reap}% crops from you." to victim
