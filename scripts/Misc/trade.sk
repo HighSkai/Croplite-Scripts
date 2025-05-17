@@ -1,0 +1,56 @@
+local function loadTradeGUI(p: player):
+    set {trade-gui::%uuid of {_p}%} to chest inventory with 6 rows named "&c&lTrade Menu"
+
+    loop 54 times:
+        set slot (loop-number - 1) of {trade-gui::%uuid of {_p}%} to red stained glass pane named " "
+
+    loop integers from 3 to 7:
+        set slot (loop-number - 1) of {trade-gui::%uuid of {_p}%} to air
+
+    set {_blank::*} to 10 and 11 and 12 and 14 and 15 and 16 and 19 and 20 and 21 and 23 and 24 and 25 and 28 and 29 and 30 and 32 and 33 and 34 and 37 and 38 and 39 and 41 and 42 and 43
+    loop {_blank::*}:
+        set slot loop-value of {trade-gui::%uuid of {_p}%} to air
+    
+    set slot 48 of {trade-gui::%uuid of {_p}%} to red wool named " "
+    set slot 50 of {trade-gui::%uuid of {_p}%} to red wool named " "
+
+    set slot 46 of {trade-gui::%uuid of {_p}%} to nether star named " "
+    set slot 52 of {trade-gui::%uuid of {_p}%} to nether star named " "
+
+    set slot 49 of {trade-gui::%uuid of {_p}%} to barrier named "&8[&4&lClose&8]"
+
+    open {trade-gui::%uuid of {_p}%} to {_p}
+
+local function updateTradeGUI(p: player):
+    set {_player-items::*} to 10 and 11 and 12 and 19 and 20 and 21 and 28 and 29 and 30 and 37 and 38 and 39
+
+    set {_player2-items::*} to 14 and 15 and 16 and 23 and 24 and 25 and 32 and 33 and 34 and 41 and 42 and 43
+    loop {_player-item::*}:
+        set slot loop-value of {trade-gui::%uuid of {_p}%} to air
+
+command /trade <player>:
+    trigger:
+        loadTradeGUI(arg-1)
+        loadTradeGUI(player)
+
+command /trade-accept:
+    trigger:
+        
+local function cleanUpTrade(p: player):
+    delete {trade-gui::%uuid of {_p}%}
+
+on inventory click:
+    if event-inventory is not player's inventory:
+        if name of event-inventory is "&c&lTrade Menu":
+
+            set {_player-items::*} to 10 and 11 and 12 and 19 and 20 and 21 and 28 and 29 and 30 and 37 and 38 and 39
+
+            if {_player-items::*} contains event-slot:
+                updateTradeGUI(player)
+            else:
+                cancel event
+
+on inventory close:
+    if event-inventory is not player's inventory:
+        if name of event-inventory is "&c&lTrade Menu":
+            cleanUpTrade(player)

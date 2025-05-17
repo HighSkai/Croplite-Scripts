@@ -1,183 +1,183 @@
-on enter of region "area1":
-    if ({areaunlocked::1::%player's uuid%}) is equal to false:
+on enter of region "field1":
+    if ({fieldunlocked::1::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 1)
 
-on enter of region "area2":
-    if ({areaunlocked::2::%player's uuid%}) is equal to false:
+on enter of region "field2":
+    if ({fieldunlocked::2::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 2)
 
-on enter of region "area3":
-    if ({areaunlocked::3::%player's uuid%}) is equal to false:
+on enter of region "field3":
+    if ({fieldunlocked::3::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 3)
 
-on enter of region "area4":
-    if ({areaunlocked::4::%player's uuid%}) is equal to false:
+on enter of region "field4":
+    if ({fieldunlocked::4::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 4)
 
-on enter of region "area5":
-    if ({areaunlocked::5::%player's uuid%}) is equal to false:
+on enter of region "field5":
+    if ({fieldunlocked::5::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 5)
 
-on enter of region "area6":
-    if ({areaunlocked::6::%player's uuid%}) is equal to false:
+on enter of region "field6":
+    if ({fieldunlocked::6::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 6)
 
-on enter of region "area7":
-    if ({areaunlocked::7::%player's uuid%}) is equal to false:
+on enter of region "field7":
+    if ({fieldunlocked::7::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 7)
 
-on enter of region "area8":
-    if ({areaunlocked::8::%player's uuid%}) is equal to false:
+on enter of region "field8":
+    if ({fieldunlocked::8::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 8)
 
-on enter of region "area9":
-    if ({areaunlocked::9::%player's uuid%}) is equal to false:
+on enter of region "field9":
+    if ({fieldunlocked::9::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 9)
 
-on enter of region "area10":
-    if ({areaunlocked::10::%player's uuid%}) is equal to false:
+on enter of region "field10":
+    if ({fieldunlocked::10::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 10)
 
-on enter of region "area11":
-    if ({areaunlocked::11::%player's uuid%}) is equal to false:
+on enter of region "field11":
+    if ({fieldunlocked::11::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 11)
 
-on enter of region "area12":
-    if ({areaunlocked::12::%player's uuid%}) is equal to false:
+on enter of region "field12":
+    if ({fieldunlocked::12::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 12)
 
 on enter of region "cavegate1":
-    if ({areaunlocked::13::%player's uuid%}) is equal to false:
+    if ({fieldunlocked::13::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 13)
 
 on enter of region "cavegate2":
-    if ({areaunlocked::14::%player's uuid%}) is equal to false:
+    if ({fieldunlocked::14::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 14)
 
 on enter of region "cavegate3":
-    if ({areaunlocked::15::%player's uuid%}) is equal to false:
+    if ({fieldunlocked::15::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 15)
 
 on enter of region "cavegate4":
-    if ({areaunlocked::16::%player's uuid%}) is equal to false:
+    if ({fieldunlocked::16::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 16)
 
 on enter of region "cavegate5":
-    if ({areaunlocked::16::%player's uuid%}) is equal to false:
+    if ({fieldunlocked::16::%player's uuid%}) is equal to false:
         cancel event
         loadFieldUnlockGui(player, 16)
 
-on enter of region "portaltoarea2":
-    if ({farmunlocked::2::%player's uuid%}) is equal to false:
+on enter of region "portaltofarm2":
+    if {farmunlocked::2::%player's uuid%} is false:
         cancel event
         loadFarmUnlockGui(player, 2)
 
-on enter of region "portaltoarea3":
-    if ({farmunlocked::3::%player's uuid%}) is equal to false:
+on enter of region "portaltofarm3":
+    if {farmunlocked::3::%player's uuid%} is false:
         cancel event
         loadFarmUnlockGui(player, 3)
 
-on enter of region "portaltoarea4":
-    if ({farmunlocked::4::%player's uuid%}) is equal to false:
+on enter of region "portaltofarm4":
+    if {farmunlocked::4::%player's uuid%} is false:
         cancel event
         loadFarmUnlockGui(player, 4)
         
 
 on inventory click:
-    if event-inventory's name contains "&e&lUnlock Field":
-        cancel event
-        if event-slot is 4:
-            set {_message} to 0
-            if {level::%player's uuid%} < {arealevel::%{currentarea-number::%{player's uuid}%}%}:
-                add 1 to {_message}
-            if {cropcash::%player's uuid%} < {field::%{currentarea-number::%{player's uuid}%}%}:
-                add 2 to {_message}
-            if {_message} is 0:
-                subtract {field::%{currentarea-number::%{player's uuid}%}%::price} from {cropcash::%player's uuid%}
-                set {areaunlocked::%{currentarea-number::%{player's uuid}%}%::%player's uuid%} to true
-                close player's inventory
-                play sound "entity.player.levelup" to player
-                send title "&eField Unlocked" to player for 0.6 seconds 
-                send subtitle "&aYou have unlocked &e&lField &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]" to player for 0.6 seconds
+    if event-inventory is not player's inventory:
+        if event-inventory's name contains "&e&lUnlock Field":
+            cancel event
+            if event-slot is 4:
+                set {_message} to 0
+                if {level::%player's uuid%} < {field::%{currentfield-number::%{player's uuid}%}%::level}:
+                    add 1 to {_message}
+                if {cropcash::%player's uuid%} < {field::%{currentfield-number::%{player's uuid}%}%::price}:
+                    add 2 to {_message}
+                if {_message} is 0:
+                    subtract {field::%{currentfield-number::%{player's uuid}%}%::price} from {cropcash::%player's uuid%}
+                    set {fieldunlocked::%{currentfield-number::%{player's uuid}%}%::%player's uuid%} to true
+                    close player's inventory
+                    play sound "entity.player.levelup" to player
+                    send title "&eField Unlocked" to player for 0.6 seconds 
+                    send subtitle "&aYou have unlocked &e&lField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]" to player for 0.6 seconds
 
-                send "&8[&d&lCroplite&8] &aYou have unlocked &eField &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]&a." to player
-                updateCropCash(player)
-            
-            else if {_message} is 3:
-                send "&8[&d&lCroplite&8] &cYou don't meet any of the requirements to unlock &eField &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]&c." to player
-            else if {_message} is 1:
-                send "&8[&d&lCroplite&8] &cYou're not high enough &9&lLevel &cto unlock &eField &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]&c." to player
-            else if {_message} is 2:
-                send "&8[&d&lCroplite&8] &cYou don't have enough &5&lCrop Cash &cto unlock &eField &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]&c." to player
+                    send "&d&lCroplite &aYou have unlocked &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&a." to player
+                
+                else if {_message} is 3:
+                    send "&d&lCroplite &cYou don't meet any of the requirements to unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
+                else if {_message} is 1:
+                    send "&d&lCroplite &cYou're not high enough &9&lLevel &cto unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
+                else if {_message} is 2:
+                    send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
             
 
 on inventory click:
-    if event-inventory's name contains "&e&lUnlock Farm":
-        cancel event
-        if event-slot is 4:
-            set {_message} to 0
-            if {level::%player's uuid%} < {farmlevel::%{currentarea-number::%{player's uuid}%}%}:
-                add 1 to {_message}
-            if {cropcash::%player's uuid%} < {farmprice::%{currentarea-number::%{player's uuid}%}%}:
-                add 2 to {_message}
-            if {_message} is 0:
-                subtract {farmprice::%{currentarea-number::%{player's uuid}%}%} from {cropcash::%player's uuid%}
-                set {farmunlocked::%{currentarea-number::%{player's uuid}%}%::%player's uuid%} to true
-                close player's inventory
-                play sound "entity.player.levelup" to player
-                send title "&eField Unlocked" to player for 0.6 seconds 
-                send subtitle "&aYou have unlocked &e&lFarm &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]" to player for 0.6 seconds
+    if event-inventory is not player's inventory:
+        if event-inventory's name contains "&e&lUnlock Farm":
+            cancel event
+            if event-slot is 4:
+                set {_message} to 0
+                if {level::%player's uuid%} < {farm::%{currentfield-number::%{player's uuid}%}%::level}:
+                    add 1 to {_message}
+                if {cropcash::%player's uuid%} < {farm::%{currentfield-number::%{player's uuid}%}%::price}:
+                    add 2 to {_message}
+                if {_message} is 0:
+                    subtract {farm::%{currentfield-number::%{player's uuid}%}%::price} from {cropcash::%player's uuid%}
+                    set {farmunlocked::%{currentfield-number::%{player's uuid}%}%::%player's uuid%} to true
+                    close player's inventory
+                    play sound "entity.player.levelup" to player
+                    send title "&eFarm Unlocked" to player for 0.6 seconds 
+                    send subtitle "&aYou have unlocked &e&lFarm &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]" to player for 0.6 seconds
 
-                send "&8[&d&lCroplite&8] &aYou have unlocked &eFarm &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]&a." to player
-                updateCropCash(player)
-            
-            else if {_message} is 3:
-                send "&8[&d&lCroplite&8] &cYou don't meet any of the requirements to unlock &eFarm &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]&c." to player
-            else if {_message} is 1:
-                send "&8[&d&lCroplite&8] &cYou're not high enough &9&lLevel &cto unlock &eFarm &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]&c." to player
-            else if {_message} is 2:
-                send "&8[&d&lCroplite&8] &cYou don't have enough &5&lCrop Cash &cto unlock &eFarm &8[&e&l%{currentarea-number::%{p's uuid}%}%&8]&c." to player
+                    send "&d&lCroplite &aYou have unlocked &eFarm &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&a." to player
+                
+                else if {_message} is 3:
+                    send "&d&lCroplite &cYou don't meet any of the requirements to unlock &eFarm &8[&e&l%{currentfield-number::%{p's uuid}%}%&8]&c." to player
+                else if {_message} is 1:
+                    send "&d&lCroplite &cYou're not high enough &9&lLevel &cto unlock &eFarm &8[&e&l%{currentfield-number::%{p's uuid}%}%&8]&c." to player
+                else if {_message} is 2:
+                    send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto unlock &eFarm &8[&e&l%{currentfield-number::%{p's uuid}%}%&8]&c." to player
 
 function loadFieldUnlockGui(p: player, n: number):
-    set {currentarea-number::%{p's uuid}%} to {_n}
+    set {currentfield-number::%{player's uuid}%} to {_n}
 
     set {_gui} to a dispenser inventory named "&e&lUnlock Field &8[&e&l%{_n}%&8]"
         
     loop 9 times:
         set slot (loop-number - 1) of {_gui} to blue stained glass pane named " "
 
-    set slot 4 of {_gui} to nether star named "&9&lLevel &8[&9%{arealevel::%{_n}%}%&8]"
+    set slot 4 of {_gui} to nether star named "&9&lLevel &8[&9%{field::%{_n}%::level}%&8]"
     set {_lore} to "&5Crop Cash: &8[&5%abbreviateNumber({field::%{_n}%::price})%&8]"
     set lore of slot 4 of {_gui} to {_lore}
 
     open {_gui} to {_p}
 
 function loadFarmUnlockGui(p: player, n: number):
-    set {currentarea-number::%{p's uuid}%} to {_n}
+    set {currentfield-number::%{player's uuid}%} to {_n}
 
     set {_gui} to a dispenser inventory named "&e&lUnlock Farm %{_n}%"
         
     loop 9 times:
         set slot (loop-number - 1) of {_gui} to blue stained glass pane named " "
 
-        set slot 4 of {_gui} to nether star named "&9&lLevel &8[&9%{farmlevel::%{_n}%}%&8]"
-        set {_lore} to "&5Crop Cash: &8[&5%abbreviateNumber({farmprice::%{_n}%})%&8]"
+        set slot 4 of {_gui} to nether star named "&9&lLevel &8[&9%{farm::%{_n}%::level}%&8]"
+        set {_lore} to "&5Crop Cash: &8[&5%abbreviateNumber({farm::%{_n}%::price})%&8]"
         set lore of slot 4 of {_gui} to {_lore}
 
     open {_gui} to {_p}
@@ -202,32 +202,32 @@ command /setareareqs:
             set {field::15::price} to 5000000
             set {field::16::price} to 10000000
 
-            set {arealevel::1} to 0
-            set {arealevel::2} to 5
-            set {arealevel::3} to 10
-            set {arealevel::4} to 15
-            set {arealevel::5} to 25
-            set {arealevel::6} to 30
-            set {arealevel::7} to 34
-            set {arealevel::8} to 40
-            set {arealevel::9} to 50
-            set {arealevel::10} to 55
-            set {arealevel::11} to 60
-            set {arealevel::12} to 65
-            set {arealevel::13} to 75
-            set {arealevel::14} to 80
-            set {arealevel::15} to 85
-            set {arealevel::16} to 90
+            set {field::1::level} to 0
+            set {field::2::level} to 5
+            set {field::3::level} to 10
+            set {field::4::level} to 15
+            set {field::5::level} to 25
+            set {field::6::level} to 30
+            set {field::7::level} to 34
+            set {field::8::level} to 40
+            set {field::9::level} to 50
+            set {field::10::level} to 55
+            set {field::11::level} to 60
+            set {field::12::level} to 65
+            set {field::13::level} to 75
+            set {field::14::level} to 80
+            set {field::15::level} to 85
+            set {field::16::level} to 90
 
-            set {farmprice::2} to 0
-            set {farmprice::3} to 0
-            set {farmprice::4} to 0
+            set {farm::2::price} to 7500
+            set {farm::3::price} to 85000
+            set {farm::4::price} to 850000
 
-            set {farmlevel::2} to 20
-            set {farmlevel::3} to 45
-            set {farmlevel::4} to 70
+            set {farm::2::level} to 20
+            set {farm::3::level} to 45
+            set {farm::4::level} to 70
         
-            send "&8[&d&lCroplite&8] &aAll area requirements have been reset!" to player
+            send "&d&lCroplite &aAll field requirements have been set." to player
 
 function abbreviateNumber(n: number) :: text:
     set {_num} to {_n}

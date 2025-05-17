@@ -17,6 +17,6 @@ on right click:
 			send "&7[&dCarlo&7]&f: Meoww!" to player
 		
 command /resetcarlomessage:
-	permission: *
+	permission: operator
 	trigger:
 		set {chatmessage::Carlo::%player's uuid%} to 0

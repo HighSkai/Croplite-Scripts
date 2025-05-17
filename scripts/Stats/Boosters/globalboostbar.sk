@@ -1,5 +1,5 @@
 command /globalbooster1:
-    permission: *
+    permission: operator
     trigger:
         if {globalxpbooster1} is not set:
             set {globalxpbooster1} to boss bar with id "globalbar1" with title "+10%% XP Global Booster" with color yellow with progress 0
@@ -7,11 +7,11 @@ command /globalbooster1:
         add all players to {globalxpbooster1}
         if bar progress of {globalxpbooster1} is less than 90:
             add 10 to bar progress of {globalxpbooster1}
+            if {globalxpboost1active} is false:
+                set {globalxpboost1active} to true
             loop all players:
-                if {globalxpboost1::%loop-player's uuid%} is not true:
-                    set {globalxpboost1::%loop-player's uuid%} to true
-                    add 0.1 to {miningmultiplier::%loop-player's uuid%}
-            send "&8[&dCroplite&8] &r&a&l%player% has activated a 10%% Global XP booster for 1 hour!" to all players
+                add 0.1 to {expmulti::%loop-player's uuid%}
+            send "&8[&d&lCroplite&r&8] %colored {prefix::%player's uuid%}% %colored player's name%&r &ahas activated a &8[&e&l+0.10&8] &e&lGlobal XP Booster&r&a for &n1 hour!" to all players
             remove 1 netherite upgrade smithing template named "&e&l+10%% global XP booster &8(&c1h&8)" from player's inventory
         else:
             send "&4&lThe limit on this global booster has been reached for now!" to player
@@ -20,17 +20,21 @@ every 6 minutes:
     if bar progress of {globalxpbooster1} is greater than or equal to 1:
         subtract 1 from bar progress of {globalxpbooster1}
     else if bar progress of {globalxpbooster1} is less than 1:
+        if {globalxpboost1active} is true:
+            set {globalxpboost1active} to false
         loop all players:
-            if {globalxpboost1::%loop-player's uuid%} is true:
-                subtract 0.1 from {miningmultiplier::%loop-player's uuid%}
-                set {globalxpboost1::%loop-player's uuid%} to false
+            remove 0.1 from {expmulti::%loop-player's uuid%}
         remove all players from {globalxpbooster1}
         delete {globalxpbooster1}
 
 on join:
-    if {globalxpboost1::%player's uuid%} is true:
+    remove player from {globalxpbooster1}
+    if {globalxpboost1active} is true:
         add player to {globalxpbooster1}
+        add 0.1 to {expmulti::%player's uuid%}
 
 on quit:
-    if {globalxpboost1::%player's uuid%} is true:
+    remove player from {globalxpbooster1}
+    if {globalxpboost1active} is true:
         remove player from {globalxpbooster1}
+        subtract 0.1 from {expmulti::%player's uuid%}

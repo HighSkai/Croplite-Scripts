@@ -1,56 +1,86 @@
 on damage:
-    if attacker's tool is tagged as item tag "minecraft:hoes":
-        set {_scytheenchants::*} to string list tag "Croplite:enchants" of custom nbt of attacker's tool
-        set {_scythestats::*} to string list tag "Croplite:scythe-stats" of custom nbt of attacker's tool
-
-        loop {_scythestats::*}:
-            set {_parts::*} to loop-value split at ":"
-            set {_id} to {_parts::1}
-
-            if {_id} is "damage":
-                set {_damage} to {_parts::2} parsed as number
-            
-        loop {_scytheenchants::*}:
-            set {_parts::*} to loop-value split at ":"
-            set {_id} to {_parts::1}
-        
-            if {_id} is "0":
-                add {_parts::2} parsed as number to {_damage}
-            
-            if {_id} is "1":
-                set {_time} to timespan({_parts::2} parsed as number, seconds)
-                if victim is a mob:
-                    ignite victim for {_time}
-                else:
-                    if {pvpstatus::%victim's uuid%} is true:
-                        ignite victim for {_time}
-
-        if hit is not critical:
-            {_damage} = {_damage} / 2
-
-        {_damage} = {_damage} - armorEnchantDamage(damage, victim)
-
-        set damage to {_damage}
-
-        if damage < 0:
-            set damage to 0.5
-
-        if victim is a armor stand:
-            spawnDamageDisplay(victim, damage)
-        else if victim is a mob:
-            spawnDamageDisplay(victim, damage)
-        else if victim is a player:
-            if {pvpstatus::%victim's uuid%} is true:
-                if {pvpstatus::%attacker's uuid%} is true:
-                    spawnDamageDisplay(victim, damage)
+    if damage was caused by lava, fire or burning:
+        set damage to 1
+        if victim is an armor stand:
+            spawnDamageDisplay(last attacker of victim, victim, damage)
+            cancel event
+        else:
+            spawnDamageDisplay(last attacker of victim, victim, damage)
     else:
-        set damage to 0.5
-        spawnDamageDisplay(victim, damage)
+        if attack cooldown of attacker >= 0.5:
+            if attacker's tool is tagged as item tag "minecraft:hoes":
+                set {_scytheenchants::*} to string list tag "Croplite:enchants" of custom nbt of attacker's tool
+                set {_scythestats::*} to string list tag "Croplite:scythe-stats" of custom nbt of attacker's tool
+
+                loop {_scythestats::*}:
+                    set {_parts::*} to loop-value split at ":"
+                    set {_id} to {_parts::1}
+
+                    if {_id} is "damage":
+                        set {_damage} to {_parts::2} parsed as number
+
+                add {damage-addition::%attacker's uuid%} to {_damage}
+                
+                loop {_scytheenchants::*}:
+                    set {_parts::*} to loop-value split at ":"
+                    set {_id} to {_parts::1}
+            
+                    if {_id} is "sharpness":
+                        add {_parts::2} parsed as number to {_damage}
+                
+                    if {_id} is "fireaspect":
+                        set {_time} to timespan({_parts::2} parsed as number, seconds)
+                        add 1 seconds to {_time}
+                        if victim is not a player:
+                            ignite victim for {_time}
+                        else:
+                            if {pvpstatus::%victim's uuid%} is true:
+                                ignite victim for {_time} 
+
+                set {_damage} to {_damage} - armorEnchantDamage(victim)
+
+                if hit is not critical:
+                    set {_damage} to {_damage} / 2
+
+                if {_damage} is less than 0.5:
+                    set damage to 0.5
+                else:
+                    set damage to {_damage}
+
+                #hoe
+                if victim is a player:
+                    if ({pvpstatus::%victim's uuid%} and {pvpstatus::%attacker's uuid%} is true):
+                        spawnDamageDisplay(attacker, victim, damage)
+                else:
+                    spawnDamageDisplay(attacker, victim, damage)
+            else:
+                #not hoe
+                if victim is a player:
+                    if ({pvpstatus::%victim's uuid%} and {pvpstatus::%attacker's uuid%} is true):
+                        set damage to 0.5
+                        spawnDamageDisplay(attacker, victim, damage)
+                else:
+                    set damage to 0.5
+                    spawnDamageDisplay(attacker, victim, damage)
+        else:
+            send action bar "&8[&4&l%attack cooldown of attacker% &8/ &4&l1&8]" to attacker
         
-local function spawnDamageDisplay(victim: entity, damage: number):
-    set {_random-vector-offset} to a random vector
-    set standard length of {_random-vector-offset} to 0.6
-    summon text display 0.7 block in front of {_victim}'s head offset by {_random-vector-offset}
+local function spawnDamageDisplay(attacker: entity, victim: entity, damage: number):
+    set {_attacker-to-victim} to vector between {_victim} and {_attacker}
+    set standard length of {_attacker-to-victim} to 0.5
+
+    set y component of {_attacker-to-victim} to a random number between -0.5 and 0.1
+
+    if the facing of {_attacker} is north:
+        set x component of {_attacker-to-victim} to a random number between -0.7 and 0.7
+    else if the facing of {_attacker} is south:
+        set x component of {_attacker-to-victim} to a random number between -0.7 and 0.7
+    else if the facing of {_attacker} is east:
+        set z component of {_attacker-to-victim} to a random number between -0.7 and 0.7
+    else if the facing of {_attacker} is west:
+        set z component of {_attacker-to-victim} to a random number between -0.7 and 0.7
+
+    summon text display at {_victim}'s head offset by {_attacker-to-victim}
     set {_damageDisplay} to last spawned entity
 
     set display text of {_damageDisplay} to "&8[&4&l%{_damage}%&8]"
@@ -62,7 +92,7 @@ local function spawnDamageDisplay(victim: entity, damage: number):
     wait 0.5 seconds
     kill {_damageDisplay}
 
-local function armorEnchantDamage(damage: number, victim: entity) ::number: 
+local function armorEnchantDamage(victim: entity) ::number: 
     if helmet of {_victim} is not air:
         set {_helmet-tags::*} to string list tag "Croplite:enchants" of custom nbt of {_victim}'s helmet
     if chestplate of {_victim} is not air:
@@ -71,6 +101,11 @@ local function armorEnchantDamage(damage: number, victim: entity) ::number:
         set {_leggings-tags::*} to string list tag "Croplite:enchants" of custom nbt of {_victim}'s leggings
     if boots of {_victim} is not air:
         set {_boots-tags::*} to string list tag "Croplite:enchants" of custom nbt of {_victim}'s boots
+
+    set {_helmet-defense} to 0
+    set {_chestplate-defense} to 0
+    set {_leggings-defense} to 0
+    set {_boots-defense} to 0
 
     if {_helmet-tags::*} is set:
         loop {_helmet-tags::*}:
@@ -100,17 +135,37 @@ local function armorEnchantDamage(damage: number, victim: entity) ::number:
         if {_id} is "prot":
             set {_boots-defense} to {_parts::2} parsed as number
 
-    broadcast "helmet defense : %{_helmet-defense}%"
-    broadcast "chestplate defense : %{_chestplate-defense}%"
-    broadcast "leggings defense : %{_leggings-defense}%"
-    broadcast "boots defense : %{_boots-defense}%"
     return {_helmet-defense} + {_chestplate-defense} + {_leggings-defense} + {_boots-defense}
 
-command /spawntestdummy:
+command /spawnattackdummy:
+    permission: operator
     trigger:
-        spawn a armor stand 5 meters above the player
+        spawn a armor stand at the player
         set {_stand} to last spawned entity
-        set name of {_stand} to "test_dummy"
+        set name of {_stand} to "attack_dummy"
+        summon text display 2 block above {_stand}
+        set {_name-display} to last spawned entity
+        set name of {name-display} to "attack_dummy-name"
 
-on death of armor stand:
-    #cancel event
+        set display text of {_name-display} to "&4&lAttack Dummy"
+        apply drop shadow to {_name-display}
+    
+        set display billboard of {_name-display} to center
+        set display text background color of {_name-display} to bukkitColor(40,0,0,0)
+
+on entity move:
+    if name of event-entity is "attack_dummy":
+        cancel event
+
+on death:
+    if name of victim is "attack_dummy":
+        if attacker is a player:
+            cancel event
+
+command /killattackdummies:
+    trigger:
+        loop all entities:
+            if name of loop-entity is "attack_dummy":
+                kill loop-entity
+            else if name of loop-entity is "Text Display":
+                kill loop-entity

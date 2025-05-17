@@ -1,0 +1,19 @@
+on rightclick with wind charge:
+    # cancel whatever the wind charge normally does
+    cancel event
+
+    # make sure we actually clicked a block
+    if clicked block is air:
+        stop
+
+    # take one from the player's hand
+    remove 1 wind charge from player's tool
+
+    # build the exact location: centered on top of the clicked block
+    set {_loc} to location of clicked block
+    add 1.0 to y-coordinate of {_loc}
+
+    # spawn the item display
+    spawn item display at {_loc}
+    set {_display} to last spawned entity
+    set display item of {_display} to wind charge

@@ -9,6 +9,6 @@ on chat:
     set the chat format to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%: &r%colored message%"
 
 function setPrefix(p: player):
-    console command "tab player %{_p}% tagprefix '&8[&9&l%{level::%{_p}'s uuid%}%&8]%{prefix::%uuid of {_p}%}% '"
+    console command "tab player %{_p}% tagprefix '&8[&9&l%{level::%uuid of {_p}%}%&8]%{prefix::%uuid of {_p}%}% '"
 
-    set {_p}'s tab list name to "&8[&9&l%{level::%{_p}'s uuid%}%&8]%colored {prefix::%{_p}'s uuid%}% %colored {_p}'s name%"
+    set {_p}'s tab list name to "&8[&9&l%{level::%uuid of {_p}%}%&8]%colored {prefix::%uuid of {_p}%}% %colored {_p}'s name%"

@@ -1,0 +1,285 @@
+local function levelUp(p: player):
+	while {exp::%uuid of {_p}%} >= {expreq::%uuid of {_p}%}:
+		play sound "entity.player.levelup" to {_p}
+		send title "&9Level Up" to {_p} for 0.6 seconds
+		send subtitle "&aYou have leveled up to &9&lLevel &8[&9&l%{level::%uuid of {_p}%} + 1%&8]" to {_p} for 0.6 seconds
+
+		send "&8[&5&lCroplite&8] &aYou have leveled up to &9&lLevel &8[&9&l%{level::%uuid of {_p}%} + 1%&8]" to {_p}
+
+		subtract {expreq::%uuid of {_p}%} from {exp::%uuid of {_p}%}
+		add 1 to {level::%uuid of {_p}%}
+		setPrefix({_p})
+
+		set {expreq::%uuid of {_p}%} to value "%{level::%uuid of {_p}%}%" of {XP-Json}
+
+		add 0.01 to {expmulti::%uuid of {_p}%}
+		add 1 to {enchant-points::%uuid of {_p}%}
+
+local function updateEXP(p: player, n: number, farm: number, b: block):
+	if chance of {double-crop-chance::%uuid of {_p}%}:
+		broadcast "yay double crops!!"
+		loop 2 times:
+			add {field::%{_n}%::basecrops} to {cropmaterial::%uuid of {_p}%}
+			if {doublecmboost::%uuid of {_p}%} is true:
+				add {field::%{_n}%::basecrops} to {cropmaterial::%uuid of {_p}%}
+
+			add ({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp}) to {exp::%uuid of {_p}%}
+
+			add 1 to {lifetimecropsbroken::%uuid of {_p}%}
+			add 1 to {dailycropsbroken::%uuid of {_p}%}
+
+		send action bar "&8[&6(x2) +%abbreviateNumber({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp})% Exp &8(&6&l%abbreviateNumber({exp::%uuid of {_p}%})%&r&8/&6&l%abbreviateNumber({expreq::%uuid of {_p}%})%&8)] &8[&2(x2) +%abbreviateNumber({field::%{_n}%::basecrops})% Crops &8(&2&l%abbreviateNumber({cropmaterial::%uuid of {_p}%})%&r&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8)&8]" to {_p}
+	else: 
+		add {field::%{_n}%::basecrops} to {cropmaterial::%uuid of {_p}%}
+		if {doublecmboost::%uuid of {_p}%} is true:
+			add {field::%{_n}%::basecrops} to {cropmaterial::%uuid of {_p}%}
+
+		add ({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp}) to {exp::%uuid of {_p}%}
+
+		add 1 to {lifetimecropsbroken::%uuid of {_p}%}
+		add 1 to {dailycropsbroken::%uuid of {_p}%}
+
+		send action bar "&8[&6+%abbreviateNumber({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp})% Exp &8(&6&l%abbreviateNumber({exp::%uuid of {_p}%})%&r&8/&6&l%abbreviateNumber({expreq::%uuid of {_p}%})%&8)] &8[&2+%abbreviateNumber({field::%{_n}%::basecrops})% Crops &8(&2&l%abbreviateNumber({cropmaterial::%uuid of {_p}%})%&r&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8)&8]" to {_p}
+
+	chance of 0.0666%:
+		play sound "block.note_block.pling" at {_p}
+		send "&7You found a &6Pet Crate Key &7while breaking crops!" to {_p}
+		execute console command "/crate key give %{_p}% pet 1"
+
+	chance of {mobspawnchance::%uuid of {_p}%}:	
+		spawnCropMob({_farm}, {_b})
+			
+	if {exp::%uuid of {_p}%} >= {expreq::%uuid of {_p}%}:	
+		levelUp({_p})
+
+command /togglemaxcropbagpopup:
+	trigger:
+		if {maxcropbagpopup::%player's uuid%} is true:
+			set {maxcropbagpopup::%player's uuid%} to false
+			send "&8[&5&lCroplite&8] &cDisabled max crop bag popup."
+		else:
+			set {maxcropbagpopup::%player's uuid%} to true
+			send "&8[&5&lCroplite&8] &aEnabled max crop bag popup."
+
+local function loadMaxCropBagGui(p: player):
+	set {_gui} to chest inventory with 3 rows named "&4&lCrop Bag Full"
+
+	loop 27 times:
+		set slot (loop-number - 1) of {_gui} to red stained glass pane named " "
+    	
+	set {_toggle-perm} to redstone block named "&c&lToggle Visibility"
+	set line 1 of lore of {_toggle-perm} to "&7Disables this pop-up"
+	set line 2 of lore of {_toggle-perm} to "&7menu until it's"
+	set line 3 of lore of {_toggle-perm} to "&7enabled again."
+	if {maxcropbagpopup::%uuid of {_p}%} is false:
+		make {_toggle-perm} glint
+
+	set {_toggle-temp} to gold block named "&e&lToggle Visibility Temporarily"
+	set line 1 of lore of {_toggle-temp} to "&7Disables this pop-up"
+	set line 2 of lore of {_toggle-temp} to "&7menu for 10 minutes"
+	if {maxcropbagpopup::%uuid of {_p}%} is false:
+		make {_toggle-temp} glint
+
+	set slot 12 of {_gui} to {_toggle-perm}
+	set slot 13 of {_gui} to emerald block named "&2&lSell Crops"
+	set slot 14 of {_gui} to {_toggle-temp}
+
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+	open {_gui} to {_p}
+ 
+on inventory click:
+	if event-inventory's name is "&4&lCrop Bag Full":
+		if event-inventory is not player's inventory:
+			cancel event
+
+			if event-slot is 12:
+				if {maxcropbagpopup::%player's uuid%} is true:
+					set {maxcropbagpopup::%player's uuid%} to false
+				else:
+					set {maxcropbagpopup::%player's uuid%} to true
+				loadMaxCropBagGui(player)
+			else if event-slot is 13:
+				if {ranknumber::%player's uuid%} > 0:
+					sellCrops(player)
+				else:
+					teleport player to location(1194.5, 102, 959.5, "world", 0, 0)
+				close player's inventory
+			else if event-slot is 14:
+				if {maxcropbagpopup::%player's uuid%} is true:
+					set {maxcropbagpopup::%player's uuid%} to false
+				else:
+					set {maxcropbagpopup::%player's uuid%} to true
+
+				loadMaxCropBagGui(player)
+				wait 10 seconds
+				if {maxcropbagpopup::%player's uuid%} is false:
+					set {maxcropbagpopup::%player's uuid%} to true
+			else if event-slot is 22:
+				close player's inventory
+
+function sellCrops(p: player):
+	if {cropmaterial::%uuid of {_p}%} > 0:
+		add {cropmaterial::%uuid of {_p}%} to {cropcash::%uuid of {_p}%}
+		set {cropmaterial::%uuid of {_p}%} to 0
+		send "&8[&5&lCroplite&8] &aCrops have been sold!" to {_p}
+
+command /setdoublecropchance <integer>:
+	trigger:
+		set {double-crop-chance::%player's uuid%} to arg-1
+
+on death:
+	if victim is a mob:
+		cancel drops
+		if attacker is a player:
+			if "%region at attacker%" is equal to "global in world world and field1 in world world":
+				set {_n} to 1
+			else if "%region at attacker%" is equal to "global in world world and field2 in world world":
+				set {_n} to 2
+			else if "%region at attacker%" is equal to "field3 in world world and global in world world":
+				set {_n} to 3
+			else if "%region at attacker%" is equal to "field4 in world world and global in world world":
+				set {_n} to 4
+			else if "%region at attacker%" is equal to "field5 in world world and global in world world":
+				set {_n} to 5
+			else if "%region at attacker%" is equal to "field6 in world world and global in world world":
+				set {_n} to 6
+			else if "%region at attacker%" is equal to "field7 in world world and global in world world":
+				set {_n} to 7
+			else if "%region at attacker%" is equal to "field8 in world world and global in world world":
+				set {_n} to 8
+			else if "%region at attacker%" is equal to "field9 in world world and global in world world":
+				set {_n} to 9
+			else if "%region at attacker%" is equal to "field10 in world world and global in world world":
+				set {_n} to 10
+			else if "%region at attacker%" is equal to "field11 in world world and global in world world":
+				set {_n} to 11
+			else if "%region at attacker%" is equal to "field12 in world world and global in world world":
+				set {_n} to 12
+			else if "%region at attacker%" is equal to "field13 in world world and global in world world":
+				set {_n} to 13
+			else if "%region at attacker%" is equal to "field14 in world world and global in world world":
+				set {_n} to 14
+			else if "%region at attacker%" is equal to "field15 in world world and global in world world":
+				set {_n} to 15
+			else if "%region at attacker%" is equal to "field16 in world world and global in world world":
+				set {_n} to 16
+			
+			add 1 to {dailymobkills::%uuid of attacker%}
+			add 1 to {lifetimemobkills::%uuid of attacker%}
+
+			add ({expmulti::%uuid of attacker%} * {field::%{_n}%::basexp} * 50) to {exp::%uuid of attacker%}
+			send action bar "&8[&6+%abbreviateNumber({expmulti::%uuid of attacker%} * {field::%{_n}%::basexp} * 50)% Exp &8(&6&l%abbreviateNumber({exp::%uuid of attacker%})%&r&8/&6&l%abbreviateNumber({expreq::%uuid of attacker%})%&8)]" to attacker
+
+			levelUp(attacker)
+
+on break:
+	#prevent players from breaking blocks in other regions and breaking with fist
+	if player is not an operator:
+		if "%region at location of player%" is not "%region at location of event-block%":
+			cancel event
+			stop
+
+	if "%region at player%" is equal to "global in world world and field1 in world world":
+		set {_n} to 1
+		set {_f} to 1
+	else if "%region at player%" is equal to "global in world world and field2 in world world":
+		set {_n} to 2
+		set {_f} to 1
+	else if "%region at player%" is equal to "global in world world and field3 in world world":
+		set {_n} to 3
+		set {_f} to 1
+	else if "%region at player%" is equal to "global in world world and field4 in world world":
+		set {_n} to 4
+		set {_f} to 1
+	else if "%region at player%" is equal to "field5 in world world and global in world world":
+		set {_n} to 5
+		set {_f} to 2
+	else if "%region at player%" is equal to "field6 in world world and global in world world":
+		set {_n} to 6
+		set {_f} to 2
+	else if "%region at player%" is equal to "field7 in world world and global in world world":
+		set {_n} to 7
+		set {_f} to 2
+	else if "%region at player%" is equal to "field8 in world world and global in world world":
+		set {_n} to 8
+		set {_f} to 2
+	else if "%region at player%" is equal to "field9 in world world and global in world world":
+		set {_n} to 9
+		set {_f} to 3
+	else if "%region at player%" is equal to "field10 in world world and global in world world":
+		set {_n} to 10
+		set {_f} to 3
+	else if "%region at player%" is equal to "field11 in world world and global in world world":
+		set {_n} to 11
+		set {_f} to 3
+	else if "%region at player%" is equal to "field12 in world world and global in world world":
+		set {_n} to 12
+		set {_f} to 3
+	else if "%region at player%" is equal to "field13 in world world and global in world world":
+		set {_n} to 13
+		set {_f} to 4
+	else if "%region at player%" is equal to "field14 in world world and global in world world":
+		set {_n} to 14
+		set {_f} to 4
+	else if "%region at player%" is equal to "field15 in world world and global in world world":
+		set {_n} to 15
+		set {_f} to 4
+	else if "%region at player%" is equal to "field16 in world world and global in world world":
+		set {_n} to 16
+		set {_f} to 4
+
+	if {field::%{_n}%::crops::names::*} contains event-block:
+		cancel drops
+		if {field::%{_n}%::basecrops} + {cropmaterial::%player's uuid%} > {cropbag::%player's uuid%}:
+			if {maxcropbagpopup::%player's uuid%} is true:
+				loadMaxCropBagGui(player)
+			cancel event
+			send "&8[&5&lCroplite&8] &cYour crop bag is full!" to player
+		else:
+			updateEXP(player, {_n}, {_f}, event-block)
+			if {field::%{_n}%::crops::lower::*} contains event-block:
+				wait 60 seconds
+				if chance of 50%:
+					set event-block to random element of {field::%{_n}%::crops::one-tall::*}
+				else:
+					if {field::%{_n}%::crops::two-tall::*} is set:
+						set {_newcrop} to random element of {field::%{_n}%::crops::two-tall::*}
+						set event-block to {_newcrop}
+						set blockdata tag "half" of {_newcrop} to "upper"
+						set block above event-block to {_newcrop}
+					else: 
+						set event-block to random element of {field::%{_n}%::crops::one-tall::*}
+			else if {field::%{_n}%::crops::upper::*} contains event-block:	
+				wait 60 seconds
+				if chance of 50%:
+					set block below event-block to random element of {field::%{_n}%::crops::one-tall::*}
+				else:
+					set {_newcrop} to random element of {field::%{_n}%::crops::two-tall::*}
+					set block below event-block to {_newcrop}
+					set blockdata tag "half" of {_newcrop} to "upper"
+					set event-block to {_newcrop}
+	else:
+		if player is not an operator:
+			cancel event
+
+on player tool change:
+	if event-slot is 0:
+		set {_tags::*} to string list tag "Croplite:enchants" of custom nbt of player's tool
+		loop {_tags::*}:
+			set {_parts::*} to loop-value split at ":"
+			set {_id} to {_parts::1}
+
+			if {_id} is "experience":
+				add (0.1 * {_parts::2} parsed as number) to {expmulti::%player's uuid%}
+				set {holdingscythe::%player's uuid%} to true
+	else:
+		if {holdingscythe::%player's uuid%} is true:
+			set {_tags::*} to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
+			loop {_tags::*}:
+				set {_parts::*} to loop-value split at ":"
+				set {_id} to {_parts::1}
+
+				if {_id} is "experience":
+					add (-1 * (0.1 * {_parts::2} parsed as number)) to {expmulti::%player's uuid%}
+					set {holdingscythe::%player's uuid%} to false

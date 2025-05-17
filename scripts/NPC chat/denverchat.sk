@@ -1,8 +1,9 @@
 on right click:
     if name of clicked entity is "&6&lDenver":
+        broadcast "%{chatmessage::Denver::%player's uuid%::talking}% talking"
+        broadcast "%{chatmessage::Denver::%player's uuid%}% number"
         if {chatmessage::Denver::%player's uuid%::talking} is set:
             send "&7[&6Denver&7]&f: Do not interrupt!" to player
-            stop
         set {chatmessage::Denver::%player's uuid%::talking} to true
         if {chatmessage::Denver::%player's uuid%} is not set:
             set {chatmessage::Denver::%player's uuid%} to 0
@@ -44,45 +45,43 @@ on right click:
 
 on inventory click:
     if name of the clicked inventory is "&9&lDeveloped Fishing Pole":
-        if {chatmessage::Denver::%player's uuid%::talking} is set:
-            send "&7[&6Denver&7]&f: Do not interrupt!" to player
-            stop
-        set {chatmessage::Denver::%player's uuid%::talking} to true
-        if event-clicktype is number key:
+        if event-inventory is not player's inventory:
             cancel event
-        event-inventory is not player's inventory
-        cancel event
-        event-slot is 4
-        {chatmessage::Denver::%player's uuid%} = 1
-        if {cropcash::%player's uuid%} >= 3500:
-            remove 3500 from {cropcash::%player's uuid%}
-            close player's inventory
-            play sound "entity.villager.ambient" to player
-            send "&7[&6Denver&7]&f: Thanks for the purchase. I hope you find it worth the money.                                                                                " to player
-            wait 3 seconds
-            play sound "entity.villager.ambient" to player
-            send "&7[&6Denver&7]&f: Now go on back to the Fisherman, he can finish that rod for you.                                                                           " to player
-            wait 3 seconds
-            play sound "ui.toast.challenge_complete" to player
-            send title "&2Objective &l&nComplete!" with subtitle "&eReturn to the Fisherman" to player for 4 seconds
-            send "&7------------------------------" to player
-            send "&8[&2Objective &l&nComplete!&8]" to player
-            send "&7------------------------------" to player
-            set {_t2} to breeze rod named "&9&lDeveloped Fishing Pole"
-            set line 1 of lore of {_t2} to "&7----------"
-            set line 2 of lore of {_t2} to "&aGive to the Fisherman"
-            set line 3 of lore of {_t2} to "&7----------"
-            give player 1 of {_t2}
-            set {objprogress::%player's uuid%} to 1
-            add 1 to {chatmessage::Denver::%player's uuid%}
-            add 1 to {chatmessage::Mackerel::%player's uuid%}
-        else:
-            close player's inventory
-            play sound "entity.villager.ambient" to player
-            send "&7[&6Denver&7]&f: I said &a3500 &5Crop Cash&f, nothing less.                                                                " to player
-        delete {chatmessage::Denver::%player's uuid%::talking}
+            if {chatmessage::Denver::%player's uuid%::talking} is set:
+                send "&7[&6Denver&7]&f: Do not interrupt!" to player
+                stop
+            set {chatmessage::Denver::%player's uuid%::talking} to true
+            event-slot is 4
+            {chatmessage::Denver::%player's uuid%} = 1
+            if {cropcash::%player's uuid%} >= 3500:
+                remove 3500 from {cropcash::%player's uuid%}
+                close player's inventory
+                play sound "entity.villager.ambient" to player
+                send "&7[&6Denver&7]&f: Thanks for the purchase. I hope you find it worth the money.                                                                                " to player
+                wait 3 seconds
+                play sound "entity.villager.ambient" to player
+                send "&7[&6Denver&7]&f: Now go on back to the Fisherman, he can finish that rod for you.                                                                           " to player
+                wait 3 seconds
+                play sound "ui.toast.challenge_complete" to player
+                send title "&2Objective &l&nComplete!" with subtitle "&eReturn to the Fisherman" to player for 4 seconds
+                send "&7------------------------------" to player
+                send "&8[&2Objective &l&nComplete!&8]" to player
+                send "&7------------------------------" to player
+                set {_t2} to breeze rod named "&9&lDeveloped Fishing Pole"
+                set line 1 of lore of {_t2} to "&7----------"
+                set line 2 of lore of {_t2} to "&aGive to the Fisherman"
+                set line 3 of lore of {_t2} to "&7----------"
+                give player 1 of {_t2}
+                set {objprogress::%player's uuid%} to 1
+                add 1 to {chatmessage::Denver::%player's uuid%}
+                add 1 to {chatmessage::Mackerel::%player's uuid%}
+            else:
+                close player's inventory
+                play sound "entity.villager.ambient" to player
+                send "&7[&6Denver&7]&f: I said &a3500 &5Crop Cash&f, nothing less.                                                                " to player
+            delete {chatmessage::Denver::%player's uuid%::talking}
 
 command /setdenverchat <number>:
-    permission: *
+    permission: operator
     trigger:
         set {chatmessage::Denver::%player's uuid%} to arg-1

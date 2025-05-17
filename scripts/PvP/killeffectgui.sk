@@ -1,0 +1,194 @@
+function openKillEffectMenu(p: player, category: text):
+	set {currentCategory::%uuid of {_p}%} to {_category}
+	set {_inv} to chest inventory with 6 rows named "        &1>> &4&lKill Effects&1 <<"
+	# Top row tabs and close button
+	set slot 0 of {_inv} to gray dye named "&7Free"
+	set slot 2 of {_inv} to lime dye named "&aVip"
+	set slot 3 of {_inv} to green dye named "&2Vip+"
+	set slot 4 of {_inv} to yellow dye named "&eMvp"
+	set slot 5 of {_inv} to orange dye named "&6Mvp+"
+	set slot 6 of {_inv} to red dye named "&cElite"
+	set slot 8 of {_inv} to barrier named "&cClose Menu"
+	# Determine glass pane based on category
+	if {_category} is "free":
+		set {_glass} to gray stained glass pane
+	else if {_category} is "vip":
+		set {_glass} to lime stained glass pane
+	else if {_category} is "vipplus":
+		set {_glass} to green stained glass pane
+	else if {_category} is "mvp":
+		set {_glass} to yellow stained glass pane
+	else if {_category} is "mvpplus":
+		set {_glass} to orange stained glass pane
+	else if {_category} is "elite":
+		set {_glass} to red stained glass pane
+	# Border: row1 and row5
+	loop numbers between 9 and 17:
+		set slot loop-number of {_inv} to {_glass}
+	loop numbers between 45 and 53:
+		set slot loop-number of {_inv} to {_glass}
+	# Border: left and right in rows 2-4
+	set slot 18 of {_inv} to {_glass}
+	set slot 26 of {_inv} to {_glass}
+	set slot 27 of {_inv} to {_glass}
+	set slot 35 of {_inv} to {_glass}
+	set slot 36 of {_inv} to {_glass}
+	set slot 44 of {_inv} to {_glass}
+	# Interior slots: rows 2-4, columns 1-7 (slot numbers: 19-25, 28-34, 37-43)
+	set {_interiorSlots::*} to 19 and 20 and 21 and 22 and 23 and 24 and 25 and 28 and 29 and 30 and 31 and 32 and 33 and 34 and 37 and 38 and 39 and 40 and 41 and 42 and 43
+	if {_category} is "free":
+		set {_effects::*} to barrier named "&7No Kill Effect"
+	else if {_category} is "vip":
+		set {_effects::*} to lime carpet named "&aVip Ritual" and book named "&dInscription of Life"
+	else if {_category} is "vipplus":
+		set {_effects::*} to green carpet named "&2Vip+ Ritual" and campfire named "&cFire &6Tornado"
+	else if {_category} is "mvp":
+		set {_effects::*} to orange carpet named "&6Mvp Ritual" and  note block named "&7Noted" and elytra named "&fAscending Angel"
+	else if {_category} is "mvpplus":
+		set {_effects::*} to firework rocket named "&6Mvp+ Rocket Explosion" and orange candle named "&6Mvp+ beam" and rose bush named "&cLove Bomb" and water bottle named "&9Rain"
+	else if {_category} is "elite":
+		set {_effects::*} to firework rocket named "&dPurple Rocket Explosion" with lore "Suggested by Drywall64" and firework rocket named "&4Crimson Rocket Explosion" and lightning rod named "&eLightning Bolt" and red candle named "&cElite Beam" with lore "&4This kill effect will not execute on mobs" and cyan candle named "&3Sonic Burst"
+	# set {_index} to 1
+	# loop {_interiorSlots::*}:
+	# 	if {_index} <= size of {_effects::*}:
+	# 		set slot loop-integer of {_inv} to {_effects::%{_index}%}
+	# 		add 1 to {_index}
+	open {_inv} to {_p}
+
+function unequipAllKillEffects(p: player):
+	set {eke1::%uuid of {_p}%} to false
+	set {eke2::%uuid of {_p}%} to false
+	set {eke3::%uuid of {_p}%} to false
+	set {eke4::%uuid of {_p}%} to false
+	set {eke5::%uuid of {_p}%} to false
+	set {mvp+ke1::%uuid of {_p}%} to false
+	set {mvp+ke2::%uuid of {_p}%} to false
+	set {mvp+ke3::%uuid of {_p}%} to false
+	set {mvp+ke4::%uuid of {_p}%} to false
+	set {mvpke1::%uuid of {_p}%} to false
+	set {mvpke2::%uuid of {_p}%} to false
+	set {mvpke3::%uuid of {_p}%} to false
+	set {vip+ke1::%uuid of {_p}%} to false
+	set {vip+ke2::%uuid of {_p}%} to false
+	set {vipke1::%uuid of {_p}%} to false
+	set {vipke2::%uuid of {_p}%} to false
+
+function equipKillEffect(p: player, effect: text):
+	unequipAllKillEffects({_p})
+	set {effect::%uuid of {_p}%} to true
+	send "&a&lKill Effect Equipped!" to {_p}
+	close {_p}'s inventory
+
+command /killeffects:
+	trigger:
+		openKillEffectMenu(player, "free")
+
+on inventory click:
+	if name of event-inventory contains "        &1>> &4&lKill Effects&1 <<":
+		cancel event
+		event-inventory is not player's inventory
+		if event-slot is 0:
+			openKillEffectMenu(player, "free")
+		else if event-slot is 2:
+			openKillEffectMenu(player, "vip")
+		else if event-slot is 3:
+			openKillEffectMenu(player, "vipplus")
+		else if event-slot is 4:
+			openKillEffectMenu(player, "mvp")
+		else if event-slot is 5:
+			openKillEffectMenu(player, "mvpplus")
+		else if event-slot is 6:
+			openKillEffectMenu(player, "elite")
+		else if event-slot is 8:
+			close player's inventory
+		# Interior slot clicks
+		else if event-slot is 19: 
+			#  or event-slot is 20 or event-slot is 21 or event-slot is 22 or event-slot is 23 or event-slot is 24 or event-slot is 25 or event-slot is 28 or event-slot is 29 or event-slot is 30 or event-slot is 31 or event-slot is 32 or event-slot is 33 or event-slot is 34 or event-slot is 37 or event-slot is 38 or event-slot is 39 or event-slot is 40 or event-slot is 41 or event-slot is 42 or event-slot is 43:
+			if {currentCategory::%player's uuid%} is "free":
+				if event-slot is 19:
+					send "&a&lNo Kill Effect Active!" to player
+					unequipAllKillEffects(player)
+					close player's inventory
+			else if {currentCategory::%player's uuid%} is "vip":
+				if event-slot is 19:
+					equipKillEffect(player, "vipke1")
+
+				else if event-slot is 20:
+					if {rank::%player's uuid%} is "Vip":
+						equipKillEffect(player, "vipke2")
+					else:
+						send "&c&lYou must purchase Vip rank to equip this effect!" to player
+			else if {currentCategory::%player's uuid%} is "vipplus":
+				if event-slot is 19:
+					if {rank::%player's uuid%} is "Vip+":
+						equipKillEffect(player, "vip+ke1")
+					else:
+						send "&c&lYou must purchase Vip+ rank to equip this effect!" to player
+				else if event-slot is 20:
+					if {rank::%player's uuid%} is "Vip+":
+						equipKillEffect(player, "vip+ke2")
+					else:
+						send "&c&lYou must purchase Vip+ rank to equip this effect!" to player
+			else if {currentCategory::%player's uuid%} is "mvp":
+				if event-slot is 19:
+					if {rank::%player's uuid%} is "Mvp":
+						equipKillEffect(player, "mvpke1")
+					else:
+						send "&c&lYou must purchase Mvp rank to equip this effect!" to player
+				else if event-slot is 20:
+					if {rank::%player's uuid%} is "Mvp":
+						equipKillEffect(player, "mvpke2")
+					else:
+						send "&c&lYou must purchase Mvp rank to equip this effect!" to player
+				else if event-slot is 21:
+					if {rank::%player's uuid%} is "Mvp":
+						equipKillEffect(player, "mvpke3")
+					else:
+						send "&c&lYou must purchase Mvp rank to equip this effect!" to player
+			else if {currentCategory::%player's uuid%} is "mvpplus":
+				if event-slot is 19:
+					if {rank::%player's uuid%} is "Mvp+":
+						equipKillEffect(player, "mvp+ke1")
+					else:
+						send "&c&lYou must purchase Mvp+ rank to equip this effect!" to player
+				else if event-slot is 20:
+					if {rank::%player's uuid%} is "Mvp+":
+						equipKillEffect(player, "mvp+ke2")
+					else:
+						send "&c&lYou must purchase Mvp+ rank to equip this effect!" to player
+				else if event-slot is 21:
+					if {rank::%player's uuid%} is "Mvp+":
+						equipKillEffect(player, "mvp+ke3")
+					else:
+						send "&c&lYou must purchase Mvp+ rank to equip this effect!" to player
+				else if event-slot is 22:
+					if {rank::%player's uuid%} is "Mvp+":
+						equipKillEffect(player, "mvp+ke4")
+					else:
+						send "&c&lYou must purchase Mvp+ rank to equip this effect!" to player
+			else if {currentCategory::%player's uuid%} is "elite":
+				if event-slot is 19:
+					if {rank::%player's uuid%} is "Elite":
+						equipKillEffect(player, "eke1")
+					else:
+						send "&c&lYou must purchase Elite rank to equip this effect!" to player
+				else if event-slot is 20:
+					if {rank::%player's uuid%} is "Elite":
+						equipKillEffect(player, "eke2")
+					else:
+						send "&c&lYou must purchase Elite rank to equip this effect!" to player
+				else if event-slot is 21:
+					if {rank::%player's uuid%} is "Elite":
+						equipKillEffect(player, "eke3")
+					else:
+						send "&c&lYou must purchase Elite rank to equip this effect!" to player
+				else if event-slot is 22:
+					if {rank::%player's uuid%} is "Elite":
+						equipKillEffect(player, "eke4")
+					else:
+						send "&c&lYou must purchase Elite rank to equip this effect!" to player
+				else if event-slot is 23:
+					if {rank::%player's uuid%} is "Elite":
+						equipKillEffect(player, "eke5")
+					else:
+						send "&c&lYou must purchase Elite rank to equip this effect!" to player

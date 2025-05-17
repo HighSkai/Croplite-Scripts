@@ -1,0 +1,343 @@
+function initializePlayerStuff(p: player):
+    set slot 0 of {_p} to {scythe::0}
+    set slot 8 of {_p} to nether star named "&8[&b&lPlayer Menu&8]"
+
+    set helmet of {_p} to {helmet::0}
+    set chestplate of {_p} to {chestplate::0}
+    set leggings of {_p} to {leggings::0}
+    set boots of {_p} to {boots::0}
+
+command /getplayerstuff:
+    trigger:
+        initializePlayerStuff(player)
+
+local function loadPlayerMenuGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&b&lPlayer Menu"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
+
+    set {_skull} to {_p}'s skull named "%{prefix::%uuid of {_p}%}% %{_p}'s name%"
+    set line 1 of lore of {_skull} to "&eRank %{rank::%uuid of {_p}%}%"
+    set line 2 of lore of {_skull} to "&aPlaytime %{h::%uuid of {_p}%}%:%{m::%uuid of {_p}%}%:%{s::%uuid of {_p}%}%"
+    set slot 4 of {_gui} to {_skull}
+
+    set slot 11 of {_gui} to emerald named "&8[&a&lShops&8]"
+    set slot 12 of {_gui} to light blue bundle named "&8[&b&lPet Bag&8]"
+    set slot 13 of {_gui} to compass named "&8[&a&lNavigate&8]"
+    set slot 15 of {_gui} to book named "&8[&c&lStats&8]"
+    set slot 16 of {_gui} to slot 0 of {_p}
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+    set slot 23 of {_gui} to short grass named "&8[&a&lSell Crops&8]"
+
+    open {_gui} to {_p}
+
+local function loadShopsGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&5&lShops"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to purple stained glass pane named " "
+
+    set slot 11 of {_gui} to iron hoe named "&8[&b&lScythe Shop&8]"
+    set slot 12 of {_gui} to diamond chestplate named "&8[&f&lArmorer&8]"
+    set slot 13 of {_gui} to enchanted book named "&8[&5&lEnchanter&8]"
+    set slot 14 of {_gui} to gold ingot named "&8[&6&lPet Token Shop&8]"
+    set slot 15 of {_gui} to short grass named "&8[&c&lCrop Bag Shop&8]"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadPlayerStatsGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&c&lPlayer Stats"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to red stained glass pane named " "
+
+    set {_level} to paper named "&8[&9&lLevel&8]&r"
+    set line 1 of lore of {_level} to "&9&lLevel &8[&9&l%{level::%uuid of {_p}%}%&8]"
+    set line 2 of lore of {_level} to "&6&lExp &8[&6&l%abbreviateNumber({exp::%uuid of {_p}%})%&8/&6&l%abbreviateNumber({expreq::%uuid of {_p}%})%&8]"
+    set line 3 of lore of {_level} to "&e&lExp Multi &8[&e&lx%{expmulti::%uuid of {_p}%}%&8]"
+    set slot 11 of {_gui} to {_level}
+
+    set {_crops} to short grass named "&8[&2&lCrops&8]"
+    set line 1 of lore of {_crops} to "&2&lCrops &8[&2&l%abbreviateNumber({crops::%uuid of {_p}%})%&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8]"
+    set line 2 of lore of {_crops} to "&5&lCrop Cash &8[&5&l%abbreviateNumber({cropcash::%uuid of {_p}%})%&8]"
+    set slot 12 of {_gui} to {_crops}
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadOtherPlayerMenuGUI(p: player, target: player):
+    set {_gui} to chest inventory with 6 rows named "&c&lPlayer Temp"
+
+    loop 54 times:
+        set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
+
+    set {_skull} to {_target}'s skull named "%{prefix::%uuid of {_target}%}% %{_target}'s name%"
+    set line 1 of lore of {_skull} to "&eRank %{rank::%uuid of {_target}%}%"
+    set line 2 of lore of {_skull} to "&aPlaytime %{h::%uuid of {_target}%}%:%{m::%uuid of {_target}%}%:%{s::%uuid of {_target}%}%"
+    set slot 4 of {_gui} to {_skull}
+
+    set slot 11 of {_gui} to helmet of {_target}
+    set slot 20 of {_gui} to chestplate of {_target}
+    set slot 29 of {_gui} to leggings of {_target}
+    set slot 38 of {_gui} to boots of {_target}
+
+    set slot 23 of {_gui} to book named "&8[&c&lStats&8]"
+    set slot 21 of {_gui} to slot 0 of {_target}
+    set slot 49 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadNavigationGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&a&lNavigation"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to green stained glass pane named " "
+
+    set slot 10 of {_gui} to nether star named "&c&lSpawn"
+    set slot 11 of {_gui} to paper named "&5&lAFK"
+    set slot 12 of {_gui} to emerald named "&e&lShop"
+    set slot 13 of {_gui} to paper named "&e&lFarms"
+    set slot 14 of {_gui} to white shulker box named "&f&lCrates"
+    set slot 15 of {_gui} to paper named "&9&lLeaderboards"
+    set slot 16 of {_gui} to paper named "&6&lEvents"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadFarmNavigationGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&e&lFarm Navigation"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to yellow stained glass pane named " "  
+
+    set slot 11 of {_gui} to paper named "&e&lFarm &8[&e&l1&8]"
+    set slot 12 of {_gui} to paper named "&e&lFarm &8[&e&l2&8]"
+    set slot 13 of {_gui} to paper named "&e&lFarm &8[&e&l3&8]"
+    set slot 14 of {_gui} to paper named "&e&lFarm &8[&e&l4&8]"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadFarm1NavigationGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&e&lFarm &8[&e&l1&8] &e&lNavigation"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to yellow stained glass pane named " "  
+
+    set slot 11 of {_gui} to paper named "&e&lField &8[&e&l1&8]"
+    set slot 12 of {_gui} to paper named "&e&lField &8[&e&l2&8]"
+    set slot 13 of {_gui} to paper named "&e&lField &8[&e&l3&8]"
+    set slot 14 of {_gui} to paper named "&e&lField &8[&e&l4&8]"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadFarm2NavigationGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&e&lFarm &8[&e&l2&8] &e&lNavigation"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to yellow stained glass pane named " "  
+
+    set slot 11 of {_gui} to paper named "&e&lField &8[&e&l5&8]"
+    set slot 12 of {_gui} to paper named "&e&lField &8[&e&l6&8]"
+    set slot 13 of {_gui} to paper named "&e&lField &8[&e&l7&8]"
+    set slot 14 of {_gui} to paper named "&e&lField &8[&e&l8&8]"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadFarm3NavigationGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&e&lFarm &8[&e&l3&8] &e&lNavigation"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to yellow stained glass pane named " "  
+
+    set slot 11 of {_gui} to paper named "&e&lField &8[&e&l9&8]"
+    set slot 12 of {_gui} to paper named "&e&lField &8[&e&l10&8]"
+    set slot 13 of {_gui} to paper named "&e&lField &8[&e&l11&8]"
+    set slot 14 of {_gui} to paper named "&e&lField &8[&e&l12&8]"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+local function loadFarm4NavigationGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&e&lFarm &8[&e&l4&8] &e&lNavigation"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to yellow stained glass pane named " "  
+
+    set slot 11 of {_gui} to paper named "&e&lField &8[&e&l13&8]"
+    set slot 12 of {_gui} to paper named "&e&lField &8[&e&l14&8]"
+    set slot 13 of {_gui} to paper named "&e&lField &8[&e&l15&8]"
+    set slot 14 of {_gui} to paper named "&e&lField &8[&e&l16&8]"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+on right click:
+    if target entity is a player:
+        if player is sneaking:
+            if distance between player and target is less than 5:
+                loadOtherPlayerMenuGUI(player, target entity)
+    if name of player's tool is "&8[&b&lPlayer Menu&8]":
+        loadPlayerMenuGUI(player)
+
+on inventory click:        
+    if event-inventory is not player's inventory:
+        if event-inventory's name is "&b&lPlayer Menu":
+            cancel event
+        
+            if event-slot is 11:
+                loadShopsGUI(player)
+            else if event-slot is 12:
+                loadPetGUI(player)
+            else if event-slot is 13:
+                loadNavigationGUI(player)
+            else if event-slot is 15:
+                loadPlayerStatsGUI(player)
+            else if event-slot is 22:
+                close player's inventory
+            else if event-slot is 23:
+                sellCrops(player)
+
+        else if event-inventory's name is "&c&lPlayer Temp":
+            cancel event
+        
+            if event-slot is 49:
+                close player's inventory
+
+        else if event-inventory's name is "&c&lPlayer Stats":
+            cancel event
+        
+            if event-slot is 22:
+                close player's inventory
+
+        else if event-inventory's name is "&5&lShops":
+            cancel event
+
+            if event-slot is 11:
+                loadScytheShopGui(player)
+            else if event-slot is 12:   
+                loadArmorShopGUI(player)
+            else if event-slot is 13:
+                loadEnchanterGui(player)
+            else if event-slot is 14:
+                loadPetShopGui(player)
+            else if event-slot is 15:
+
+            else if event-slot is 22:
+                close player's inventory
+
+        else if event-inventory's name is "&a&lNavigation":
+            cancel event
+
+            if event-slot is 10:
+                execute player command "/spawn"
+            else if event-slot is 11:
+                execute player command "/afk"
+            else if event-slot is 12:
+                execute player command "/shop"
+            else if event-slot is 13:
+                loadFarmNavigationGUI(player)
+            else if event-slot is 14:
+                execute player command "/crates"
+            else if event-slot is 15:
+                execute player command "/leaderboards"
+            else if event-slot is 16:
+                if {serverevent-active} is true: 
+                    execute player command "/farm events"
+                else:
+                    send "&8[&5&lCroplite&8] &cThere isn't a Server Event active currently. Try again soon!"
+            else if event-slot is 22:
+                close player's inventory
+
+        else if event-inventory's name is "&e&lFarm Navigation":
+            cancel event
+
+            if event-slot is 11:
+                loadFarm1NavigationGUI(player)
+            else if event-slot is 12:
+                loadFarm2NavigationGUI(player)
+            else if event-slot is 13:
+                loadFarm3NavigationGUI(player)
+            else if event-slot is 14:
+                loadFarm4NavigationGUI(player)
+            else if event-slot is 22:
+                close player's inventory
+
+        else if event-inventory's name is "&e&lFarm &8[&e&l1&8] &e&lNavigation":
+            cancel event
+
+            if event-slot is 11:
+                execute player command "/field 1"
+            else if event-slot is 12:
+                execute player command "/field 2"
+            else if event-slot is 13:
+                execute player command "/field 3" 
+            else if event-slot is 14:
+                execute player command "/field 4"
+            
+            else if event-slot is 22:
+                close player's inventory
+        else if event-inventory's name is "&e&lFarm &8[&e&l2&8] &e&lNavigation":
+            cancel event
+
+            if event-slot is 11:
+                execute player command "/field 5"
+            else if event-slot is 12:
+                execute player command "/field 6"
+            else if event-slot is 13:
+                execute player command "/field 7" 
+            else if event-slot is 14:
+                execute player command "/field 8"
+
+            else if event-slot is 22:
+                close player's inventory
+        else if event-inventory's name is "&e&lFarm &8[&e&l3&8] &e&lNavigation":
+            cancel event
+
+            if event-slot is 11:
+                execute player command "/field 9"
+            else if event-slot is 12:
+                execute player command "/field 10"
+            else if event-slot is 13:
+                execute player command "/field 11" 
+            else if event-slot is 14:
+                execute player command "/field 12"
+
+            else if event-slot is 22:
+                close player's inventory
+        else if event-inventory's name is "&e&lFarm &8[&e&l4&8] &e&lNavigation":
+            cancel event
+
+            if event-slot is 11:
+                execute player command "/field 13"
+            else if event-slot is 12:
+                execute player command "/field 14"
+            else if event-slot is 13:
+                execute player command "/field 15" 
+            else if event-slot is 14:
+                execute player command "/field 16"
+
+            else if event-slot is 22:
+                close player's inventory
+
+#player inventory
+on inventory click:
+    if event-inventory is player's inventory:
+        if player is not an operator:
+            if event-slot is 8:
+                cancel event
+
+            if event-slot is 0:
+                cancel event

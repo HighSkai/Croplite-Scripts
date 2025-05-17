@@ -50,54 +50,104 @@
         ""
     ],
     "Fire Aspect 1": [
-        "&c&lFire Aspect &8[&c&lI&8]",
+        "&6&lFire Aspect &8[&6&lI&8]",
         "&r&7Sets your target on fire.",
         ""
     ],
     "Fire Aspect 2": [
-        "&c&lFire Aspect &8[&c&lII&8]",
+        "&6&lFire Aspect &8[&6&lII&8]",
         "&r&7Sets your target on fire.",
         ""
     ],
     "Fire Aspect 3": [
-        "&c&lFire Aspect &8[&c&lIII&8]",
+        "&6&lFire Aspect &8[&6&lIII&8]",
         "&r&7Sets your target on fire.",
         ""
     ],
     "Fire Aspect 4": [
-        "&c&lFire Aspect &8[&c&lIV&8]",
+        "&6&lFire Aspect &8[&6&lIV&8]",
         "&r&7Sets your target on fire.",
         ""
     ],
     "Fire Aspect 5": [
-        "&c&lFire Aspect &8[&c&lV&8]",
+        "&6&lFire Aspect &8[&6&lV&8]",
         "&r&7Sets your target on fire.",
         ""
     ],
     "Experience 1": [
-        "&b&lExperience &8[&b&lI&8]",
+        "&a&lExperience &8[&a&lI&8]",
         "&r&7Slightly increases the",
         "&r&7experience gained from activities.",
         ""
     ],
     "Experience 2": [
-        "&b&lExperience &8[&b&lII&8]",
+        "&a&lExperience &8[&a&lII&8]",
         "&r&7Moderately boosts your experience gains.",
         ""
     ],
     "Experience 3": [
-        "&b&lExperience &8[&b&lIII&8]",
+        "&a&lExperience &8[&a&lIII&8]",
         "&r&7Significantly increases the experience earned.",
         ""
     ],
     "Experience 4": [
-        "&b&lExperience &8[&b&lIV&8]",
+        "&a&lExperience &8[&a&lIV&8]",
         "&r&7Significantly increases the experience earned.",
         ""
     ],
     "Experience 5": [
-        "&b&lExperience &8[&b&lV&8]",
+        "&a&lExperience &8[&a&lV&8]",
         "&r&7Significantly increases the experience earned.",
+        ""
+    ],
+    "Experience 6": [
+        "&a&lExperience &8[&a&lVI&8]",
+        "&r&7Significantly increases the experience earned.",
+        ""
+    ],
+    "Experience 7": [
+        "&a&lExperience &8[&a&lVII&8]",
+        "&r&7Significantly increases the experience earned.",
+        ""
+    ],
+    "Experience 8": [
+        "&a&lExperience &8[&a&lVIII&8]",
+        "&r&7Significantly increases the experience earned.",
+        ""
+    ],
+    "Experience 9": [
+        "&a&lExperience &8[&a&lIX&8]",
+        "&r&7Significantly increases the experience earned.",
+        ""
+    ],
+    "Experience 10": [
+        "&a&lExperience &8[&a&lX&8]",
+        "&r&7Significantly increases the experience earned.",
+        ""
+    ],
+    "Crop Reap 1": [
+        "&8&lCrop Reap &8[&8&lI&8]",
+        "&r&7Increases the crops gained from a kill.",
+        ""
+    ],
+    "Crop Reap 2": [
+        "&8&lCrop Reap &8[&8&lII&8]",
+        "&r&7Increases the crops gained from a kill.",
+        ""
+    ],
+    "Crop Reap 3": [
+        "&8&lCrop Reap &8[&8&lIII&8]",
+        "&r&7Increases the crops gained from a kill.",
+        ""
+    ],
+    "Crop Reap 4": [
+        "&a&lCrop Reap &8[&8&lIV&8]",
+        "&r&7Increases the crops gained from a kill.",
+        ""
+    ],
+    "Crop Reap 5": [
+        "&8&lCrop Reap &8[&8&lV&8]",
+        "&r&7Increases the crops gained from a kill.",
         ""
     ]
 }

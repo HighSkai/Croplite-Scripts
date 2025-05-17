@@ -1,0 +1,651 @@
+command /open-armorshopgui:
+	trigger:
+		loadArmorShopGUI(player)
+
+function loadArmorShopGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&f&lArmorer"
+
+	loop 27 times:
+		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+
+	if helmet of {_p} is not air:
+		set slot 10 of {_gui} to {_p}'s helmet
+	else:
+		set {_helmet} to leather helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {_helmet} to "&4&lEmpty"
+		dye {_helmet} rgb(139, 0, 0)
+		add hide dye to item flags of {_helmet}
+		set slot 10 of {_gui} to {_helmet}
+
+	if chestplate of {_p} is not air:
+		set slot 12 of {_gui} to {_p}'s chestplate
+	else:
+		set {_chestplate} to leather chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {_chestplate} to "&4&lEmpty"
+		dye {_chestplate} rgb(139, 0, 0)
+		add hide dye to item flags of {_chestplate}
+		set slot 12 of {_gui} to {_chestplate}
+
+	if leggings of {_p} is not air:
+		set slot 14 of {_gui} to {_p}'s leggings
+	else:
+		set {_leggings} to leather leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {_leggings} to "&4&lEmpty"
+		dye {_leggings} rgb(139, 0, 0)
+		add hide dye to item flags of {_leggings}
+		set slot 14 of {_gui} to {_leggings}
+
+	if boots of {_p} is not air:
+		set slot 16 of {_gui} to {_p}'s boots
+	else:
+		set {_boots} to leather boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {_boots} to "&4&lEmpty"
+		dye {_boots} rgb(139, 0, 0)
+		add hide dye to item flags of {_boots}
+		set slot 16 of {_gui} to {_boots}
+
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+	open {_gui} to {_p}
+
+local function loadHelmetShopGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&f&lHelmet Shop"
+
+	loop 27 times:
+		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+
+	loop integers from 11 to 15:
+		set slot loop-integer of {_gui} to {helmet::%loop-integer - 10%}
+
+	set {_highest_tier} to 0
+	loop integers between 1 and 5:
+		if {helmet::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
+			if loop-integer > {_highest_tier}:
+				set {_highest_tier} to loop-integer
+
+	loop integers between 11 and 15:
+		set {_num} to loop-integer - 10
+		set {_item} to slot loop-integer of {_gui}
+
+		if {helmet::%{_num}%::bought::%uuid of {_p}%} is equal to true:
+			set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+			make {_item} glint
+
+		set {_lore::*} to lore of {_item}
+		add "" to {_lore::*}
+		add "&ePrice:" to {_lore::*}
+		add "&5&lCrop Cash &8[&5&l%{helmet::%{_num}%::price}%&8]" to {_lore::*}
+		set lore of {_item} to {_lore::*}
+
+		set slot loop-integer of {_gui} to {_item}
+
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+	open {_gui} to {_p}
+
+local function loadChestplateShopGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&f&lChestplate Shop"
+
+	loop 27 times:
+		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+
+	loop integers from 11 to 15:
+		set slot loop-integer of {_gui} to {chestplate::%loop-integer - 10%}
+
+	set {_highest_tier} to 0
+	loop integers between 1 and 5:
+		if {chestplate::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
+			if loop-integer > {_highest_tier}:
+				set {_highest_tier} to loop-integer
+
+	loop integers between 11 and 15:
+		set {_num} to loop-integer - 10
+		set {_item} to slot loop-integer of {_gui}
+
+		if {chestplate::%{_num}%::bought::%uuid of {_p}%} is equal to true:
+			set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+			make {_item} glint
+
+		set {_lore::*} to lore of {_item}
+		add "" to {_lore::*}
+		add "&ePrice:" to {_lore::*}
+		add "&5&lCrop Cash &8[&5&l%{chestplate::%{_num}%::price}%&8]" to {_lore::*}
+		set lore of {_item} to {_lore::*}
+
+		set slot loop-integer of {_gui} to {_item}
+
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+	open {_gui} to {_p}
+
+local function loadLeggingsShopGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&f&lLeggings Shop"
+
+	loop 27 times:
+		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+
+	loop integers from 11 to 15:
+		set slot loop-integer of {_gui} to {leggings::%loop-integer - 10%}
+	
+	set {_highest_tier} to 0
+	loop integers between 1 and 5:
+		if {leggings::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
+			if loop-integer > {_highest_tier}:
+				set {_highest_tier} to loop-integer
+	
+	loop integers between 11 and 15:
+		set {_num} to loop-integer - 10
+		set {_item} to slot loop-integer of {_gui}
+	
+		if {leggings::%{_num}%::bought::%uuid of {_p}%} is equal to true:
+			set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+			make {_item} glint
+	
+		set {_lore::*} to lore of {_item}
+		add "" to {_lore::*}
+		add "&ePrice:" to {_lore::*}
+		add "&5&lCrop Cash &8[&5&l%{leggings::%{_num}%::price}%&8]" to {_lore::*}
+		set lore of {_item} to {_lore::*}
+	
+		set slot loop-integer of {_gui} to {_item}
+
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+	open {_gui} to {_p}
+
+local function loadBootsShopGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&f&lBoots Shop"
+
+	loop 27 times:
+		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+
+	loop integers from 11 to 15:
+		set slot loop-integer of {_gui} to {boots::%loop-integer - 10%}
+	
+	set {_highest_tier} to 0
+	loop integers between 1 and 5:
+		if {boots::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
+			if loop-integer > {_highest_tier}:
+				set {_highest_tier} to loop-integer
+	
+	loop integers between 11 and 15:
+		set {_num} to loop-integer - 10
+		set {_item} to slot loop-integer of {_gui}
+	
+		if {boots::%{_num}%::bought::%uuid of {_p}%} is equal to true:
+			set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+			make {_item} glint
+	
+		set {_lore::*} to lore of {_item}
+		add "" to {_lore::*}
+		add "&ePrice:" to {_lore::*}
+		add "&5&lCrop Cash &8[&5&l%{boots::%{_num}%::price}%&8]" to {_lore::*}
+		set lore of {_item} to {_lore::*}
+	
+		set slot loop-integer of {_gui} to {_item}
+
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+	open {_gui} to {_p}
+
+on inventory click:
+	if event-inventory is not player's inventory:
+		if event-inventory's name is "&f&lArmorer":
+			cancel event
+
+			if event-slot is 10:
+				loadHelmetShopGUI(player)
+			else if event-slot is 12:
+				loadChestplateShopGUI(player)
+			else if event-slot is 14:
+				loadLeggingsShopGUI(player)
+			else if event-slot is 16:
+				loadBootsShopGUI(player)
+			else if event-slot is 22:
+				close player's inventory
+
+		else if event-inventory's name is "&f&lHelmet Shop":
+			cancel event
+
+			if event-slot is between 11 and 15:
+				set {_num} to index of event-slot - 10
+				
+				set {_highest_tier} to 0
+				loop integers between 1 and 5:
+					if {helmet::%loop-integer%::bought::%player's uuid%} is equal to true:
+						if loop-integer > {_highest_tier}:
+							set {_highest_tier} to loop-integer
+				
+				if {_num} < {_highest_tier}:
+					send "&d&lCroplite &cYou cannot downgrade your armor." to player
+				else if {helmet::%{_num}%::bought::%player's uuid%} is equal to false:
+					if {cropcash::%player's uuid%} >= {helmet::%{_num}%::price}:
+						set {helmet::%{_num}%::bought::%player's uuid%} to true
+						remove {helmet::%{_num}%::price} from {cropcash::%player's uuid%}
+						set helmet of player to {helmet::%{_num}%}
+
+						play sound "entity.experience_orb.pickup" to player
+							
+						loop integers between 1 and {_num}:
+							set {helmet::%loop-integer%::bought::%player's uuid%} to true
+							
+						loadHelmetShopGUI(player)
+						send "&d&lCroplite &aYou have bought a new helmet for %{helmet::%{_num}%::price}% &5&lCrop Cash&a." to player
+					else:
+						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this helmet." to player
+				else:
+					send "&d&lCroplite &cYou have already bought this helmet." to player
+						
+			if event-slot is 22:
+				close player's inventory
+
+		else if event-inventory's name is "&f&lChestplate Shop":
+			cancel event
+
+			if event-slot is between 11 and 15:
+				set {_num} to index of event-slot - 10
+					
+				set {_highest_tier} to 0
+				loop integers between 1 and 5:
+					if {chestplate::%loop-integer%::bought::%player's uuid%} is equal to true:
+						if loop-integer > {_highest_tier}:
+							set {_highest_tier} to loop-integer
+					
+				if {_num} < {_highest_tier}:
+					send "&d&lCroplite &cYou cannot downgrade your armor." to player
+				else if {chestplate::%{_num}%::bought::%player's uuid%} is equal to false:
+					if {cropcash::%player's uuid%} >= {chestplate::%{_num}%::price}:
+						set {chestplate::%{_num}%::bought::%player's uuid%} to true
+						remove {chestplate::%{_num}%::price} from {cropcash::%player's uuid%}
+						set chestplate of player to {chestplate::%{_num}%}
+
+						play sound "entity.experience_orb.pickup" to player
+							
+						loop integers between 1 and {_num}:
+							set {chestplate::%loop-integer%::bought::%player's uuid%} to true
+							
+						loadChestplateShopGUI(player)
+						send "&d&lCroplite &aYou have bought a new chestplate for %{chestplate::%{_num}%::price}% &5&lCrop Cash&a." to player
+					else:
+						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this chestplate." to player
+				else:
+					send "&d&lCroplite &cYou have already bought this chestplate." to player
+			if event-slot is 22:
+				close player's inventory
+
+		else if event-inventory's name is "&f&lLeggings Shop":
+			cancel event
+
+			if event-slot is between 11 and 15:
+				set {_num} to index of event-slot - 10
+					
+				set {_highest_tier} to 0
+				loop integers between 1 and 5:
+					if {leggings::%loop-integer%::bought::%player's uuid%} is equal to true:
+						if loop-integer > {_highest_tier}:
+							set {_highest_tier} to loop-integer
+					
+				if {_num} < {_highest_tier}:
+					send "&d&lCroplite &cYou cannot downgrade your armor." to player
+				else if {leggings::%{_num}%::bought::%player's uuid%} is equal to false:
+					if {cropcash::%player's uuid%} >= {leggings::%{_num}%::price}:
+						set {leggings::%{_num}%::bought::%player's uuid%} to true
+						remove {leggings::%{_num}%::price} from {cropcash::%player's uuid%}
+						set leggings of player to {leggings::%{_num}%}
+
+						play sound "entity.experience_orb.pickup" to player
+							
+						loop integers between 1 and {_num}:
+							set {leggings::%loop-integer%::bought::%player's uuid%} to true
+							
+						loadLeggingsShopGUI(player)
+						send "&d&lCroplite &aYou have bought a new leggings for %{leggings::%{_num}%::price}% &5&lCrop Cash&a." to player
+					else:
+						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this leggings." to player
+				else:
+					send "&d&lCroplite &cYou have already bought this leggings." to player
+			if event-slot is 22:
+				close player's inventory
+
+		else if event-inventory's name is "&f&lBoots Shop":
+			cancel event
+
+			if event-slot is between 11 and 15:
+				set {_num} to index of event-slot - 10
+					
+				set {_highest_tier} to 0
+				loop integers between 1 and 5:
+					if {boots::%loop-integer%::bought::%player's uuid%} is equal to true:
+						if loop-integer > {_highest_tier}:
+							set {_highest_tier} to loop-integer
+					
+				if {_num} < {_highest_tier}:
+					send "&d&lCroplite &cYou cannot downgrade your armor." to player
+				else if {boots::%{_num}%::bought::%player's uuid%} is equal to false:
+					if {cropcash::%player's uuid%} >= {boots::%{_num}%::price}:
+						set {boots::%{_num}%::bought::%player's uuid%} to true
+						remove {boots::%{_num}%::price} from {cropcash::%player's uuid%}
+						set boots of player to {boots::%{_num}%}
+
+						play sound "entity.experience_orb.pickup" to player
+							
+						loop integers between 1 and {_num}:
+							set {boots::%loop-integer%::bought::%player's uuid%} to true
+							
+						loadBootsShopGUI(player)
+						send "&d&lCroplite &aYou have bought a new boots for %{boots::%{_num}%::price}% &5&lCrop Cash&a." to player
+					else:
+						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this boots." to player
+				else:
+					send "&d&lCroplite &cYou have already bought this boots." to player
+			if event-slot is 22:
+				close player's inventory	
+
+command /resetarmor:
+	permission: operator
+	trigger:
+		set {helmet::1::bought::%player's uuid%} to false
+		set {helmet::2::bought::%player's uuid%} to false
+		set {helmet::3::bought::%player's uuid%} to false
+		set {helmet::4::bought::%player's uuid%} to false
+		set {helmet::5::bought::%player's uuid%} to false
+
+		set {chestplate::1::bought::%player's uuid%} to false
+		set {chestplate::2::bought::%player's uuid%} to false
+		set {chestplate::3::bought::%player's uuid%} to false
+		set {chestplate::4::bought::%player's uuid%} to false
+		set {chestplate::5::bought::%player's uuid%} to false
+
+		set {leggings::1::bought::%player's uuid%} to false
+		set {leggings::2::bought::%player's uuid%} to false
+		set {leggings::3::bought::%player's uuid%} to false
+		set {leggings::4::bought::%player's uuid%} to false
+		set {leggings::5::bought::%player's uuid%} to false
+
+		set {boots::1::bought::%player's uuid%} to false
+		set {boots::2::bought::%player's uuid%} to false
+		set {boots::3::bought::%player's uuid%} to false
+		set {boots::4::bought::%player's uuid%} to false
+		set {boots::5::bought::%player's uuid%} to false
+
+command /setarmorprice:
+	permission: operator
+	trigger:
+		set {helmet::1::price} to 100
+		set {helmet::2::price} to 200
+		set {helmet::3::price} to 300
+		set {helmet::4::price} to 400
+		set {helmet::5::price} to 500
+
+		set {chestplate::1::price} to 100
+		set {chestplate::2::price} to 200
+		set {chestplate::3::price} to 300
+		set {chestplate::4::price} to 400
+		set {chestplate::5::price} to 500
+
+		set {leggings::1::price} to 100
+		set {leggings::2::price} to 200
+		set {leggings::3::price} to 300
+		set {leggings::4::price} to 400
+		set {leggings::5::price} to 500
+
+		set {boots::1::price} to 100
+		set {boots::2::price} to 200
+		set {boots::3::price} to 300
+		set {boots::4::price} to 400
+		set {boots::5::price} to 500
+
+command /setarmor:
+	permission: operator
+	trigger:
+		set {helmet::0} to unbreakable leather helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {helmet::0} to "&8Starter Farming Helmet"
+		set line 1 of lore of {helmet::0} to "&7---------------"
+		set line 2 of lore of {helmet::0} to "&9&lDefense &8[&9&l0&8]"
+		set line 3 of lore of {helmet::0} to "&7---------------"
+		set line 4 of lore of {helmet::0} to "&8&lCOMMON HELMET"
+		add "prot:0" to string list tag "Croplite:enchants" of custom nbt of {helmet::0}
+		add hide unbreakable to item flags of {helmet::0}
+
+		set {helmet::1} to unbreakable chainmail helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {helmet::1} to "&aApprentice Farming Helmet"
+		set line 1 of lore of {helmet::1} to "&7---------------"
+		set line 2 of lore of {helmet::1} to "&9&lDefense &8[&9&l1&8]"
+		set line 3 of lore of {helmet::1} to "&7---------------"
+		set line 4 of lore of {helmet::1} to "&a&lUNCOMMON HELMET"
+		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of {helmet::1}
+		add hide unbreakable to item flags of {helmet::1}
+
+		set {helmet::2} to unbreakable iron helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {helmet::2} to "&9Experienced Farming Helmet"
+		set line 1 of lore of {helmet::2} to "&7---------------"
+		set line 2 of lore of {helmet::2} to "&9&lDefense &8[&9&l2&8]"
+		set line 3 of lore of {helmet::2} to "&7---------------"
+		set line 4 of lore of {helmet::2} to "&9&lRARE HELMET"
+		add "prot:2" to string list tag "Croplite:enchants" of custom nbt of {helmet::2}
+		add hide unbreakable to item flags of {helmet::2}
+		
+		set {helmet::3} to unbreakable golden helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {helmet::3} to "&cAdept Farming Helmet"
+		set line 1 of lore of {helmet::3} to "&7---------------"
+		set line 2 of lore of {helmet::3} to "&9&lDefense &8[&9&l3&8]"
+		set line 3 of lore of {helmet::3} to "&7---------------"
+		set line 4 of lore of {helmet::3} to "&c&lREFINED HELMET"
+		add "prot:3" to string list tag "Croplite:enchants" of custom nbt of {helmet::3}
+		add hide unbreakable to item flags of {helmet::3}
+
+		set {helmet::4} to unbreakable diamond helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {helmet::4} to "&5Expert Farming Helmet"
+		set line 1 of lore of {helmet::4} to "&7---------------"
+		set line 2 of lore of {helmet::4} to "&9&lDefense &8[&9&l4&8]"
+		set line 3 of lore of {helmet::4} to "&7---------------"
+		set line 4 of lore of {helmet::4} to "&5&lEPIC HELMET"
+		add "prot:4" to string list tag "Croplite:enchants" of custom nbt of {helmet::4}
+		add hide unbreakable to item flags of {helmet::4}
+
+		set {helmet::5} to unbreakable netherite helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {helmet::5} to "&6Master Farming Helmet"
+		set line 1 of lore of {helmet::5} to "&7---------------"
+		set line 2 of lore of {helmet::5} to "&9&lDefense &8[&9&l5&8]"
+		set line 3 of lore of {helmet::5} to "&7---------------"
+		set line 4 of lore of {helmet::5} to "&6&lLEGENDARY HELMET"
+		add "prot:5" to string list tag "Croplite:enchants" of custom nbt of {helmet::5}
+		add hide unbreakable to item flags of {helmet::5}
+
+		#-------------------------------------------------
+		set {chestplate::0} to unbreakable leather chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {chestplate::0} to "&8Starter Farming Chestplate"
+		set line 1 of lore of {chestplate::0} to "&7---------------"
+		set line 2 of lore of {chestplate::0} to "&9&lDefense &8[&9&l0&8]"
+		set line 3 of lore of {chestplate::0} to "&7---------------"
+		set line 4 of lore of {chestplate::0} to "&8&lCOMMON CHESTPLATE"
+		add "prot:0" to string list tag "Croplite:enchants" of custom nbt of {chestplate::0}
+		add hide unbreakable to item flags of {chestplate::0}
+
+		set {chestplate::1} to unbreakable chainmail chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {chestplate::1} to "&aApprentice Farming Chestplate"
+		set line 1 of lore of {chestplate::1} to "&7---------------"
+		set line 2 of lore of {chestplate::1} to "&9&lDefense &8[&9&l1&8]"
+		set line 3 of lore of {chestplate::1} to "&7---------------"
+		set line 4 of lore of {chestplate::1} to "&a&lUNCOMMON CHESTPLATE"
+		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of {chestplate::1}
+		add hide unbreakable to item flags of {chestplate::1}
+
+		set {chestplate::2} to unbreakable iron chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {chestplate::2} to "&9Experienced Farming Chestplate"
+		set line 1 of lore of {chestplate::2} to "&7---------------"
+		set line 2 of lore of {chestplate::2} to "&9&lDefense &8[&9&l2&8]"
+		set line 3 of lore of {chestplate::2} to "&7---------------"
+		set line 4 of lore of {chestplate::2} to "&9&lRARE CHESTPLATE"
+		add "prot:2" to string list tag "Croplite:enchants" of custom nbt of {chestplate::2}
+		add hide unbreakable to item flags of {chestplate::2}
+		
+		set {chestplate::3} to unbreakable golden chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {chestplate::3} to "&cAdept Farming Chestplate"
+		set line 1 of lore of {chestplate::3} to "&7---------------"
+		set line 2 of lore of {chestplate::3} to "&9&lDefense &8[&9&l3&8]"
+		set line 3 of lore of {chestplate::3} to "&7---------------"
+		set line 4 of lore of {chestplate::3} to "&c&lREFINED CHESTPLATE"
+		add "prot:3" to string list tag "Croplite:enchants" of custom nbt of {chestplate::3}
+		add hide unbreakable to item flags of {chestplate::3}
+
+		set {chestplate::4} to unbreakable diamond chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {chestplate::4} to "&5Expert Farming Chestplate"
+		set line 1 of lore of {chestplate::4} to "&7---------------"
+		set line 2 of lore of {chestplate::4} to "&9&lDefense &8[&9&l4&8]"
+		set line 3 of lore of {chestplate::4} to "&7---------------"
+		set line 4 of lore of {chestplate::4} to "&5&lEPIC CHESTPLATE"
+		add "prot:4" to string list tag "Croplite:enchants" of custom nbt of {chestplate::4}
+		add hide unbreakable to item flags of {chestplate::4}
+
+		set {chestplate::5} to unbreakable netherite chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {chestplate::5} to "&6Master Farming Chestplate"
+		set line 1 of lore of {chestplate::5} to "&7---------------"
+		set line 2 of lore of {chestplate::5} to "&9&lDefense &8[&9&l5&8]"
+		set line 3 of lore of {chestplate::5} to "&7---------------"
+		set line 4 of lore of {chestplate::5} to "&6&lLEGENDARY CHESTPLATE"
+		add "prot:5" to string list tag "Croplite:enchants" of custom nbt of {chestplate::5}
+		add hide unbreakable to item flags of {chestplate::5}
+
+		#-------------------------------------------------
+		set {leggings::0} to unbreakable leather leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {leggings::0} to "&8Starter Farming Leggings"
+		set line 1 of lore of {leggings::0} to "&7---------------"
+		set line 2 of lore of {leggings::0} to "&9&lDefense &8[&9&l0&8]"
+		set line 3 of lore of {leggings::0} to "&7---------------"
+		set line 4 of lore of {leggings::0} to "&8&lCOMMON LEGGINGS"
+		add "prot:0" to string list tag "Croplite:enchants" of custom nbt of {leggings::0}
+		add hide unbreakable to item flags of {leggings::0}
+		
+		set {leggings::1} to unbreakable chainmail leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {leggings::1} to "&aApprentice Farming Leggings"
+		set line 1 of lore of {leggings::1} to "&7---------------"
+		set line 2 of lore of {leggings::1} to "&9&lDefense &8[&9&l1&8]"
+		set line 3 of lore of {leggings::1} to "&7---------------"
+		set line 4 of lore of {leggings::1} to "&a&lUNCOMMON LEGGINGS"
+		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of {leggings::1}
+		add hide unbreakable to item flags of {leggings::1}
+
+		set {leggings::2} to unbreakable iron leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {leggings::2} to "&9Experienced Farming Leggings"
+		set line 1 of lore of {leggings::2} to "&7---------------"
+		set line 2 of lore of {leggings::2} to "&9&lDefense &8[&9&l2&8]"
+		set line 3 of lore of {leggings::2} to "&7---------------"
+		set line 4 of lore of {leggings::2} to "&9&lRARE LEGGINGS"
+		add "prot:2" to string list tag "Croplite:enchants" of custom nbt of {leggings::2}
+		add hide unbreakable to item flags of {leggings::2}
+		
+		set {leggings::3} to unbreakable golden leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {leggings::3} to "&cAdept Farming Leggings"
+		set line 1 of lore of {leggings::3} to "&7---------------"
+		set line 2 of lore of {leggings::3} to "&9&lDefense &8[&9&l3&8]"
+		set line 3 of lore of {leggings::3} to "&7---------------"
+		set line 4 of lore of {leggings::3} to "&c&lREFINED LEGGINGS"
+		add "prot:3" to string list tag "Croplite:enchants" of custom nbt of {leggings::3}
+		add hide unbreakable to item flags of {leggings::3}
+
+		set {leggings::4} to unbreakable diamond leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {leggings::4} to "&5Expert Farming Leggings"
+		set line 1 of lore of {leggings::4} to "&7---------------"
+		set line 2 of lore of {leggings::4} to "&9&lDefense &8[&9&l4&8]"
+		set line 3 of lore of {leggings::4} to "&7---------------"
+		set line 4 of lore of {leggings::4} to "&5&lEPIC LEGGINGS"
+		add "prot:4" to string list tag "Croplite:enchants" of custom nbt of {leggings::4}
+		add hide unbreakable to item flags of {leggings::4}
+
+		set {leggings::5} to unbreakable netherite leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {leggings::5} to "&6Master Farming Leggings"
+		set line 1 of lore of {leggings::5} to "&7---------------"
+		set line 2 of lore of {leggings::5} to "&9&lDefense &8[&9&l5&8]"
+		set line 3 of lore of {leggings::5} to "&7---------------"
+		set line 4 of lore of {leggings::5} to "&6&lLEGENDARY LEGGINGS"
+		add "prot:5" to string list tag "Croplite:enchants" of custom nbt of {leggings::5}
+		add hide unbreakable to item flags of {leggings::5}
+
+		#-------------------------------------------------
+		set {boots::0} to unbreakable leather boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {boots::0} to "&8Starter Farming Boots"
+		set line 1 of lore of {boots::0} to "&7---------------"
+		set line 2 of lore of {boots::0} to "&9&lDefense &8[&9&l0&8]"
+		set line 3 of lore of {boots::0} to "&7---------------"
+		set line 4 of lore of {boots::0} to "&8&lCOMMON BOOTS"
+		add "prot:0" to string list tag "Croplite:enchants" of custom nbt of {boots::0}
+		add hide unbreakable to item flags of {boots::0}
+
+		set {boots::1} to unbreakable chainmail boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {boots::1} to "&aApprentice Farming Boots"
+		set line 1 of lore of {boots::1} to "&7---------------"
+		set line 2 of lore of {boots::1} to "&9&lDefense &8[&9&l1&8]"
+		set line 3 of lore of {boots::1} to "&7---------------"
+		set line 4 of lore of {boots::1} to "&a&lUNCOMMON BOOTS"
+		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of {boots::1}
+		add hide unbreakable to item flags of {boots::1}
+
+		set {boots::2} to unbreakable iron boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {boots::2} to "&9Experienced Farming Boots"
+		set line 1 of lore of {boots::2} to "&7---------------"
+		set line 2 of lore of {boots::2} to "&9&lDefense &8[&9&l2&8]"
+		set line 3 of lore of {boots::2} to "&7---------------"
+		set line 4 of lore of {boots::2} to "&9&lRARE BOOTS"
+		add "prot:2" to string list tag "Croplite:enchants" of custom nbt of {boots::2}
+		add hide unbreakable to item flags of {boots::2}
+		
+		set {boots::3} to unbreakable golden boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {boots::3} to "&c&lAdept Farming Boots"
+		set line 1 of lore of {boots::3} to "&7---------------"
+		set line 2 of lore of {boots::3} to "&9&lDefense &8[&9&l3&8]"
+		set line 3 of lore of {boots::3} to "&7---------------"
+		set line 4 of lore of {boots::3} to "&c&lREFINED BOOTS"
+		add "prot:3" to string list tag "Croplite:enchants" of custom nbt of {boots::3}
+		add hide unbreakable to item flags of {boots::3}
+
+		set {boots::4} to unbreakable diamond boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {boots::4} to "&5Expert Farming Boots"
+		set line 1 of lore of {boots::4} to "&7---------------"
+		set line 2 of lore of {boots::4} to "&9&lDefense &8[&9&l4&8]"
+		set line 3 of lore of {boots::4} to "&7---------------"
+		set line 4 of lore of {boots::4} to "&5&lEPIC BOOTS"
+		add "prot:4" to string list tag "Croplite:enchants" of custom nbt of {boots::4}
+		add hide unbreakable to item flags of {boots::4}
+
+		set {boots::5} to unbreakable netherite boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+		set name of {boots::5} to "&6Master Farming Boots"
+		set line 1 of lore of {boots::5} to "&7---------------"
+		set line 2 of lore of {boots::5} to "&9&lDefense &8[&9&l5&8]"
+		set line 3 of lore of {boots::5} to "&7---------------"
+		set line 4 of lore of {boots::5} to "&6&lLEGENDARY BOOTS"
+		add "prot:5" to string list tag "Croplite:enchants" of custom nbt of {boots::5}
+		add hide unbreakable to item flags of {boots::5}
+
+command /getarmor:
+	trigger:
+		give player {helmet::*}
+		give player {chestplate::*}
+		give player {leggings::*}
+		give player {boots::*}
+
+
+function resetArmor(p: player):
+	set {helmet::1::bought::%uuid of {_p}%} to false
+	set {helmet::2::bought::%uuid of {_p}%} to false
+	set {helmet::3::bought::%uuid of {_p}%} to false
+	set {helmet::4::bought::%uuid of {_p}%} to false
+	set {helmet::5::bought::%uuid of {_p}%} to false
+
+	set {chestplate::1::bought::%uuid of {_p}%} to false
+	set {chestplate::2::bought::%uuid of {_p}%} to false
+	set {chestplate::3::bought::%uuid of {_p}%} to false
+	set {chestplate::4::bought::%uuid of {_p}%} to false
+	set {chestplate::5::bought::%uuid of {_p}%} to false
+
+	set {leggings::1::bought::%uuid of {_p}%} to false
+	set {leggings::2::bought::%uuid of {_p}%} to false
+	set {leggings::3::bought::%uuid of {_p}%} to false
+	set {leggings::4::bought::%uuid of {_p}%} to false
+	set {leggings::5::bought::%uuid of {_p}%} to false
+
+	set {boots::1::bought::%uuid of {_p}%} to false
+	set {boots::2::bought::%uuid of {_p}%} to false
+	set {boots::3::bought::%uuid of {_p}%} to false
+	set {boots::4::bought::%uuid of {_p}%} to false
+	set {boots::5::bought::%uuid of {_p}%} to false

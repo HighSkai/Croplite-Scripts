@@ -155,7 +155,7 @@ on right click:
 				send "&8 - &6&lPet Crate Key" to player
 				send "&7------------------------------" to player
 				add 200 to {exp::%player's uuid%}
-				add 1 to {enchantpoints::%player's uuid%}
+				add 1 to {enchant-points::%player's uuid%}
 				execute console command "/crate key give %player% pet 1"
 				if player is an operator:
 					make player execute command "developedgrapplinghook"
@@ -182,11 +182,11 @@ on right click:
 			
 			
 command /resetmackmessage:
-	permission: *
+	permission: operator
 	trigger:
 		set {chatmessage::Mackerel::%player's uuid%} to 0
 	
 command /setmackmessage <number>:
-    permission: *
-    trigger:
-        set {chatmessage::Mackerel::%player's uuid%} to arg-1
+	permission: operator
+	trigger:
+		set {chatmessage::Mackerel::%player's uuid%} to arg-1

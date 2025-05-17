@@ -1,0 +1,126 @@
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "lbtp in world world":
+		teleport player to location(1017.5, 117, 661.5, world "world", 0, -20)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Lifetime Leaderboards Hall." to player
+		stop
+		
+	else if "%region at player%" contains "lbtpback in world world":
+		teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported back to Spawn." to player
+		stop
+	
+	else if "%region at player%" contains "portaltofarm2 in world world":
+		teleport player to location(792.5, 99, 1039.5, world "world", 135, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Spruce Farm." to player
+		stop
+		
+	else if "%region at player%" contains "portaltofarm3 in world world":
+		teleport player to location(226.5, 98, 1037.5, world "world", -37, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Desert Farm." to player
+		stop
+
+	else if "%region at player%" contains "portaltofarm4 in world world":
+		teleport player to location(-378.5, 101, 857.5, world "world", -45, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Cave Farm." to player
+		stop
+
+	else if region at player contains "backtofarm1":
+		teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported back to Spawn." to player
+
+	else if region at player contains "backtofarm2":
+		teleport player to location(792.5, 99, 1039.5, world "world", 135, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Spruce Farm." to player
+
+	else if region at player contains "backtofarm3":
+		teleport player to location(226.5, 98, 1037.5, world "world", -37, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Desert Farm." to player
+		
+	else if "%region at player%" contains "global in world world and wheatleyzone in world world":
+		if {chatmessage::Buck::%player's uuid%} = 0:
+			send "&7[&6Buck Wheatly&7]&f: Click me!" to player
+	
+command /afk: 
+	trigger:
+		teleport player to location(1195.5, 117, 942.5,"world", 0, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the AFK area." to player
+		stop
+
+command /shop:
+	trigger:
+		teleport player to location(1191.5, 104.0625, 939.5, world "world", 180, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Shop." to player
+
+command /crates:
+	trigger:
+		teleport player to location(1159.5, 104, 947.5, world "world", 180, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Crates." to player
+
+command /spawn:
+	trigger:
+		teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
+		send "&8[&dCroplite&8] &aYou have been teleported to Spawn." to player
+
+command /leaderboards:
+	trigger:
+		teleport player to location(1017.5, 117, 661.5, world "world", 0, -10)
+		send "&8[&dCroplite&8] &aYou have been teleported to the Lifetime Leaderboards." to player
+
+command /field <integer>:
+	permission: operator
+	trigger:
+		if arg-1 is 1:
+			teleport player to location(1217.5, 102, 1004.5, world "world", -90, 0)
+		else if arg-1 is 2:
+			teleport player to location(1159.5, 101, 974.5, world "world", 90, 0)
+		else if arg-1 is 3:
+			teleport player to location(1138.5, 102, 1067.5, world "world", 45, 0)
+		else if arg-1 is 4:
+			teleport player to location(1206.5, 102, 1093.5, world "world", -45, 0)
+		else if arg-1 is 5:
+			teleport player to location(757.5, 99, 1004.5, world "world", 145, 0)
+		else if arg-1 is 6:
+			teleport player to location(843.5, 103, 1044.5, world "world", -145, 0)
+		else if arg-1 is 7:
+			teleport player to location(791.5, 99, 1079.5, world "world", 90, 0)
+		else if arg-1 is 8:
+			teleport player to location(827.5, 100, 1094.5, world "world", 0, 0)
+		else if arg-1 is 9:
+			teleport player to location(289.5, 101, 1070.5, world "world", -145, 0)
+		else if arg-1 is 10:
+			teleport player to location(247.5, 101, 1143.5, world "world", 0, 0)
+		else if arg-1 is 11:
+			teleport player to location(372.5, 99, 1132.5, world "world", -45, 0)
+		else if arg-1 is 12:
+			teleport player to location(374.5, 97, 1039.5, world "world", -145, 0)
+		else if arg-1 is 13:
+			teleport player to location(-371.5, 99, 921.5, world "world", 0, 0)
+		else if arg-1 is 14:
+			teleport player to location(-440.5, 94, 891.5, world "world", -180, 0)
+		else if arg-1 is 15:
+			teleport player to location(-431.5, 90, 938.5, world "world", -45, 0)
+		else if arg-1 is 16:
+			teleport player to location(-453.5, 87, 941.5, world "world", 90, 0)
+
+		send "&8[&dCroplite&8] &aYou have teleported to &e&lField &8[&e&l%arg-1%&8]." to player
+on tab complete of "/field":
+	set tab completions for position 1 to 1 and 2 and 3 and 4 and 5 and 6 and 7 and 8 and 9 and 10 and 11 and 12 and 13 and 14 and 15 and 16
+
+command /farm <text>:
+    permission: operator
+    trigger:
+        if arg-1 is "1":
+            teleport player to location at 1191.5, 104, 954.5
+        else if arg-1 is "2":
+            teleport player to location at 792.5, 99, 1039.5
+        else if arg-1 is "3":
+            teleport player to location at 226.5, 98, 1037.5
+        else if arg-1 is "4":
+            teleport player to location at -378.5, 101, 857.5
+        else if arg-1 is "test":
+            teleport player to location at 9879.5, -9, 10194.5
+        else if arg-1 is "events":
+            teleport player to location at 10737.5, -3, 8918.5
+on tab complete of "/farm":
+    set tab completions for position 1 to 1 and 2 and 3 and 4 and "test" and "events"

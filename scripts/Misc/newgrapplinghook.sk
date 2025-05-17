@@ -1,0 +1,43 @@
+on fishing line reel in:
+    if player's tool is unbreakable fishing rod named "&6Weak Grappling Hook":
+        set item cooldown of player's tool for player to 20 seconds
+        grapplingHook(player, fishing hook, 3)
+    else if player's tool is unbreakable fishing rod named "&9Developed Grappling Hook":
+        set item cooldown of player's tool for player to 15 seconds
+        grapplingHook(player, fishing hook, 5)
+    else if player's tool is unbreakable fishing rod named "operator Grappling hook":
+        set item cooldown of player's tool for player to 0 seconds
+        grapplingHook(player, fishing hook, 8)
+
+on right click:
+    if player has player's tool on cooldown:
+        send "&d&lCroplite &cYou must wait %item cooldown of player's tool for player% before grappling again." to player
+
+local function grapplingHook(p: player, h: entity, v: integer):
+    set {_direction} to vector between {_p} and {_h}
+    push {_p} {_direction} with speed {_v}
+
+command /weakgrapplinghook:
+    permission: operator
+    trigger:
+        set {_weakhook} to unbreakable fishing rod named "&6Weak Grappling Hook"
+        set line 1 of lore of {_weakhook} to "&7---------------"
+        set line 2 of lore of {_weakhook} to "&9Vertical Power&f: &b+0.5" 
+        set line 3 of lore of {_weakhook} to "&9Cooldown&f: &b20 seconds"
+        set line 4 of lore of {_weakhook} to "&7---------------"
+        give player {_weakhook}
+ 
+command /developedgrapplinghook:
+    permission: operator
+    trigger:
+        set {_devhook} to unbreakable fishing rod named "&9Developed Grappling Hook"
+        set line 1 of lore of {_devhook} to "&7---------------"
+        set line 2 of lore of {_devhook} to "&9Vertical Power&f: &b+1"
+        set line 3 of lore of {_devhook} to "&9Cooldown&f: &b15 seconds"
+        set line 4 of lore of {_devhook} to "&7---------------"
+        give player {_devhook}
+        
+command /opgrapplinghook:
+    permission: operator
+    trigger:
+        give player unbreakable fishing rod named "operator Grappling hook"

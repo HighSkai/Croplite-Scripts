@@ -1,5 +1,5 @@
 command /givedoublexp <player> <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {_doublexpboost} to an experience bottle
 		set name of {_doublexpboost} to "&e&lDouble XP &8(&c5m&8)"
@@ -10,7 +10,7 @@ command /givedoublexp <player> <number>:
 		give arg-2 of {_doublexpboost} to arg-1
 		
 command /giveonepointfivexp <player> <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {_doublexpboost2} to an experience bottle
 		set name of {_doublexpboost2} to "&e&l1.5x XP &8(&c8m&8)"
@@ -21,7 +21,7 @@ command /giveonepointfivexp <player> <number>:
 		give arg-2 of {_doublexpboost2} to arg-1
 		
 command /give50percentspeed <player> <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {_speedboost1} to sugar
 		set name of {_speedboost1} to "&e&l+50%% speed &8(&c15m&8)"
@@ -32,7 +32,7 @@ command /give50percentspeed <player> <number>:
 		give arg-2 of {_speedboost1} to arg-1
 		
 command /give25percentspeed <player> <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {_speedboost2} to sugar
 		set name of {_speedboost2} to "&e&l+25%% speed &8(&c20m&8)"
@@ -43,7 +43,7 @@ command /give25percentspeed <player> <number>:
 		give arg-2 of {_speedboost2} to arg-1
 		
 command /givedoublecropsell <player> <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {_doublecropsell} to bread
 		set name of {_doublecropsell} to "&e&l2x crop cash on sell &8(&c3x&8)"
@@ -54,7 +54,7 @@ command /givedoublecropsell <player> <number>:
 		give arg-2 of {_doublecropsell} to arg-1
 		
 command /giveglobalbooster1 <player> <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {_globalbooster1} to netherite upgrade smithing template
 		set name of {_globalbooster1} to "&e&l+10%% global XP booster &8(&c1h&8)"
@@ -65,7 +65,7 @@ command /giveglobalbooster1 <player> <number>:
 		give arg-2 of {_globalbooster1} to arg-1
 		
 command /givedoublecm <player> <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {_givedoublecm} to bone meal
 		set name of {_givedoublecm} to "&e&l2x crop material &8(&c4m&8)"
@@ -76,7 +76,7 @@ command /givedoublecm <player> <number>:
 		give arg-2 of {_givedoublecm} to arg-1
 
 command /giveonepointfivecm <player> <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {_giveonepointfivecm} to bone meal
 		set name of {_giveonepointfivecm} to "&e&l1.5x crop material &8(&c6m&8)"
@@ -93,8 +93,8 @@ on rightclick with experience bottle:
 			send "&c&lYou can only have 1 xp booster active at a time!" to player
 		else:
 			remove 1 experience bottle named "&e&lDouble XP &8(&c5m&8)" from player's inventory
-			set {_tempcurrentxpmultiplier::%player's uuid%} to {miningmultiplier::%player's uuid%}
-			add {_tempcurrentxpmultiplier::%player's uuid%} to {miningmultiplier::%player's uuid%}
+			set {_tempcurrentxpmultiplier::%player's uuid%} to {expmulti::%player's uuid%}
+			add {_tempcurrentxpmultiplier::%player's uuid%} to {expmulti::%player's uuid%}
 			set {tempxpboost::%player's uuid%} to true
 			send "&8[&dCroplite&8] &aBooster applied!" to player
 			set {xpboosttype::%player's uuid%} to "5m"
@@ -106,8 +106,8 @@ on rightclick with experience bottle:
 			send "&c&lYou can only have 1 xp booster active at a time!" to player
 		else:
 			remove 1 experience bottle named "&e&l1.5x XP &8(&c8m&8)" from player's inventory
-			set {_tempcurrentxpmultiplier::%player's uuid%} to ({miningmultiplier::%player's uuid%}/2)
-			add {_tempcurrentxpmultiplier::%player's uuid%} to {miningmultiplier::%player's uuid%}
+			set {_tempcurrentxpmultiplier::%player's uuid%} to ({expmulti::%player's uuid%}/2)
+			add {_tempcurrentxpmultiplier::%player's uuid%} to {expmulti::%player's uuid%}
 			set {tempxpboost::%player's uuid%} to true
 			send "&8[&dCroplite&8] &aBooster applied!" to player
 			set {xpboosttype::%player's uuid%} to "8m"
@@ -119,7 +119,7 @@ on rightclick with experience bottle:
 			send "&c&lYou can only have 1 xp booster active at a time!" to player
 		else:
 			remove 1 experience bottle named "&e&l+25%% XP (20s)" from player's inventory
-			add 0.25 to {miningmultiplier::%player's uuid%}
+			add 0.25 to {expmulti::%player's uuid%}
 			set {tempxpboost::%player's uuid%} to true
 			send "&8[&dCroplite&8] &aBooster applied!" to player
 			set {tempxpboosttype::%player's uuid%} to "20s"
@@ -131,7 +131,7 @@ on rightclick with experience bottle:
 			send "&c&lYou can only have 1 xp booster active at a time!" to player
 		else:
 			remove 1 experience bottle named "&e&l+15%% XP (1m)" from player's inventory
-			add 0.15 to {miningmultiplier::%player's uuid%}
+			add 0.15 to {expmulti::%player's uuid%}
 			set {tempxpboost::%player's uuid%} to true
 			send "&8[&dCroplite&8] &aBooster applied!" to player
 			set {tempxpboosttype::%player's uuid%} to "1m"
@@ -303,7 +303,7 @@ every 1 second:
 			if {tempxpboosttype::%loop-player%} is "5m":
 				subtract 1 from {tempxpboosttime::%loop-player%}
 				if {tempxpboosttime::%loop-player%} = 0:
-					subtract {_tempcurrentxpmultiplier::%loop-player%} from {miningmultiplier::%loop-player%}
+					subtract {_tempcurrentxpmultiplier::%loop-player%} from {expmulti::%loop-player%}
 					set {tempxpboost::%loop-player%} to false
 					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
 				else:
@@ -317,7 +317,7 @@ every 1 second:
 			else if {tempxpboosttype::%loop-player%} is "8m":
 				subtract 1 from {xpboosttime::%loop-player%}
 				if {xpboosttime::%loop-player%} = 0:
-					subtract {_tempcurrentxpmultiplier::%loop-player%} from {miningmultiplier::%loop-player%}
+					subtract {_tempcurrentxpmultiplier::%loop-player%} from {expmulti::%loop-player%}
 					set {tempxpboost::%loop-player%} to false
 					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
 				else:
@@ -331,7 +331,7 @@ every 1 second:
 			else if {tempxpboosttype::%loop-player's uuid%} is "20s":
 				subtract 1 from {tempxpboosttime::%loop-player%}
 				if {tempxpboosttime::%loop-player%} = 0:
-					subtract 0.25 from {miningmultiplier::%loop-player%}
+					subtract 0.25 from {expmulti::%loop-player%}
 					set {tempxpboost::%loop-player%} to false
 					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
 				else:
@@ -345,7 +345,7 @@ every 1 second:
 			else if {tempxpboosttype::%loop-player%} is "1m":
 				subtract 1 from {tempxpboosttime::%loop-player%}
 				if {tempxpboosttime::%loop-player%} = 0:
-					subtract 0.15 from {miningmultiplier::%loop-player%}
+					subtract 0.15 from {expmulti::%loop-player%}
 					set {tempxpboost::%loop-player%} to false
 					send "&8[&dCroplite&8] &aBooster has ended" to loop-player
 				else:

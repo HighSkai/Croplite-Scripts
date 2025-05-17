@@ -1,77 +1,97 @@
+command /open-scytheshopgui:
+    permission: operator
+    trigger:
+        play sound "minecraft:ui.button.click" to player
+        loadScytheShopGui(player)
+
 function loadScytheShopGui(p: player):
     set {_gui} to chest inventory with 3 rows named "&b&lScythe Shop"
 
     loop 27 times:
         set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
     
-    set slot 11 of {_gui} to {scythe::1}
-    set slot 12 of {_gui} to {scythe::2}
-    set slot 13 of {_gui} to {scythe::3}
-    set slot 14 of {_gui} to {scythe::4}
-    set slot 15 of {_gui} to {scythe::5}
+    loop integers from 11 to 15:
+        set slot loop-integer of {_gui} to {scythe::%loop-integer - 10%}
+
+    set {_highest_tier} to 0
+    loop integers between 1 and 5:
+        if {scytheupgrade::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
+            if loop-integer > {_highest_tier}:
+                set {_highest_tier} to loop-integer
 
     loop integers between 11 and 15:
         set {_num} to loop-integer - 10
         set {_item} to slot loop-integer of {_gui}
 
-        if {scytheupgrade::%{_num}%::bought::%{_p}'s uuid%} is equal to true:
-            set name of {_item} to "%{_item}'s name% | [&a&lUnlocked&8]"
+        if {scytheupgrade::%{_num}%::bought::%uuid of {_p}%} is equal to true:
+            set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
             make {_item} glint
 
         set {_lore::*} to lore of {_item}
         add "" to {_lore::*}
         add "&ePrice:" to {_lore::*}
-        add "&5&lCrop Cash: &8[&5&l%{scythe::%{_num}%::price}%&8]" to {_lore::*}
+        add "&5&lCrop Cash &8[&5&l%{scythe::%{_num}%::price}%&8]" to {_lore::*}
         set lore of {_item} to {_lore::*}
             
         set slot loop-integer of {_gui} to {_item}
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
     
     open {_gui} to {_p}
 
 local function upgradeScythe(p: player, number: integer):
     set {_tags::*} to string list tag "Croplite:enchants" of custom nbt of slot 0 of {_p}
 
-    set {_new-scythe} to {scythes::%{_number}%}
+    set {_new-scythe} to {scythe::%{_number}%}
     set string list tag "Croplite:enchants" of custom nbt of {_new-scythe} to {_tags::*}
 
     set slot 0 of {_p} to {_new-scythe}
     addEnchantLore({_p})
 
 on inventory click:
-    if event-inventory's name contains "&b&lScythe Shop":
-        cancel event
-        
-        if event-slot is between 11 and 15:
-            set {_num} to index of event-slot - 10
-            if {scytheupgrade::%{_num}%::bought::%player's uuid%} is equal to false:
-                if {cropcash::%player's uuid%} < {scythe::%{_num}%::price}:
-                    send "&8[&d&lCroplite&8] &cYou don't have enough &5&lCrop Cash &cto buy this item" to player
+    if event-inventory is not player's inventory:
+        if event-inventory's name is "&b&lScythe Shop":
+            cancel event
+            
+            if event-slot is between 11 and 15:
+                set {_num} to index of event-slot - 10
+                
+                set {_highest_tier} to 0
+                loop integers between 1 and 5:
+                    if {scytheupgrade::%loop-integer%::bought::%player's uuid%} is equal to true:
+                        if loop-integer > {_highest_tier}:
+                            set {_highest_tier} to loop-integer
+                
+                if {_num} < {_highest_tier}:
+                    send "&d&lCroplite &cYou cannot downgrade your scythe." to player
+                else if {scytheupgrade::%{_num}%::bought::%player's uuid%} is equal to false:
+                    if {cropcash::%player's uuid%} < {scythe::%{_num}%::price}:
+                        send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this item" to player
+                    else:
+                        set {scytheupgrade::%{_num}%::bought::%player's uuid%} to true
+                        remove {scythe::%{_num}%::price} from {cropcash::%player's uuid%}
+                        
+                        loop integers between 1 and {_num}:
+                            set {scytheupgrade::%loop-integer%::bought::%player's uuid%} to true
+                        
+                        upgradeScythe(player, {_num})
+                        loadScytheShopGui(player)
+
+                        play sound "entity.experience_orb.pickup" to player
+
+                        send "&d&lCroplite &aYou have upgraded your scythe for %{scythe::%{_num}%::price}% &5&lCrop Cash" to player
                 else:
-                    set {scytheupgrade::%{_num}%::bought::%player's uuid%} to true
-                    remove {scythe::%{_num}%::price} from {cropcash::%player's uuid%}
-                    upgradeScythe(player, {_num})
-                    loadScytheShopGui(player)
+                    send "&d&lCroplite &cYou have already bought this scythe upgrade" to player
 
-                    send "&8[&d&lCroplite&8] &aYou have upgraded your scythe for %{scythe::%{_num}%::price}% &5&lCrop Cash" to player
-            else:
-                send "&8[&d&lCroplite&8] &cYou have already bought this Scythe upgrade" to player
-
-command /scytheshopgui:
-    trigger:
-        loadScytheShopGui(player)
-
-
-command /resetscythes:
-    trigger:
-        set {scytheupgrade::1::bought::%player's uuid%} to false
-        set {scytheupgrade::2::bought::%player's uuid%} to false
-        set {scytheupgrade::3::bought::%player's uuid%} to false
-        set {scytheupgrade::4::bought::%player's uuid%} to false
-        set {scytheupgrade::5::bought::%player's uuid%} to false
-
-        send "reset" to player
+function resetScythes(p: player):
+    set {scytheupgrade::1::bought::%uuid of {_p}%} to false
+    set {scytheupgrade::2::bought::%uuid of {_p}%} to false
+    set {scytheupgrade::3::bought::%uuid of {_p}%} to false
+    set {scytheupgrade::4::bought::%uuid of {_p}%} to false
+    set {scytheupgrade::5::bought::%uuid of {_p}%} to false
 
 command /setscytheprices:
+    permission: operator
     trigger:
         set {scythe::0::price} to 0
         set {scythe::1::price} to 1
@@ -81,9 +101,10 @@ command /setscytheprices:
         set {scythe::5::price} to 5
 
 command /setscythes:
+    permission: operator
     trigger:
         set {scythe::0} to unbreakable wooden hoe with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-        set name of {scythe::0} to "&7[&8Starter Farming Scythe&7]"
+        set name of {scythe::0} to "&8Starter Farming Scythe"
         set line 1 of lore of {scythe::0} to "&7---------------"
         set line 2 of lore of {scythe::0} to "&4&lAttack Damage &8[&4&l1&8]"
         set line 3 of lore of {scythe::0} to "&3&lAttack Speed &8[&3&l0.8&8]"
@@ -98,7 +119,7 @@ command /setscythes:
             operation: add_number
 
         set {scythe::1} to unbreakable stone hoe with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-        set name of {scythe::1} to "&7[&aApprentice Farming Scythe&7]"
+        set name of {scythe::1} to "&aApprentice Farming Scythe"
         set line 1 of lore of {scythe::1} to "&7---------------"
         set line 2 of lore of {scythe::1} to "&e&lExp Multi &8[&e&l+0.2&8]"
         set line 3 of lore of {scythe::1} to "&4&lAttack Damage &8[&4&l2&8]"
@@ -114,7 +135,7 @@ command /setscythes:
             operation: add_number
 
         set {scythe::2} to unbreakable iron hoe with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-        set name of {scythe::2} to "&7[&9Experienced Farming Scythe&7]"
+        set name of {scythe::2} to "&9Experienced Farming Scythe"
         set line 1 of lore of {scythe::2} to "&7---------------"
         set line 2 of lore of {scythe::2} to "&e&lExp Multi &8[&e&l+0.4&8]"
         set line 3 of lore of {scythe::2} to "&4&lAttack Damage &8[&4&l4&8]"
@@ -130,7 +151,7 @@ command /setscythes:
             operation: add_number
 
         set {scythe::3} to unbreakable golden hoe with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-        set name of {scythe::3} to "&7[&cAdept Farming Scythe&7]"
+        set name of {scythe::3} to "&cAdept Farming Scythe"
         set line 1 of lore of {scythe::3} to "&7---------------"
         set line 2 of lore of {scythe::3} to "&e&lExp Multi &8[&e&l+0.6&8]"
         set line 3 of lore of {scythe::3} to "&4&lAttack Damage &8[&4&l6&8]"
@@ -146,7 +167,7 @@ command /setscythes:
             operation: add_number
 
         set {scythe::4} to unbreakable diamond hoe with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-        set name of {scythe::4} to "&7[&5Expert Farming Scythe&7]"
+        set name of {scythe::4} to "&5Expert Farming Scythe"
         set line 1 of lore of {scythe::4} to "&7---------------"
         set line 2 of lore of {scythe::4} to "&e&lExp Multi &8[&e&l+0.8&8]"
         set line 3 of lore of {scythe::4} to "&4&lAttack Damage &8[&4&l8&8]"
@@ -162,7 +183,7 @@ command /setscythes:
             operation: add_number
 
         set {scythe::5} to unbreakable netherite hoe with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-        set name of {scythe::5} to "&7[&6Master Farming Scythe&7]"
+        set name of {scythe::5} to "&6Master Farming Scythe"
         set line 1 of lore of {scythe::5} to "&7---------------"
         set line 2 of lore of {scythe::5} to "&e&lExp Multi &8[&e&l+1.0&8]"
         set line 3 of lore of {scythe::5} to "&4&lAttack Damage &8[&4&l10&8]"
@@ -181,6 +202,7 @@ command /setscythes:
         send "done" to player
 
 command /getscythes:
+    permission: operator
     trigger:
         give player {scythes::*}
 

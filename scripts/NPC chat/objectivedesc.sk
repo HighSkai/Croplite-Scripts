@@ -14,6 +14,3 @@ every 3 seconds:
             else if {objcount::%loop-player%} = 1:
                 set {objdesc::%loop-player%} to "&9Fishing Pole &ffrom &6&lDenver&r&f."
                 subtract 1 from {objcount::%loop-player%}
-        
-
-    

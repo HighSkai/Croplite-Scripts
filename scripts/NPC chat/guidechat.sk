@@ -61,7 +61,7 @@ on right click:
 						execute console command "/crate key give %player% pet 1"
 						add 100 to {exp::%player's uuid%}
 						add 100 to {cropcash::%player's uuid%}
-						add 1 to {enchantpoints::%player's uuid%}
+						add 1 to {enchant-points::%player's uuid%}
 						set {objective::%player's uuid%} to "objectivenone"
 						set {objprogressreq::%player's uuid%} to 0
 						set {objprogress::%player's uuid%} to 0
@@ -80,18 +80,19 @@ on right click:
 			delete {npc::talking::Buck::%player's uuid%}
 			
 command /setguidechat <number>:
-	permission: *
+	permission: operator
 	trigger:
 		set {chatmessage::Buck::%player's uuid%} to arg-1
 
 command /resetnpcchats:
-	permission: *
+	permission: operator
 	trigger:
 		set {chatmessage::Buck::%player's uuid%} to 0
 		set {chatmessage::Mackerel::%player's uuid%} to 0
 		set {chatmessage::Chuck::%player's uuid%} to 0
 		set {chatmessage::Carlo::%player's uuid%} to 0
 		set {chatmessage::Denver::%player's uuid%} to 0
+		delete {chatmessage::Denver::%player's uuid%::talking}
 		send "&8[&dCroplite&8]&a: All NPC chats have been reset!" to player
 		set {objective::%player's uuid%} to "objectivenone"
 		set {objprogressreq::%player's uuid%} to 0

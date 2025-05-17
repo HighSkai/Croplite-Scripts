@@ -11,7 +11,7 @@ on command:
 			send "&c&lChat is locked!" to player
 			
 command /lockchat:
-	permission: *
+	permission: operator
 	trigger:
 		loop indices of {nonothin::*}:
 			set {nonothin::%loop-value%} to true
@@ -19,7 +19,7 @@ command /lockchat:
 		send "&c&l%player% has locked chat!"
 		
 command /unlockchat:
-	permission: *
+	permission: operator
 	trigger:
 		if {tutorialstatus::%player's uuid%} is false:
 			loop indices of {nonothin::*}:

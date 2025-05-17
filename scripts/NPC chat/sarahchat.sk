@@ -1,0 +1,22 @@
+on right click:
+	if name of clicked entity is "&d&lSarah":
+		if 0 = 1:
+			if {npc::talking::Sarah::%player's uuid%} is set:
+				send "&7[&dSarah&7]&f: Do not interrupt!" to player
+				stop
+			else:
+				set {npc::talking::Sarah::%player's uuid%} to true
+				if {chatmessage::Sarah::%player's uuid%} is not set:
+					set {chatmessage::Sarah::%player's uuid%} to 0
+				if {chatmessage::Sarah::%player's uuid%} = 0:
+					send "&7[&dSarah&7]&f: Hello, &a%player%&f. I've been expecting a visit from you for quite some time now.                                                                " to player
+					wait 3 seconds
+					send "&7[&dSarah&7]&f: I am &dSarah Cestare&f, prophetess of &2&lCeres&f, &2&lGoddess &r&2of the &lHarvest&f.                                                                         " to player
+					wait 4 seconds
+					send "&7[&dSarah&7]&f: The goddess is responsible for the crops replenishing, along with the permanent daylight and summer season                                                                                         " to player
+					wait 4 seconds
+					send "&7[&dSarah&7]&f: Only now that you have become powerful enough can you pledge yourself to the goddess                                           " to player
+			wait 1 second
+			delete {npc::talking::Sarah::%player's uuid%}
+		else:
+			send "&4&lCOMING SOON" to player

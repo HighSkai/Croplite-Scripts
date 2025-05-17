@@ -1,5 +1,5 @@
 command /cropbagupgrades: # The crop bag shop click command
-	permission: *
+	permission: operator
 	trigger:
 		open chest inventory with 1 row named "&2&lCrop Bag Upgrades " to player
 		loop integers between 0 and 12:

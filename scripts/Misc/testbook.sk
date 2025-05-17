@@ -1,0 +1,29 @@
+command /book:
+    trigger:
+        createGuideBook(player)
+
+local function createGuideBook(p: player):
+    set {guidebook::%uuid of {_p}%} to a written book
+
+    set {guidebook::buck-wheatley::%uuid of {_p}%} to "&6»&6&lBuck Wheatley &c☐"
+    set {_buck-wheately} to a new text component from {guidebook::buck-wheatley::%uuid of {_p}%}
+
+    create a callback for {_buck-wheately}:
+        checkBuckWheatley({_p})
+
+    set page 1 of book {guidebook::%uuid of {_p}%} to {_buck-wheately}
+
+    set book title of {guidebook::%uuid of {_p}%} to "Guide Book"
+    set book author of {guidebook::%uuid of {_p}%} to "Croplite"
+
+    give {_p} {guidebook::%uuid of {_p}%}
+
+local function checkBuckWheatley(p: player):
+    component replace "☐" with "&a☑" in {guidebook::buck-wheatley::%uuid of {_p}%}
+    set page 1 of book {guidebook::%uuid of {_p}%} to {guidebook::buck-wheatley::%uuid of {_p}%}
+    set {_p}'s held item to {guidebook::%uuid of {_p}%}
+    open book {guidebook::%uuid of {_p}%} to {_p}
+
+function updateGuideBook(p: player):
+
+    set {guidebook::buck-wheatley::%uuid of {_p}%}

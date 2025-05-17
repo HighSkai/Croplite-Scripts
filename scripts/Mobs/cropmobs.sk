@@ -580,20 +580,10 @@ function equipSword(farm: number, mob: entity):
 			enchant {_sword} with sharpness 4
 			set tool of {_mob} to {_sword}
 
-command /addcustomnbttest:
-	trigger:
-		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of player's helmet
-		add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_chestplate}
-		add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_leggings}
-		add "prot:%{_prot}%" to string list tag "Croplite:enchants" of custom nbt of {_boots}
-		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of player's chestplate
-		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of player's leggings
-		add "prot:1" to string list tag "Croplite:enchants" of custom nbt of player's boots
-
 command /getdatastick:
 	trigger:
 		give the player stick named "&6DataStick"
-on rightclick:
+on right click:
 	if player's tool is a stick named "&6DataStick":
 		set {_nbt} to nbt of target block
 		set {_nbt2} to nbt of target entity

@@ -1,0 +1,307 @@
+command /gmc [<player>]:
+    permission: op
+    trigger:
+        if arg-1 is set:
+            set gamemode of arg-1 to creative
+        else:
+            set gamemode of player to creative
+
+command /gms [<player>]:
+    permission: op
+    trigger:
+        if arg-1 is set:
+            set gamemode of arg-1 to survival
+        else:
+            set gamemode of player to survival
+
+command /gma [<player>]:
+    permission: op
+    trigger:
+        if arg-1 is set:
+            set gamemode of arg-1 to adventure
+        else:
+            set gamemode of player to adventure
+
+command /gmsp [<player>]:
+    permission: op
+    trigger:
+        if arg-1 is set:
+            set gamemode of arg-1 to spectator
+        else:
+            set gamemode of player to spectator
+
+command /fly [<player>]:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            if arg-1 can fly:
+                make arg-1 stop flying
+            else:
+                make arg-1 fly
+        else:
+            if player can fly:
+                make player stop flying
+            else:
+                make player fly
+
+command /unlock <text> <number> [<offline player>]:
+    permission: operator
+    trigger:
+        if (arg-1 is "field"):
+            if (arg-2 is not 0):
+                set {fieldunlocked::%arg-2%::%uuid of arg-3%} to true
+                send "&8[&dCroplite&8] &aField &8[&e&l%arg-2%&8] &ahas been unlocked." to arg-3
+            else if (arg-2 is 0):
+                set {fieldunlocked::1::%uuid of arg-3%} to true
+                set {fieldunlocked::2::%uuid of arg-3%} to true
+                set {fieldunlocked::3::%uuid of arg-3%} to true
+                set {fieldunlocked::4::%uuid of arg-3%} to true
+                set {fieldunlocked::5::%uuid of arg-3%} to true
+                set {fieldunlocked::6::%uuid of arg-3%} to true
+                set {fieldunlocked::7::%uuid of arg-3%} to true
+                set {fieldunlocked::8::%uuid of arg-3%} to true
+                set {fieldunlocked::9::%uuid of arg-3%} to true
+                set {fieldunlocked::10::%uuid of arg-3%} to true
+                set {fieldunlocked::11::%uuid of arg-3%} to true
+                set {fieldunlocked::12::%uuid of arg-3%} to true
+                set {fieldunlocked::13::%uuid of arg-3%} to true
+                set {fieldunlocked::14::%uuid of arg-3%} to true
+                set {fieldunlocked::15::%uuid of arg-3%} to true
+                set {fieldunlocked::16::%uuid of arg-3%} to true
+                send "&8[&dCroplite&8] &aAll &e&lFields &ahave been unlocked." to arg-3
+        else if (arg-1 is "farm"):
+            if (arg-2 is not 0):
+                set {farmunlocked::%arg-2%::%uuid of arg-3%} to true
+                send "&8[&dCroplite&8] &aFarm &8[&e&l%arg-2%&8] &ahas been unlocked." to arg-3
+            else if (arg-2 is 0):
+                set {farmunlocked::2::%uuid of arg-3%} to true
+                set {farmunlocked::3::%uuid of arg-3%} to true
+                set {farmunlocked::4::%uuid of arg-3%} to true
+                send "&8[&dCroplite&8] &aAll &e&lFarms &ahave been unlocked." to arg-3
+
+on tab complete:
+    if event-string contains "/unlock":
+        set tab completions for position 1 to "field" and "farm"
+        set tab completions for position 2 to 0 and 1 and 2 and 3 and 4 and 5 and 6 and 7 and 8 and 9 and 10 and 11 and 12 and 13 and 14 and 15 and 16
+
+command /set-rank <text> [<offline player>]:
+    permission: operator
+    trigger:
+        if arg-1 is "member":
+            set {rank::%uuid of arg-2%} to "Member"
+            set {prefix::%uuid of arg-2%} to {member-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 0
+            set {rankexpmulti::%arg-2's uuid%} to 1
+        else if arg-1 is "vip":
+            set {rank::%uuid of arg-2%} to "Vip"
+            set {prefix::%uuid of arg-2%} to {vip-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 1
+            set {rankexpmulti::%arg-2's uuid%} to 1.1
+        else if arg-1 is "vip+":
+            set {rank::%uuid of arg-2%} to "Vip+"
+            set {prefix::%uuid of arg-2%} to {vip+-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 2
+            set {rankexpmulti::%arg-2's uuid%} to 1.2
+        else if arg-1 is "mvp":
+            set {rank::%uuid of arg-2%} to "Mvp"
+            set {prefix::%uuid of arg-2%} to {mvp-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 3
+            set {rankexpmulti::%arg-2's uuid%} to 1.3
+        else if arg-1 is "mvp+":
+            set {rank::%uuid of arg-2%} to "Mvp+"
+            set {prefix::%uuid of arg-2%} to {mvp+-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 4
+            set {rankexpmulti::%arg-2's uuid%} to 1.4
+        else if arg-1 is "elite":
+            set {rank::%uuid of arg-2%} to "Elite"
+            set {prefix::%uuid of arg-2%} to {elite-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 5
+            set {rankexpmulti::%arg-2's uuid%} to 1.5
+        else if arg-1 is "helper":
+            set {rank::%uuid of arg-2%} to "Helper"
+            set {prefix::%uuid of arg-2%} to {helper-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 999
+            set {rankexpmulti::%arg-2's uuid%} to 1
+        else if arg-1 is "builder":
+            set {rank::%uuid of arg-2%} to "Builder"
+            set {prefix::%uuid of arg-2%} to {builder-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 999
+            set {rankexpmulti::%arg-2's uuid%} to 1
+        else if arg-1 is "developer":
+            set {rank::%uuid of arg-2%} to "Developer"
+            set {prefix::%uuid of arg-2%} to {developer-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 999
+            set {rankexpmulti::%arg-2's uuid%} to 1
+        else if arg-1 is "owner":
+            set {rank::%uuid of arg-2%} to "Owner"
+            set {prefix::%uuid of arg-2%} to {owner-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 999
+            set {rankexpmulti::%arg-2's uuid%} to 1
+
+        else if arg-1 is "staff":
+            set {rank::%uuid of arg-2%} to "Staff"
+            set {prefix::%uuid of arg-2%} to {staff-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 999
+            set {rankexpmulti::%arg-2's uuid%} to 1
+        else if arg-1 is "croplite":
+            set {rank::%uuid of arg-2%} to "Croplite"
+            set {prefix::%uuid of arg-2%} to {croplite-Prefix}
+            set {ranknumber::%uuid of arg-2%} to 999
+            set {rankexpmulti::%arg-2's uuid%} to 1
+
+        setPrefix(arg-2)
+        send "done" to player
+
+command /set-level [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set {level::%uuid of arg-1%} to arg-2
+        else:
+            set {level::%player's uuid%} to arg-2
+
+command /set-exp [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set {exp::%uuid of arg-1%} to arg-2
+        else:
+            set {exp::%player's uuid%} to arg-2
+
+command /set-expmulti [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set {expmulti::%uuid of arg-1%} to arg-2
+        else:
+            set {expmulti::%player's uuid%} to arg-2
+
+command /set-expreq [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set {expreq::%uuid of arg-1%} to arg-2
+        else:
+            set {expreq::%player's uuid%} to arg-2
+
+command /set-crops [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set {crops::%uuid of arg-1%} to arg-2
+        else:
+            set {crops::%player's uuid%} to arg-2
+
+command /set-cropbag [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set {cropbag::%uuid of arg-1%} to arg-2
+        else:
+            set {cropbag::%player's uuid%} to arg-2
+
+command /set-cropcash [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set {cropcash::%uuid of arg-1%} to arg-2
+        else:
+            set {cropcash::%player's uuid%} to arg-2
+
+command /set-speed [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set arg-1's walking speed to arg-2
+        else:
+            set player's walking speed to arg-2
+
+command /set-enchantpoints [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            set {enchant-points::%uuid of arg-1%} to arg-2
+        else:
+            set {enchant-points::%player's uuid%} to arg-2
+
+command /give-level [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            add arg-2 to {level::%uuid of arg-1%}
+        else:
+            add arg-2 to {level::%player's uuid%}
+
+command /give-exp [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            add arg-2 to {exp::%uuid of arg-1%}
+        else:
+            add arg-2 to {exp::%player's uuid%}
+
+command /give-expmulti [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            add arg-2 to {expmulti::%uuid of arg-1%}
+        else:
+            add arg-2 to {expmulti::%player's uuid%}
+
+command /give-crops [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            add arg-2 to {crops::%uuid of arg-1%}
+        else:
+            add arg-2 to {crops::%player's uuid%}
+
+command /give-cropcash [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            add arg-2 to {cropcash::%uuid of arg-1%}
+        else:
+            add arg-2 to {cropcash::%player's uuid%}
+
+command /give-enchantpoints [<offline player>] <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            add arg-2 to {enchant-points::%uuid of {_p}%}
+        else:
+            add arg-2 to {enchant-points::%player's uuid%}
+
+on tab complete:
+    if event-string is "/set-rank":
+        set tab completions for position 1 to "member" and "vip" and "vip+" and "mvp" and "mvp+" and "elite" and "helper" and "builder" and "developer" and "owner" and "staff" and "croplite"
+
+command /area <player>:
+    permission: operator
+    trigger:
+        send "Region at %arg-1% is: ""%region at arg-1%""" to player
+
+command /centerself:
+	permission: operator
+	trigger:
+		set {_loc} to player's location
+    
+		set {_x} to floor(x-coordinate of {_loc}) + 0.5
+		set {_y} to y-coordinate of {_loc}
+		set {_z} to floor(z-coordinate of {_loc}) + 0.5
+        
+		set {_newLoc} to location({_x}, {_y}, {_z}, world of player, yaw of player, pitch of player)
+		teleport player to {_newLoc}
+
+on teleport:
+	set {previousLocation::%player's uuid%} to player's location
+
+command /back:
+	permission: operator
+	trigger:
+		if {previousLocation::%player's uuid%} is set:
+			set {_currentLoc} to player's location
+        
+			teleport player to {previousLocation::%player's uuid%}
+        
+			set {previousLocation::%player's uuid%} to {_currentLoc}

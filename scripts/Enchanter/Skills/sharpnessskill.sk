@@ -5,7 +5,7 @@ function loadSharpnessEnchantGUI(p: player):
 		set {_slot} to loop-number - 1
 		set slot {_slot} of {_gui} to red stained glass pane named " "
 
-	set slot 10 of {_gui} to {_p}'s tool
+	set slot 10 of {_gui} to slot 0 of {_p}'s inventory
 	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
 	set slot 26 of {_gui} to nether star named "&8[&a&lNext&8]"
 
@@ -31,6 +31,8 @@ function loadSharpnessEnchantGUI(p: player):
 			delete {_lore::*}
 								
 			set slot {_slot} of {_gui} to {_item}
+		else:
+			set slot {_slot} of {_gui} to gray stained glass pane named " "
 
 	open {_gui} to {_p}
 
@@ -41,7 +43,7 @@ function loadSharpnessEnchantGUI2(p: player):
 		set {_slot} to loop-number - 1
 		set slot {_slot} of {_gui} to red stained glass pane named " "
 	
-	set slot 10 of {_gui} to {_p}'s tool
+	set slot 10 of {_gui} to slot 0 of {_p}'s inventory
 	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
 	set slot 18 of {_gui} to nether star named "&8[&a&lBack&8]"
 	
@@ -67,6 +69,8 @@ function loadSharpnessEnchantGUI2(p: player):
 			delete {_lore::*}
 									
 			set slot {_slot} of {_gui} to {_item}
+		else:
+			set slot {_slot} of {_gui} to gray stained glass pane named " "
 	
 	open {_gui} to {_p}
 
@@ -86,17 +90,20 @@ on inventory click:
 		if {_eventslots::*} contain {_event-slot}:
 			if {sharpness::%{_event-slot} + 1%::unlocked::%player's uuid%} is equal to false:
 				if {sharpness::%{_event-slot}%::unlocked::%player's uuid%} is equal to true:
-					if {enchantpoints::%player's uuid%} >= {sharpness::%{_event-slot}%::price}:
-						remove {sharpness::%{_event-slot}%::price} from {enchantpoints::%player's uuid%}
+					if {enchant-points::%player's uuid%} >= {sharpness::%{_event-slot}%::price}:
+						remove {sharpness::%{_event-slot}%::price} from {enchant-points::%player's uuid%}
 						set {sharpness::%{_event-slot} + 1%::unlocked::%player's uuid%} to true
-						add "0:%{_event-slot}%" to string list tag "Croplite:enchants" of custom nbt of player's tool
+						add "sharpness:%{_event-slot}%" to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
+
+						play sound "entity.experience_orb.pickup" to player
+
 						addEnchantLore(player)
 						loadSharpnessEnchantGUI(player)
-						send "&8[&d&lCroplite&8] &aYour scythe has been enchanted with &4&lSharpness &8[&4&l%romanNumeralConversion({_event-slot})%&8] &afor &e&lEnchant Points &8[&r&e&l%{sharpness::%{_event-slot}%::price}%&r&8]" to player
+						send "&d&lCroplite &aYour scythe has been enchanted with &4&lSharpness &8[&4&l%romanNumeralConversion({_event-slot})%&8] &afor &e&lEnchant Points &8[&r&e&l%{sharpness::%{_event-slot}%::price}%&r&8]" to player
 					else:
-						send "&8[&d&lCroplite&8] &cYou don't have enough &e&lEnchant Points &cto purchase this enchant" to player
+						send "&d&lCroplite &cYou don't have enough &e&lEnchant Points &cto purchase this enchant" to player
 			else:
-				send "&8[&d&lCroplite&8] &cYou have already purchased this enchant" to player
+				send "&d&lCroplite &cYou have already purchased this enchant" to player
 
 	if event-inventory's name contains "&4&lSharpness Enchant &8| Page 2":
 		cancel event
@@ -112,17 +119,20 @@ on inventory click:
 		if {_eventslots::*} contains {_event-slot}:
 			if {sharpness::%{_event-slot} + 1%::unlocked::%player's uuid%} is equal to false:
 				if {sharpness::%{_event-slot}%::unlocked::%player's uuid%} is equal to true:
-					if {enchantpoints::%player's uuid%} >= {sharpness::%{_event-slot}%::price}:
-						remove {sharpness::%{_event-slot}%::price} from {enchantpoints::%player's uuid%}
+					if {enchant-points::%player's uuid%} >= {sharpness::%{_event-slot}%::price}:
+						remove {sharpness::%{_event-slot}%::price} from {enchant-points::%player's uuid%}
 						set {sharpness::%{_event-slot} + 1%::unlocked::%player's uuid%} to true
-						add "0:%{_event-slot}%" to string list tag "Croplite:enchants" of custom nbt of player's tool
+						add "sharpness:%{_event-slot}%" to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
+
+						play sound "entity.experience_orb.pickup" to player
+
 						addEnchantLore(player)
 						loadSharpnessEnchantGUI2(player)
-						send "&8[&d&lCroplite&8] &aYour scythe has been enchanted with &4&lSharpness &8[&4&l%romanNumeralConversion({_event-slot})%&8] &afor &e&lEnchant Points &8[&r&e&l%{sharpness::%{_event-slot}%::price}%&r&8]" to player
+						send "&d&lCroplite &aYour scythe has been enchanted with &4&lSharpness &8[&4&l%romanNumeralConversion({_event-slot})%&8] &afor &e&lEnchant Points &8[&r&e&l%{sharpness::%{_event-slot}%::price}%&r&8]" to player
 					else:
-						send "&8[&d&lCroplite&8] &cYou don't have enough &e&lEnchant Points &cto unlock this enchant" to player
+						send "&d&lCroplite &cYou don't have enough &e&lEnchant Points &cto unlock this enchant" to player
 			else:
-				send "&8[&d&lCroplite&8] &cYou have already purchased this enchant" to player
+				send "&d&lCroplite &cYou have already purchased this enchant" to player
 
 function romanNumeralConversion(number: number) :: text:
 	return value "%{_number}%" of {romanNumeral-Json}

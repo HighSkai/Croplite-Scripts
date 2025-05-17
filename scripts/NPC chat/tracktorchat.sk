@@ -48,7 +48,7 @@ on right click:
 				send "&8 - &e1 Skill Point" to player
 				send "&8 - &6&l1x Pet Crate Key" to player
 				send "&7------------------------------" to player
-				add 1 to {enchantpoints::%player's uuid%}
+				add 1 to {enchant-points::%player's uuid%}
 				add 150 to {cropcash::%player's uuid%}
 				add 200 to {exp::%player's uuid%}
 				execute console command "/crate key give %player% pet 1"
@@ -65,7 +65,7 @@ on right click:
 			send "&7[&6Chuck Woodstock&7]&f: Sorry, ain't got nothin for you right now                                                                " to player
 			
 command /resettracktormessage:
-	permission: *
+	permission: operator
 	trigger:
 		set {chatmessage::Chuck::%player's uuid%} to 0
 		send "&8[&dCroplite&8] &aYou have reset Chuck Woodstock's chat message!" to player

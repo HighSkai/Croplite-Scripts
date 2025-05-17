@@ -1,5 +1,10 @@
+command /open-enchantergui:
+	permission: operator
+	trigger:
+		loadEnchanterGui(player)
+
 function loadEnchanterGui(p: player):
-	set {_gui} to chest inventory with 5 rows named "&5&lEnchanter &8| &e&lEnchant Points &8[&r&e&l%{enchantpoints::%{_p}'s uuid%}%&r&8]"
+	set {_gui} to chest inventory with 5 rows named "&5&lEnchanter &8| &e&lEnchant Points &8[&r&e&l%{enchant-points::%uuid of {_p}%}%&r&8]"
 	
 	loop 54 times:
 		set {_slot} to loop-number - 1
@@ -31,19 +36,19 @@ on inventory click:
 		if event-slot is 14:
 			close player's inventory
 			loadSharpnessEnchantGUI(player)
-		if event-slot is 15:
+		else if event-slot is 15:
 			close player's inventory
 			loadFireAspectEnchantGUI(player)
-		if event-slot is 16:
+		else if event-slot is 16:
+			loadCropReapEnchantGUI(player)
+		else if event-slot is 23:
+			loadExperienceEnchantGUI(player)
+		else if event-slot is 24:
 			close player's inventory
-		if event-slot is 23:
-			close player's inventory
-		if event-slot is 24:
-			close player's inventory
-		if event-slot is 25 or 32 or 33 or 34:
+		else if event-slot is 25 or 32 or 33 or 34:
 			send "&8[&dCroplite&8] &aEnchantment is coming soon..."
 
-		if event-slot is 40:
+		else if event-slot is 40:
 			close player's inventory
 
 function addEnchantLore(p: player):
@@ -54,39 +59,61 @@ function addEnchantLore(p: player):
 
 	set {_highestSharpnessLevel} to 0
 	set {_highestFireAspectLevel} to 0
+	set {_highestExperienceLevel} to 0
+	set {_highestCropReapLevel} to 0
 
 	loop {_tags::*}:
 		set {_parts::*} to loop-value split at ":"
 		set {_enchantID} to {_parts::1}
 
-		if {_enchantID} is "0":
+		if {_enchantID} is "sharpness":
 			set {_sharpnessLevel} to {_parts::2} parsed as number
 			if {_sharpnessLevel} > {_highestSharpnessLevel}:
 				set {_highestSharpnessLevel} to {_sharpnessLevel} 
 
-		if {_enchantID} is "1":
+		if {_enchantID} is "fireaspect":
 			set {_fireAspectLevel} to {_parts::2} parsed as number
 			if {_fireAspectLevel} > {_highestFireAspectLevel}:
 				set {_highestFireAspectLevel} to {_fireAspectLevel}
+
+		if {_enchantID} is "experience":
+			set {_experienceLevel} to {_parts::2} parsed as number
+			if {_experienceLevel} > {_highestExperienceLevel}:
+				set {_highestExperienceLevel} to {_experienceLevel}
+
+		if {_enchantID} is "cropreap":
+			set {_cropreapLevel} to {_parts::2} parsed as number
+			if {_cropreapLevel} > {_highestCropReapLevel}:
+				set {_highestCropReapLevel} to {_cropreapLevel}
 
 	set {_size} to size of {_tags::*}
 	set {_i} to {_size}
 	while {_i} > 0:
 		set {_entry} to {_tags::%{_i}%}
 		set {_parts::*} to {_entry} split at ":"
-		if {_parts::1} is "0":
+		if {_parts::1} is "sharpness":
 			set {_sharpnessLevel} to {_parts::2} parsed as number
 			if {_sharpnessLevel} < {_highestSharpnessLevel}:
-				remove "0:%{_sharpnessLevel}%" from string list tag "Croplite:enchants" of custom nbt of slot 0 of {_p}
+				remove "sharpness:%{_sharpnessLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}
 
-		if {_parts::1} is "1":
+		if {_parts::1} is "fireaspect":
 			set {_fireAspectLevel} to {_parts::2} parsed as number
 			if {_fireAspectLevel} < {_highestFireAspectLevel}:
-				remove "1:%{_fireAspectLevel}%" from string list tag "Croplite:enchants" of custom nbt of slot 0 of {_p}
+				remove "fireaspect:%{_fireAspectLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}
+
+		if {_parts::1} is "experience":
+			set {_experienceLevel} to {_parts::2} parsed as number
+			if {_experienceLevel} < {_highestExperienceLevel}:
+				remove "experience:%{_experienceLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}
+
+		if {_parts::1} is "cropreap":
+			set {_cropreapLevel} to {_parts::2} parsed as number
+			if {_cropreapLevel} < {_highestCropReapLevel}:
+				remove "cropreap:%{_cropreapLevel}%" from string list tag "Croplite:enchants" of custom nbt of {_item}		
 
 		remove 1 from {_i}
 
-	set {_lore::*} to lore of slot 0 of {_p}
+	set {_lore::*} to lore of {_item}
 	set {_size} to size of {_lore::*}
 	set {_rarity} to {_lore::%{_size}%}
 
@@ -98,17 +125,57 @@ function addEnchantLore(p: player):
 			stop 1 loop
 	add "&7---------------" to {_newlore::*}
 
-	loop values "Sharpness %{_highestSharpnesslevel}%" of {enchants-Json}:
+	loop values "Sharpness %{_highestSharpnessLevel}%" of {enchants-Json}:
 		add json-value to {_newlore::*}
 
-	loop values "Fire Aspect %{_highestFireAspectlevel}%" of {enchants-Json}:
+	loop values "Fire Aspect %{_highestFireAspectLevel}%" of {enchants-Json}:
+		add json-value to {_newlore::*}
+
+	loop values "Experience %{_highestExperienceLevel}%" of {enchants-Json}:
+		add json-value to {_newlore::*}
+
+	loop values "Crop Reap %{_highestCropReapLevel}%" of {enchants-Json}:
 		add json-value to {_newlore::*}
 	
 	add {_rarity} to {_newlore::*}
 	set lore of {_item} to colored {_newlore::*}
 	set slot 0 of {_p} to {_item}
-		
-command /enchanter:
-	permission: *
-	trigger:
-		loadEnchanterGui(player)
+
+function resetEnchantments(p: player):
+	set {sharpness::1::unlocked::%uuid of {_p}%} to true
+	set {sharpness::2::unlocked::%uuid of {_p}%} to false
+	set {sharpness::3::unlocked::%uuid of {_p}%} to false
+	set {sharpness::4::unlocked::%uuid of {_p}%} to false
+	set {sharpness::5::unlocked::%uuid of {_p}%} to false
+	set {sharpness::6::unlocked::%uuid of {_p}%} to false
+	set {sharpness::7::unlocked::%uuid of {_p}%} to false
+	set {sharpness::8::unlocked::%uuid of {_p}%} to false
+	set {sharpness::9::unlocked::%uuid of {_p}%} to false
+	set {sharpness::10::unlocked::%uuid of {_p}%} to false
+	set {sharpness::11::unlocked::%uuid of {_p}%} to false # required extra
+
+	set {fireaspect::1::unlocked::%uuid of {_p}%} to true
+	set {fireaspect::2::unlocked::%uuid of {_p}%} to false
+	set {fireaspect::3::unlocked::%uuid of {_p}%} to false
+	set {fireaspect::4::unlocked::%uuid of {_p}%} to false
+	set {fireaspect::5::unlocked::%uuid of {_p}%} to false
+	set {fireaspect::6::unlocked::%uuid of {_p}%} to false # required extra
+
+	set {experience::1::unlocked::%uuid of {_p}%} to true
+	set {experience::2::unlocked::%uuid of {_p}%} to false
+	set {experience::3::unlocked::%uuid of {_p}%} to false
+	set {experience::4::unlocked::%uuid of {_p}%} to false
+	set {experience::5::unlocked::%uuid of {_p}%} to false
+	set {experience::6::unlocked::%uuid of {_p}%} to false
+	set {experience::7::unlocked::%uuid of {_p}%} to false
+	set {experience::8::unlocked::%uuid of {_p}%} to false
+	set {experience::9::unlocked::%uuid of {_p}%} to false
+	set {experience::10::unlocked::%uuid of {_p}%} to false
+	set {experience::11::unlocked::%uuid of {_p}%} to false # required extra
+
+	set {cropreap::1::unlocked::%uuid of {_p}%} to true
+	set {cropreap::2::unlocked::%uuid of {_p}%} to false
+	set {cropreap::3::unlocked::%uuid of {_p}%} to false
+	set {cropreap::4::unlocked::%uuid of {_p}%} to false
+	set {cropreap::5::unlocked::%uuid of {_p}%} to false
+	set {cropreap::6::unlocked::%uuid of {_p}%} to false # required extra

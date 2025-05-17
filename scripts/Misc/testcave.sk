@@ -1,59 +1,59 @@
-command /generateCave:
-    permission: *
-    trigger:
-        broadcast "no"
-        #generateCave(player)
+# command /generateCave:
+#     permission: operator
+#     trigger:
+#         broadcast "no"
+#         #generateCave(player)
 
-local function generateCave(p: player):
-    set {_location} to location of {_p}
+# local function generateCave(p: player):
+#     set {_location} to location of {_p}
 
-    # Fill area with stone first
-    set blocks within {_location} offset by vector(-53, -53, -53) and {_location} offset by vector(53, 53, 53) to bedrock
-    set blocks within {_location} offset by vector(-50, -50, -50) and {_location} offset by vector(50, 50, 50) to stone
-    wait 5 ticks
+#     # Fill field with stone first
+#     set blocks within {_location} offset by vector(-53, -53, -53) and {_location} offset by vector(53, 53, 53) to bedrock
+#     set blocks within {_location} offset by vector(-50, -50, -50) and {_location} offset by vector(50, 50, 50) to stone
+#     wait 5 ticks
     
-    # Create control points for Bezier curves
-    loop 9 times:
-        # Create 4 control points for each Bezier curve
-        set {_p0} to {_location} ~ vector((random number from -45 to 45), (random number from -45 to 45), (random number from -45 to 45))
-        set {_p1} to {_location} ~ vector((random number from -45 to 45), (random number from -45 to 45), (random number from -45 to 45))
-        set {_p2} to {_location} ~ vector((random number from -45 to 45), (random number from -45 to 45), (random number from -45 to 45))
-        set {_p3} to {_location} ~ vector((random number from -45 to 45), (random number from -45 to 45), (random number from -45 to 45))
+#     # Create control points for Bezier curves
+#     loop 9 times:
+#         # Create 4 control points for each Bezier curve
+#         set {_p0} to {_location} ~ vector((random number from -45 to 45), (random number from -45 to 45), (random number from -45 to 45))
+#         set {_p1} to {_location} ~ vector((random number from -45 to 45), (random number from -45 to 45), (random number from -45 to 45))
+#         set {_p2} to {_location} ~ vector((random number from -45 to 45), (random number from -45 to 45), (random number from -45 to 45))
+#         set {_p3} to {_location} ~ vector((random number from -45 to 45), (random number from -45 to 45), (random number from -45 to 45))
         
-        # Create points along Bezier curve
-        loop 20 times:
-            set {_t} to loop-number-2 / 20
+#         # Create points along Bezier curve
+#         loop 20 times:
+#             set {_t} to loop-number-2 / 20
             
-            set {_mt} to 1 - {_t}
-            set {_mt2} to {_mt} * {_mt}
-            set {_mt3} to {_mt2} * {_mt}
-            set {_t2} to {_t} * {_t}
-            set {_t3} to {_t2} * {_t}
+#             set {_mt} to 1 - {_t}
+#             set {_mt2} to {_mt} * {_mt}
+#             set {_mt3} to {_mt2} * {_mt}
+#             set {_t2} to {_t} * {_t}
+#             set {_t3} to {_t2} * {_t}
             
-            # Calculate x component
-            set {_x} to {_mt3} * x-coord of {_p0}
-            add 3 * {_mt2} * {_t} * x-coord of {_p1} to {_x}
-            add 3 * {_mt} * {_t2} * x-coord of {_p2} to {_x}
-            add {_t3} * x-coord of {_p3} to {_x}
+#             # Calculate x component
+#             set {_x} to {_mt3} * x-coord of {_p0}
+#             add 3 * {_mt2} * {_t} * x-coord of {_p1} to {_x}
+#             add 3 * {_mt} * {_t2} * x-coord of {_p2} to {_x}
+#             add {_t3} * x-coord of {_p3} to {_x}
             
-            # Calculate y component
-            set {_y} to {_mt3} * y-coord of {_p0}
-            add 3 * {_mt2} * {_t} * y-coord of {_p1} to {_y}
-            add 3 * {_mt} * {_t2} * y-coord of {_p2} to {_y}
-            add {_t3} * y-coord of {_p3} to {_y}
+#             # Calculate y component
+#             set {_y} to {_mt3} * y-coord of {_p0}
+#             add 3 * {_mt2} * {_t} * y-coord of {_p1} to {_y}
+#             add 3 * {_mt} * {_t2} * y-coord of {_p2} to {_y}
+#             add {_t3} * y-coord of {_p3} to {_y}
             
-            # Calculate z component
-            set {_z} to {_mt3} * z-coord of {_p0}
-            add 3 * {_mt2} * {_t} * z-coord of {_p1} to {_z}
-            add 3 * {_mt} * {_t2} * z-coord of {_p2} to {_z}
-            add {_t3} * z-coord of {_p3} to {_z}
+#             # Calculate z component
+#             set {_z} to {_mt3} * z-coord of {_p0}
+#             add 3 * {_mt2} * {_t} * z-coord of {_p1} to {_z}
+#             add 3 * {_mt} * {_t2} * z-coord of {_p2} to {_z}
+#             add {_t3} * z-coord of {_p3} to {_z}
             
-            # Create a point on the curve
-            set {_point} to location({_x}, {_y}, {_z}, world of {_location})
+#             # Create a point on the curve
+#             set {_point} to location({_x}, {_y}, {_z}, world of {_location})
             
-            # Carve out cave at this point
-            set {_radius} to random number from 2 to 5
-            loop blocks in radius {_radius} around {_point}:
-                set loop-block to air
+#             # Carve out cave at this point
+#             set {_radius} to random number from 2 to 5
+#             loop blocks in radius {_radius} around {_point}:
+#                 set loop-block to air
     
-    broadcast "Cave generation complete!"
+#     broadcast "Cave generation complete!"

@@ -6,17 +6,28 @@ command /togglepvp:
 			set {pvpstatus::%player's uuid%} to false
 		
 		if {pvpstatus::%player's uuid%} is true:
-			add 0.2 to {miningmultiplier::%player's uuid%}
+			add 0.2 to {expmulti::%player's uuid%}
 			send "&8[&dCroplite&8] &aPvP enabled. Enjoy your &e&lExp Multi &8[&e&l+0.20&8] &abonus." to player
 		if {pvpstatus::%player's uuid%} is false:
-			subtract 0.2 from {miningmultiplier::%player's uuid%}
+			subtract 0.2 from {expmulti::%player's uuid%}
 			send "&8[&dCroplite&8] &cPvP disabled. Farm in peace without the &e&lExp Multi &8[&e&l+0.20&8] &cbonus." to player
+
+command /optogglepvp <player>:
+	permission: operator
+	trigger:
+		if {pvpstatus::%arg-1's uuid%} is false:
+			set {pvpstatus::%arg-1's uuid%} to true
+		else if {pvpstatus::%arg-1's uuid%} is true:
+			set {pvpstatus::%arg-1's uuid%} to false
+
+		if {pvpstatus::%arg-1's uuid%} is true:
+			add 0.2 to {expmulti::%arg-1's uuid%}
+		if {pvpstatus::%arg-1's uuid%} is false:
+			subtract 0.2 from {expmulti::%arg-1's uuid%}
 		
 on damage:
-	if victim is a armor stand:
-		broadcast "test-dummy"
-	else if victim is not a mob:
-		{pvpstatus::%victim's uuid%} is not true:
+	if victim is a player:
+		if {pvpstatus::%victim's uuid%} is not true:
 			cancel event
 		if {pvpstatus::%attacker's uuid%} is not true:
 			cancel event

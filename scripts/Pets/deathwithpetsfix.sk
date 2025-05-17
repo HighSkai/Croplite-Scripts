@@ -1,7 +1,0 @@
-on respawn:
-	wait 1 tick
-	if {chek8::%player's uuid%} = true:
-		apply infinite potion of strength of tier 1 to the player
-	if {chek5::%player's uuid%} = true:
-		apply infinite potion of speed of tier 1 to the player
-		apply infinite potion of jump boost of tier 1 to the player

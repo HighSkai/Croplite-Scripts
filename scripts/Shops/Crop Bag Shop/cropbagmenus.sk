@@ -1,139 +1,18 @@
-command /cropsellgui:
-	permission: *
-	trigger:
-		if {cropmenuselltoggle::%player's uuid%} is true:
-			stop
-		else:
-			open chest inventory with 3 rows named "    &c&lYour crop bag is full! " to player
-			loop integers between 0 and 27:
-				set slot loop-value of player's current inventory to {fullbaginv::%player's uuid%::%loop-integer%}
-			
-on inventory close:
-	if name of event-inventory is "    &c&lYour crop bag is full! ":
-		loop integers between 0 and 27:
-			if loop-integer = 15:
-				set {_tempcropbutton1} to redstone named "&cClick to continue farming"
-				set line 1 of lore of {_tempcropbutton1} to "This menu will not pop up for 10 minutes"
-				set slot loop-integer of event-inventory to {_tempcropbutton1}
-			if loop-integer = 11:
-				set {_tempcropbutton2} to emerald named "&aClick to sell your crops"
-				set line 1 of lore of {_tempcropbutton2} to "This will teleport you to the crop sell pad"
-				set slot loop-integer of event-inventory to {_tempcropbutton2}
-			set {fullbaginv::%player's uuid%::%loop-integer%} to slot loop-integer of event-inventory
-			
-on inventory click:
-	if uncolored name of event-inventory is "    Your crop bag is full! ":
-		cancel event
-		if event-slot = 15:
-			set {cropmenuselltoggle::%player's uuid%} to true
-			close player's inventory
-			send "&8[&dCroplite&8] &a&lYou wont see that menu for 10 minutes" to player
-			wait 10 minutes
-			set {cropmenuselltoggle::%player's uuid%} to false
-		if event-slot = 11:
-			teleport the player to location(1197.5, 104, 953.5, world "world", 0, 0)
-			
-command /sellconfirm:
-	permission: *
-	trigger:
-		if {areaselltoggle::%player's uuid%} is true:
-			stop
-		else:
-			open chest inventory with 3 rows named "&4Are you sure you want to sell?" to player
-			loop integers between 0 and 27:
-				set slot loop-value of player's current inventory to {sellconfirminv::%player's uuid%::%loop-integer%}
-			
-on inventory close:
-	if name of event-inventory is "&4Are you sure you want to sell?":
-		loop integers from 0 to 27:
-			if loop-value = 15:
-				set slot loop-value of event-inventory to redstone named "&cClick to not see this menu again"
-			if loop-value = 11:
-				set slot loop-value of event-inventory to emerald named "&aClick to sell your crops!"
-			set {sellconfirminv::%player's uuid%::%loop-value%} to slot loop-value of event-inventory
-			
-on inventory click:
-	if uncolored name of event-inventory is "Are you sure you want to sell?":
-		cancel event
-		if event-slot = 15:
-			set {areaselltoggle::%player's uuid%} to true
-			close player's inventory
-			send "&8[&dCroplite&8] &a&lYou wont see that menu again" to player
-		if event-slot = 11:
-			add {cropmaterial::%player's uuid%} to {cropcash::%player's uuid%}
-			set {cropmaterial::%player's uuid%} to 0
-			send "&8[&d&lCroplite&8] &aCrops Sold!" to player
-
-on region enter:
-	wait 1 tick
-	if "%region at player%" contains "sellarea in world world":
-		if {areaselltoggle::%player's uuid%} is false:
-			if player is an operator:
-				make the player execute command "sellconfirm"
-			else:
-				op the player
-				make the player execute command "sellconfirm"
-				deop the player
-		else:
-			if {doubleccboost::%player's uuid%} is greater than 0:
-				set {_doubleccnum::%player's uuid%} to {cropmaterial::%player's uuid%}
-				subtract 1 from {doubleccboost::%player's uuid%}
-				send "&cYou have %{doubleccboost::%player's uuid%}% double crop boosters left!" to player
-			else if {1point5ccboost::%player's uuid%} is greater than 0:
-				set {_1point5ccboostnum::%player's uuid%} to ({cropmaterial::%player's uuid%}*0.5)
-				subtract 1 from {1point5ccboost::%player's uuid%}
-				send "&cYou have %{1point5ccboost::%player's uuid%}% 1.5x crop boosters left!" to player
-			add {cropmaterial::%player's uuid%} to {cropcash::%player's uuid%}
-			add {_doubleccnum::%player's uuid%} to {cropcash::%player's uuid%}
-			add {_1point5ccboostnum::%player's uuid%} to {cropcash::%player's uuid%}
-			set {cropmaterial::%player's uuid%} to 0
-			send "&8[&d&lCroplite&8] &aCrops Sold!" to player
-			if {objective::%player's uuid%} is "First Harvest":
-				set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
-				if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-					{firstharvest::%player's uuid%} is false
-					send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
-					play sound "ui.toast.challenge_complete" to player
-					play sound "entity.player.levelup" to player
-					send "&7------------------------------" to player
-					send "&8[&2Objective &l&nComplete!&8]" to player
-					send "&7------------------------------" to player
-			if {rndcnt::%player's uuid%} is greater than 0:
-				stop
-			else:
-				send "&a&lYou can do /togglesellmenu to make the sell menu appear or dissapear!" to player
-				add 1 to {rndcnt::%player's uuid%}
-			close player's inventory
-			
-			
-command /togglesellmenu:
-	trigger:
-		if {areaselltoggle::%player's uuid%} is false:
-			set {areaselltoggle::%player's uuid%} to true
-			send "&8[&dCroplite&8] &a&lThe sell menu will no longer appear" to player
-		else if {areaselltoggle::%player's uuid%} is true:
-			set {areaselltoggle::%player's uuid%} to false
-			send "&8[&dCroplite&8] &a&lThe sell menu will now appear" to player
-			
-on join:
-	wait 1 tick
-	if {cropmenuselltoggle::%player's uuid%} is true:
-		set {cropmenuselltoggle::%player's uuid%} to false
-		
-command /sell:
-	trigger:
-		if {doubleccboost::%player's uuid%} is greater than 0:
-			set {_doubleccnum::%player's uuid%} to {cropmaterial::%player's uuid%}
-			subtract 1 from {doubleccboost::%player's uuid%}
-			send "&cYou have %{doubleccboost::%player's uuid%}% double crop boosters left!" to player
-		else if {1point5ccboost::%player's uuid%} is greater than 0:
-			set {_1point5ccboostnum::%player's uuid%} to ({cropmaterial::%player's uuid%}*0.5)
-			subtract 1 from {1point5ccboost::%player's uuid%}
-			send "&cYou have %{1point5ccboost::%player's uuid%}% 1.5x crop boosters left!" to player
-		add {cropmaterial::%player's uuid%} to {cropcash::%player's uuid%}
+on enter of region "sellarea":
+	sellCrops(player)
+	if {doubleccboost::%player's uuid%} is greater than 0:
+		set {_doubleccnum::%player's uuid%} to {crops::%player's uuid%}
+		subtract 1 from {doubleccboost::%player's uuid%}
+		send "&cYou have %{doubleccboost::%player's uuid%}% double crop boosters left!" to player
+	else if {1point5ccboost::%player's uuid%} is greater than 0:
+		set {_1point5ccboostnum::%player's uuid%} to ({crops::%player's uuid%}*0.5)
+		subtract 1 from {1point5ccboost::%player's uuid%}
+		send "&cYou have %{1point5ccboost::%player's uuid%}% 1.5x crop boosters left!" to player
+		add {crops::%player's uuid%} to {cropcash::%player's uuid%}
 		add {_doubleccnum::%player's uuid%} to {cropcash::%player's uuid%}
 		add {_1point5ccboostnum::%player's uuid%} to {cropcash::%player's uuid%}
-		set {cropmaterial::%player's uuid%} to 0
+		set {crops::%player's uuid%} to 0
+		send "&d&lCroplite &aCrops Sold!" to player
 		if {objective::%player's uuid%} is "First Harvest":
 			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
 			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
@@ -144,20 +23,9 @@ command /sell:
 				send "&7------------------------------" to player
 				send "&8[&2Objective &l&nComplete!&8]" to player
 				send "&7------------------------------" to player
-
-		send "&8[&d&lCroplite&8] &aCrops Sold!" to player
-
-command /cropgive <player> <int>:
-	trigger:
-		add arg-2 to {cropmaterial::%arg-1's uuid%}
-		
-		
-command /cashgive <player> <int>:
-	trigger:
-		add arg-2 to {cropcash::%arg-1's uuid%}
-		updateCropCash(arg-1)
-		
-command /cashtake <player> <int>:
-	trigger:
-		subtract arg-2 from {cropcash::%arg-1's uuid%}
-		updateCropCash(arg-1)
+		if {rndcnt::%player's uuid%} is greater than 0:
+			stop
+		else:
+			send "&a&lYou can do /togglesellmenu to make the sell menu appear or dissapear!" to player
+			add 1 to {rndcnt::%player's uuid%}
+		close player's inventory

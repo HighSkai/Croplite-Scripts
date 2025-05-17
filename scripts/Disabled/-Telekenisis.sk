@@ -1,6 +1,0 @@
-on mine:
-    if player's tool is a stone pickaxe:
-        loop blocks in radius 2 around the targeted block:
-            give loop-block to player
-            set loop-block to air
-            
