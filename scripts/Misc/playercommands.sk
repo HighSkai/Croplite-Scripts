@@ -14,10 +14,14 @@ command /crates:
 		teleport player to location(1159.5, 104, 947.5, world "world", 180, 0)
 		send "&8[&dCroplite&8] &aYou have been teleported to the Crates." to player
 
-command /spawn:
+command /spawn [<offline player>]:
 	trigger:
-		teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to Spawn." to player
+		if arg-1 is set:
+			teleport arg-1 to location(1191.5, 104, 954.5, world "world", 0, 0)
+			send "&8[&dCroplite&8] &aYou have been teleported to Spawn." to arg-1
+		else:
+			teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
+			send "&8[&dCroplite&8] &aYou have been teleported to Spawn." to player
 
 command /leaderboards:
 	trigger:

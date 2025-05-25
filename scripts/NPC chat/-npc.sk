@@ -1,4 +1,5 @@
 command /createnpc <text>:
+    permission: operator
     trigger:
         spawn a villager at player
         set {_npc} to last spawned entity
@@ -6,6 +7,7 @@ command /createnpc <text>:
         set {npc::%arg-1%} to {_npc}
 
 command /deletenpc <text>:
+    permission: operator
     trigger:
         loop all entities in radius 40 around player:
             if name of loop-entity is "%arg-1%":
@@ -13,6 +15,7 @@ command /deletenpc <text>:
                 remove arg-1 from {npc::*}
 
 command /listnpc:
+    permission: operator
     trigger:
         loop {npc::*}:
             broadcast "%name of loop-value%: %location of loop-value%"

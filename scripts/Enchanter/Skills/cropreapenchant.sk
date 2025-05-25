@@ -90,8 +90,9 @@ function resetCropReapEnchant(p: player):
 	set {cropreap::6::unlocked::%uuid of {_p}%} to false
 
 command /reset-cropreapenchant [<player>]:
-    trigger:
-        if arg-1 is set:
-            resetCropReapEnchant(arg-1)
-        else:
-            resetCropReapEnchant(player)
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			resetCropReapEnchant(arg-1)
+		else:
+			resetCropReapEnchant(player)

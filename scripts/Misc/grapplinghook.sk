@@ -9,13 +9,21 @@ on fishing line reel in:
         set item cooldown of player's tool for player to 0 seconds
         grapplingHook(player, fishing hook, 8)
 
+on fishing line cast:
+    if player's tool's name contains "Grappling Hook":
+        set {_yaw} to yaw of player
+        set {_pitch} to pitch of player
+
+        set {_v} to vector from yaw {_yaw} and pitch {_pitch}
+        thrust fishing hook {_v} with speed 1
+
 on right click:
     if player has player's tool on cooldown:
         send "&d&lCroplite &cYou must wait %item cooldown of player's tool for player% before grappling again." to player
 
-local function grapplingHook(p: player, h: entity, v: integer):
+local function grapplingHook(p: player, h: entity, s: integer):
     set {_direction} to vector between {_p} and {_h}
-    push {_p} {_direction} with speed {_v}
+    push {_p} {_direction} with speed {_s}
 
 command /weakgrapplinghook:
     permission: operator
@@ -25,7 +33,7 @@ command /weakgrapplinghook:
         set line 2 of lore of {_weakhook} to "&9Vertical Power&f: &b+0.5" 
         set line 3 of lore of {_weakhook} to "&9Cooldown&f: &b20 seconds"
         set line 4 of lore of {_weakhook} to "&7---------------"
-        give player {_weakhook}
+        give player {_weakhook} 
  
 command /developedgrapplinghook:
     permission: operator

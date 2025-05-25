@@ -9,6 +9,6 @@ every 300 seconds:
 	send "&8&m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" to all players
 
 command /discord:
-	permission: sk.discord
+	permission: operator
 	trigger:
 		send "&d&lLink to the discord: <link:https://discord.gg/zQd2ssuBBx>&c&l&nClick here." to player

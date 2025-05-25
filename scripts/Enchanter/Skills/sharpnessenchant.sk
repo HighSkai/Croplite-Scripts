@@ -178,8 +178,9 @@ function resetSharpnessEnchant(p: player):
 	set {sharpness::11::unlocked::%uuid of {_p}%} to false
 
 command /reset-sharpnessenchant [<player>]:
-    trigger:
-        if arg-1 is set:
-            resetSharpnessEnchant(arg-1)
-        else:
-            resetSharpnessEnchant(player)
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			resetSharpnessEnchant(arg-1)
+		else:
+			resetSharpnessEnchant(player)

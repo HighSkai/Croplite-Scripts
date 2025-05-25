@@ -104,10 +104,10 @@ command /setscytheprices:
     trigger:
         set {scythe::0::price} to 0
         set {scythe::1::price} to 1000
-        set {scythe::2::price} to 10000
-        set {scythe::3::price} to 100000
-        set {scythe::4::price} to 350000
-        set {scythe::5::price} to 1000000
+        set {scythe::2::price} to 7500
+        set {scythe::3::price} to 12000
+        set {scythe::4::price} to 35000
+        set {scythe::5::price} to 75000
 
 command /setscythes:
     permission: operator

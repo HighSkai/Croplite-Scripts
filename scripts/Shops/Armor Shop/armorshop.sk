@@ -220,9 +220,9 @@ on inventory click:
 				if {_num} < {_highest_tier}:
 					send "&d&lCroplite &cYou cannot downgrade your armor." to player
 				else if {helmet::%{_num}%::bought::%player's uuid%} is equal to false:
-					if {cropcash::%player's uuid%} >= abbreviateNumber({helmet::%{_num}%::price}):
+					if {cropcash::%player's uuid%} >= {helmet::%{_num}%::price}:
 						set {helmet::%{_num}%::bought::%player's uuid%} to true
-						remove abbreviateNumber({helmet::%{_num}%::price}) from {cropcash::%player's uuid%}
+						remove {helmet::%{_num}%::price} from {cropcash::%player's uuid%}
 						set helmet of player to {helmet::%{_num}%}
 
 						play sound "entity.experience_orb.pickup" to player
@@ -255,9 +255,9 @@ on inventory click:
 				if {_num} < {_highest_tier}:
 					send "&d&lCroplite &cYou cannot downgrade your armor." to player
 				else if {chestplate::%{_num}%::bought::%player's uuid%} is equal to false:
-					if {cropcash::%player's uuid%} >= abbreviateNumber({chestplate::%{_num}%::price}):
+					if {cropcash::%player's uuid%} >= {chestplate::%{_num}%::price}:
 						set {chestplate::%{_num}%::bought::%player's uuid%} to true
-						remove abbreviateNumber({chestplate::%{_num}%::price}) from {cropcash::%player's uuid%}
+						remove {chestplate::%{_num}%::price} from {cropcash::%player's uuid%}
 						set chestplate of player to {chestplate::%{_num}%}
 
 						play sound "entity.experience_orb.pickup" to player
@@ -289,9 +289,9 @@ on inventory click:
 				if {_num} < {_highest_tier}:
 					send "&d&lCroplite &cYou cannot downgrade your armor." to player
 				else if {leggings::%{_num}%::bought::%player's uuid%} is equal to false:
-					if {cropcash::%player's uuid%} >= abbreviateNumber({leggings::%{_num}%::price}):
+					if {cropcash::%player's uuid%} >= {leggings::%{_num}%::price}:
 						set {leggings::%{_num}%::bought::%player's uuid%} to true
-						remove abbreviateNumber({leggings::%{_num}%::price}) from {cropcash::%player's uuid%}
+						remove {leggings::%{_num}%::price} from {cropcash::%player's uuid%}
 						set leggings of player to {leggings::%{_num}%}
 
 						play sound "entity.experience_orb.pickup" to player
@@ -323,9 +323,9 @@ on inventory click:
 				if {_num} < {_highest_tier}:
 					send "&d&lCroplite &cYou cannot downgrade your armor." to player
 				else if {boots::%{_num}%::bought::%player's uuid%} is equal to false:
-					if {cropcash::%player's uuid%} >= abbreviateNumber({boots::%{_num}%::price}):
+					if {cropcash::%player's uuid%} >= {boots::%{_num}%::price}:
 						set {boots::%{_num}%::bought::%player's uuid%} to true
-						remove abbreviateNumber({boots::%{_num}%::price}) from {cropcash::%player's uuid%}
+						remove {boots::%{_num}%::price} from {cropcash::%player's uuid%}
 						set boots of player to {boots::%{_num}%}
 
 						play sound "entity.experience_orb.pickup" to player
@@ -372,9 +372,9 @@ command /resetarmor:
 command /setarmorprice:
 	permission: operator
 	trigger:
-		set {helmet::1::price} to 1000
-		set {helmet::2::price} to 2500
-		set {helmet::3::price} to 5000
+		set {helmet::1::price} to 750
+		set {helmet::2::price} to 1750
+		set {helmet::3::price} to 3500
 		set {helmet::4::price} to 10000
 		set {helmet::5::price} to 100000
 
@@ -619,12 +619,12 @@ command /setarmor:
 		add hide unbreakable to item flags of {boots::5}
 
 command /getarmor:
+	permission: operator
 	trigger:
 		give player {helmet::*}
 		give player {chestplate::*}
 		give player {leggings::*}
 		give player {boots::*}
-
 
 function resetArmor(p: player):
 	set {helmet::1::bought::%uuid of {_p}%} to false

@@ -80,10 +80,6 @@ function loadCropHarvestEnchantGUI2(p: player):
 
 	open {_gui} to {_p}
 
-command /getcropharvest:
-	trigger:
-		broadcast {cropharvest::%player's uuid%}
-
 on inventory click:
 	if event-inventory is not player's inventory:
 		if event-inventory's name contains "&e&lCrop Harvest Enchant &8| Page 1":
@@ -186,8 +182,9 @@ function resetCropHarvestEnchant(p: player):
 	set {cropharvest::11::unlocked::%uuid of {_p}%} to false
 
 command /reset-cropharvestenchant [<player>]:
-    trigger:
-        if arg-1 is set:
-            resetCropHarvestEnchant(arg-1)
-        else:
-            resetCropHarvestEnchant(player)
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			resetCropHarvestEnchant(arg-1)
+		else:
+			resetCropHarvestEnchant(player)

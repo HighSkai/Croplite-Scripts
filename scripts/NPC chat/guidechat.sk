@@ -84,7 +84,7 @@ on right click:
 					send "&7[&6Buck Wheatly&7]&f: There's also a larger variety of plants to harvest at this farm.                                                                          " to player
 					wait 3 seconds
 					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: I would try the tulips first, come back when you've unlocked &e&lField 6&f!                                                                           " to player
+					send "&7[&6Buck Wheatly&7]&f: I would try the tulips first, then come back when you've unlocked &e&lField 6&f!                                                                           " to player
 					add 1 to {chatmessage::Buck::%player's uuid%}
 				else:
 					send "&7[&6Buck Wheatly&7]&f: Ain't got nothin' else for ya on this farm. Talk to me at &2&lFarm 2&f.                                                                            " to player

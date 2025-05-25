@@ -7,9 +7,10 @@ function initializePlayerStuff(p: player):
     set leggings of {_p} to {leggings::0}
     set boots of {_p} to {boots::0}
 
-command /getplayerstuff:
+command /getplayerstuff <offline player>:
+    permission: operator
     trigger:
-        initializePlayerStuff(player)
+        initializePlayerStuff(arg-1)
 
 local function loadPlayerMenuGUI(p: player):
     set {_gui} to chest inventory with 3 rows named "&b&lPlayer Menu"

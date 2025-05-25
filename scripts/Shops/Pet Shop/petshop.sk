@@ -1,4 +1,5 @@
 command /open-petshopgui:
+	permission: operator
 	trigger:
 		play sound "minecraft:ui.button.click" to player
 		loadPetShopGui(player)

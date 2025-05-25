@@ -93,6 +93,7 @@ on chat:
             set {chatgame::active} to false
 
 command /cancelevent:
+    permission: operator
     trigger:
         if {chatgame::active} is true:
             broadcast "&8[&a&lEvent&8] &a&lRandom number challenge has ended. No one guessed the correct number &8[&9&l%{chatgame::number}%&8]&a."
@@ -105,5 +106,44 @@ command /cancelevent:
             set {chatgame::active} to false
 
 command /runevent:
+    permission: operator
     trigger:
         runEvent()
+
+command /event-boss <integer>:
+    permission: operator
+    trigger:
+        if arg-1 is 1:
+            set {_boss-spawn-locations::*} to location(1195.5, 100.94, 981.5), location(1195.5, 100.94, 1016.5) 
+            set {_location} to a random element out of {_boss-spawn-locations::*}
+
+            spawn a zombie at a random element out of {_boss-spawn-locations::*}
+            set {_mob} to last spawned entity
+            set {_name} to "&4&lBoss"
+            set max health of {_mob} to 100
+            set health of {_mob} to 100
+            set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 1
+            apply attribute modifier to {_mob}:
+                id: "minecraft:scale"
+                attribute: scale
+                amount: 5
+                operation: add_number
+
+            set name of {_mob} to "%{_name}% &8[&c&l%{_mob}'s health%&8]"
+            set byte tag "CustomNameVisible" of nbt of {_mob} to 0
+            set boolean tag "Croplite:crop-mob-boss" of custom nbt of {_mob} to true
+            set string tag "Croplite:crop-mob-name" of custom nbt of {_mob} to {_name} 
+
+            set helmet of {_mob} to {helmet::0}
+
+            summon text display 2 block above {_mob}
+            set {_name-tag} to last spawned entity
+            set display text of {_name-tag} to "&4&lBOSS"
+            set display scale of {_name-tag} to vector(5,5,5)
+            apply drop shadow to {_name-tag}
+    
+            set display billboard of {_name-tag} to center
+            set display text background color of {_name-tag} to bukkitColor(40,0,0,0)
+
+            wait 10 seconds
+            kill {_name-tag}

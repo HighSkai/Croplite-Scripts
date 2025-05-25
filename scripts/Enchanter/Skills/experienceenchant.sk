@@ -178,8 +178,9 @@ function resetExperienceEnchant(p: player):
 	set {experience::11::unlocked::%uuid of {_p}%} to false
 
 command /reset-experienceenchant [<player>]:
-    trigger:
-        if arg-1 is set:
-            resetExperienceEnchant(arg-1)
-        else:
-            resetExperienceEnchant(player)
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			resetExperienceEnchant(arg-1)
+		else:
+			resetExperienceEnchant(player)

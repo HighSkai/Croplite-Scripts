@@ -37,58 +37,6 @@ function loadCropBagShopGui(p: player):
      
     open {_gui} to {_p} 
 
-local function setGUICropBags():
-    set {cropbag::1::item} to white dye named "cropbag 1"
-    set {cropbag::1::price} to 100
-    set {cropbag::1::addition} to 100
-    set line 1 of lore of {cropbag::1::item} to "line 1"
-    set line 2 of lore of {cropbag::1::item} to "line 2"
-
-    set {cropbag::2::item} to white dye named "cropbag 2"
-    set {cropbag::2::price} to 200
-    set {cropbag::2::addition} to 100
-    set line 1 of lore of {cropbag::2::item} to "line 1"
-    set line 2 of lore of {cropbag::2::item} to "line 2"
-
-    set {cropbag::3::item} to white dye named "cropbag 3"
-    set {cropbag::3::price} to 300
-    set {cropbag::3::addition} to 100
-    set line 1 of lore of {cropbag::3::item} to "line 1"
-    set line 2 of lore of {cropbag::3::item} to "line 2"
-
-    set {cropbag::4::item} to white dye named "cropbag 4"
-    set {cropbag::4::price} to 400
-    set {cropbag::4::addition} to 100
-    set line 1 of lore of {cropbag::4::item} to "line 1"
-    set line 2 of lore of {cropbag::4::item} to "line 2"
-
-    set {cropbag::5::item} to white dye named "cropbag 5"
-    set {cropbag::5::price} to 500
-    set {cropbag::5::addition} to 100
-    set line 1 of lore of {cropbag::5::item} to "line 1"
-    set line 2 of lore of {cropbag::5::item} to "line 2"
-
-    set {cropbag::6::item} to white dye named "cropbag 6"
-    set {cropbag::6::price} to 600
-    set {cropbag::6::addition} to 100
-    set line 1 of lore of {cropbag::6::item} to "line 1"
-    set line 2 of lore of {cropbag::6::item} to "line 2"
-
-    set {cropbag::7::item} to white dye named "cropbag 7"
-    set {cropbag::7::price} to 700
-    set {cropbag::7::addition} to 100
-    set line 1 of lore of {cropbag::7::item} to "line 1"
-    set line 2 of lore of {cropbag::7::item} to "line 2"
-
-function resetCropBags(p: player):
-    set {cropbag::1::unlocked::%uuid of {_p}%} to false
-    set {cropbag::2::unlocked::%uuid of {_p}%} to false
-    set {cropbag::3::unlocked::%uuid of {_p}%} to false
-    set {cropbag::4::unlocked::%uuid of {_p}%} to false
-    set {cropbag::5::unlocked::%uuid of {_p}%} to false
-    set {cropbag::6::unlocked::%uuid of {_p}%} to false
-    set {cropbag::7::unlocked::%uuid of {_p}%} to false
-
 on inventory click:
     if event-inventory is not player's inventory:
         if event-inventory's name is "&2&lCrop Bag Shop":
@@ -131,3 +79,59 @@ on inventory click:
             else if event-slot is 22:
                 play sound "minecraft:ui.button.click" to player
                 close player's inventory
+
+local function setGUICropBags():
+    set {cropbag::1::item} to white dye named "cropbag 1"
+    set {cropbag::1::price} to 250
+    set {cropbag::1::addition} to 100
+    set line 1 of lore of {cropbag::1::item} to "line 1"
+    set line 2 of lore of {cropbag::1::item} to "adds 100 to cropbag"
+
+    set {cropbag::2::item} to white dye named "cropbag 2"
+    set {cropbag::2::price} to 500
+    set {cropbag::2::addition} to 250
+    set line 1 of lore of {cropbag::2::item} to "line 1"
+    set line 2 of lore of {cropbag::2::item} to "adds 250 to cropbag"
+
+    set {cropbag::3::item} to white dye named "cropbag 3"
+    set {cropbag::3::price} to 1000
+    set {cropbag::3::addition} to 500
+    set line 1 of lore of {cropbag::3::item} to "line 1"
+    set line 2 of lore of {cropbag::3::item} to "adds 500 to cropbag"
+
+    set {cropbag::4::item} to white dye named "cropbag 4"
+    set {cropbag::4::price} to 2500
+    set {cropbag::4::addition} to 1000
+    set line 1 of lore of {cropbag::4::item} to "line 1"
+    set line 2 of lore of {cropbag::4::item} to "adds 1000 to cropbag"
+
+    set {cropbag::5::item} to white dye named "cropbag 5"
+    set {cropbag::5::price} to 10000
+    set {cropbag::5::addition} to 5000
+    set line 1 of lore of {cropbag::5::item} to "line 1"
+    set line 2 of lore of {cropbag::5::item} to "adds 5000 to cropbag"
+
+    set {cropbag::6::item} to white dye named "cropbag 6"
+    set {cropbag::6::price} to 25000
+    set {cropbag::6::addition} to 10000
+    set line 1 of lore of {cropbag::6::item} to "line 1"
+    set line 2 of lore of {cropbag::6::item} to "adds 10000 to cropbag"
+
+    set {cropbag::7::item} to white dye named "cropbag 7"
+    set {cropbag::7::price} to 50000
+    set {cropbag::7::addition} to 25000
+    set line 1 of lore of {cropbag::7::item} to "line 1"
+    set line 2 of lore of {cropbag::7::item} to "adds 25000 to cropbag"
+
+function resetCropBags(p: player):
+    set {cropbag::1::unlocked::%uuid of {_p}%} to false
+    set {cropbag::2::unlocked::%uuid of {_p}%} to false
+    set {cropbag::3::unlocked::%uuid of {_p}%} to false
+    set {cropbag::4::unlocked::%uuid of {_p}%} to false
+    set {cropbag::5::unlocked::%uuid of {_p}%} to false
+    set {cropbag::6::unlocked::%uuid of {_p}%} to false
+    set {cropbag::7::unlocked::%uuid of {_p}%} to false
+
+command /resetunlockedcropbags:
+    trigger:
+        resetCropBags(player)

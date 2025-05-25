@@ -78,6 +78,7 @@ every second:
             add 1 to {h::%uuid of loop-player%}
 
 command /updateLeaderboards:
+    permission: operator
     trigger: 
         updateLeaderboards("DailyMobKills", "&8[&4&kMM&c&lDaily Mob Kills&4&kMM&r&8]", "dailymobkills")
         updateLeaderboards("DailyCropsBroken", "&8[&4&kMM&c&lDaily Crops Broken&4&kMM&r&8]", "dailycropsbroken")

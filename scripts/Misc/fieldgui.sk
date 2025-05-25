@@ -232,24 +232,25 @@ function loadFarmUnlockGui(p: player, n: number):
     open {_gui} to {_p}
 
 command /setareareqs:
+    permission: operator
     trigger:
         if player is an operator:
             set {field::1::price} to 0
             set {field::2::price} to 1000
-            set {field::3::price} to 3500
-            set {field::4::price} to 7500
-            set {field::5::price} to 12500
-            set {field::6::price} to 25000
-            set {field::7::price} to 50000
-            set {field::8::price} to 75000
-            set {field::9::price} to 125000
-            set {field::10::price} to 200000
-            set {field::11::price} to 350000
-            set {field::12::price} to 550000
-            set {field::13::price} to 1000000
-            set {field::14::price} to 2500000
-            set {field::15::price} to 5000000
-            set {field::16::price} to 10000000
+            set {field::3::price} to 3000
+            set {field::4::price} to 5000
+            set {field::5::price} to 10000
+            set {field::6::price} to 15000
+            set {field::7::price} to 25000
+            set {field::8::price} to 35000
+            set {field::9::price} to 50000
+            set {field::10::price} to 75000
+            set {field::11::price} to 100000
+            set {field::12::price} to 150000
+            set {field::13::price} to 250000
+            set {field::14::price} to 300000
+            set {field::15::price} to 500000
+            set {field::16::price} to 750000
 
             set {field::1::level} to 0
             set {field::2::level} to 5
@@ -277,8 +278,11 @@ command /setareareqs:
 function abbreviateNumber(n: number) :: text:
     set {_num} to {_n}
     set {_suffix} to ""
-    
-    if {_num} >= 1000000000.00:
+
+    if {_num} >= 1000000000000.00:
+        set {_num} to {_num} / 1000000000000.00
+        set {_suffix} to "T"
+    else if {_num} >= 1000000000.00:
         set {_num} to {_num} / 1000000000.00
         set {_suffix} to "B"
     else if {_num} >= 1000000.00:

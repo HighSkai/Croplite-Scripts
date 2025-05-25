@@ -14,26 +14,31 @@ every 2 ticks:
         draw 2 of dust using dustOption(green, 1) at loop-value with offset vector(0.25, 1, 0.25)
 
 command /resetemerald:
+    permission: operator
     trigger:
         delete {emerald::*}
 
 command /loopemerald:
+    permission: operator
     trigger:
         loop blocks in radius 10 around player:
             if loop-block is emerald_block:
                 add loop-block's location to {emerald::*}
 
 command /loopemerald2:
+    permission: operator
     trigger:
         loop blocks in radius 10 around player:
             if loop-block is emerald_block:
                 add loop-block's location to {emerald2::*}
 
 command /resetredconcrete:
+    permission: operator
     trigger:
         delete {redconcrete::*}
 
 command /loopconcrete:
+    permission: operator
     trigger:
         loop blocks in radius 10 around player:
             if loop-block is red_concrete:

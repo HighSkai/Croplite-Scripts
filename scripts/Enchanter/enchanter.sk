@@ -220,6 +220,7 @@ function romanNumeralConversion(number: number) :: text:
 	return value "%{_number}%" of {romanNumeral-Json}
 
 command /getnbt:
+	permission: operator
 	trigger:
 		set {_nbt} to nbt of player's held item
 		broadcast "==============================="

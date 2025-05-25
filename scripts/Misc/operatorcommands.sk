@@ -1,5 +1,5 @@
 command /gmc [<player>]:
-    permission: op
+    permission: operator
     trigger:
         if arg-1 is set:
             set gamemode of arg-1 to creative
@@ -7,7 +7,7 @@ command /gmc [<player>]:
             set gamemode of player to creative
 
 command /gms [<player>]:
-    permission: op
+    permission: operator
     trigger:
         if arg-1 is set:
             set gamemode of arg-1 to survival
@@ -15,7 +15,7 @@ command /gms [<player>]:
             set gamemode of player to survival
 
 command /gma [<player>]:
-    permission: op
+    permission: operator
     trigger:
         if arg-1 is set:
             set gamemode of arg-1 to adventure
@@ -23,7 +23,7 @@ command /gma [<player>]:
             set gamemode of player to adventure
 
 command /gmsp [<player>]:
-    permission: op
+    permission: operator
     trigger:
         if arg-1 is set:
             set gamemode of arg-1 to spectator
@@ -339,3 +339,8 @@ command /back:
 			teleport player to {previousLocation::%player's uuid%}
         
 			set {previousLocation::%player's uuid%} to {_currentLoc}
+
+command /get-cords:
+    permission: operator
+    trigger:
+        send location at player to player

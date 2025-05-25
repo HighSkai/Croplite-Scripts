@@ -6,11 +6,11 @@ command /togglepvp:
 			set {pvpstatus::%player's uuid%} to false
 		
 		if {pvpstatus::%player's uuid%} is true:
-			add 0.2 to {expmulti::%player's uuid%}
-			send "&8[&dCroplite&8] &aPvP enabled. Enjoy your &e&lExp Multi &8[&e&l+0.20&8] &abonus." to player
+			add 0.25 to {expmulti::%player's uuid%}
+			send "&8[&dCroplite&8] &aPvP enabled. Enjoy your &e&lExp Multi &8[&e&l+0.25&8] &abonus." to player
 		if {pvpstatus::%player's uuid%} is false:
-			subtract 0.2 from {expmulti::%player's uuid%}
-			send "&8[&dCroplite&8] &cPvP disabled. Farm in peace without the &e&lExp Multi &8[&e&l+0.20&8] &cbonus." to player
+			subtract 0.25 from {expmulti::%player's uuid%}
+			send "&8[&dCroplite&8] &cPvP disabled. Farm in peace without the &e&lExp Multi &8[&e&l+0.25&8] &cbonus." to player
 
 command /optogglepvp <player>:
 	permission: operator
@@ -21,38 +21,46 @@ command /optogglepvp <player>:
 			set {pvpstatus::%arg-1's uuid%} to false
 
 		if {pvpstatus::%arg-1's uuid%} is true:
-			add 0.2 to {expmulti::%arg-1's uuid%}
+			add 0.25 to {expmulti::%arg-1's uuid%}
 		if {pvpstatus::%arg-1's uuid%} is false:
-			subtract 0.2 from {expmulti::%arg-1's uuid%}
+			subtract 0.25 from {expmulti::%arg-1's uuid%}
+
+command /leavecombat [<offline player>]:
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			set {in-combat::%arg-1's uuid%} to 0
+		else:
+			set {in-combat::%player's uuid%} to 0
+
+command /toggle-incombat [<offline player>]: 
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			if {toggle-incombat::%arg-1's uuid%} is true:
+				set {toggle-incombat::%arg-1's uuid%} to false
+				send "disabled" to player
+			else:
+				set {toggle-incombat::%arg-1's uuid%} to true
+				send "enabled" to player
+		else:
+			if {toggle-incombat::%player's uuid%} is true:
+				set {toggle-incombat::%player's uuid%} to false
+				send "disabled" to player
+			else:
+				set {toggle-incombat::%player's uuid%} to true
+				send "enabled" to player
 
 command /adddamage <integer>:
 	permission: operator
 	trigger:
 		add "damage:%arg-1%" to string list tag "Croplite:scythe-stats" of custom nbt of player's held item
-		
-on damage:
-	if attacker is a mob:
-		set victim's health to victim's health - int tag "Croplite:crop-mob-damage" of custom nbt of attacker
-	else if attacker is a player:
-		if victim is a player:
-			if {pvpstatus::%victim's uuid%} is false:
-				add 1 to {_temp}
-				cancel event
-			if damage cause is burning:
-				if {pvpstatus::%{last-fire-attacker::%victim's uuid%}'s uuid%} is false:
-					add 2 to {_temp}
-					cancel event
-			else:
-				if {pvpstatus::%attacker's uuid%} is false:
-					add 2 to {_temp}
-					cancel event
 
-			if {_temp} is 1:
-				send "&8[&dCroplite&8] &cThis farmer has PvP disabled." to attacker
-			else if {_temp} is 2:
-				send "&8[&dCroplite&8] &cYou have PvP turned off. Enable PvP using /togglepvp." to attacker
-			else if {_temp} is 3:
-				send "&8[&dCroplite&8] &cBoth you and this farmer have PvP disabled. Enable PvP using /togglepvp." to attacker
+every 1 second:
+    loop all players:
+        if {in-combat::%loop-player's uuid%} > 0:
+            send action bar "&4&lCombat &8[&4&l%{in-combat::%loop-player's uuid%}%s&8]" to loop-player
+            remove 1 from {in-combat::%loop-player's uuid%}
 
 on death:
 	if attacker is a player:
@@ -68,3 +76,32 @@ on death:
 					
 						remove {_reap} from {crops::%victim's uuid%}
 						send "%attacker% has reaped %{_reap}% crops from you." to victim
+
+command /spawnattackdummy:
+    permission: operator
+    trigger:
+        spawn a armor stand at the player
+        set {_stand} to last spawned entity
+        set name of {_stand} to "attack_dummy"
+        summon text display 2 block above {_stand}
+        set {_name-display} to last spawned entity
+        set name of {name-display} to "attack_dummy-name"
+
+        set display text of {_name-display} to "&4&lAttack Dummy"
+        apply drop shadow to {_name-display}
+    
+        set display billboard of {_name-display} to center
+        set display text background color of {_name-display} to bukkitColor(40,0,0,0)
+
+on entity move:
+    if name of event-entity is "attack_dummy":
+        cancel event
+
+command /killattackdummies:
+    permission: operator
+    trigger:
+        loop all entities:
+            if name of loop-entity is "attack_dummy":
+                kill loop-entity
+            else if name of loop-entity is "Text Display":
+                kill loop-entity

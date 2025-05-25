@@ -88,8 +88,9 @@ function resetFireAspectEnchant(p: player):
 	set {fireaspect::6::unlocked::%uuid of {_p}%} to false
 
 command /reset-fireaspectenchant [<player>]:
-    trigger:
-        if arg-1 is set:
-            resetFireAspectEnchant(arg-1)
-        else:
-            resetFireAspectEnchant(player)
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			resetFireAspectEnchant(arg-1)
+		else:
+			resetFireAspectEnchant(player)

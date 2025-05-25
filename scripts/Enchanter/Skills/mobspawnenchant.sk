@@ -90,8 +90,9 @@ function resetMobSpawnEnchant(p: player):
 	set {mobspawn::6::unlocked::%uuid of {_p}%} to false
 
 command /reset-mobspawnenchant [<player>]:
-    trigger:
-        if arg-1 is set:
-            resetMobSpawnEnchant(arg-1)
-        else:
-            resetMobSpawnEnchant(player)
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			resetMobSpawnEnchant(arg-1)
+		else:
+			resetMobSpawnEnchant(player)

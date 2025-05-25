@@ -1,14 +1,15 @@
-command /spawnt1cropmob:
+command /spawn-cropmob <number>:
+	permission: operator
 	trigger:
-		spawnCropMob(player, 1, block above player)
+		spawnCropMob(arg-1, block above player)
 
-function spawnCropMob(p: player, farm: number, b: block):
+function spawnCropMob(farm: number, b: block):
 	if {_farm} = 1:
 		if chance of 50%:
 			spawn a zombie villager at {_b}
 			set {_mob} to last spawned entity
-			set villager profession of {_mob} to farmer profession
 			set {_name} to "&2&lUndead Farmer"
+			set villager profession of {_mob} to farmer profession
 			set max health of {_mob} to 10
 			set health of {_mob} to 10
 			set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 1
@@ -20,11 +21,50 @@ function spawnCropMob(p: player, farm: number, b: block):
 			set health of {_mob} to 8
 			set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 1
 	else if {_farm} = 2:
-		
+		if chance of 50%:
+			spawn a drowned at {_b}
+			set {_mob} to last spawned entity
+			set {_name} to "&3&lPlunderer"
+			set max health of {_mob} to 12
+			set health of {_mob} to 12
+			set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 3
+		else:
+			spawn a bogged at {_b}
+			set {_mob} to last spawned entity
+			set {_name} to "&3&lPlunderer"
+			set max health of {_mob} to 12
+			set health of {_mob} to 12
+			set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 3
 	else if {_farm} = 3:
-		
+		if chance of 50%:
+			spawn a husk at {_b}
+			set {_mob} to last spawned entity
+			set {_name} to "&3&lPlunderer"
+			set max health of {_mob} to 12
+			set health of {_mob} to 12
+			set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 3
+		else:
+			spawn a wither skeleton at {_b}
+			set {_mob} to last spawned entity
+			set {_name} to "&3&lPlunderer"
+			set max health of {_mob} to 12
+			set health of {_mob} to 12
+			set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 3
 	else if {_farm} = 4:
-		#cave spider
+		if chance of 50%:
+			spawn a zombie at {_b}
+			set {_mob} to last spawned entity
+			set {_name} to "&3&lPlunderer"
+			set max health of {_mob} to 12
+			set health of {_mob} to 12
+			set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 3
+		else:
+			spawn a stray at {_b}
+			set {_mob} to last spawned entity
+			set {_name} to "&3&lPlunderer"
+			set max health of {_mob} to 12
+			set health of {_mob} to 12
+			set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 3
 
 	set name of {_mob} to "%{_name}% &8[&c&l%{_mob}'s health%&8]"
 	set byte tag "CustomNameVisible" of nbt of {_mob} to 1
@@ -33,11 +73,9 @@ function spawnCropMob(p: player, farm: number, b: block):
 	equipArmor({_farm}, {_mob})
 	equipSword({_farm}, {_mob})
 
-			# apply attribute modifier to {_mob}:
-			# 	id: "minecraft:movement_speed"
-			# 	attribute: movement speed
-			# 	amount: 0.05
-			# 	operation: add_number
+command /teleportospawn:
+	trigger:
+		teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
 
 function unequipArmor(mob: entity):
 	set helmet of {_mob} to air
@@ -48,12 +86,48 @@ function unequipArmor(mob: entity):
 function equipArmor(farm: number, mob: entity):
 	unequipArmor({_mob})
 	if {_farm} = 1:
+		set {_helmets::*} to {helmet::0}, {helmet::1}
+		set {_chestplates::*} to {chestplate::0}, {chestplate::1}, air, air, air
+		set {_leggings::*} to {leggings::0}, {leggings::1}, air, air, air
+		set {_boots::*} to {boots::0}, {boots::1}, air, air, air
+
+		set helmet of {_mob} to a random element out of {_helmets::*}
+		set chestplate of {_mob} to a random element out of {_chestplates::*}
+		set leggings of {_mob} to a random element out of {_leggings::*}
+		set boots of {_mob} to a random element out of {_boots::*}
 
 	else if {_farm} = 2:
+		set {_helmets::*} to {helmet::1}, {helmet::2}
+		set {_chestplates::*} to {chestplate::1}, {chestplate::2}, air, air, air
+		set {_leggings::*} to {leggings::1}, {leggings::2}, air, air, air
+		set {_boots::*} to {boots::1}, {boots::2}, air, air, air
+
+		set helmet of {_mob} to a random element out of {_helmets::*}
+		set chestplate of {_mob} to a random element out of {_chestplates::*}
+		set leggings of {_mob} to a random element out of {_leggings::*}
+		set boots of {_mob} to a random element out of {_boots::*}
 		
 	else if {_farm} = 3:
+		set {_helmets::*} to {helmet::3}, {helmet::4}
+		set {_chestplates::*} to {chestplate::3}, {chestplate::4}, air, air, air
+		set {_leggings::*} to {leggings::3}, {leggings::4}, air, air, air
+		set {_boots::*} to {boots::3}, {boots::4}, air, air, air
+
+		set helmet of {_mob} to a random element out of {_helmets::*}
+		set chestplate of {_mob} to a random element out of {_chestplates::*}
+		set leggings of {_mob} to a random element out of {_leggings::*}
+		set boots of {_mob} to a random element out of {_boots::*}
 		
 	else if {_farm} = 4:
+		set {_helmets::*} to {helmet::4}, {helmet::5}
+		set {_chestplates::*} to {chestplate::4}, {chestplate::5}, air, air, air
+		set {_leggings::*} to {leggings::4}, {leggings::5}, air, air, air
+		set {_boots::*} to {boots::4}, {boots::5}, air, air, air
+
+		set helmet of {_mob} to a random element out of {_helmets::*}
+		set chestplate of {_mob} to a random element out of {_chestplates::*}
+		set leggings of {_mob} to a random element out of {_leggings::*}
+		set boots of {_mob} to a random element out of {_boots::*}
 		
 local function unequipSword(mob: entity): 
 	set held item of {_mob} to air
@@ -61,14 +135,35 @@ local function unequipSword(mob: entity):
 function equipSword(farm: number, mob: entity):
 	unequipSword({_mob})
 	if {_farm} = 1:
+		set {_knockback-stick} to unbreakable stick
+		enchant {_knockback-stick} with knockback 2
+		set {_weapons::*} to {scythe::0}, {_knockback-stick}, air
 		
+		set held item of {_mob} to a random element out of {_weapons::*}
+
 	else if {_farm} = 2:
+		set {_knockback-stick} to unbreakable stick
+		enchant {_knockback-stick} with knockback 2
+		set {_weapons::*} to {scythe::1}, {_knockback-stick}, air
 		
+		set held item of {_mob} to a random element out of {_weapons::*}
+
 	else if {_farm} = 3:
+		set {_knockback-stick} to unbreakable stick
+		enchant {_knockback-stick} with knockback 2
+		set {_weapons::*} to {scythe::2}, {_knockback-stick}, air
+		
+		set held item of {_mob} to a random element out of {_weapons::*}
 		
 	else if {_farm} = 4:
+		set {_knockback-stick} to unbreakable stick
+		enchant {_knockback-stick} with knockback 2
+		set {_weapons::*} to {scythe::4}, {_knockback-stick}, air
+		
+		set held item of {_mob} to a random element out of {_weapons::*}
 
 command /killallcropmobs:
+	permission: operator
 	trigger:
 		loop all entities:
 			if loop-entity is player:
@@ -77,6 +172,7 @@ command /killallcropmobs:
 				set loop-entity's health to 0
 
 command /getdatastick:
+	permission: operator
 	trigger:
 		give the player stick named "&6DataStick"
 on right click:

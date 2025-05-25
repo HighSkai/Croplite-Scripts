@@ -1,5 +1,4 @@
 command /rules:
-    permission: sk.rules
     trigger:
         send "&d&lCroplite &a&lRules." to player
         send "&a1. Be cool, kind, and respectful to one another" to player

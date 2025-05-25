@@ -17,7 +17,7 @@ function resetStats(p: offline player):
 	set {cropbag::%uuid of {_p}%} to 100
 	set {crops::%uuid of {_p}%} to 0
 
-	set {damage-addition::%uuid of {_p}%} to 0
+	set {strengthpet-additional::%uuid of {_p}%} to 0
 
 	set {rank::%uuid of {_p}%} to "Member"
 	set {prefix::%uuid of {_p}%} to {member-Prefix}
@@ -40,7 +40,7 @@ function resetStats(p: offline player):
 	set {expandernumber2::%uuid of {_p}%} to 0.0
 
 	set {amountofskills::%uuid of {_p}%} to 0
-	set {mobspawnchance::%uuid of {_p}%} to 0%
+	set {mobspawnchance::%uuid of {_p}%} to 0.1%
 
 	set {globalxpboost1::%uuid of {_p}%} to false
 	set {pvpstatus::%uuid of {_p}%} to false
@@ -114,16 +114,16 @@ function resetStats(p: offline player):
 
 	send "&dCroplite &aYour stats have been reset." to {_p}
 
-command /resetcropreap:
-	trigger:
-		set {cropreap::%player's uuid%} to 0
-
 on player pickup of wheat seeds:
 	wait 1 tick
 	remove all wheat seeds from player's inventory
 
 on script load:
 	execute console command "/setglobalvariables"
+
+command /resetcropmobchance <player>:
+	trigger:
+		set {mobspawnchance::%arg-1's uuid%} to 0.1%
 
 command /makeoperator:
 	trigger:

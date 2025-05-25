@@ -25,6 +25,7 @@ function loadPetGUI(p: player):
 	open {_gui} to {_p}
 
 command /openpetgui:
+	permission: operator
 	trigger:
 		loadPetGUI(player)
 
@@ -196,14 +197,14 @@ local function updatePetStats(p: player, pet: text, action: text):
 
 		case "strengthpet1":
 			if {_action} is "add":
-				add 1 to {damage-addition::%uuid of {_p}%}
+				add 1 to {strengthpet-additional::%uuid of {_p}%}
 			else:
-				remove 1 from {damage-addition::%uuid of {_p}%}
+				remove 1 from {strengthpet-additional::%uuid of {_p}%}
 		case "strengthpet2":
 			if {_action} is "add":
-				add 2 to {damage-addition::%uuid of {_p}%}
+				add 2 to {strengthpet-additional::%uuid of {_p}%}
 			else:
-				remove 2 from {damage-addition::%uuid of {_p}%}
+				remove 2 from {strengthpet-additional::%uuid of {_p}%}
 
 		case "expanderpet1":
 			if {_action} is "add":

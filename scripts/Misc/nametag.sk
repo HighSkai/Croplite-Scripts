@@ -6,6 +6,8 @@ on death of player:
     set death message to "&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r has died."
 
 on respawn:
+    extinguish player
+    set {in-combat::%player's uuid%} to 0
     if "%region at player%" contains "farm1 in world world":
         set respawn location to location at 1191.5, 104, 954.5
     else if "%region at player%" contains "farm2 in world world": 

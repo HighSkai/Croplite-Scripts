@@ -1,4 +1,5 @@
 command /book:
+    permission: operator
     trigger:
         createGuideBook(player)
 
