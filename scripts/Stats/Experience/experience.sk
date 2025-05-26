@@ -1,4 +1,4 @@
-local function levelUp(p: player):
+function levelUp(p: player):
 	while {exp::%uuid of {_p}%} >= {expreq::%uuid of {_p}%}:
 		play sound "entity.player.levelup" to {_p}
 		send title "&9Level Up" to {_p} for 0.6 seconds
@@ -15,7 +15,7 @@ local function levelUp(p: player):
 		add 0.01 to {expmulti::%uuid of {_p}%}
 		add 1 to {enchant-points::%uuid of {_p}%}
 
-local function updateEXP(p: player, n: number, farm: number, b: block):
+function updateEXP(p: player, n: number, farm: number, b: block):
 	if chance of {double-crop-chance::%uuid of {_p}%}:
 		set {_added-crops} to {field::%{_n}%::basecrops} + ({cropharvest::%uuid of {_p}%} percent of {field::%{_n}%::basecrops})
 		loop 2 times:
@@ -157,7 +157,7 @@ function sellCrops(p: player):
 				if {objprogress::%uuid of {_p}%} >= {objprogressreq::%uuid of {_p}%}:
 					{objcomplete::%uuid of {_p}%} is false
 					send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to {_p} for 4 seconds
-					play sound "ui.toast.challenge_complete" to {_p}x
+					play sound "ui.toast.challenge_complete" to {_p}
 					play sound "entity.{_p}.levelup" to {_p}
 					send "&7------------------------------" to {_p}
 					send "&8[&2Objective &l&nComplete!&8]" to {_p}
@@ -205,11 +205,11 @@ on death of mob:
 		else if "%region at {_attacker}%" is "field16 in world world and farm4 in world world":
 			set {_n} to 16
 			
-		add 1 to {dailymobkills::%{_attacker}%}
-		add 1 to {lifetimemobkills::%{_attacker}%}
+		add 1 to {dailymobkills::%{_attacker}'s uuid%}
+		add 1 to {lifetimemobkills::%{_attacker}'s uuid%}
 
-		add ({expmulti::%{_attacker}%} * {field::%{_n}%::basexp} * 100) to {exp::%{_attacker}%}
-		send action bar "&8[&6+%abbreviateNumber({expmulti::%{_attacker}%} * {field::%{_n}%::basexp} * 100)% Exp &8(&6&l%abbreviateNumber({exp::%{_attacker}%})%&r&8/&6&l%abbreviateNumber({expreq::%{_attacker}%})%&8)]" to attacker
+		add ({expmulti::%{_attacker}'s uuid%} * {field::%{_n}%::basexp} * 100) to {exp::%{_attacker}'s uuid%}
+		send action bar "&8[&6+%abbreviateNumber({expmulti::%{_attacker}'s uuid%} * {field::%{_n}%::basexp} * 100)% Exp &8(&6&l%abbreviateNumber({exp::%{_attacker}'s uuid%})%&r&8/&6&l%abbreviateNumber({expreq::%{_attacker}'s uuid%})%&8)]" to attacker
 
 		levelUp(attacker)
 

@@ -9,6 +9,13 @@ every 3 seconds:
             else if {objcount::%loop-player%} = 1:
                 set {objdesc::%loop-player%} to "skills in the Enchanter"
                 subtract 1 from {objcount::%loop-player%}
+        else if {objective::%loop-player%} is "Gearing Up":
+            if {objcount::%loop-player%} = 0:
+                set {objdesc::%loop-player%} to "Purchase an armor or "
+                add 1 to {objcount::%loop-player%}
+            else if {objcount::%loop-player%} = 1:
+                set {objdesc::%loop-player%} to "scythe upgrade "
+                subtract 1 from {objcount::%loop-player%}
         
 
     

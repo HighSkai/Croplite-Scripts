@@ -97,6 +97,13 @@ on entity move:
     if name of event-entity is "attack_dummy":
         cancel event
 
+on death:
+	if name of victim is "attack_dummy":
+		if attacker is a player:
+			cancel event
+		else if damage cause is burning:
+			cancel event
+
 command /killattackdummies:
     permission: operator
     trigger:

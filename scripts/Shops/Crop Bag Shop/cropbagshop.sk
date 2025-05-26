@@ -72,6 +72,18 @@ on inventory click:
 
                         play sound "entity.experience_orb.pickup" to player
 
+                        if {objective::%player's uuid%} is "Crop Carrier":
+                            {objcomplete::%player's uuid%} is false
+                            add 1 to {objprogress::%player's uuid%}
+                            add 1 to {chatmessage::Buck::%player's uuid%}
+                            send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
+                            play sound "ui.toast.challenge_complete" to player
+                            play sound "entity.player.levelup" to player
+                            send "&7------------------------------" to player
+                            send "&8[&2Objective &l&nComplete!&8]" to player
+                            send "&7------------------------------" to player
+                            set {objcomplete::%player's uuid%} to true
+
                         send "&d&lCroplite &aYou have upgraded your cropbag." to player
                 else:
                     send "&d&lCroplite &cYou have already bought this cropbag upgrade." to player

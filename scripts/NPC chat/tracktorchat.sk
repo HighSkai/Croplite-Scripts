@@ -58,6 +58,8 @@ on right click:
 				set {objprogress::%player's uuid%} to 0
 				set {objdesc::%player's uuid%} to " "
 				set {objcomplete::%player's uuid%} to "none"
+				levelUp(player)
+				updateObjective(player)
 				add 1 to {chatmessage::Chuck::%player's uuid%}
 			else:
 				play sound "entity.villager.ambient" to player

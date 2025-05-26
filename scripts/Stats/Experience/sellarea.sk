@@ -14,6 +14,8 @@ on enter of region "sellarea":
 				send "&7------------------------------" to player
 				send "&8[&2Objective &l&nComplete!&8]" to player
 				send "&7------------------------------" to player
+				add 1 to {chatmessage::Buck::%player's uuid%}
+				set {objcomplete::%player's uuid%} to true
 	else if {1point5ccboost::%player's uuid%} is greater than 0:
 		set {_1point5ccboostnum::%player's uuid%} to ({crops::%player's uuid%}*0.5)
 		subtract 1 from {1point5ccboost::%player's uuid%}
@@ -33,6 +35,8 @@ on enter of region "sellarea":
 				send "&7------------------------------" to player
 				send "&8[&2Objective &l&nComplete!&8]" to player
 				send "&7------------------------------" to player
+				add 1 to {chatmessage::Buck::%player's uuid%}
+				set {objcomplete::%player's uuid%} to true
 		if {rndcnt::%player's uuid%} is greater than 0:
 			stop
 		else:
@@ -58,13 +62,15 @@ on enter of region "sellarea2":
 		if {objective::%player's uuid%} is "First Harvest":
 			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
 			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-				{firstharvest::%player's uuid%} is false
+				{objcomplete::%player's uuid%} is false
 				send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
 				play sound "ui.toast.challenge_complete" to player
 				play sound "entity.player.levelup" to player
 				send "&7------------------------------" to player
 				send "&8[&2Objective &l&nComplete!&8]" to player
 				send "&7------------------------------" to player
+				add 1 to {chatmessage::Buck::%player's uuid%}
+				set {objcomplete::%player's uuid%} to true
 		if {rndcnt::%player's uuid%} is greater than 0:
 			stop
 		else:
@@ -90,13 +96,15 @@ on enter of region "sellarea3":
 		if {objective::%player's uuid%} is "First Harvest":
 			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
 			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-				{firstharvest::%player's uuid%} is false
+				{objcomplete::%player's uuid%} is false
 				send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
 				play sound "ui.toast.challenge_complete" to player
 				play sound "entity.player.levelup" to player
 				send "&7------------------------------" to player
 				send "&8[&2Objective &l&nComplete!&8]" to player
 				send "&7------------------------------" to player
+				add 1 to {chatmessage::Buck::%player's uuid%}
+				set {objcomplete::%player's uuid%} to true
 		if {rndcnt::%player's uuid%} is greater than 0:
 			stop
 		else:
@@ -122,13 +130,15 @@ on enter of region "sellarea4":
 		if {objective::%player's uuid%} is "First Harvest":
 			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
 			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-				{firstharvest::%player's uuid%} is false
+				{objcomplete::%player's uuid%} is false
 				send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
 				play sound "ui.toast.challenge_complete" to player
 				play sound "entity.player.levelup" to player
 				send "&7------------------------------" to player
 				send "&8[&2Objective &l&nComplete!&8]" to player
 				send "&7------------------------------" to player
+				add 1 to {chatmessage::Buck::%player's uuid%}
+				set {objcomplete::%player's uuid%} to true
 		if {rndcnt::%player's uuid%} is greater than 0:
 			stop
 		else:

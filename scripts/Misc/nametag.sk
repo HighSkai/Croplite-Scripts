@@ -3,7 +3,11 @@ on join:
 on quit:
     set quit message to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%&r has left."
 on death of player:
-    set death message to "&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r has died."
+    if attacker is a player:
+        set {_messages::*} to "&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r was brutally &4&l&nslain&f by %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r was rolled by %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r was brutally slain by %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r met their demise at the hands of %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r was no match for %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r got taken down by %attacker%."
+        set death message to random element out of {_messages::*}
+    else:
+        set death message to "&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r has died."
 
 on respawn:
     extinguish player
@@ -18,7 +22,29 @@ on respawn:
         set respawn location to location at -378.5, 101, 857.5
 
 on chat:
-    set the chat format to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%: &r%colored message%"
+    cancel event
+    set {_format} to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%: &r"
+
+    set {_final::*} to text component from {_format}
+
+    set {_raw::*} to split message at "[item]"
+    set {_i} to 1
+
+    loop {_raw::*}:
+        add text component from loop-value to {_final::*}
+
+        if {_i} < size of {_raw::*}:
+            set {_item} to player's tool
+            if {_item} is air:
+                set {_comp} to text component from "&8[&7Empty&8]"
+            else:
+                set {_name} to name of {_item}
+                set {_comp} to text component from "%{_name}%&r"
+                set hover event of {_comp} to hover event showing {_item}
+            add {_comp} to {_final::*}
+        add 1 to {_i}
+
+    broadcast component merge components {_final::*}
 
 function setPrefix(p: player):
     console command "tab player %{_p}% tagprefix '&8[&9&l%{level::%uuid of {_p}%}%&8]%{prefix::%uuid of {_p}%}% '"

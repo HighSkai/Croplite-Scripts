@@ -85,6 +85,8 @@ function resetStats(p: offline player):
 
 	set {objcomplete::%uuid of {_p}%} to false
 
+	delete {firstharvest::%uuid of {_p}%}
+
 	set {burningboost::%uuid of {_p}%} to 0
 	set {dailycropsbroken::%uuid of {_p}%} to 0
 	set {dailymobkills::%uuid of {_p}%} to 0

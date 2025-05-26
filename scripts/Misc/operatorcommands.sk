@@ -344,3 +344,9 @@ command /get-cords:
     permission: operator
     trigger:
         send location at player to player
+
+command /clearchat:
+    permission: operator
+    trigger:
+        loop 200 times:
+            broadcast ""

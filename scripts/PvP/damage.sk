@@ -55,17 +55,15 @@ on damage:
                             add 1 seconds to {_time}
                             if victim is a player:
                                 if {last-fire-attacker::%victim's uuid%} is not set:
-                                    if {pvpstatus::%victim's uuid%} is true:
-                                        if {pvpstatus::%attacker's uuid%} is true:
-                                            set {last-fire-attacker::%victim's uuid%} to attacker
-                                            set {dont-fire-damage::%victim's uuid%} to 1
+                                    set {last-fire-attacker::%victim's uuid%} to attacker
+                                    set {dont-fire-damage::%victim's uuid%} to 1
 
-                                            ignite victim for {_time}
-                                            run 1 second later:
-                                                set {dont-fire-damage::%victim's uuid%} to 0
+                                    ignite victim for {_time}
+                                    run 1 second later:
+                                        set {dont-fire-damage::%victim's uuid%} to 0
 
-                                            run {_time} later:
-                                                delete {last-fire-attacker::%victim's uuid%}
+                                    run {_time} later:
+                                        delete {last-fire-attacker::%victim's uuid%}
                             else if victim is not a player:
                                 if {last-fire-attacker::%victim%} is not set:
                                     set {last-fire-attacker::%victim%} to attacker
@@ -85,15 +83,13 @@ on damage:
 
                     if {_damage} < 0.5:
                         set {_damage} to 0.5
-                            
-                    set victim's health to victim's health - {_damage}
 
-                    #hoe
                     if victim is a player:
-                        if ({pvpstatus::%victim's uuid%} and {pvpstatus::%attacker's uuid%} is true):
-                            spawnDamageDisplay(attacker, victim, {_damage})
+                        set damage to {_damage}
                     else:
-                        spawnDamageDisplay(attacker, victim, {_damage})
+                        set victim's health to victim's health - {_damage}
+
+                    spawnDamageDisplay(attacker, victim, {_damage})
                     
                     if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
                         set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health%&8]"
@@ -104,12 +100,10 @@ on damage:
                 if attack cooldown of attacker >= 1:
                     #not hoe
                     if victim is a player:
-                        if ({pvpstatus::%victim's uuid%} and {pvpstatus::%attacker's uuid%} is true):
-                            set victim's health to victim's health - 0.5
-                            spawnDamageDisplay(attacker, victim, 0.5)
+                        set damage to 0.5
                     else:
                         set victim's health to victim's health - 0.5
-                        spawnDamageDisplay(attacker, victim, 0.5)
+                    spawnDamageDisplay(attacker, victim, 0.5)
                             
                     if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
                         set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health%&8]"
@@ -128,7 +122,7 @@ on damage:
                 if {_id} is "damage":
                     add {_parts::2} parsed as number to {_damage}
 
-            set victim's health to victim's health - {_damage}
+            set damage to {_damage}
         else if victim is a mob:
             cancel event
     else if damage cause is burning:
@@ -138,16 +132,19 @@ on damage:
             set {_victim} to victim
                 
         if {dont-fire-damage::%{_victim}%} < 1:                                
-            set victim's health to victim's health - 1
-
             if victim is a player:
+                set damage to 1
                 spawnDamageDisplay({last-fire-attacker::%victim's uuid%}, victim, 1)
             else:
+                set victim's health to victim's health - 1
                 spawnDamageDisplay({last-fire-attacker::%victim%}, victim, 1)
             if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
                 set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health%&8]"
     else:
-        set victim's health to victim's health - 1
+        if victim is a player:
+            set damage to 99
+        else:
+            set victim's health to victim's health - 99
         
         if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
             set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health%&8]"
@@ -223,23 +220,3 @@ local function armorEnchantDamage(victim: entity) ::number:
             set {_boots-defense} to {_parts::2} parsed as number
 
     return {_helmet-defense} + {_chestplate-defense} + {_leggings-defense} + {_boots-defense}
-
-on death:
-    broadcast "=======death========"
-    broadcast "%victim's health% 1"
-    broadcast "%victim% 2"
-    broadcast "%attacker% 3"
-
-    broadcast "=======-----========"
-
-command /death [<offline player>]:
-    trigger:
-        if arg-1 is set:
-            set arg-1's health to arg-1's health - 10000
-        else:
-            set player's health to player's health - 10000
-
-command /clearchat:
-    trigger:
-        loop 100 times:
-            broadcast ""

@@ -3,6 +3,24 @@ command /spawn-cropmob <number>:
 	trigger:
 		spawnCropMob(arg-1, block above player)
 
+command /spawn-testcropmob:
+	permission: operator
+	trigger:
+		spawn a zombie at block above player
+		set {_mob} to last spawned entity
+		set {_name} to "&3&lTest"
+		set max health of {_mob} to 10
+		set health of {_mob} to 10
+		set int tag "Croplite:crop-mob-damage" of custom nbt of {_mob} to 1
+
+		set name of {_mob} to "%{_name}% &8[&c&l%{_mob}'s health%&8]"
+		set byte tag "CustomNameVisible" of nbt of {_mob} to 1
+		set boolean tag "Croplite:crop-mob" of custom nbt of {_mob} to true
+		set string tag "Croplite:crop-mob-name" of custom nbt of {_mob} to {_name} 
+
+		unequipArmor({_mob})
+		
+
 function spawnCropMob(farm: number, b: block):
 	if {_farm} = 1:
 		if chance of 50%:

@@ -1,0 +1,9 @@
+command /tpoldboxserver:
+    permission: operator
+    trigger:
+        teleport player to location(435.5, 220, -325.5, world "world")
+
+command /tpoldfarmserver:
+    permission: operator
+    trigger:
+        teleport player to location(-1.5, 100, 8.5, world "world")

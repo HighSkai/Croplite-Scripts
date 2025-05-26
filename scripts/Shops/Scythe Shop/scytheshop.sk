@@ -78,7 +78,9 @@ on inventory click:
                         
                         loop integers between 1 and {_num}:
                             set {scythe::%loop-integer%::bought::%player's uuid%} to true
-                        
+                        	
+                        gearingUp(player)
+						
                         upgradeScythe(player, {_num})
                         loadScytheShopGui(player)
 

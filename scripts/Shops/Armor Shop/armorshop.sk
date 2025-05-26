@@ -229,7 +229,9 @@ on inventory click:
 							
 						loop integers between 1 and {_num}:
 							set {helmet::%loop-integer%::bought::%player's uuid%} to true
-							
+
+						gearingUp(player)
+						
 						loadHelmetShopGUI(player)
 						send "&d&lCroplite &aYou have bought a new helmet for %abbreviateNumber({helmet::%{_num}%::price})% &5&lCrop Cash&a." to player
 					else:
@@ -265,6 +267,8 @@ on inventory click:
 						loop integers between 1 and {_num}:
 							set {chestplate::%loop-integer%::bought::%player's uuid%} to true
 							
+						gearingUp(player)
+
 						loadChestplateShopGUI(player)
 						send "&d&lCroplite &aYou have bought a new chestplate for %abbreviateNumber({chestplate::%{_num}%::price})% &5&lCrop Cash&a." to player
 					else:
@@ -298,7 +302,9 @@ on inventory click:
 							
 						loop integers between 1 and {_num}:
 							set {leggings::%loop-integer%::bought::%player's uuid%} to true
-							
+								
+						gearingUp(player)
+						
 						loadLeggingsShopGUI(player)
 						send "&d&lCroplite &aYou have bought a new leggings for %abbreviateNumber({leggings::%{_num}%::price})% &5&lCrop Cash&a." to player
 					else:
@@ -332,7 +338,9 @@ on inventory click:
 							
 						loop integers between 1 and {_num}:
 							set {boots::%loop-integer%::bought::%player's uuid%} to true
-							
+								
+						gearingUp(player)
+						
 						loadBootsShopGUI(player)
 						send "&d&lCroplite &aYou have bought a new boots for %abbreviateNumber({boots::%{_num}%::price})% &5&lCrop Cash&a." to player
 					else:
