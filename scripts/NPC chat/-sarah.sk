@@ -17,3 +17,4 @@ on rightclick with wind charge:
     spawn item display at {_loc}
     set {_display} to last spawned entity
     set display item of {_display} to wind charge
+    

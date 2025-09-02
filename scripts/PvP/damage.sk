@@ -1,5 +1,4 @@
 on damage:
-    set damage to 0
     if attacker is a player:
         if victim is a player:
             if {pvpstatus::%victim's uuid%} is false:
@@ -32,8 +31,6 @@ on damage:
                 if attack cooldown of attacker >= 0.5:
                     set {_scytheenchants::*} to string list tag "Croplite:enchants" of custom nbt of attacker's tool
                     set {_scythestats::*} to string list tag "Croplite:scythe-stats" of custom nbt of attacker's tool
-                    set {_damage} to 0
-
                     loop {_scythestats::*}:
                         set {_parts::*} to loop-value split at ":"
                         set {_id} to {_parts::1}
@@ -41,6 +38,7 @@ on damage:
                         if {_id} is "damage":
                             add {_parts::2} parsed as number to {_damage}
 
+                    add {damageboost::%attacker's uuid%} to {_damage}
                     add {strengthpet-additional::%attacker's uuid%} to {_damage}
                         
                     loop {_scytheenchants::*}:
@@ -76,37 +74,34 @@ on damage:
                                     run {_time} later:
                                         delete {last-fire-attacker::%victim%}
 
-                    subtract armorEnchantDamage(victim) from {_damage}
-
                     if hit is not critical:
                         set {_damage} to {_damage} / 2
+
+                    subtract armorEnchantDamage(victim) from {_damage}
 
                     if {_damage} < 0.5:
                         set {_damage} to 0.5
 
-                    if victim is a player:
-                        set damage to {_damage}
-                    else:
-                        set victim's health to victim's health - {_damage}
+                    set damage to {_damage}
 
                     spawnDamageDisplay(attacker, victim, {_damage})
                     
                     if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
-                        set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health%&8]"
+                        set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health - damage%&8]"
                 else:
                     cancel event
                     send action bar "&4&lWait to Attack" to attacker
             else:
                 if attack cooldown of attacker >= 1:
                     #not hoe
-                    if victim is a player:
-                        set damage to 0.5
-                    else:
-                        set victim's health to victim's health - 0.5
-                    spawnDamageDisplay(attacker, victim, 0.5)
+                    set {_damage} to 0.5
+                    add {damageboost::%attacker's uuid%} to {_damage}
+                    set damage to {_damage}
+
+                    spawnDamageDisplay(attacker, victim, {_damage})
                             
                     if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
-                        set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health%&8]"
+                        set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health - damage%&8]"
                 else:
                     cancel event
                     send action bar "&4&lWait to Attack" to attacker
@@ -132,22 +127,16 @@ on damage:
             set {_victim} to victim
                 
         if {dont-fire-damage::%{_victim}%} < 1:                                
-            if victim is a player:
-                set damage to 1
-                spawnDamageDisplay({last-fire-attacker::%victim's uuid%}, victim, 1)
-            else:
-                set victim's health to victim's health - 1
-                spawnDamageDisplay({last-fire-attacker::%victim%}, victim, 1)
+            set damage to 1
+            spawnDamageDisplay({last-fire-attacker::%{_victim}%}, victim, 1)
+
             if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
-                set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health%&8]"
+                set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health - damage%&8]"
     else:
-        if victim is a player:
-            set damage to 99
-        else:
-            set victim's health to victim's health - 99
+        set damage to 99
         
         if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
-            set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health%&8]"
+            set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health - damage%&8]"
         
 local function spawnDamageDisplay(attacker: entity, victim: entity, damage: number):
     set {_attacker-to-victim} to vector between {_victim} and {_attacker}
@@ -167,7 +156,7 @@ local function spawnDamageDisplay(attacker: entity, victim: entity, damage: numb
     summon text display at {_victim}'s head offset by {_attacker-to-victim}
     set {_damageDisplay} to last spawned entity
 
-    set display text of {_damageDisplay} to "&8[&4&l%{_damage}%&8] [&a%{_attacker}%&8]"
+    set display text of {_damageDisplay} to "&8[&4&l%{_damage}%&8] [&9&l%armorEnchantDamage({_victim})%&8]"
     apply drop shadow to {_damageDisplay}
 
     set display billboard of {_damageDisplay} to center
@@ -176,7 +165,7 @@ local function spawnDamageDisplay(attacker: entity, victim: entity, damage: numb
     wait 0.5 seconds
     kill {_damageDisplay}
 
-local function armorEnchantDamage(victim: entity) ::number: 
+function armorEnchantDamage(victim: entity):: number: 
     if helmet of {_victim} is not air:
         set {_helmet-tags::*} to string list tag "Croplite:enchants" of custom nbt of {_victim}'s helmet
     if chestplate of {_victim} is not air:

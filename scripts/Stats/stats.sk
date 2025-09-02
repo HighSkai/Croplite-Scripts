@@ -10,14 +10,21 @@ function resetStats(p: offline player):
 	# scoreboard variables
 	set {rankexpmulti::%uuid of {_p}%} to 1
 	set {expmulti::%uuid of {_p}%} to 1 
+	set {cropmulti::%uuid of {_p}%} to 1
 	set {exp::%uuid of {_p}%} to 0
 	set {level::%uuid of {_p}%} to 0
+	set {_p}'s level to 0
+	set level progress of {_p} to 0
 
 	set {cropcash::%uuid of {_p}%} to 0
 	set {cropbag::%uuid of {_p}%} to 100
 	set {crops::%uuid of {_p}%} to 0
 
+	delete {chatmessage::Carlo::%uuid of {_p}%}
+
 	set {strengthpet-additional::%uuid of {_p}%} to 0
+
+	set {dailyrewardpopup::%uuid of {_p}%} to true
 
 	set {rank::%uuid of {_p}%} to "Member"
 	set {prefix::%uuid of {_p}%} to {member-Prefix}
@@ -34,13 +41,12 @@ function resetStats(p: offline player):
 	set {enchant-points::%uuid of {_p}%} to 0
 	# seedling harvest pet variables
 	set {double-crop-chance::%uuid of {_p}%} to 0%
-	set {cropharvest::%uuid of {_p}%} to 0
 
 	set {expanderfactor2::%uuid of {_p}%} to 0.0
 	set {expandernumber2::%uuid of {_p}%} to 0.0
 
 	set {amountofskills::%uuid of {_p}%} to 0
-	set {mobspawnchance::%uuid of {_p}%} to 0.1%
+	set {mobspawnchance::%uuid of {_p}%} to 0%
 
 	set {globalxpboost1::%uuid of {_p}%} to false
 	set {pvpstatus::%uuid of {_p}%} to false
@@ -106,6 +112,8 @@ function resetStats(p: offline player):
 	set {m::%uuid of {_p}%} to 0
 	set {h::%uuid of {_p}%} to 0
 
+	set {farmunlocked::1::%uuid of {_p}%} to true
+
 	resetScythes({_p})
 	resetEnchants({_p})
 	resetArmor({_p})
@@ -113,6 +121,9 @@ function resetStats(p: offline player):
 	resetPurchasedPets({_p})
 	resetnpcchats({_p})
 	resetCropBags({_p})
+	resetBoosters({_p})
+
+	set {chatmessage::Colin::%uuid of {_p}%} to 0
 
 	send "&dCroplite &aYour stats have been reset." to {_p}
 
@@ -120,16 +131,12 @@ on player pickup of wheat seeds:
 	wait 1 tick
 	remove all wheat seeds from player's inventory
 
-on script load:
-	execute console command "/setglobalvariables"
-
-command /resetcropmobchance <player>:
-	trigger:
-		set {mobspawnchance::%arg-1's uuid%} to 0.1%
-
 command /makeoperator:
 	trigger:
 		op player
+
+on script load:
+	execute console command "/setglobalvariables"
 
 command /setglobalvariables:
 	permission: operator
@@ -211,15 +218,15 @@ command /setglobalvariables:
 		set {dailiesreset} to false
 
 		set {XP-Json} to json from file "plugins/Skript/scripts/Stats/Experience/xp.json"
-		set {romanNumeral-Json} to json from file "plugins/Skript/scripts/Enchanter/romanNumerals.json"
-		set {enchants-Json} to json from file "plugins/Skript/scripts/Enchanter/enchants.json"
+		set {romanNumeral-Json} to json from file "plugins/Skript/scripts/Enchant/romanNumerals.json"
+		set {enchants-Json} to json from file "plugins/Skript/scripts/Enchant/enchants.json"
 
-		set {member-Prefix} to "&x&2&B&2&B&2&B&x&3&8&3&8&3&8M&x&4&4&4&4&4&4E&x&5&1&5&1&5&1M&x&6&7&6&7&6&7B&x&7&E&7&E&7&EE&x&9&4&9&4&9&4R&x&A&A&A&A&A&A"
-		set {vip-Prefix} to "&5VIP"
-		set {vip+-Prefix} to "&5VIP&6+"
-		set {mvp-Prefix} to "&bMVP"
-		set {mvp+-Prefix} to "&bMVP&6+"
-		set {elite-Prefix} to "&6Elite"
+		set {member-Prefix} to "&x&6&6&6&6&6&6S&x&7&1&7&1&7&1T&x&7&C&7&C&7&CO&x&7&1&7&1&7&1N&x&6&6&6&6&6&6E&7"
+		set {vip-Prefix} to "&x&D&7&D&7&D&7&lQUA&x&D&7&D&7&D&7&lRTZ&f"
+		set {vip+-Prefix} to "&x&C&B&A&A&6&2&lT&x&E&5&C&1&6&7&lO&x&F&F&D&7&6&C&lP&x&E&9&B&F&5&1&lA&x&D&2&A&7&3&6&lZ&6"
+		set {mvp-Prefix} to "&x&D&E&4&4&4&4&lR&x&F&1&6&4&6&4&lU&x&E&8&5&4&5&4&lB&x&D&E&4&4&4&4&lY&c"
+		set {mvp+-Prefix} to "&x&4&A&5&9&C&F&lS&x&5&7&6&4&C&F&lA&x&6&3&7&0&C&F&lP&x&7&0&7&B&C&F&lP&x&6&7&7&3&C&F&lH&x&5&D&6&A&C&F&lI&x&5&4&6&2&C&F&lR&x&4&A&5&9&C&F&lE&9"
+		set {elite-Prefix} to "&x&E&0&0&E&8&0&lA&x&D&9&2&6&8&7&lM&x&D&2&3&D&8&E&lE&x&C&B&5&5&9&5&lT&x&C&4&6&C&9&C&lH&x&C&F&5&2&9&6&lY&x&D&A&3&9&9&1&lS&x&E&5&1&F&8&B&lT&d"
 		set {helper-Prefix} to "&x&F&F&A&5&0&0&l&x&F&F&B&F&2&E&lH&x&F&F&D&8&5&D&lE&x&F&F&F&2&8&B&lL&x&E&C&F&5&7&F&lP&x&D&9&F&9&7&3&lE&x&C&6&F&C&6&6&lR&x&B&3&F&F&5&A&l&x&B&3&F&F&5&A"
 		set {builder-Prefix} to "&x&0&0&7&9&F&F&l&x&1&0&9&9&F&E&lB&x&2&0&B&A&F&D&lU&x&3&0&D&A&F&B&lI&x&4&0&F&A&F&A&lL&x&6&A&F&B&F&B&lD&x&9&5&F&D&F&C&lE&x&B&F&F&E&F&C&lR&x&E&9&F&F&F&D&l&x&E&9&F&F&F&D"
 		set {developer-Prefix} to "&x&F&F&0&0&0&0&l&x&F&F&1&A&0&E&lD&x&F&F&3&4&1&C&lE&x&F&F&4&E&2&9&lV&x&F&F&6&8&3&7&lE&x&F&F&8&2&4&5&lL&x&F&F&9&2&5&1&lO&x&F&F&A&2&5&D&lP&x&F&F&B&3&6&9&lE&x&F&F&C&3&7&5&lR&x&F&F&D&3&8&1&l&x&F&F&D&3&8&1"
@@ -230,3 +237,18 @@ command /setglobalvariables:
 		set {ihelp-Prefix} to "&x&D&4&F&B&B&C&oI &x&C&D&E&A&C&A&oh&x&C&6&D&A&D&9&oe&x&B&F&C&9&E&7&ol&x&B&9&B&8&F&5&op &x&B&2&B&0&F&B&oo&x&A&D&B&7&F&0&ou&x&A&7&B&F&E&4&ot &x&A&1&C&7&D&8&oa  &x&9&C&C&E&C&D&ol&x&A&5&C&A&C&6&oi&x&B&6&B&F&C&2&ot&x&C&6&B&4&B&D&ot&x&D&7&A&A&B&9&ol&x&E&7&9&F&B&4&oe"
 		
 		send "&5&lCroplite &aGlobal variables have been set." to player
+
+
+command /listranks:
+	trigger:
+		broadcast "&x&6&6&6&6&6&6S&x&7&1&7&1&7&1T&x&7&C&7&C&7&CO&x&7&1&7&1&7&1N&x&6&6&6&6&6&6E&7 %player%"
+		broadcast "&x&D&7&D&7&D&7&lQUA&x&D&7&D&7&D&7&lRTZ&f %player%"
+		broadcast "&x&C&B&A&A&6&2&lT&x&E&5&C&1&6&7&lO&x&F&F&D&7&6&C&lP&x&E&9&B&F&5&1&lA&x&D&2&A&7&3&6&lZ&6 %player%"
+		broadcast "&x&D&E&4&4&4&4&lR&x&F&1&6&4&6&4&lU&x&E&8&5&4&5&4&lB&x&D&E&4&4&4&4&lY&c %player%"
+		broadcast "&x&4&A&5&9&C&F&lS&x&5&7&6&4&C&F&lA&x&6&3&7&0&C&F&lP&x&7&0&7&B&C&F&lP&x&6&7&7&3&C&F&lH&x&5&D&6&A&C&F&lI&x&5&4&6&2&C&F&lR&x&4&A&5&9&C&F&lE&9 %player%"
+		broadcast "&x&E&0&0&E&8&0&lA&x&D&9&2&6&8&7&lM&x&D&2&3&D&8&E&lE&x&C&B&5&5&9&5&lT&x&C&4&6&C&9&C&lH&x&C&F&5&2&9&6&lY&x&D&A&3&9&9&1&lS&x&E&5&1&F&8&B&lT&d %player%"
+		broadcast ""
+		broadcast "&x&E&0&D&A&3&9&lH&x&E&4&D&F&6&4&lE&x&E&8&E&5&9&0&lL&x&E&C&E&A&B&B&lP&x&E&B&E&6&7&C&lE&x&E&9&E&2&3&D&lR&e %player%"
+		broadcast "&x&3&9&6&6&E&0&lB&x&5&0&7&6&D&D&lU&x&6&7&8&6&D&B&lI&x&7&E&9&6&D&8&lL&x&6&7&8&6&D&B&lD&x&5&0&7&6&D&D&lE&x&3&9&6&6&E&0&lR&9 %player%"
+		broadcast "&x&E&0&3&9&3&9&lD&x&D&D&4&6&4&6&lE&x&D&B&5&3&5&3&lV&x&D&8&6&0&6&0&lE&x&D&5&6&D&6&D&lL&x&D&3&5&C&5&C&lO&x&D&1&4&A&4&A&lP&x&C&F&3&9&3&9&lE&x&C&D&2&7&2&7&lR&4 %player%"
+		broadcast "&x&2&2&3&3&F&F&lO&x&3&C&9&6&D&F&lW&x&5&5&F&9&B&F&lN&x&3&C&9&6&D&F&lE&x&2&2&3&3&F&F&lR&9 %player%"

@@ -1,0 +1,244 @@
+command /givewand:
+    trigger:
+        set {_item} to a stick named "&dMagic Wand"
+        set line 1 of lore of {_item} to "Skai is the goat"
+        give player {_item}
+        set {wand-mode::%player's uuid%} to 1
+
+
+on left click with stick:
+    if player is sneaking:
+        if name of event-item is "&dMagic Wand":
+            if {wand-mode::%player's uuid%} - 1 >= 1:
+                subtract 1 from {wand-mode::%player's uuid%}
+                send "changing mode -1" to player
+
+on right click with stick:
+    if player is sneaking:
+        if name of event-item is "&dMagic Wand":
+            send "changing mode +1" to player
+            add 1 to {wand-mode::%player's uuid%}
+    else if name of event-item is "&dMagic Wand":
+        if {wand-mode::%player's uuid%} is 1:
+            set {_ray} to ray trace from player with max distance 20
+            set {_loc} to hit location of {_ray}
+            if {_ray} is set:
+                blackCircle({_loc})
+                play sound "entity.evoker.prepare_attack" at {_loc}
+                loop all players in radius 6 of {_loc}:
+                    damage loop-player by 1
+                    apply blindness 4 to loop-entity for 5 seconds
+                broadcast "HIT"
+            else:
+                send "Needs to be within 20 blocks" to player
+        else if {wand-mode::%player's uuid%} is 2:
+            set {_ray} to ray trace from player with max distance 20
+            set {_loc} to hit location of {_ray}
+            if {_ray} is set:
+                play sound "item.firecharge.use" to player
+                set {_shape} to a line from player's head to {_loc}
+                set particle of {_shape} to flame
+                draw an animation of the shape of a line from player's head to {_loc} over 1 seconds
+
+                wait 1 seconds
+                set {_sphere} to sphere with radius 1
+                set particle of {_sphere} to flame
+                set {_num} to 1
+                loop 2 times:
+                    set radius of {_sphere} to {_num}
+                    draw shape {_sphere} at {_loc}
+                    add 1 to {_num}
+
+                draw 30 of flame at {_loc}
+
+                set {_sphere} to sphere with radius 2
+                set particle of {_sphere} to smoke
+                draw shape {_sphere} at {_loc}
+                
+                make a fake explosion at {_loc}
+                loop all entities in radius 4 of {_loc}:
+                    if loop-entity is a living entity:
+                        damage loop-entity by 3
+                        set loop-entity on fire for 5 seconds
+            else:
+                send "Too far for Fire Blast!" to player
+        else if {wand-mode::%player's uuid%} is 3:
+            set {_ray} to ray trace from player with max distance 30
+            set {_loc} to hit location of {_ray}
+            if {_ray} is set:
+                play sound "entity.lightning_bolt.thunder" to player
+                strike lightning at {_loc}
+
+                set {_sphere} to sphere with radius 1
+                set particle of {_sphere} to flash
+                set {_num} to 1
+                loop 2 times:
+                    set radius of {_sphere} to {_num}
+                    draw shape {_sphere} at {_loc}
+                    add 1 to {_num}
+                    wait 2 tick
+            else:
+                send "No valid target for lightning!" to player
+        else if {wand-mode::%player's uuid%} is 4:
+            set {_ray} to ray trace from player with max distance 15
+            set {_loc} to hit location of {_ray}
+            if {_ray} is set:
+                play sound "block.glass.break" to player
+                draw 30 of snowflake at {_loc}
+
+                set {_sphere} to sphere with radius 1
+                set particle of {_sphere} to item_snowball
+                set {_num} to 1
+                loop 5 times:
+                    set radius of {_sphere} to {_num}
+                    draw shape {_sphere} at {_loc}
+                    add 1 to {_num}
+                    wait 2 tick
+
+                loop all living entities in radius 5 of {_loc}:
+                    apply slowness 4 to loop-entity for 5 seconds
+                    send "❄ Frozen!" to loop-entity
+            else:
+                send "Out of range for Freeze Trap." to player
+        else if {wand-mode::%player's uuid%} is 5:
+            set {_ray} to ray trace from player with max distance 25
+            if {_ray} is set:
+                set {_start} to location of player
+                set {_target} to hit location of {_ray}
+            else:
+                set {_start} to location of player
+                set {_target} to location 25 blocks in front of player
+
+            set {_yaw} to yaw of player
+            set {_pitch} to pitch of player
+
+            draw 5 of portal at {_start}
+
+            set {_circle} to circle with radius 2
+            set particle of {_circle} to end_rod
+            draw shape {_circle} at {_target}
+
+            set {_circle} to circle with radius 2
+            set particle of {_circle} to dragon_breath
+            set {_num} to 2
+            loop 5 times:
+                set radius of {_circle} to {_num}
+                draw shape {_circle} at {_target}
+                subtract 0.25 from {_num}
+
+            draw 20 of end_rod at {_target}
+
+            teleport player to location(x coordinate of {_target}, y coordinate of {_target}, z coordinate of {_target}, world "world", {_yaw}, {_pitch})
+            play sound "entity.enderman.teleport" to player
+        else if {wand-mode::%player's uuid%} is 6:
+            set {_ray} to ray trace from player with max distance 20
+            set {_loc} to hit location of {_ray}
+            if {_ray} is set:
+                play sound "entity.evoker.cast_spell" to player
+        
+                set {_line} to a line from player's head to {_loc}
+                set particle of {_line} to trial_omen
+                draw an animation of the shape {_line} over 5 ticks
+
+                wait 5 ticks
+                set {_sphere} to sphere with radius 1
+                set particle of {_sphere} to sonic_boom
+                set {_num} to 1
+                loop 2 times:
+                    set radius of {_sphere} to {_num}
+                    draw shape {_sphere} at {_loc}
+                    add 1 to {_num}
+
+                draw 50 of trial_omen at {_loc}
+
+                play sound "entity.warden.tendril_clicks" to player
+                play sound "entity.warden.sonic_boom" to player
+
+                loop all entities in radius 3 of {_loc}:
+                    if loop-entity is a living entity:
+                        damage loop-entity by 3
+                        set loop-entity on fire for 5 seconds
+            else:
+                send "Too far for Fire Blast!" to player
+
+        else if {wand-mode::%player's uuid%} is 7:
+            set {_loc} to spellTarget(player, 10)
+                
+            play sound "entity.illusioner.cast_spell" to player 
+        
+            set {_line} to a line from player's head to {_loc}
+            set particle of {_line} to smoke
+            draw an animation of the shape {_line} over 1 seconds
+
+            wait 1 seconds
+            play sound "minecraft:item.trident.thunder" to player
+            set {_circle} to circle with radius 1
+            set particle of {_circle} to trial_spawner_detection_ominous
+
+            set {_circle2} to circle with radius 1
+            set particle of {_circle2} to sculk_soul
+
+            set {_num} to 1
+            loop 7 times:
+                set radius of {_circle} to {_num}
+                set radius of {_circle2} to {_num}
+                draw shape {_circle} at {_loc} for 3 seconds
+                draw shape {_circle2} at {_loc} for 3 seconds
+                add 1 to {_num}
+
+            loop all living entities in radius 8 of {_loc}:
+                if loop-entity is not player:
+                    apply weakness 1 to loop-entity for 8 seconds
+                    apply nausea 1 to loop-entity for 8 seconds
+        else if {wand-mode::%player's uuid%} is 8:
+            set {_ray} to ray trace from player with max distance 20
+            set {_loc} to hit location of {_ray}
+            if {_ray} is set:
+                play sound "entity.wither.shoot" at {_loc}
+                draw 50 of soul at {_loc}
+                set {_sphere} to sphere with radius 1
+                set particle of {_sphere} to soul
+                set {_num} to 1
+                loop 5 times:
+                    set radius of {_sphere} to {_num}
+                    draw shape {_sphere} at {_loc}
+                    add 1 to {_num}
+                    wait 1 tick
+                loop all living entities in radius 5 of {_loc}:
+                    if loop-entity is not player:
+                        damage loop-entity by 2
+                        apply wither 2 to loop-entity for 3 seconds
+                        apply weakness 1 to loop-entity for 5 seconds
+            else:
+                send "Out of range for Wither Pulse!" to player
+            
+
+every tick:
+    loop all players:
+        if name of loop-player's tool is "&dMagic Wand":
+            send action bar "mode %{wand-mode::%loop-player's uuid%}%" to loop-player
+
+local function spellTarget(p: player, range: integer):: location: 
+    set {_ray} to ray trace from {_p} with max distance {_range}
+
+    if {_ray} is set:
+        broadcast "ray"
+        return hit location of {_ray}
+    else:
+        broadcast "other"
+        return location {_range} blocks in front of {_p}
+
+    
+function blackCircle(loc: location):
+    set {_circle} to circle with radius 6
+    set {_sphere} to sphere with radius 6
+    set particle of {_circle} to squid_ink
+    set particle of {_sphere} to squid_ink
+    set {_num} to 6
+    loop 5 times:
+        set radius of {_circle} to {_num}
+        set radius of {_sphere} to {_num}
+        draw shape {_circle} at {_loc}
+        draw shape {_sphere} at {_loc} for 1 tick
+        subtract 1 from {_num}
+        wait 2 ticks 

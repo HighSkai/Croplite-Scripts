@@ -1,0 +1,25 @@
+command /store:
+	trigger:
+		play sound "minecraft:ui.button.click" to player
+		loadStoreGui(player)
+
+function loadStoreGui(p: player):
+	set {_gui} to chest inventory with 3 rows named "&a&lStore"
+
+	loop 27 times:
+		set {_item} to lime stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
+
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+     
+	open {_gui} to {_p}
+
+on inventory click:
+	if event-inventory is not player's inventory:
+		if event-inventory's name is "&a&lStore":
+			cancel event
+
+			if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory

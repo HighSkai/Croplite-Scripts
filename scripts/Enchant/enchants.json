@@ -1,0 +1,277 @@
+{
+    "Sharpness 1": [
+        "&4&lSharpness &8[&4&lI&8]",
+        "&7Increases attack damage",
+        "&7by +1",
+        ""
+    ],
+    "Sharpness 2": [
+        "&4&lSharpness &8[&4&lII&8]",
+        "&7Increases attack damage",
+        "&7by +2",
+        ""
+    ],
+    "Sharpness 3": [
+        "&4&lSharpness &8[&4&lIII&8]",
+        "&7Increases attack damage",
+        "&7by +3",
+        ""
+    ],
+    "Sharpness 4": [
+        "&4&lSharpness &8[&4&lIV&8]",
+        "&7Increases attack damage",
+        "&7by +4",
+        ""
+    ],
+    "Sharpness 5": [
+        "&4&lSharpness &8[&4&lV&8]",
+        "&7Increases attack damage",
+        "&7by +5",
+        ""
+    ],
+    "Sharpness 6": [
+        "&4&lSharpness &8[&4&lVI&8]",
+        "&7Increases attack damage",
+        "&7by +6",
+        ""
+    ],
+    "Sharpness 7": [
+        "&4&lSharpness &8[&4&lVII&8]",
+        "&7Increases attack damage",
+        "&7by +7",
+        ""
+    ],
+    "Sharpness 8": [
+        "&4&lSharpness &8[&4&lVIII&8]",
+        "&7Increases attack damage",
+        "&7by +8",
+        ""
+    ],
+    "Sharpness 9": [
+        "&4&lSharpness &8[&4&lIX&8]",
+        "&7Increases attack damage",
+        "&7by +9",
+        ""
+    ],
+    "Sharpness 10": [
+        "&4&lSharpness &8[&4&lX&8]",
+        "&7Increases attack damage",
+        "&7by +10",
+        ""
+    ],
+    "Fire Aspect 1": [
+        "&6&lFire Aspect &8[&6&lI&8]",
+        "&7Ignites attacked farmers",
+        "&7and crop mobs for 1 second",
+        ""
+    ],
+    "Fire Aspect 2": [
+        "&6&lFire Aspect &8[&6&lII&8]",
+        "&7Ignites attacked farmers",
+        "&7and crop mobs for 2 seconds",
+        ""
+    ],
+    "Fire Aspect 3": [
+        "&6&lFire Aspect &8[&6&lIII&8]",
+        "&7Ignites attacked farmers",
+        "&7and crop mobs for 3 seconds",
+        ""
+    ],
+    "Fire Aspect 4": [
+        "&6&lFire Aspect &8[&6&lIV&8]",
+        "&7Ignites attacked farmers",
+        "&7and crop mobs for 4 seconds",
+        ""
+    ],
+    "Fire Aspect 5": [ 
+        "&6&lFire Aspect &8[&6&lV&8]",
+        "&7Ignites attacked farmers",
+        "&7and crop mobs for 5 seconds",
+        ""
+    ],
+    "Experience 1": [
+        "&e&lExperience &8[&e&lI&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.1",
+        ""
+    ],
+    "Experience 2": [
+        "&e&lExperience &8[&e&lII&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.2",
+        ""
+    ],
+    "Experience 3": [
+        "&e&lExperience &8[&e&lIII&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.3",
+        ""
+    ],
+    "Experience 4": [
+        "&e&lExperience &8[&e&lIV&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.4",
+        ""
+    ],
+    "Experience 5": [
+        "&e&lExperience &8[&e&lV&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.5",
+        ""
+    ],
+    "Experience 6": [
+        "&e&lExperience &8[&e&lVI&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.6",
+        ""
+    ],
+    "Experience 7": [
+        "&e&lExperience &8[&e&lVII&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.7",
+        ""
+    ],
+    "Experience 8": [
+        "&e&lExperience &8[&e&lVIII&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.8",
+        ""
+    ],
+    "Experience 9": [
+        "&e&lExperience &8[&e&lIX&8]",
+        "&7Increases experience multiplier",
+        "&7by +0.9",
+        ""
+    ],
+    "Experience 10": [
+        "&e&lExperience &8[&e&lX&8]",
+        "&7Increases experience multiplier",
+        "&7by +1.0",
+        ""
+    ],
+    "Crop Multi 1": [
+        "&b&lCrop Multi &8[&b&lI&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.1",
+        ""
+    ],
+    "Crop Multi 2": [
+        "&b&lCrop Multi &8[&b&lII&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.2",
+        ""
+    ],
+    "Crop Multi 3": [
+        "&b&lCrop Multi &8[&b&lIII&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.3",
+        ""
+    ],
+    "Crop Multi 4": [
+        "&b&lCrop Multi &8[&b&lIV&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.4",
+        ""
+    ],
+    "Crop Multi 5": [
+        "&b&lCrop Multi &8[&b&lV&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.5",
+        ""
+    ],
+    "Crop Multi 6": [
+        "&b&lCrop Multi &8[&b&lVI&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.6",
+        ""
+    ],
+    "Crop Multi 7": [
+        "&b&lCrop Multi &8[&b&lVII&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.7",
+        ""
+    ],
+    "Crop Multi 8": [
+        "&b&lCrop Multi &8[&b&lVIII&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.8",
+        ""
+    ],
+    "Crop Multi 9": [
+        "&b&lCrop Multi &8[&b&lIX&8]",
+        "&7Increases crop multiplier",
+        "&7by +0.9",
+        ""
+    ],
+    "Crop Multi 10": [
+        "&b&lCrop Multi &8[&b&lX&8]",
+        "&7Increases crop multiplier",
+        "&7by +1.0",
+        ""
+    ],
+    "Crop Reap 1": [
+        "&8&lCrop Reap &8[&8&lI&8]",
+        "&7Reaps 5% of crops from",
+        "&7killed farmers",
+        ""
+    ],
+    "Crop Reap 2": [
+        "&8&lCrop Reap &8[&8&lII&8]",
+        "&7Reaps 10% of crops from",
+        "&7killed farmers",
+        ""
+    ],
+    "Crop Reap 3": [
+        "&8&lCrop Reap &8[&8&lIII&8]",
+        "&7Reaps 15% of crops from",
+        "&7killed farmers",
+        ""
+    ],
+    "Crop Reap 4": [
+        "&a&lCrop Reap &8[&8&lIV&8]",
+        "&7Reaps 20% of crops from",
+        "&7killed farmers",
+        ""
+    ],
+    "Crop Reap 5": [
+        "&8&lCrop Reap &8[&8&lV&8]",
+        "&7Reaps 25% of crops from",
+        "&7killed farmers",
+        ""
+    ],
+    "Mob Spawn 1": [
+        "&2&lMob Spawn &8[&2&lI&8]",
+        "&7Increases the chance of",
+        "&7spawning a crop mob",
+        "&7from farming by +0.1%",
+        ""
+    ],
+    "Mob Spawn 2": [
+        "&2&lMob Spawn &8[&2&lII&8]",
+        "&7Increases the chance of",
+        "&7spawning a crop mob",
+        "&7from farming by +0.2%",
+        ""
+    ],
+    "Mob Spawn 3": [
+        "&2&lMob Spawn &8[&2&lIII&8]",
+        "&7Increases the chance of",
+        "&7spawning a crop mob",
+        "&7from farming by +0.3%",
+        ""
+    ],
+    "Mob Spawn 4": [
+        "&2&lMob Spawn &8[&2&lIV&8]",
+        "&7Increases the chance of",
+        "&7spawning a crop mob",
+        "&7from farming by +0.4%",
+        ""
+    ],
+    "Mob Spawn 5": [
+        "&2&lMob Spawn &8[&2&lV&8]",
+        "&7Increases the chance of",
+        "&7spawning a crop mob",
+        "&7from farming by +0.5%",
+        ""
+    ]
+}

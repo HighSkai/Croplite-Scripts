@@ -1,0 +1,113 @@
+on right click:
+    if name of clicked entity is "&e&lColin":
+        if {npc::talking::Colin::%player's uuid%} is set:
+            stop
+        else:
+            set {npc::talking::Colin::%player's uuid%} to true
+            if {colin::alreadyclicked::%player's uuid%} is not set:
+                set {colin::alreadyclicked::%player's uuid%} to false
+            if {chatmessage::Colin::%player's uuid%} = 0:
+                if {level::%player's uuid%} > 55:
+                    if {objective::%player's uuid%} is "objectivenone":
+                        play sound "entity.bee.hurt" to player
+                        send "&e&lColin &fOh hey, are you new here?%nl%" to player
+                        wait 2 seconds
+                        play sound "entity.bee.hurt" to player
+                        send "&e&lColin &fI'm &e&lColin&r&f, welcome to &2&lFarm 2&r&f! Always nice to see a new face.%nl%" to player
+                        wait 3 seconds
+                        play sound "entity.bee.hurt" to player
+                        send "&e&lColin &fListen, it's getting colder these days, I'm worried Demeter's power is waning.%nl%" to player
+                        wait 4 seconds
+                        play sound "entity.bee.hurt" to player
+                        send "&e&lColin &fWhatever the case, I need to gain some mass. With my build now I'll freeze in a few mins.%nl%" to player
+                        wait 4 seconds
+                        play sound "entity.bee.hurt" to player
+                        send "&e&lColin &fCould you collect pollen for me?%nl%" to player
+                        wait 3 seconds
+                        set {colin::alreadyclicked::%player's uuid%} to false
+                        startColinQuest(player)
+                    else:
+                        send "&e&lColin &fPlease complete your current objective before asking for a new one!%nl%" to player
+                else:
+                    send "&e&lColin &fYou need to be &9&lLevel 55&r&f or higher to unlock this objective!%nl%" to player
+                    
+            else if {chatmessage::Colin::%player's uuid%} = 1:
+                send "&e&lColin &fBee-utiful farmer! You have a good rest of your day now, toodles!%nl%" to player
+                wait 3 seconds
+                play sound "entity.player.levelup" to player
+                send "&8[&2&lObjective &nComplete!&8]" to player
+                send "&7------------------------------" to player
+                send "&8[&2Objective Rewards&8]" to player
+                send "&8 - &6&l2x Pet Crate Key" to player
+                send "&8 - &620000 Experience" to player
+                send "&8 - &612000 Crop Cash" to player
+                send "&8 - &e2 Enchant Points" to player
+                send "&7------------------------------" to player
+                execute console command "/crate key give %player% pet 1"
+                add 20000 to {exp::%player's uuid%}
+                add 12000 to {cropcash::%player's uuid%}
+                add 1 to {enchant-points::%player's uuid%}
+                set {objective::%player's uuid%} to "objectivenone"
+                set {objprogressreq::%player's uuid%} to 0
+                set {objprogress::%player's uuid%} to 0
+                set {objdesc::%player's uuid%} to " "
+                set {objcomplete::%player's uuid%} to false
+                updateObjective(player)
+                levelUp(player)
+                add 1 to {chatmessage::Colin::%player's uuid%}
+            else:
+                send "&e&lColin &fI've decided to stay in here actually!%nl%" to player
+
+
+
+            wait 1 second
+            delete {npc::talking::Colin::%player's uuid%}
+
+function startColinQuest(p: player):
+    set {_text} to a new text component from "&e&lColin&f &aDo you accept the objective?"
+
+    set {_yescolin} to a new text component from "&8[&a&lYES&8]"
+    set {_nocolin} to a new text component from "&8[&c&lNO&8]"
+
+    create a callback for {_yescolin}:
+        if {colin::alreadyclicked::%uuid of {_p}%} is false:
+            yescolin({_p})
+
+    create a callback for {_nocolin}:
+        if {colin::alreadyclicked::%uuid of {_p}%} is false:
+            nocolin({_p})
+
+    send components (merge components {_text} and {_yescolin} and {_nocolin} with " ") to {_p}
+
+
+function yescolin(p: player):
+    set {colin::alreadyclicked::%uuid of {_p}%} to true
+    send "&e&lColin&r&f Excellent! Off you go now!%nl%" to {_p}
+    wait 2 seconds
+    send "&7------------------------------" to {_p}
+    send "&8[&2&lObjective&r&8] &5Camel Crisis: &r&eSave Colin%nl% from quicksand" to {_p}
+    send "&7------------------------------" to {_p}
+    play sound "block.amethyst_block.resonate" to {_p}
+    set {objective::%uuid of {_p}%} to "Bee Bulk"
+    set {objprogressreq::%uuid of {_p}%} to 1000
+    set {objdesc::%uuid of {_p}%} to "Collect 1000 tulips"
+    add 1 to {chatmessage::Colin::%uuid of {_p}%}
+    
+function nocolin(p: player):     
+    set {colin::alreadyclicked::%uuid of {_p}%} to true
+    send "&e&lColin&r&f Well, I'll be here if you change your mind. And if you don't change your mind.%nl%" to {_p}
+
+command /setitementity:
+    trigger:
+        set {_loc} to player's location
+        spawn item display at {_loc}
+        set {_display} to last spawned entity
+        set display item of {_display} to golden shovel
+        set pitch of {_display} to 0
+        rotate {_display} around z axis by 154 degrees
+
+ 
+command /testpenis:
+    trigger:
+        loop entities in radius 5 of player:
+            kill loop-entity

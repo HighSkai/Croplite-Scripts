@@ -32,3 +32,32 @@ local function checkBuckWheatley(p: player, penis: textcomponent):
     set page 1 of book {guidebook::%uuid of {_p}%} to merge components {_penis} and {_temp} joined with newline
     set {_p}'s held item to {guidebook::%uuid of {_p}%}
     open book {guidebook::%uuid of {_p}%} to {_p}
+
+
+
+command /testalexisdumb:
+    trigger:
+        set {buck::alreadyclicked::%player's uuid%} to false
+        set {_text} to a new text component from "&6&lBuck Wheatly &aDo you accept the alex is dumb quest: "
+
+        set {_yesbuck} to a new text component from "&8[&a&lYES&8]"
+        set {_nobuck} to a new text component from "&8[&c&lNO&8]"
+
+        create a callback for {_yesbuck}:
+            if {buck::alreadyclicked::%player's uuid%} is false:
+                yesbuck(player)
+
+        create a callback for {_nobuck}:
+            if {buck::alreadyclicked::%player's uuid%} is false:
+                nobuck(player)
+
+        send components (merge components {_text} and {_yesbuck} and {_nobuck} with " ") to player
+
+
+function yesbuck(p: player):
+    set {buck::alreadyclicked::%uuid of {_p}%} to true
+    send "Yay lets get the quest started...." to {_p}
+    
+function nobuck(p: player):     
+    set {buck::alreadyclicked::%uuid of {_p}%} to true
+    send "no lets not get the quest started...." to {_p}

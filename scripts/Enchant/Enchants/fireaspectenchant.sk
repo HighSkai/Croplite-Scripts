@@ -1,5 +1,5 @@
 function loadFireAspectEnchantGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&6&lFire Aspect Enchant &8| Page 1"
+	set {_gui} to chest inventory with 3 rows named "&6&lFire Aspect &8| Page 1"
 	
 	loop 27 times:
 		set {_slot} to loop-number - 1
@@ -15,13 +15,13 @@ function loadFireAspectEnchantGUI(p: player):
 
 		if {fireaspect::%loop-integer - 11%::unlocked::%uuid of {_p}%} is equal to true:
 			if {fireaspect::%loop-integer - 10%::unlocked::%uuid of {_p}%} is equal to true:
-				set {_item} to blaze powder named "&6&lFire Aspect &8[&6&l%romanNumeralConversion(loop-integer - 11)%&8] | [&a&lUnlocked&8]"
+				set {_item} to blaze powder named "&6&lFire Aspect &8[&6&l%romanNumeralConversion(loop-integer - 11)%&8] | &a&lPurchased"
 				make {_item} glint
 			else:
 				set {_item} to blaze powder named "&6&lFire Aspect &8[&6&l%romanNumeralConversion(loop-integer - 11)%&8]"
 				
 			loop values "Fire Aspect %loop-integer - 11%" of {enchants-Json}: 
-				add json-value to {_lore::*}
+				add loop-value-2 to {_lore::*}
 
 			add "&ePrice:" to {_lore::*}
 			add "&e&lEnchant Points &8[&e&l%{fireaspect::%loop-integer - 11%::price}%&8]" to {_lore::*}
@@ -40,7 +40,7 @@ function loadFireAspectEnchantGUI(p: player):
 
 on inventory click:
 	if event-inventory is not player's inventory:
-		if event-inventory's name contains "&6&lFire Aspect Enchant &8| Page 1":
+		if event-inventory's name contains "&6&lFire Aspect &8| Page 1":
 			cancel event
 			
 			if event-slot is 22:
@@ -64,13 +64,13 @@ on inventory click:
 							checkTrackorChat(player)
 
 							play sound "entity.experience_orb.pickup" to player
-							send "&d&lCroplite &aYou've unlocked &6&lFire Aspect &8[&6&l%romanNumeralConversion({_slot})%&8]&a." to player
+							send "&5&lElliott &aSuccessfully purchased enchant." to player
 						else:
 							play sound "minecraft:entity.villager.no" to player
-							send "&d&lCroplite &cYou don't have enough &e&lEnchant Points &cto unlock this enchant." to player
+							send "&5&lElliott &cInsufficient &e&lEnchant Points &cfor enchant." to player
 				else:
 					play sound "minecraft:entity.villager.no" to player
-					send "&d&lCroplite &cYou've already unlocked this enchant." to player
+					send "&5&lElliott &cAlready purchased enchant." to player
 
 function setFireAspectEnchantPrices():
     set {fireaspect::1::price} to 1

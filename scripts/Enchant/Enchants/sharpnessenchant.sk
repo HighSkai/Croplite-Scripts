@@ -1,5 +1,5 @@
 function loadSharpnessEnchantGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&4&lSharpness Enchant &8| Page 1"
+	set {_gui} to chest inventory with 3 rows named "&4&lSharpness &8| Page 1"
 	
 	loop 27 times:
 		set {_slot} to loop-number - 1
@@ -16,13 +16,13 @@ function loadSharpnessEnchantGUI(p: player):
 
 		if {sharpness::%loop-integer - 11%::unlocked::%uuid of {_p}%} is equal to true:
 			if {sharpness::%loop-integer - 10%::unlocked::%uuid of {_p}%} is equal to true:
-				set {_item} to redstone named "&4&lSharpness &8[&4&l%romanNumeralConversion(loop-integer - 11)%&8] | [&a&lUnlocked&8]"
+				set {_item} to redstone named "&4&lSharpness &8[&4&l%romanNumeralConversion(loop-integer - 11)%&8] | &a&lPurchased"
 				make {_item} glint
 			else:
 				set {_item} to redstone named "&4&lSharpness &8[&4&l%romanNumeralConversion(loop-integer - 11)%&8]"
 				
 			loop values "Sharpness %loop-integer - 11%" of {enchants-Json}: 
-				add json-value to {_lore::*}
+				add loop-value-2 to {_lore::*}
 
 			add "&ePrice:" to {_lore::*}
 			add "&e&lEnchant Points &8[&e&l%{sharpness::%loop-integer - 11%::price}%&8]" to {_lore::*}
@@ -40,7 +40,7 @@ function loadSharpnessEnchantGUI(p: player):
 	open {_gui} to {_p}
 
 function loadSharpnessEnchantGUI2(p: player):
-	set {_gui} to chest inventory with 3 rows named "&4&lSharpness Enchant &8| Page 2"
+	set {_gui} to chest inventory with 3 rows named "&4&lSharpness &8| Page 2"
 	
 	loop 27 times:
 		set {_slot} to loop-number - 1
@@ -57,13 +57,13 @@ function loadSharpnessEnchantGUI2(p: player):
 
 		if {sharpness::%loop-integer - 6%::unlocked::%uuid of {_p}%} is equal to true:
 			if {sharpness::%loop-integer - 5%::unlocked::%uuid of {_p}%} is equal to true:
-				set {_item} to redstone named "&4&lSharpness &8[&4&l%romanNumeralConversion(loop-integer - 6)%&8] | [&a&lUnlocked&8]"
+				set {_item} to redstone named "&4&lSharpness &8[&4&l%romanNumeralConversion(loop-integer - 6)%&8] | &a&lPurchased"
 				make {_item} glint
 			else:
 				set {_item} to redstone named "&4&lSharpness &8[&4&l%romanNumeralConversion(loop-integer - 6)%&8]"
 				
 			loop values "Sharpness %loop-integer - 6%" of {enchants-Json}: 
-				add json-value to {_lore::*}
+				add loop-value-2 to {_lore::*}
 
 			add "&ePrice:" to {_lore::*}
 			add "&e&lEnchant Points &8[&e&l%{sharpness::%loop-integer - 6%::price}%&8]" to {_lore::*}
@@ -82,7 +82,7 @@ function loadSharpnessEnchantGUI2(p: player):
 
 on inventory click:
 	if event-inventory is not player's inventory:
-		if event-inventory's name contains "&4&lSharpness Enchant &8| Page 1":
+		if event-inventory's name contains "&4&lSharpness &8| Page 1":
 			cancel event
 			
 			if event-slot is 22:
@@ -109,15 +109,15 @@ on inventory click:
 							checkTrackorChat(player)
 
 							play sound "entity.experience_orb.pickup" to player
-							send "&d&lCroplite &aYou've unlocked &4&lSharpness &8[&4&l%romanNumeralConversion({_slot})%&8]&a." to player
+							send "&5&lElliott &aSuccessfully purchased enchant." to player
 						else:
 							play sound "minecraft:entity.villager.no" to player
-							send "&d&lCroplite &cYou don't have enough &e&lEnchant Points &cto unlock this enchant." to player
+							send "&5&lElliott &cInsufficient &e&lEnchant Points &cfor enchant." to player
 				else:
 					play sound "minecraft:entity.villager.no" to player
-					send "&d&lCroplite &cYou've already unlocked this enchant." to player
+					send "&5&lElliott &cAlready purchased enchant." to player
 
-		if event-inventory's name contains "&4&lSharpness Enchant &8| Page 2":
+		if event-inventory's name contains "&4&lSharpness &8| Page 2":
 			cancel event
 			
 			if event-slot is 22:
@@ -144,13 +144,13 @@ on inventory click:
 							checkTrackorChat(player)
 
 							play sound "entity.experience_orb.pickup" to player
-							send "&d&lCroplite &aYou've unlocked &4&lSharpness &8[&4&l%romanNumeralConversion({_slot})%&8]&a." to player
+							send "&5&lElliott &aSuccessfully purchased enchant." to player
 						else:
 							play sound "minecraft:entity.villager.no" to player
-							send "&d&lCroplite &cYou don't have enough &e&lEnchant Points &cto unlock this enchant." to player
+							send "&5&lElliott &cInsufficient &e&lEnchant Points &cfor enchant." to player
 				else:
 					play sound "minecraft:entity.villager.no" to player
-					send "&d&lCroplite &cYou've already unlocked this enchant." to player
+					send "&5&lElliott &cAlready purchased enchant." to player
 
 function setSharpnessEnchantPrices():
     set {sharpness::1::price} to 1

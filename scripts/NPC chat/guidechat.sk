@@ -1,65 +1,122 @@
 on right click:
 	if name of clicked entity is "&6&lBuck Wheatly &8(&a&lGuide&8)":
 		if {npc::talking::Buck::%player's uuid%} is set:
-			send "&7[&6Buck Wheatly&7]&f: Do not interrupt!" to player
 			stop
 		else:
 			set {npc::talking::Buck::%player's uuid%} to true
 			if {chatmessage::Buck::%player's uuid%} is not set:
 				set {chatmessage::Buck::%player's uuid%} to 0
-			if {chatmessage::Buck::%player's uuid%} = 0:
-				if {objective::%player's uuid%} is "objectivenone":
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Welcome to &d&lCroplite&r&f!                                                               " to player
-					wait 3 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Real quick, I need some money for this project I'm workin' on.                                                                            " to player
-					wait 4 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: There's crops in the field right behind me, &e&nField 1&f.                                                                                       " to player
-					wait 4 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: You go sell some of those and give me the money, and I'll give you a reward!                                                " to player
-					wait 4 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: I appreciate it, farmer!                                                                                                     " to player
-					wait 3 seconds
-					send "&7------------------------------" to player
-					send "&8[&2&lObjective&r&8] &5First Harvest: &r&eHarvest                                  and sell 100 crops" to player
-					send "&7------------------------------" to player
-					play sound "block.amethyst_block.resonate" to player
-					set {objective::%player's uuid%} to "First Harvest"
-					set {objprogressreq::%player's uuid%} to 100
-					set {objdesc::%player's uuid%} to "Harvest and sell 100 crops"
-				else:
-					send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
-			else if {chatmessage::Buck::%player's uuid%} = 1:
-				if {cropcash::%player's uuid%} >= 100:
-					if {objective::%player's uuid%} is "First Harvest":
+			if "%region at player%" is "farm1 in world world":
+				if {chatmessage::Buck::%player's uuid%} = 0:
+					if {objective::%player's uuid%} is "objectivenone":
 						play sound "entity.villager.ambient" to player
-						send "&7[&6Buck Wheatly&7]&f: Wow, that was fast! I must say, I'm impressed.                                                                                 " to player
+						send "&6&lBuck Wheatley&r&f Welcome to &d&lCROPLITE&r&f!%nl%" to player
+						wait 3 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f You're gonna need some cash if you want to progress here.%nl%" to player
+						wait 3 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f There's crops in the field on the left, &e&nField 1&f,%nl%" to player
 						wait 4 seconds
 						play sound "entity.villager.ambient" to player
-						send "&7[&6Buck Wheatly&7]&f: About that project... I was lying. I won't be taking any cash from you.                                                     " to player
+						send "&6&lBuck Wheatley&r&f You go sell some of those and come back to me, and I'll give you a reward!%nl%" to player
 						wait 4 seconds
 						play sound "entity.villager.ambient" to player
-						send "&7[&6Buck Wheatly&7]&f: Instead, here's a &6&l&nPet Crate Key&r&f to start you out on your journey, partner.                                                 " to player
+						send "&6&lBuck Wheatley&r&f Good luck out there, farmer!%nl%" to player
+						wait 3 seconds
+						send "&7------------------------------" to player
+						send "&8[&2&lObjective&r&8] &5First Harvest: &r&eHarvest                                  and sell 100 crops" to player
+						send "&7------------------------------" to player
+						play sound "block.amethyst_block.resonate" to player
+						set {objective::%player's uuid%} to "First Harvest"
+						set {objprogressreq::%player's uuid%} to 100
+						set {objdesc::%player's uuid%} to "Harvest and sell 100 crops"
+					else:
+						send "&6&lBuck Wheatley&r&f Please complete your current objective before starting a new one!" to player
+				else if {chatmessage::Buck::%player's uuid%} = 1:
+					if {cropcash::%player's uuid%} >= 100:
+						if {objective::%player's uuid%} is "First Harvest":
+							play sound "entity.villager.ambient" to player
+							send "&6&lBuck Wheatley&r&f Wow, that was fast! I must say, I'm impressed.%nl%" to player
+							wait 4 seconds
+							play sound "entity.villager.ambient" to player
+							send "&6&lBuck Wheatley&r&f About that project... I was lying. I won't be taking any cash from you.%nl%" to player
+							wait 4 seconds
+							play sound "entity.villager.ambient" to player
+							send "&6&lBuck Wheatley&r&f Instead, here's a &6&l&nPet Crate Key&r&f to start you out on your journey, partner.%nl%" to player
+							wait 4 seconds
+							play sound "entity.villager.ambient" to player
+							send "&6&lBuck Wheatley&r&f Them crates are next to that there shop buildin'. Best of luck on your adventure, &b&n%player%&r&f!%nl%" to player
+							wait 4 seconds
+							play sound "entity.player.levelup" to player
+							send "&8[&2&lObjective &nComplete!&8]" to player
+							send "&7------------------------------" to player
+							send "&8[&2Objective Rewards&8]" to player
+							send "&8 - &6&l1x Pet Crate Key" to player
+							send "&8 - &6100 Experience" to player
+							send "&8 - &6100 Crop Cash" to player
+							send "&8 - &e1 Enchant Point" to player
+							send "&7------------------------------" to player
+							execute console command "/crate key give %player% pet 1"
+							add 100 to {exp::%player's uuid%}
+							add 100 to {cropcash::%player's uuid%}
+							add 1 to {enchant-points::%player's uuid%}
+							set {objective::%player's uuid%} to "objectivenone"
+							set {objprogressreq::%player's uuid%} to 0
+							set {objprogress::%player's uuid%} to 0
+							set {objdesc::%player's uuid%} to " "
+							set {objcomplete::%player's uuid%} to false
+							updateObjective(player)
+							levelUp(player)
+							add 1 to {chatmessage::Buck::%player's uuid%}
+							send "&8[&d&lCROPLITE&8] &a2 remaining quests from this NPC" to player
+						else:
+							send "&6&lBuck Wheatley&r&f Please complete your current objective before starting a new one!" to player
+					else:
+						send "&6&lBuck Wheatley&r&f You don't have enough! I needed 100 crop cash, you only have %{cropcash::%player's uuid%}%!" to player
+				else if {chatmessage::Buck::%player's uuid%} = 2:
+					if {objective::%player's uuid%} is "objectivenone":
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f A problem you'll encounter throughout your journey is your &2&lCrop Bag&f size.%nl%" to player
 						wait 4 seconds
 						play sound "entity.villager.ambient" to player
-						send "&7[&6Buck Wheatly&7]&f: Them crates are next to that there shop buildin'. Best of luck on your adventure, &b&n%player%&r&f!                      " to player
+						send "&6&lBuck Wheatley&r&f Fortunately, you can upgrade the size in 2 ways:%nl%" to player
+						wait 3.25 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f &6&lExpander Pets &fincrease your capacity while they're active,%nl%" to player
 						wait 4 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f And the &2&lCrop Bag Upgrades&f shop increases capacity permanently!%nl%" to player
+						wait 4 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f Come back to me once you've purchased a &2&lCrop Bag&f upgrade!%nl%" to player
+						wait 3.5 seconds
+						send "&7------------------------------" to player
+						send "&8[&2&lObjective&r&8] &5Crop Carrier: &r&eUpgrade                                  your &2&lCrop Bag" to player
+						send "&7------------------------------" to player
+						play sound "block.amethyst_block.resonate" to player
+						set {objective::%player's uuid%} to "Crop Carrier"
+						set {objprogressreq::%player's uuid%} to 1
+						set {objdesc::%player's uuid%} to "Upgrade your Crop Bag"
+					else:
+						send "&6&lBuck Wheatley&r&f Please complete your current objective before starting a new one!" to player
+				else if {chatmessage::Buck::%player's uuid%} = 3:
+					if {objective::%player's uuid%} is "Crop Carrier":
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f Excellent work farmer, you're really gettin' the hang of this!%nl%" to player
+						wait 3.5 seconds
 						play sound "entity.player.levelup" to player
 						send "&8[&2&lObjective &nComplete!&8]" to player
 						send "&7------------------------------" to player
 						send "&8[&2Objective Rewards&8]" to player
 						send "&8 - &6&l1x Pet Crate Key" to player
-						send "&8 - &6100 Experience" to player
-						send "&8 - &6100 Crop Cash" to player
-						send "&8 - &e1 Skill Point" to player
+						send "&8 - &6800 Experience" to player
+						send "&8 - &6500 Crop Cash" to player
+						send "&8 - &e1 Enchant Point" to player
 						send "&7------------------------------" to player
 						execute console command "/crate key give %player% pet 1"
-						add 100 to {exp::%player's uuid%}
-						add 100 to {cropcash::%player's uuid%}
+						add 800 to {exp::%player's uuid%}
+						add 500 to {cropcash::%player's uuid%}
 						add 1 to {enchant-points::%player's uuid%}
 						set {objective::%player's uuid%} to "objectivenone"
 						set {objprogressreq::%player's uuid%} to 0
@@ -69,143 +126,99 @@ on right click:
 						updateObjective(player)
 						levelUp(player)
 						add 1 to {chatmessage::Buck::%player's uuid%}
-						send "&8[&d&lCroplite&8] &a2 remaining quests from this NPC" to player
 					else:
-						send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
-				else:
-					send "&7[&6Buck Wheatly&7]&f: You don't have enough! I needed 100 crop cash, you only have %{cropcash::%player's uuid%}%!" to player
-			else if {chatmessage::Buck::%player's uuid%} = 2:
-				if {objective::%player's uuid%} is "objectivenone":
+						send "&6&lBuck Wheatley&r&f Please complete your current objective before starting a new one!" to player
+				else if {chatmessage::Buck::%player's uuid%} = 4:
+					if {objective::%player's uuid%} is "objectivenone":
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f Unlocking new &e&nFields&r&f is a large part of &d&lCROPLITE&f.                                                                               " to player
+						wait 3.5 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f To unlock a new field, run up to the entrance to view the requirements.                                                                               " to player
+						wait 3.5 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f Better fields give more &6&lExp&r&f and &2&lCrops&f!%nl%" to player
+						wait 3 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f Come back here once you've unlocked &e&nField 2&f!%nl%" to player
+						wait 3 seconds
+						add 1 to {chatmessage::Buck::%player's uuid%}
+					else:
+						send "&6&lBuck Wheatley&r&f Please complete your current objective before starting a new one!" to player
+				else if {chatmessage::Buck::%player's uuid%} = 5:
+					if {objective::%player's uuid%} is "objectivenone":
+						if {fieldunlocked::2::%player's uuid%} is true:
+							play sound "entity.villager.ambient" to player
+							send "&6&lBuck Wheatley&r&f The &b&lScythe Shop&r&f and &lArmorer&r&f are essential in &d&lCROPLITE&f.%nl%" to player
+							wait 4 seconds
+							play sound "entity.villager.ambient" to player
+							send "&6&lBuck Wheatley&r&f They provide base upgrades to your gear, increasing defense, damage, swing speed, even &e&lExp Multi&f.%nl%" to player
+							wait 5.5 seconds
+							play sound "entity.villager.ambient" to player
+							send "&6&lBuck Wheatley&r&f Upgrade a piece of armor or your scythe and come back to me!%nl%" to player
+							wait 3.5 seconds
+							send "&7------------------------------" to player
+							send "&8[&2&lObjective&r&8] &5Gearing Up: &r&eUpgrade                                  your scythe or armor" to player
+							send "&7------------------------------" to player
+							play sound "block.amethyst_block.resonate" to player
+							set {objective::%player's uuid%} to "Gearing Up"
+							set {objprogressreq::%player's uuid%} to 1
+							set {objdesc::%player's uuid%} to "Upgrade your scythe or armor"
+						else:
+							send "&6&lBuck Wheatley&r&f Come talk to me again once you've unlocked &e&nField 2&f!" to player
+					else:
+						send "&6&lBuck Wheatley&r&f Please complete your current objective before starting a new one!" to player
+				else if {chatmessage::Buck::%player's uuid%} = 6:
+					if {objective::%player's uuid%} is "Gearing Up":
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f Congrats farmer, you've made great progress!%nl%" to player
+						wait 3.5 seconds
+						play sound "entity.villager.ambient" to player
+						send "&6&lBuck Wheatley&r&f That's all I got for you at this farm, make sure you talk to the other guys around here!%nl%" to player
+						wait 4.5 seconds
+						play sound "entity.player.levelup" to player
+						send "&8[&2&lObjective &nComplete!&8]" to player
+						send "&7------------------------------" to player
+						send "&8[&2Objective Rewards&8]" to player
+						send "&8 - &6&l1x Pet Crate Key" to player
+						send "&8 - &61000 Experience" to player
+						send "&8 - &6750 Crop Cash" to player
+						send "&8 - &e1 Enchant Point" to player
+						send "&7------------------------------" to player
+						execute console command "/crate key give %player% pet 1"
+						add 1000 to {exp::%player's uuid%}
+						add 750 to {cropcash::%player's uuid%}
+						add 1 to {enchant-points::%player's uuid%}
+						set {objective::%player's uuid%} to "objectivenone"
+						set {objprogressreq::%player's uuid%} to 0
+						set {objprogress::%player's uuid%} to 0
+						set {objdesc::%player's uuid%} to " "
+						set {objcomplete::%player's uuid%} to false
+						updateObjective(player)
+						levelUp(player)
+						add 1 to {chatmessage::Buck::%player's uuid%}
+					else:
+						send "&6&lBuck Wheatley&r&f Please complete your current objective before starting a new one!" to player
+			else if "%region at player%" is "farm2 in world world":
+				if {chatmessage::Buck::%player's uuid%} = 7:
 					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: A problem you'll encounter throughout your journey is your &2&lCrop Bag&f size.                                                  " to player
-					wait 4 seconds
+					send "&6&lBuck Wheatley&r&f Welcome to the &2&lSpruce Forest&f, &b%player%&f!%nl%" to player
+					wait 2.25 seconds
 					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Fortunately, you can upgrade the size in 2 ways:                                                                                       " to player
+					send "&6&lBuck Wheatley&r&f The next field in progression is the tulip field, &e&lField 5&f.%nl%" to player
+					wait 3 seconds
+					play sound "entity.villager.ambient" to player
+					send "&6&lBuck Wheatley&r&f If I were you, I'd go talk to &e&lBrandon&r&f right away.%nl%" to player
 					wait 3.25 seconds
 					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: &6&lExpander Pets &fincrease your capacity while they're active,                                                                       " to player
-					wait 4 seconds
+					send "&6&lBuck Wheatley&r&f He's near the tulip field, he said something about 'going on a bulk' and 'needing to increase daily caloric intake' or something.%nl%" to player
+					wait 5 seconds
 					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: And the &2&lCrop Bag Upgrades&f shop increases capacity permanently!                                                                " to player
-					wait 4 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Come back to me once you've purchased a &2&lCrop Bag&f upgrade!                                                                " to player
-					wait 3.5 seconds
-					send "&7------------------------------" to player
-					send "&8[&2&lObjective&r&8] &5Crop Carrier: &r&eUpgrade                                  your &2&lCrop Bag" to player
-					send "&7------------------------------" to player
-					play sound "block.amethyst_block.resonate" to player
-					set {objective::%player's uuid%} to "Crop Carrier"
-					set {objprogressreq::%player's uuid%} to 1
-					set {objdesc::%player's uuid%} to "Upgrade your Crop Bag"
-				else:
-					send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
-			else if {chatmessage::Buck::%player's uuid%} = 3:
-				if {objective::%player's uuid%} is "Crop Carrier":
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Excellent work farmer, you're really gettin' the hang of this!                                                                               " to player
-					wait 3.5 seconds
-					play sound "entity.player.levelup" to player
-					send "&8[&2&lObjective &nComplete!&8]" to player
-					send "&7------------------------------" to player
-					send "&8[&2Objective Rewards&8]" to player
-					send "&8 - &6&l1x Pet Crate Key" to player
-					send "&8 - &6800 Experience" to player
-					send "&8 - &6500 Crop Cash" to player
-					send "&8 - &e1 Skill Point" to player
-					send "&7------------------------------" to player
-					execute console command "/crate key give %player% pet 1"
-					add 800 to {exp::%player's uuid%}
-					add 500 to {cropcash::%player's uuid%}
-					add 1 to {enchant-points::%player's uuid%}
-					set {objective::%player's uuid%} to "objectivenone"
-					set {objprogressreq::%player's uuid%} to 0
-					set {objprogress::%player's uuid%} to 0
-					set {objdesc::%player's uuid%} to " "
-					set {objcomplete::%player's uuid%} to false
-					updateObjective(player)
-					levelUp(player)
+					send "&6&lBuck Wheatley&r&f Man I don't know, I'm sure you'll figure it out. Good luck!%nl%" to player
 					add 1 to {chatmessage::Buck::%player's uuid%}
 				else:
-					send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
-			else if {chatmessage::Buck::%player's uuid%} = 4:
-				if {objective::%player's uuid%} is "objectivenone":
 					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Unlocking new &e&nFields&r&f is a large part of &d&lCroplite&f.                                                                               " to player
-					wait 3.5 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: To unlock a new field, run up to the entrance to view the requirements.                                                                               " to player
-					wait 3.5 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Better fields give more &6&lExp&r&f and &2&lCrops&f!                                                                               " to player
-					wait 3 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Come back here once you've unlocked &e&nField 2&f!                                                                               " to player
-					wait 3 seconds
-					add 1 to {chatmessage::Buck::%player's uuid%}
-				else:
-					send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
-			else if {chatmessage::Buck::%player's uuid%} = 5:
-				if {objective::%player's uuid%} is "objectivenone":
-					if {fieldunlocked::2::%player's uuid%} is true:
-						play sound "entity.villager.ambient" to player
-						send "&7[&6Buck Wheatly&7]&f: The &b&lScythe Shop&r&f and &lArmorer&r&f are essential in &d&lCroplite&f.                                                                               " to player
-						wait 4 seconds
-						play sound "entity.villager.ambient" to player
-						send "&7[&6Buck Wheatly&7]&f: They provide base upgrades to your gear, increasing defense, damage, swing speed, even &e&lExp Multi&f.                                                                               " to player
-						wait 5.5 seconds
-						play sound "entity.villager.ambient" to player
-						send "&7[&6Buck Wheatly&7]&f: Upgrade a piece of armor or your scythe and come back to me!                                                                               " to player
-						wait 3.5 seconds
-						send "&7------------------------------" to player
-						send "&8[&2&lObjective&r&8] &5Gearing Up: &r&eUpgrade                                  your scythe or armor" to player
-						send "&7------------------------------" to player
-						play sound "block.amethyst_block.resonate" to player
-						set {objective::%player's uuid%} to "Gearing Up"
-						set {objprogressreq::%player's uuid%} to 1
-						set {objdesc::%player's uuid%} to "Upgrade your scythe or armor"
-					else:
-						send "&7[&6Buck Wheatly&7]&f: Come talk to me again once you've unlocked &e&nField 2&f!" to player
-				else:
-					send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
-			else if {chatmessage::Buck::%player's uuid%} = 6:
-				if {objective::%player's uuid%} is "Gearing Up":
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Congrats farmer, you've made great progress!                                                                               " to player
-					wait 3.5 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: That's all I got for you at this farm, make sure you talk to the other guys around here!                                                                               " to player
-					wait 4.5 seconds
-
-				else:
-					send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
-			else if {chatmessage::Buck::%player's uuid%} = 7:
-				if "%nbt of clicked entity%" contains "-310123331,-205175493,-1682220350,2014369278":
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: Welcome to the &2&lSpruce Farm!                                         " to player
-					wait 2 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: The guys around here are much nicer than ol' &6Chuck&f I can tell you that.                                                                           " to player 
-					wait 3 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: There's also a larger variety of plants to harvest at this farm.                                                                          " to player
-					wait 3 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&6Buck Wheatly&7]&f: I would try the tulips first, then come back when you've unlocked &e&lField 6&f!                                                                           " to player
-					add 1 to {chatmessage::Buck::%player's uuid%}
-				else:
-					send "&7[&6Buck Wheatly&7]&f: Ain't got nothin' else for ya on this farm. Talk to me at &2&lFarm 2&f.                                                                            " to player
-			else if {chatmessage::Buck::%player's uuid%} = 8:
-				if {objective::%player's uuid%} is "objectivenone":
-					if ({fieldunlocked::6::%player's uuid%}) is equal to true:
-						broadcast "work"
-					else:
-						send "&7[&6Buck Wheatly&7]&f: Didn't I tell you to unlock &e&lField 6&f first?" to player
-				else:
-					send "&7[&6Buck Wheatly&7]&f: Please complete your current objective before starting a new one!" to player
-			else:
-				play sound "entity.villager.ambient" to player
-				send "&7[&6Buck Wheatly&7]&f: Ain't got nothin' else for ya right now, try talkin to some of the other folks 'round here." to player
+					send "&6&lBuck Wheatley&r&f Ain't got nothin' else for ya right now, try talkin to some of the other folks 'round here." to player
 				
 			wait 1 second
 			delete {npc::talking::Buck::%player's uuid%}
@@ -240,6 +253,10 @@ function resetnpcchats(p: player):
 	set {chatmessage::Carlo::%uuid of {_p}%} to 0
 	set {chatmessage::Denver::%uuid of {_p}%} to 0
 	set {chatmessage::Fin::%uuid of {_p}%} to 0
+	set {chatmessage::Gabriel::%uuid of {_p}%} to 0
+	set {chatmessage::Brandon::%uuid of {_p}%} to 0
+	set {chatmessage::Paul::%uuid of {_p}%} to 0
+	set {gab::alreadyclicked::%uuid of {_p}%} to false
 	delete {chatmessage::Denver::%uuid of {_p}%::talking}
 	send "&8[&dCroplite&8]&a: All NPC chats have been reset!" to {_p}
 	set {objective::%uuid of {_p}%} to "objectivenone"

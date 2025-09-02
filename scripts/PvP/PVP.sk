@@ -1,4 +1,4 @@
-command /togglepvp:
+command /toggle-pvp:
 	trigger:
 		if {pvpstatus::%player's uuid%} is false:
 			set {pvpstatus::%player's uuid%} to true
@@ -12,7 +12,7 @@ command /togglepvp:
 			subtract 0.25 from {expmulti::%player's uuid%}
 			send "&8[&dCroplite&8] &cPvP disabled. Farm in peace without the &e&lExp Multi &8[&e&l+0.25&8] &cbonus." to player
 
-command /optogglepvp <player>:
+command /optoggle-pvp <player>:
 	permission: operator
 	trigger:
 		if {pvpstatus::%arg-1's uuid%} is false:
@@ -25,7 +25,7 @@ command /optogglepvp <player>:
 		if {pvpstatus::%arg-1's uuid%} is false:
 			subtract 0.25 from {expmulti::%arg-1's uuid%}
 
-command /leavecombat [<offline player>]:
+command /leave-combat [<offline player>]:
 	permission: operator
 	trigger:
 		if arg-1 is set:
@@ -33,7 +33,15 @@ command /leavecombat [<offline player>]:
 		else:
 			set {in-combat::%player's uuid%} to 0
 
-command /toggle-incombat [<offline player>]: 
+command /enter-combat [<offline player>]:
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			set {in-combat::%arg-1's uuid%} to 10
+		else:
+			set {in-combat::%player's uuid%} to 10
+
+command /toggle-combat [<offline player>]: 
 	permission: operator
 	trigger:
 		if arg-1 is set:
@@ -51,7 +59,7 @@ command /toggle-incombat [<offline player>]:
 				set {toggle-incombat::%player's uuid%} to true
 				send "enabled" to player
 
-command /adddamage <integer>:
+command /add-damage <integer>:
 	permission: operator
 	trigger:
 		add "damage:%arg-1%" to string list tag "Croplite:scythe-stats" of custom nbt of player's held item
@@ -103,6 +111,10 @@ on death:
 			cancel event
 		else if damage cause is burning:
 			cancel event
+
+on disconnect:
+	if {in-combat::%player's uuid%} > 0:
+		kill player
 
 command /killattackdummies:
     permission: operator

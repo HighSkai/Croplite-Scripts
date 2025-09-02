@@ -11,7 +11,7 @@ command /globalbooster1:
                 set {globalxpboost1active} to true
             loop all players:
                 add 0.1 to {expmulti::%loop-player's uuid%}
-            send "&8[&d&lCroplite&r&8] %colored {prefix::%player's uuid%}% %colored player's name%&r &ahas activated a &8[&e&l+0.10&8] &e&lGlobal XP Booster&r&a for &n1 hour!" to all players
+            send "&8[&d&lCROPLITE&r&8] %colored {prefix::%player's uuid%}% %colored player's name%&r &ahas activated a &8[&e&l+0.10&8] &e&lGlobal XP Booster&r&a for &n1 hour!" to all players
             remove 1 netherite upgrade smithing template named "&e&l+10%% global XP booster &8(&c1h&8)" from player's inventory
         else:
             send "&4&lThe limit on this global booster has been reached for now!" to player
@@ -37,4 +37,4 @@ on quit:
     remove player from {globalxpbooster1}
     if {globalxpboost1active} is true:
         remove player from {globalxpbooster1}
-        subtract 0.1 from {expmulti::%player's uuid%}
+        subtract 0.1 from {expmulti::%player's uuid%}        

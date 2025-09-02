@@ -1,32 +1,60 @@
 command /afk: 
 	trigger:
 		teleport player to location(1195.5, 117, 942.5,"world", 0, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to the AFK area." to player
-		stop
+		play sound "minecraft:entity.enderman.teleport" to player
 
 command /shop:
 	trigger:
-		teleport player to location(1191.5, 104.0625, 939.5, world "world", 180, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Shop." to player
+		if "%region at player%" contains "farm1 in world world":
+			teleport player to location(1191.5, 104.0625, 939.5, world "world", 180, 0)
+		else if "%region at player%" contains "farm2 in world world": 
+			teleport player to location at 792.5, 99, 1039.5
+		else if "%region at player%" contains "farm3 in world world": 
+			teleport player to location(226.5, 98, 1037.5, world "world", 180, 0)
+		else if "%region at player%" contains "farm4 in world world": 
+			teleport player to location(-367.5, 101.0, 861.5, world "world", -145, 0)
+
+		play sound "minecraft:entity.enderman.teleport" to player
+
+command /sell:
+	trigger:
+		if {ranknumber::%player's uuid%} > 0:
+			if "%region at player%" contains "farm1 in world world":
+				teleport player to location(1195.5, 102.0, 960.5, world "world", 90, 0)
+			else if "%region at player%" contains "farm2 in world world": 
+				teleport player to location(796.5, 99.0, 1049.5, world "world", 145, 0)
+			else if "%region at player%" contains "farm3 in world world": 
+				teleport player to location(237.5, 98, 1034.5, world "world", 90, 0)
+			else if "%region at player%" contains "farm4 in world world": 
+				teleport player to location(-369.5, 100.0, 869.5, world "world", 145, 0)
+			play sound "minecraft:entity.enderman.teleport" to player
+		else:
+			send "&5&lCroplite &cThis is a ranked only feature." to player
+			play sound "minecraft:entity.villager.no" to player
+
 
 command /crates:
 	trigger:
-		teleport player to location(1159.5, 104, 947.5, world "world", 180, 0)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Crates." to player
+		if "%region at player%" contains "farm1 in world world":
+			teleport player to location(1159.5, 104, 945.5, world "world", 180, 0)
+		else if "%region at player%" contains "farm2 in world world": 
+			teleport player to location(797.5, 100, 1065.5, world "world", -90, 0)
+		else if "%region at player%" contains "farm3 in world world": 
+			teleport player to location(249.5, 98, 1050.5, world "world", -90, 0)
+		else if "%region at player%" contains "farm4 in world world": 
+			teleport player to location(-380.21, 98.5, 877.58, world "world", 111, -6)
 
-command /spawn [<offline player>]:
+		play sound "minecraft:entity.enderman.teleport" to player
+
+command /spawn:
 	trigger:
-		if arg-1 is set:
-			teleport arg-1 to location(1191.5, 104, 954.5, world "world", 0, 0)
-			send "&8[&dCroplite&8] &aYou have been teleported to Spawn." to arg-1
-		else:
-			teleport player to location(1191.5, 104, 954.5, world "world", 0, 0)
-			send "&8[&dCroplite&8] &aYou have been teleported to Spawn." to player
+		teleport player to location at 1191.5, 104, 954.5
+		play sound "minecraft:entity.enderman.teleport" to player
 
 command /leaderboards:
 	trigger:
 		teleport player to location(1017.5, 117, 661.5, world "world", 0, -10)
-		send "&8[&dCroplite&8] &aYou have been teleported to the Lifetime Leaderboards." to player
+		play sound "minecraft:entity.enderman.teleport" to player
 
 command /enderchest:
 	aliases: /ec
@@ -47,60 +75,117 @@ command /pay <offline player> <integer>:
 			send "Insufficient crop cash." to player
 			play sound "minecraft:entity.villager.no" to player
 
+function fieldTp(p: player, field: integer):
+	if {_field} is 1:
+		teleport {_p} to location(1217.5, 102, 1004.5, world "world", -90, 0)
+	else if {_field} is 2:
+		teleport {_p} to location(1159.5, 101, 974.5, world "world", 90, 0)
+	else if {_field} is 3:
+		teleport {_p} to location(1138.5, 102, 1067.5, world "world", 45, 0)
+	else if {_field} is 4:
+		teleport {_p} to location(1206.5, 102, 1093.5, world "world", -45, 0)
+	else if {_field} is 5:
+		teleport {_p} to location(757.5, 99, 1004.5, world "world", 145, 0)
+	else if {_field} is 6:
+		teleport {_p} to location(843.5, 103, 1044.5, world "world", -145, 0)
+	else if {_field} is 7:
+		teleport {_p} to location(791.5, 99, 1079.5, world "world", 90, 0)
+	else if {_field} is 8:
+		teleport {_p} to location(827.5, 100, 1094.5, world "world", 0, 0)
+	else if {_field} is 9:
+		teleport {_p} to location(289.5, 101, 1070.5, world "world", -145, 0)
+	else if {_field} is 10:
+		teleport {_p} to location(247.5, 101, 1143.5, world "world", 0, 0)
+	else if {_field} is 11:
+		teleport {_p} to location(372.5, 99, 1132.5, world "world", -45, 0)
+	else if {_field} is 12:
+		teleport {_p} to location(374.5, 97, 1039.5, world "world", -145, 0)
+	else if {_field} is 13:
+		teleport {_p} to location(-371.5, 99, 921.5, world "world", 0, 0)
+	else if {_field} is 14:
+		teleport {_p} to location(-440.5, 94, 891.5, world "world", -180, 0)
+	else if {_field} is 15:
+		teleport {_p} to location(-431.5, 90, 938.5, world "world", -45, 0)
+	else if {_field} is 16:
+		teleport {_p} to location(-453.5, 87, 941.5, world "world", 90, 0)
+	play sound "minecraft:entity.enderman.teleport" to {_p}
+
 command /field <integer>:
 	permission: operator
 	trigger:
-		if arg-1 is 1:
-			teleport player to location(1217.5, 102, 1004.5, world "world", -90, 0)
-		else if arg-1 is 2:
-			teleport player to location(1159.5, 101, 974.5, world "world", 90, 0)
-		else if arg-1 is 3:
-			teleport player to location(1138.5, 102, 1067.5, world "world", 45, 0)
-		else if arg-1 is 4:
-			teleport player to location(1206.5, 102, 1093.5, world "world", -45, 0)
-		else if arg-1 is 5:
-			teleport player to location(757.5, 99, 1004.5, world "world", 145, 0)
-		else if arg-1 is 6:
-			teleport player to location(843.5, 103, 1044.5, world "world", -145, 0)
-		else if arg-1 is 7:
-			teleport player to location(791.5, 99, 1079.5, world "world", 90, 0)
-		else if arg-1 is 8:
-			teleport player to location(827.5, 100, 1094.5, world "world", 0, 0)
-		else if arg-1 is 9:
-			teleport player to location(289.5, 101, 1070.5, world "world", -145, 0)
-		else if arg-1 is 10:
-			teleport player to location(247.5, 101, 1143.5, world "world", 0, 0)
-		else if arg-1 is 11:
-			teleport player to location(372.5, 99, 1132.5, world "world", -45, 0)
-		else if arg-1 is 12:
-			teleport player to location(374.5, 97, 1039.5, world "world", -145, 0)
-		else if arg-1 is 13:
-			teleport player to location(-371.5, 99, 921.5, world "world", 0, 0)
-		else if arg-1 is 14:
-			teleport player to location(-440.5, 94, 891.5, world "world", -180, 0)
-		else if arg-1 is 15:
-			teleport player to location(-431.5, 90, 938.5, world "world", -45, 0)
-		else if arg-1 is 16:
-			teleport player to location(-453.5, 87, 941.5, world "world", 90, 0)
-
-		send "&8[&dCroplite&8] &aYou have teleported to &e&lField &8[&e&l%arg-1%&8]." to player
+		if arg-1 is between 1 and 16:
+			if arg-1 is 1:
+				teleport player to location(1217.5, 102, 1004.5, world "world", -90, 0)
+			else if arg-1 is 2:
+				teleport player to location(1159.5, 101, 974.5, world "world", 90, 0)
+			else if arg-1 is 3:
+				teleport player to location(1138.5, 102, 1067.5, world "world", 45, 0)
+			else if arg-1 is 4:
+				teleport player to location(1206.5, 102, 1093.5, world "world", -45, 0)
+			else if arg-1 is 5:
+				teleport player to location(757.5, 99, 1004.5, world "world", 145, 0)
+			else if arg-1 is 6:
+				teleport player to location(843.5, 103, 1044.5, world "world", -145, 0)
+			else if arg-1 is 7:
+				teleport player to location(791.5, 99, 1079.5, world "world", 90, 0)
+			else if arg-1 is 8:
+				teleport player to location(827.5, 100, 1094.5, world "world", 0, 0)
+			else if arg-1 is 9:
+				teleport player to location(289.5, 101, 1070.5, world "world", -145, 0)
+			else if arg-1 is 10:
+				teleport player to location(247.5, 101, 1143.5, world "world", 0, 0)
+			else if arg-1 is 11:
+				teleport player to location(372.5, 99, 1132.5, world "world", -45, 0)
+			else if arg-1 is 12:
+				teleport player to location(374.5, 97, 1039.5, world "world", -145, 0)
+			else if arg-1 is 13:
+				teleport player to location(-371.5, 99, 921.5, world "world", 0, 0)
+			else if arg-1 is 14:
+				teleport player to location(-440.5, 94, 891.5, world "world", -180, 0)
+			else if arg-1 is 15:
+				teleport player to location(-431.5, 90, 938.5, world "world", -45, 0)
+			else if arg-1 is 16:
+				teleport player to location(-453.5, 87, 941.5, world "world", 90, 0)
+			play sound "minecraft:entity.enderman.teleport" to player
+		else:
+			send "&d&lCroplite &cThat is not a valid &e&lField&c." to player
+			play sound "minecraft:entity.villager.no" to player
 on tab complete of "/field":
 	set tab completions for position 1 to 1 and 2 and 3 and 4 and 5 and 6 and 7 and 8 and 9 and 10 and 11 and 12 and 13 and 14 and 15 and 16
 
-command /farm <text>:
-    permission: operator
-    trigger:
-        if arg-1 is "1":
-            teleport player to location at 1191.5, 104, 954.5
-        else if arg-1 is "2":
-            teleport player to location at 792.5, 99, 1039.5
-        else if arg-1 is "3":
-            teleport player to location at 226.5, 98, 1037.5
-        else if arg-1 is "4":
-            teleport player to location at -378.5, 101, 857.5
-        else if arg-1 is "test":
-            teleport player to location at 9879.5, -9, 10194.5
-        else if arg-1 is "events":
-            teleport player to location at 10737.5, -3, 8918.5
+command /farm <integer>:
+	trigger:
+		if arg-1 is between 1 and 4:
+			if arg-1 is 1:
+				if {farmunlocked::1::%player's uuid%} is true:
+					teleport player to location at 1191.5, 104, 954.5
+					play sound "entity.experience_orb.pickup" to player
+				else:
+					send "&d&lCroplite &cFarm 1 is not unlocked." to player
+					play sound "minecraft:entity.villager.no" to player
+			else if arg-1 is 2:
+				if {farmunlocked::2::%player's uuid%} is true:
+					teleport player to location at 792.5, 99, 1039.5
+					play sound "entity.experience_orb.pickup" to player
+				else:
+					send "&d&lCroplite &cFarm 2 is not unlocked." to player
+					play sound "minecraft:entity.villager.no" to player
+			else if arg-1 is 3:
+				if {farmunlocked::3::%player's uuid%} is true:
+					teleport player to location at 226.5, 98, 1037.5
+					play sound "entity.experience_orb.pickup" to player
+				else:
+					send "&d&lCroplite &cFarm 3 is not unlocked." to player
+					play sound "minecraft:entity.villager.no" to player
+			else if arg-1 is 4:
+				if {farmunlocked::4::%player's uuid%} is true:
+					teleport player to location at -378.5, 101, 857.5
+					play sound "entity.experience_orb.pickup" to player
+				else:
+					send "&d&lCroplite &cFarm 4 is not unlocked." to player
+					play sound "minecraft:entity.villager.no" to player
+		else:
+			send "&d&lCroplite &cThat is not a valid &e&lFarm&c." to player
+			play sound "minecraft:entity.villager.no" to player
 on tab complete of "/farm":
-    set tab completions for position 1 to 1 and 2 and 3 and 4 and "test" and "events"
+    set tab completions for position 1 to 1 and 2 and 3 and 4

@@ -1,7 +1,6 @@
 on right click:
 	if name of clicked entity is "&9&lOld Man Mackerel":
 		if {chatmessage::Mackerel::%player's uuid%::talking} is set:
-			send "&7[&9Old Man Mackerel&7]&f: Do not interrupt!" to player
 			stop
 		set {chatmessage::Mackerel::%player's uuid%::talking} to true
 		if {chatmessage::Mackerel::%player's uuid%} is not set:
@@ -9,36 +8,36 @@ on right click:
 		if {chatmessage::Mackerel::%player's uuid%} = 0:
 			if {objective::%player's uuid%} is "objectivenone":
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: Howdy farmer!                                                                  " to player
+				send "&7[&9Old Man Mackerel&7]&f: Howdy farmer!%nl%" to player
 				wait 2 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: You haven't happened to have seen any cats around here have you? My lil' girl &d&nCarlo&r&f ran off while I was fishin' her up some salmon.                                                                 " to player
+				send "&7[&9Old Man Mackerel&7]&f: You haven't happened to have seen any cats around here have you? My lil' girl &d&nCarlo&r&f ran off while I was fishin' her up some salmon.%nl%" to player
 				wait 7 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: You mind goin' out n' findin' her for me? I gotta keep tossin my rod in the water if I want dinner tonight.                                                                                  " to player
+				send "&7[&9Old Man Mackerel&7]&f: You mind goin' out n' findin' her for me? I gotta keep tossin my rod in the water if I want dinner tonight.%nl%" to player
 				wait 5 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: She's probably somewhere around the &6&nwheat field&r&f. She likes to roll up in all that hay they got 'round there.                                                                                       " to player
+				send "&7[&9Old Man Mackerel&7]&f: She's probably somewhere around the &6&nwheat field&r&f. She likes to roll up in all that hay they got 'round there.%nl%" to player
 				wait 5 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: I appreciate it farmer, you'll be rewarded for this!                                                                                                                     " to player
+				send "&7[&9Old Man Mackerel&7]&f: I appreciate it farmer, you'll be rewarded for this!%nl%" to player
 				wait 3 seconds
 				send "&7------------------------------" to player
-				send "&8[&2Objective&8] &5&lCat Whisperer: &r&eFind &d&nCarlo&r&e the cat" to player
+				send "&8[&2Objective&8] &5&lCat Catcher: &r&eFind &d&nCarlo&r&e the cat" to player
 				send "&7------------------------------" to player
 				play sound "block.amethyst_block.resonate" to player
 				set {objcomplete::%player's uuid%} to false
-				set {objective::%player's uuid%} to "Cat Whisperer"
+				set {objective::%player's uuid%} to "Cat Catcher"
 				set {objprogressreq::%player's uuid%} to 1
 				set {objprogress::%player's uuid%} to 0
 				set {objdesc::%player's uuid%} to "Find Carlo the cat"
 			else:
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: You've already got an objective, farmer!                                                                               " to player
+				send "&7[&9Old Man Mackerel&7]&f: You've already got an objective, farmer!%nl%" to player
 		else if {chatmessage::Mackerel::%player's uuid%} = 1:
-			if {objective::%player's uuid%} is "Cat Whisperer":
+			if {objective::%player's uuid%} is "Cat Catcher":
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: Thank you so much, farmer! As promised, here's your reward. Good luck and goodbye!                                                                                                    " to player
+				send "&7[&9Old Man Mackerel&7]&f: Thank you so much, farmer! As promised, here's your reward. Good luck and goodbye!%nl%" to player
 				wait 4 seconds
 				play sound "entity.player.levelup" to player
 				send "&7------------------------------" to player
@@ -60,47 +59,19 @@ on right click:
 				set {objprogress::%player's uuid%} to 0
 				set {objdesc::%player's uuid%} to " "
 				updateObjective(player)
+				set {objcomplete::%player's uuid%} to true
 				add 1 to {chatmessage::Mackerel::%player's uuid%}
 			else:
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: You've already got an objective, farmer!                                                                               " to player
+				send "&7[&9Old Man Mackerel&7]&f: You've already got an objective, farmer!%nl%" to player
 		else if {chatmessage::Mackerel::%player's uuid%} = 2:
-			if {objective::%player's uuid%} is "objectivenone":
-				if {level::%player's uuid%} >= 15:
-					play sound "entity.villager.ambient" to player
-					send "&7[&9Old Man Mackerel&7]&f: Liking that &6Weak Grappling Hook &faren't ya?                                            " to player
-					wait 3 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&9Old Man Mackerel&7]&f: Well you're a lucky one, 'cause I'm almost finished makin' a better one!                                                                  " to player
-					wait 3 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&9Old Man Mackerel&7]&f: All I need is the right pole to put the mechanism on, unfortunately I can't spare any time to grab it.                                     " to player
-					wait 5 seconds
-					play sound "entity.villager.ambient" to player
-					send "&7[&9Old Man Mackerel&7]&f: Go talk to &6&lDenver&r&f, he'll have what I need. He's up in the &lChitty Chitty Barn Barn&r&f.                                                        " to player
-					wait 4 seconds
-					play sound "block.amethyst_block.resonate" to player
-					send "&7------------------------------" to player
-					send "&8[&2&lObjective&8] &5&lPole Purchase: &r&eRetrieve" to player
-					send "&ethe &9Developed Fishing Pole&r&e from &6&lDenver&r&f." to player
-					send "&7------------------------------" to player
-					set {objective::%player's uuid%} to "Pole Purchase"
-					set {objprogressreq::%player's uuid%} to 1
-					set {objdesc::%player's uuid%} to "Aquire the &9Developed Fishing"
-					set {objprogress::%player's uuid%} to 0
-				else:
-					send "&7[&9Old Man Mackerel&7]&f: You ain't experienced for the next task yet, farmer! Come back when you're &9&lLevel &8[&9&l15&r&8]&r!                                                    " to player
-			else:
-				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: You've already got an objective, farmer!                                                                               " to player
-		else if {chatmessage::Mackerel::%player's uuid%} = 3:
 			if player has 1 of breeze rod named "&9&lDeveloped Fishing Pole":
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: Ah, you've got the pole! I'll get to work on this right away.                                                                  " to player
+				send "&7[&9Old Man Mackerel&7]&f: Ah, you've got the pole! I'll get to work on this right away.%nl%" to player
 				remove 1 breeze rod named "&9&lDeveloped Fishing Pole" from player's inventory
 				wait 3 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: ...                                                                 " to player
+				send "&7[&9Old Man Mackerel&7]&f: ...%nl%" to player
 				play sound "block.anvil.use" to player
 				wait 0.5 seconds
 				play sound "block.anvil.use" to player
@@ -141,10 +112,10 @@ on right click:
 				play sound "block.amethyst_block.resonate" to player
 				wait 1 second
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: Didn't quite go as planned, but here's your &9Developed Fishing Rod.                                                                  " to player
+				send "&7[&9Old Man Mackerel&7]&f: Didn't quite go as planned, but here's your &9Developed Fishing Rod.%nl%" to player
 				wait 3 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: Goodbye for now, farmer!                                                                                                     " to player
+				send "&7[&9Old Man Mackerel&7]&f: Goodbye for now, farmer!%nl%" to player
 				wait 3 seconds
 				play sound "entity.player.levelup" to player
 				send "&8[&2&lObjective &nComplete!&8]" to player
@@ -173,13 +144,10 @@ on right click:
 				add 1 to {chatmessage::Mackerel::%player's uuid%}
 			else:
 				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: Now just how did you get in this situation?                                                      " to player
-				wait 3 seconds
-				play sound "entity.villager.ambient" to player
-				send "&7[&9Old Man Mackerel&7]&f: Contact a server administrator or owner to fix your problem.                                                      " to player
+				send "&9&lOld Man Mackerel &fAquire the &9Developed Fishing Pole&f from &6&lDenver&f, and I'll build your new grappling hook! %nl%" to player
 		else:
 			play sound "entity.villager.ambient" to player
-			send "&7[&9Old Man Mackerel&7]&f: Ain't got nothin' for ya right now.                                                      " to player
+			send "&7[&9Old Man Mackerel&7]&f: Ain't got nothin' for ya right now.%nl%" to player
 		delete {chatmessage::Mackerel::%player's uuid%::talking}
 			
 			

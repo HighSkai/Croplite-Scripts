@@ -5,57 +5,56 @@ command /open-petshopgui:
 		loadPetShopGui(player)
 
 function loadPetShopGui(p: player):
-	set {_gui} to chest inventory with 3 rows named "&6&lPet Shop"
+	set {_gui} to chest inventory with 3 rows named "&6&lPets"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to orange stained glass pane named " "
+		set {_item} to orange stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
-	set {_item} to {pets::speedpet1} named "&f&lSpeed Pet Shop"
+	set {_item} to {pets::speedpet1} named "&f&lSpeed Pets"
 	set lore of {_item} to ""
-	set line 1 of lore of {_item} to "&7Increases player's movement"
-	set line 2 of lore of {_item} to "&7speed."
+	set line 1 of lore of {_item} to "&7Increases movement speed"
 	set slot 10 of {_gui} to {_item}
 
-	set {_item} to {pets::experiencepet1} named "&a&lExperience Pet Shop"
+	set {_item} to {pets::experiencepet1} named "&e&lExp Multi Pets"
 	set lore of {_item} to ""
-	set line 1 of lore of {_item} to "&7Increases experience gain"
-	set line 2 of lore of {_item} to "&7from farming."
+	set line 1 of lore of {_item} to "&7Increases experience gained"
+	set line 2 of lore of {_item} to "&7from farming and killing mobs"
 	set slot 11 of {_gui} to {_item}
 
-	set {_item} to {pets::strengthpet1} named "&c&lStrength Pet Shop"
+	set {_item} to {pets::strengthpet1} named "&4&lStrength Pets"
 	set lore of {_item} to ""
-	set line 1 of lore of {_item} to "&7Increases players attack"
-	set line 2 of lore of {_item} to "&7damage."
+	set line 1 of lore of {_item} to "&7Increases attack damage"
 	set slot 12 of {_gui} to {_item}
 
-	set {_item} to {pets::expanderpet1} named "&6&lExpander Pet Shop"
+	set {_item} to {pets::expanderpet1} named "&6&lExpander Pets"
 	set lore of {_item} to ""
-	set line 1 of lore of {_item} to "&7Increases experience gain"
-	set line 2 of lore of {_item} to "&7from farming."
+	set line 1 of lore of {_item} to "&7Increases crop bag size"
 	set slot 13 of {_gui} to {_item}
 
-	set {_item} to {pets::harvestpet1} named "&9&lHarvest Pet Shop"
+	set {_item} to {pets::harvestpet1} named "&9&lHarvest Pets"
 	set lore of {_item} to ""
-	set line 1 of lore of {_item} to "&7Increases experience gain"
-	set line 2 of lore of {_item} to "&7from farming."
+	set line 1 of lore of {_item} to "&7Increases the chance of"
+	set line 2 of lore of {_item} to "&7farming double crops"
 	set slot 14 of {_gui} to {_item}
 
-	set {_item} to {pets::anti-gravitypet1} named "&9&lMiscellaneous Pet Shop"
+	set {_item} to {pets::anti-gravitypet1} named "&9&lMiscellaneous Pets"
 	set lore of {_item} to ""
-	set line 1 of lore of {_item} to "&7Miscellaneous pets."
+	set line 1 of lore of {_item} to "&7Miscellaneous pets"
 	set slot 15 of {_gui} to {_item}
-
-	set slot 16 of {_gui} to barrier named "&4&lComing Soon..."
 
 	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
      
 	open {_gui} to {_p}
 
 local function loadSpeedPetShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&f&lSpeed Pet Shop"
+	set {_gui} to chest inventory with 3 rows named "&f&lSpeed Pets"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+		set {_item} to white stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 	
 	loop 5 times:
 		set slot (loop-number + 10) of {_gui} to {pets::speedpet%loop-number%}
@@ -70,7 +69,7 @@ local function loadSpeedPetShopGUI(p: player):
 		add "&6&lPet Tokens &8[&6&l%{pets::speedpet%{_num}%::tokens}%&8]" to {_lore::*}
 
 		if {pets::speedpet%{_num}%::purchased::%uuid of {_p}%} is true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lPurchased&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			add "&7Purchase Again" to {_lore::*}
 
 		set lore of {_item} to {_lore::*}
@@ -82,10 +81,12 @@ local function loadSpeedPetShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadExperiencePetShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&a&lExperience Pet Shop"
+	set {_gui} to chest inventory with 3 rows named "&e&lExp Multi Pets"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to green stained glass pane named " "
+		set {_item} to yellow stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	loop 3 times:
 		set slot (loop-number + 11) of {_gui} to {pets::experiencepet%loop-number%}
@@ -100,7 +101,7 @@ local function loadExperiencePetShopGUI(p: player):
 		add "&6&lPet Tokens &8[&6&l%{pets::experiencepet%{_num}%::tokens}%&8]" to {_lore::*}
 
 		if {pets::experiencepet%{_num}%::purchased::%uuid of {_p}%} is true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lPurchased&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			add "&7Purchase Again" to {_lore::*}
 
 		set lore of {_item} to {_lore::*}
@@ -112,10 +113,12 @@ local function loadExperiencePetShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadStrengthPetShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&c&lStrength Pet Shop"
+	set {_gui} to chest inventory with 3 rows named "&4&lStrength Pets"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to red stained glass pane named " "
+		set {_item} to red stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	loop 2 times:
 		set slot (loop-number + 11) of {_gui} to {pets::strengthpet%loop-number%}
@@ -130,7 +133,7 @@ local function loadStrengthPetShopGUI(p: player):
 		add "&6&lPet Tokens &8[&6&l%{pets::strengthpet%{_num}%::tokens}%&8]" to {_lore::*}
 
 		if {pets::strengthpet%{_num}%::purchased::%uuid of {_p}%} is true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lPurchased&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			add "&7Purchase Again" to {_lore::*}
 
 		set lore of {_item} to {_lore::*}
@@ -142,10 +145,12 @@ local function loadStrengthPetShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadExpanderPetShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&6&lExpander Pet Shop"
+	set {_gui} to chest inventory with 3 rows named "&6&lExpander Pets"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to orange stained glass pane named " "
+		set {_item} to orange stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	loop 6 times:
 		set slot (loop-number + 9) of {_gui} to {pets::expanderpet%loop-number%}
@@ -160,7 +165,7 @@ local function loadExpanderPetShopGUI(p: player):
 		add "&6&lPet Tokens &8[&6&l%{pets::expanderpet%{_num}%::tokens}%&8]" to {_lore::*}
 
 		if {pets::expanderpet%{_num}%::purchased::%uuid of {_p}%} is true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lPurchased&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			add "&7Purchase Again" to {_lore::*}
 
 		set lore of {_item} to {_lore::*}
@@ -172,10 +177,12 @@ local function loadExpanderPetShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadHarvestPetShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&9&lHarvest Pet Shop"
+	set {_gui} to chest inventory with 3 rows named "&9&lHarvest Pets"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
+		set {_item} to light blue stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	loop 5 times:
 		set slot (loop-number + 10) of {_gui} to {pets::harvestpet%loop-number%}
@@ -190,7 +197,7 @@ local function loadHarvestPetShopGUI(p: player):
 		add "&6&lPet Tokens &8[&6&l%{pets::harvestpet%{_num}%::tokens}%&8]" to {_lore::*}
 
 		if {pets::harvestpet%{_num}%::purchased::%uuid of {_p}%} is true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lPurchased&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			add "&7Purchase Again" to {_lore::*}
 
 		set lore of {_item} to {_lore::*}
@@ -202,10 +209,12 @@ local function loadHarvestPetShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadMiscPetShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&8&lMiscellaneous Pet Shop"
+	set {_gui} to chest inventory with 3 rows named "&8&lMiscellaneous Pets"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to gray stained glass pane named " "
+		set {_item} to gray stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	set slot 12 of {_gui} to {pets::anti-gravitypet1}
 	set slot 13 of {_gui} to {pets::wheatfishpet1}
@@ -219,7 +228,7 @@ local function loadMiscPetShopGUI(p: player):
 			add "&ePrice:" to {_lore::*}
 			add "&6&lPet Tokens &8[&6&l%{pets::anti-gravitypet1::tokens}%&8]" to {_lore::*}
 			if {pets::anti-gravitypet1::purchased::%uuid of {_p}%} is true:
-				set name of {_item} to "%{_item}'s name% &8| [&a&lPurchased&8]"
+				set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 				add "&7Purchase Again" to {_lore::*}
 		else if loop-value is 13:
 			set {_lore::*} to lore of {_item}
@@ -227,7 +236,7 @@ local function loadMiscPetShopGUI(p: player):
 			add "&ePrice:" to {_lore::*}
 			add "&6&lPet Tokens &8[&6&l%{pets::wheatfishpet1::tokens}%&8]" to {_lore::*}
 			if {pets::wheatfishpet1::purchased::%uuid of {_p}%} is true:
-				set name of {_item} to "%{_item}'s name% &8| [&a&lPurchased&8]"
+				set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 				add "&7Purchase Again" to {_lore::*}
 		set lore of {_item} to {_lore::*}
 		set slot loop-value of {_gui} to {_item}
@@ -238,7 +247,7 @@ local function loadMiscPetShopGUI(p: player):
  
 on inventory click:
 	if event-inventory is not player's inventory:
-		if event-inventory's name is "&6&lPet Shop":
+		if event-inventory's name is "&6&lPets":
 			cancel event
 
 			if event-slot is 10:
@@ -263,130 +272,146 @@ on inventory click:
 				play sound "minecraft:ui.button.click" to player
 				close player's inventory
 
-		else if event-inventory's name is "&f&lSpeed Pet Shop":
+		else if event-inventory's name is "&f&lSpeed Pets":
 			cancel event
+
 			set {_slots::*} to 11 and 12 and 13 and 14 and 15
 			set {_num} to index of event-slot - 10
+
 			if {_slots::*} contains event-slot:
 				loop player's inventory:
 					if string tag "Croplite:pet-token" of custom nbt of loop-value is "pet-token":
 						add item amount of loop-value to {_player::pet-tokens}
 
 				if {_player::pet-tokens} >= {pets::speedpet%{_num}%::tokens}:
-					give player {pets::speedpet%{_num}%}
-					remove {pets::speedpet%{_num}%::tokens} of {pet-token} from player
-
 					set {pets::speedpet%{_num}%::purchased::%player's uuid%} to true
-					play sound "entity.experience_orb.pickup" to player
+					remove {pets::speedpet%{_num}%::tokens} of {pet-token} from player
+					give player {pets::speedpet%{_num}%}
 				
 					loadSpeedPetShopGUI(player)
+
+					send "&6&lPercy &aSuccessfully purchased pet." to player		
+					play sound "entity.experience_orb.pickup" to player
 				else:
+					send "&6&lPercy &cInsufficient &6&lPet Tokens &cfor pet." to player	
 					play sound "minecraft:entity.villager.no" to player
-					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
 			else if event-slot is 22:
 				play sound "minecraft:ui.button.click" to player
 				close player's inventory
 
-		else if event-inventory's name is "&a&lExperience Pet Shop":
+		else if event-inventory's name is "&e&lExp Multi Pets":
 			cancel event
+
 			set {_slots::*} to 12 and 13 and 14
 			set {_num} to index of event-slot - 11
+
 			if {_slots::*} contains event-slot:
 				loop player's inventory:
 					if string tag "Croplite:pet-token" of custom nbt of loop-value is "pet-token":
 						add item amount of loop-value to {_player::pet-tokens}
 
 				if {_player::pet-tokens} >= {pets::experiencepet%{_num}%::tokens}:
-					give player {pets::experiencepet%{_num}%}
-					remove {pets::experiencepet%{_num}%::tokens} of {pet-token} from player
-
 					set {pets::experiencepet%{_num}%::purchased::%player's uuid%} to true
-					play sound "entity.experience_orb.pickup" to player
+					remove {pets::experiencepet%{_num}%::tokens} of {pet-token} from player
+					give player {pets::experiencepet%{_num}%}
 
 					loadExperiencePetShopGUI(player)
 					
+					send "&6&lPercy &aSuccessfully purchased pet." to player		
+					play sound "entity.experience_orb.pickup" to player
 				else:
+					send "&6&lPercy &cInsufficient &6&lPet Tokens &cfor pet." to player	
 					play sound "minecraft:entity.villager.no" to player
-					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
 			else if event-slot is 22:
 				play sound "minecraft:ui.button.click" to player
 				close player's inventory
 
-		else if event-inventory's name is "&c&lStrength Pet Shop":
+		else if event-inventory's name is "&4&lStrength Pets":
 			cancel event
+
 			set {_slots::*} to 12 and 13
 			set {_num} to index of event-slot - 11
+
 			if {_slots::*} contains event-slot:
 				loop player's inventory:
 					if string tag "Croplite:pet-token" of custom nbt of loop-value is "pet-token":
 						add item amount of loop-value to {_player::pet-tokens}
 
 				if {_player::pet-tokens} >= {pets::strengthpet%{_num}%::tokens}:
-					give player {pets::strengthpet%{_num}%}
-					remove {pets::strengthpet%{_num}%::tokens} of {pet-token} from player
-
 					set {pets::strengthpet%{_num}%::purchased::%player's uuid%} to true
-					play sound "entity.experience_orb.pickup" to player
+					remove {pets::strengthpet%{_num}%::tokens} of {pet-token} from player
+					give player {pets::strengthpet%{_num}%}
 
 					loadStrengthPetShopGUI(player)
+
+					send "&6&lPercy &aSuccessfully purchased pet." to player		
+					play sound "entity.experience_orb.pickup" to player
 				else:
+					send "&6&lPercy &cInsufficient &6&lPet Tokens &cfor pet." to player	
 					play sound "minecraft:entity.villager.no" to player
-					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
 			else if event-slot is 22:
 				play sound "minecraft:ui.button.click" to player
 				close player's inventory
 
-		else if event-inventory's name is "&6&lExpander Pet Shop":
+		else if event-inventory's name is "&6&lExpander Pets":
 			cancel event
+
 			set {_slots::*} to 10 and 11 and 12 and 13 and 14 and 15
 			set {_num} to index of event-slot - 9 
+
 			if {_slots::*} contains event-slot:
 				loop player's inventory:
 					if string tag "Croplite:pet-token" of custom nbt of loop-value is "pet-token":
 						add item amount of loop-value to {_player::pet-tokens}
 
 				if {_player::pet-tokens} >= {pets::expanderpet%{_num}%::tokens}:
-					give player {pets::expanderpet%{_num}%}
-					remove {pets::expanderpet%{_num}%::tokens} of {pet-token} from player
-
 					set {pets::expanderpet%{_num}%::purchased::%player's uuid%} to true
-					play sound "entity.experience_orb.pickup" to player
+					remove {pets::expanderpet%{_num}%::tokens} of {pet-token} from player
+					give player {pets::expanderpet%{_num}%}
 
 					loadExpanderPetShopGUI(player)
+
+					send "&6&lPercy &aSuccessfully purchased pet." to player		
+					play sound "entity.experience_orb.pickup" to player
 				else:
+					send "&6&lPercy &cInsufficient &6&lPet Tokens &cfor pet." to player	
 					play sound "minecraft:entity.villager.no" to player
-					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
 			else if event-slot is 22:
 				play sound "minecraft:ui.button.click" to player
 				close player's inventory
 
-		else if event-inventory's name is "&9&lHarvest Pet Shop":
+		else if event-inventory's name is "&9&lHarvest Pets":
 			cancel event
+
 			set {_slots::*} to 11 and 12 and 13 and 14 and 15
 			set {_num} to index of event-slot - 10
+
 			if {_slots::*} contains event-slot:
 				loop player's inventory:
 					if string tag "Croplite:pet-token" of custom nbt of loop-value is "pet-token":
 						add item amount of loop-value to {_player::pet-tokens}
 
 				if {_player::pet-tokens} >= {pets::harvestpet%{_num}%::tokens}:
-					give player {pets::harvestpet%{_num}%}
-					remove {pets::harvestpet%{_num}%::tokens} of {pet-token} from player
-
 					set {pets::harvestpet%{_num}%::purchased::%player's uuid%} to true
-					play sound "entity.experience_orb.pickup" to player
+					remove {pets::harvestpet%{_num}%::tokens} of {pet-token} from player
+					give player {pets::harvestpet%{_num}%}
 
 					loadHarvestPetShopGUI(player)
+
+					send "&6&lPercy &aSuccessfully purchased pet." to player		
+					play sound "entity.experience_orb.pickup" to player
 				else:
+					send "&6&lPercy &cInsufficient &6&lPet Tokens &cfor pet." to player	
 					play sound "minecraft:entity.villager.no" to player
-					send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
 			else if event-slot is 22:
 				play sound "minecraft:ui.button.click" to player
 				close player's inventory
 
-		else if event-inventory's name is "&8&lMiscellaneous Pet Shop":
+		else if event-inventory's name is "&8&lMiscellaneous Pets":
 			cancel event
+
 			set {_slots::*} to 12 and 13
+
 			if {_slots::*} contains event-slot:
 				loop player's inventory:
 					if string tag "Croplite:pet-token" of custom nbt of loop-value is "pet-token":
@@ -394,28 +419,30 @@ on inventory click:
 
 				if event-slot is 12:
 					if {_player::pet-tokens} >= {pets::anti-gravitypet1::tokens}:
-						give player {pets::anti-gravitypet1}
-						remove {pets::anti-gravitypet1::tokens} of {pet-token} from player
-
 						set {pets::anti-gravitypet1::purchased::%player's uuid%} to true
-						play sound "entity.experience_orb.pickup" to player
+						remove {pets::anti-gravitypet1::tokens} of {pet-token} from player
+						give player {pets::anti-gravitypet1}
 
 						loadMiscPetShopGUI(player)
+
+						send "&6&lPercy &aSuccessfully purchased pet." to player		
+						play sound "entity.experience_orb.pickup" to player
 					else:
+						send "&6&lPercy &cInsufficient &6&lPet Tokens &cfor pet." to player	
 						play sound "minecraft:entity.villager.no" to player
-						send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
 				else if event-slot is 13:
 					if {_player::pet-tokens} >= {pets::wheatfishpet1::tokens}:
-						give player {pets::wheatfishpet1}
-						remove {pets::wheatfishpet1::tokens} of {pet-token} from player
-
 						set {pets::wheatfishpet1::purchased::%player's uuid%} to true
-						play sound "entity.experience_orb.pickup" to player
+						remove {pets::wheatfishpet1::tokens} of {pet-token} from player
+						give player {pets::wheatfishpet1}
 
 						loadMiscPetShopGUI(player)
+
+						send "&6&lPercy &aSuccessfully purchased pet." to player		
+						play sound "entity.experience_orb.pickup" to player
 					else:
+						send "&6&lPercy &cInsufficient &6&lPet Tokens &cfor pet." to player	
 						play sound "minecraft:entity.villager.no" to player
-						send "&8[&5&lCroplite&8] &cYou don't have enough &6&lPet Tokens &cto purchase this pet." to player
 			else if event-slot is 22:
 				play sound "minecraft:ui.button.click" to player
 				close player's inventory

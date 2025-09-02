@@ -87,16 +87,26 @@ on enter of region "portaltofarm2":
     if {farmunlocked::2::%player's uuid%} is false:
         cancel event
         loadFarmUnlockGui(player, 2)
+    else:
+        play sound "block.portal.travel" at volume 0.2 to player
 
 on enter of region "portaltofarm3":
     if {farmunlocked::3::%player's uuid%} is false:
         cancel event
         loadFarmUnlockGui(player, 3)
+    else:
+        play sound "block.portal.travel" at volume 0.2 to player
 
 on enter of region "portaltofarm4":
     if {farmunlocked::4::%player's uuid%} is false:
         cancel event
         loadFarmUnlockGui(player, 4)
+    else:
+        play sound "block.portal.travel" at volume 0.2 to player
+
+on enter of region "prestige":
+    cancel event
+    send "&d&lCroplite &cComing soon..." to player
 
 on region exit:
     if {in-combat::%player's uuid%} > 0:
@@ -149,7 +159,10 @@ on region enter:
     
     else if "%region at player%" contains "finchat in world world":
         if {chatmessage::Fin::%player's uuid%} = 0:
-            send "&7[&6Fin&7]&f: Help me!" to player   
+            send "&7[&6Fin&7]&f: Help me!" to player
+
+    else if "%region at player%" contains "toSandParkour":
+        if {chatmessage::colin::%player's uuid%} 
 
         
 on inventory click:
@@ -170,14 +183,14 @@ on inventory click:
                     send title "&eField Unlocked" to player for 0.6 seconds 
                     send subtitle "&aYou have unlocked &e&lField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]" to player for 0.6 seconds
 
-                    send "&d&lCroplite &aYou have unlocked &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&a." to player
+                    send "&d&lCROPLITE &aYou have unlocked &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&a." to player
                 
                 else if {_message} is 3:
-                    send "&d&lCroplite &cYou don't meet any of the requirements to unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
+                    send "&d&lCROPLITE &cYou don't meet any of the requirements to unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
                 else if {_message} is 1:
-                    send "&d&lCroplite &cYou're not high enough &9&lLevel &cto unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
+                    send "&d&lCROPLITE &cYou're not high enough &9&lLevel &cto unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
                 else if {_message} is 2:
-                    send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
+                    send "&d&lCROPLITE &cYou don't have enough &5&lCrop Cash &cto unlock &eField &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&c." to player
             
 
 on inventory click:
@@ -195,10 +208,10 @@ on inventory click:
                     send title "&eFarm Unlocked" to player for 0.6 seconds 
                     send subtitle "&aYou have unlocked &e&lFarm &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]" to player for 0.6 seconds
 
-                    send "&d&lCroplite &aYou have unlocked &eFarm &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&a." to player
+                    send "&d&lCROPLITE &aYou have unlocked &eFarm &8[&e&l%{currentfield-number::%{player's uuid}%}%&8]&a." to player
                 
                 else if {_message} is 1:
-                    send "&d&lCroplite &cYou're not high enough &9&lLevel &cto unlock &eFarm &8[&e&l%{currentfield-number::%{p's uuid}%}%&8]&c." to player
+                    send "&d&lCROPLITE &cYou're not high enough &9&lLevel &cto unlock &eFarm &8[&e&l%{currentfield-number::%{p's uuid}%}%&8]&c." to player
 
 function loadFieldUnlockGui(p: player, n: number):
     set {currentfield-number::%{player's uuid}%} to {_n}
@@ -273,7 +286,7 @@ command /setareareqs:
             set {farm::3::level} to 50
             set {farm::4::level} to 75
         
-            send "&d&lCroplite &aAll field requirements have been set." to player
+            send "&d&lCROPLITE &aAll field requirements have been set." to player
 
 function abbreviateNumber(n: number) :: text:
     set {_num} to {_n}

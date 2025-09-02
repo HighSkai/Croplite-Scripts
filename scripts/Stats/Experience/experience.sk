@@ -8,39 +8,35 @@ function levelUp(p: player):
 
 		subtract {expreq::%uuid of {_p}%} from {exp::%uuid of {_p}%}
 		add 1 to {level::%uuid of {_p}%}
+		set {_p}'s level to {level::%uuid of {_p}%}
 		setPrefix({_p})
 
 		set {expreq::%uuid of {_p}%} to value "%{level::%uuid of {_p}%}%" of {XP-Json}
 
 		add 0.01 to {expmulti::%uuid of {_p}%}
 		add 1 to {enchant-points::%uuid of {_p}%}
+		
+		set level progress of {_p} to {exp::%uuid of {_p}%} / {expreq::%uuid of {_p}%}
 
 function updateEXP(p: player, n: number, farm: number, b: block):
 	if chance of {double-crop-chance::%uuid of {_p}%}:
-		set {_added-crops} to {field::%{_n}%::basecrops} + ({cropharvest::%uuid of {_p}%} percent of {field::%{_n}%::basecrops})
-		loop 2 times:
-			add {_added-crops} to {crops::%uuid of {_p}%}
-			if {doublecmboost::%uuid of {_p}%} is true:
-				add {_added-crops} to {crops::%uuid of {_p}%}
-
-			add ({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp}) to {exp::%uuid of {_p}%}
-
-			add 1 to {lifetimecropsbroken::%uuid of {_p}%}
-			add 1 to {dailycropsbroken::%uuid of {_p}%}
-
-		send action bar "&8[&6(x2) +%abbreviateNumber({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp})% Exp &8(&6&l%abbreviateNumber({exp::%uuid of {_p}%})%&r&8/&6&l%abbreviateNumber({expreq::%uuid of {_p}%})%&8)] &8[&2(x2) +%abbreviateNumber({_added-crops})% Crops &8(&2&l%abbreviateNumber({crops::%uuid of {_p}%})%&r&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8)&8]" to {_p}
-	else: 
-		set {_added-crops} to {field::%{_n}%::basecrops} + ({cropharvest::%uuid of {_p}%} percent of {field::%{_n}%::basecrops})
+		set {_added-crops} to (({cropmulti::%uuid of {_p}%} * {field::%{_n}%::basecrops}) * 2)
 		add {_added-crops} to {crops::%uuid of {_p}%}
-		if {doublecmboost::%uuid of {_p}%} is true:
-			add {_added-crops} to {crops::%uuid of {_p}%}
 
-		add ({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp}) to {exp::%uuid of {_p}%}
+		set {_added-exp} to (({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp}) * 2)
+		add {_added-exp} to {exp::%uuid of {_p}%}
+	else: 
+		set {_added-crops} to ({cropmulti::%uuid of {_p}%} * {field::%{_n}%::basecrops})
+		add {_added-crops} to {crops::%uuid of {_p}%}
 
-		add 1 to {lifetimecropsbroken::%uuid of {_p}%}
-		add 1 to {dailycropsbroken::%uuid of {_p}%}
+		set {_added-exp} to ({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp})
+		add {_added-exp} to {exp::%uuid of {_p}%}
 
-		send action bar "&8[&6+%abbreviateNumber({expmulti::%uuid of {_p}%} * {field::%{_n}%::basexp})% Exp &8(&6&l%abbreviateNumber({exp::%uuid of {_p}%})%&r&8/&6&l%abbreviateNumber({expreq::%uuid of {_p}%})%&8)] &8[&2+%abbreviateNumber({_added-crops})% Crops &8(&2&l%abbreviateNumber({crops::%uuid of {_p}%})%&r&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8)&8]" to {_p}
+	add 1 to {lifetimecropsbroken::%uuid of {_p}%}
+	add 1 to {dailycropsbroken::%uuid of {_p}%}
+
+	send action bar "&8[&6+%abbreviateNumber({_added-exp})% Exp &8(&6&l%abbreviateNumber({exp::%uuid of {_p}%})%&r&8/&6&l%abbreviateNumber({expreq::%uuid of {_p}%})%&8)] &8[&2+%abbreviateNumber({_added-crops})% Crops &8(&2&l%abbreviateNumber({crops::%uuid of {_p}%})%&r&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8)&8]" to {_p}
+	set level progress of {_p} to {exp::%uuid of {_p}%} / {expreq::%uuid of {_p}%}
 
 	chance of 0.00025:
 		play sound "block.note_block.pling" at {_p}
@@ -94,20 +90,6 @@ local function loadMaxCropBagGui(p: player):
 
 	open {_gui} to {_p}
 
-command /temptempsuckmypenis:
-	trigger:
-		broadcast "&5&lCroplite &aThis is a test message."
-		broadcast "&d&lCroplite &aThis is a test message."
-		broadcast ""
-		broadcast "&5&lCROPLITE &aThis is a test message."
-		broadcast "&d&lCROPLITE &aThis is a test message."
-		broadcast ""
-		broadcast "&8[&5&lCroplite&8] &aThis is a test message."
-		broadcast "&8[&d&lCroplite&8] &aThis is a test message."
-		broadcast ""
-		broadcast "&8[&5&lCROPLITE&8] &aThis is a test message."
-		broadcast "&8[&d&lCROPLITE&8] &aThis is a test message."
- 
 on inventory click:
 	if event-inventory's name is "&4&lCrop Bag Full":
 		if event-inventory is not player's inventory:
@@ -124,7 +106,7 @@ on inventory click:
 					sellCrops(player)
 				else:
 					if "%region at player%" contains "farm1 in world world":
-						teleport player to location(1194.5, 102, 959.5, "world", 0, 0)
+						teleport player to location(1195.5, 102, 960.5, "world", 0, 0)
 					else if "%region at player%" contains "farm2 in world world": 
 						teleport player to location(796.5, 99, 1049.5, "world", 145, 0)
 					else if "%region at player%" contains "farm3 in world world": 
@@ -145,73 +127,68 @@ on inventory click:
 			else if event-slot is 22:
 				close player's inventory
 
-function sellCrops(p: player):
-	if {in-combat::%{_p}'s uuid%} < 1:
-		if {crops::%uuid of {_p}%} > 0:
-			play sound "block.note_block.pling" with pitch 2 to {_p}
-			add {crops::%uuid of {_p}%} to {cropcash::%uuid of {_p}%}
-			set {crops::%uuid of {_p}%} to 0
-			send "&8[&5&lCroplite&8] &aCrops have been sold!" to {_p}
-			if {objective::%uuid of {_p}%} is "First Harvest":
-				set {objprogress::%uuid of {_p}%} to {cropcash::%uuid of {_p}%}
-				if {objprogress::%uuid of {_p}%} >= {objprogressreq::%uuid of {_p}%}:
-					{objcomplete::%uuid of {_p}%} is false
-					send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to {_p} for 4 seconds
-					play sound "ui.toast.challenge_complete" to {_p}
-					play sound "entity.{_p}.levelup" to {_p}
-					send "&7------------------------------" to {_p}
-					send "&8[&2Objective &l&nComplete!&8]" to {_p}
-					send "&7------------------------------" to {_p}
-					set {objcomplete::%uuid of {_p}%} to true
-
 on death of mob:
-	if victim is a mob:
-		cancel drops
-		if damage cause is burning:
-			set {_attacker} to {last-fire-attacker::%victim%}
-		else:
-			set {_attacker} to attacker
+	cancel drops
 
-		if "%region at {_attacker}%" is "farm1 in world world and field1 in world world":
-			set {_n} to 1
-		else if "%region at {_attacker}%" is "farm1 in world world and field2 in world world":
-			set {_n} to 2
-		else if "%region at {_attacker}%" is "farm1 in world world and field3 in world world":
-			set {_n} to 3
-		else if "%region at {_attacker}%" is "farm1 in world world and field4 in world world":
-			set {_n} to 4
-		else if "%region at {_attacker}%" is "field5 in world world and farm2 in world world":
-			set {_n} to 5
-		else if "%region at {_attacker}%" is "field6 in world world and farm2 in world world":
-			set {_n} to 6
-		else if "%region at {_attacker}%" is "field7 in world world and farm2 in world world":
-			set {_n} to 7
-		else if "%region at {_attacker}%" is "field8 in world world and farm2 in world world":
-			set {_n} to 8
-		else if "%region at {_attacker}%" is "farm3 in world world and field9 in world world":
-			set {_n} to 9 
-		else if "%region at {_attacker}%" is "farm3 in world world and field10 in world world":
-			set {_n} to 10
-		else if "%region at {_attacker}%" is "farm3 in world world and field11 in world world":
-			set {_n} to 11
-		else if "%region at {_attacker}%" is "farm3 in world world and field12 in world world":
-			set {_n} to 12
-		else if "%region at {_attacker}%" is "field13 in world world and farm4 in world world":
-			set {_n} to 13
-		else if "%region at {_attacker}%" is "farm4 in world world and field14 in world world":
-			set {_n} to 14
-		else if "%region at {_attacker}%" is "farm4 in world world and field15 in world world":
-			set {_n} to 15
-		else if "%region at {_attacker}%" is "field16 in world world and farm4 in world world":
-			set {_n} to 16
+	if attacker is not set:
+		stop
+	if damage cause is burning:
+		set {_attacker} to {last-fire-attacker::%victim%}
+	else:
+		set {_attacker} to attacker
+
+	if "%region at {_attacker}%" is "farm1 in world world and field1 in world world":
+		set {_n} to 1
+	else if "%region at {_attacker}%" is "farm1 in world world and field2 in world world":
+		set {_n} to 2
+	else if "%region at {_attacker}%" is "farm1 in world world and field3 in world world":
+		set {_n} to 3
+	else if "%region at {_attacker}%" is "farm1 in world world and field4 in world world":
+		set {_n} to 4
+	else if "%region at {_attacker}%" is "field5 in world world and farm2 in world world":
+		set {_n} to 5
+	else if "%region at {_attacker}%" is "field6 in world world and farm2 in world world":
+		set {_n} to 6
+	else if "%region at {_attacker}%" is "field7 in world world and farm2 in world world":
+		set {_n} to 7
+	else if "%region at {_attacker}%" is "field8 in world world and farm2 in world world":
+		set {_n} to 8
+	else if "%region at {_attacker}%" is "farm3 in world world and field9 in world world":
+		set {_n} to 9  
+	else if "%region at {_attacker}%" is "farm3 in world world and field10 in world world":
+		set {_n} to 10
+	else if "%region at {_attacker}%" is "farm3 in world world and field11 in world world":
+		set {_n} to 11
+	else if "%region at {_attacker}%" is "farm3 in world world and field12 in world world":
+		set {_n} to 12
+	else if "%region at {_attacker}%" is "field13 in world world and farm4 in world world":
+		set {_n} to 13
+	else if "%region at {_attacker}%" is "farm4 in world world and field14 in world world":
+		set {_n} to 14
+	else if "%region at {_attacker}%" is "farm4 in world world and field15 in world world":
+		set {_n} to 15
+	else if "%region at {_attacker}%" is "field16 in world world and farm4 in world world":
+		set {_n} to 16
+
+	if {objective::%{_attacker}'s uuid%} is "Mob Massacre":
+		if {objcomplete::%{_attacker}'s uuid%} is false:
+			add 1 to {objprogress::%{_attacker}'s uuid%}
+			if {objprogress::%{_attacker}'s uuid%} = {objprogressreq::%{_attacker}'s uuid%}:
+				set {objcomplete::%{_attacker}'s uuid%} to true
+				play sound "ui.toast.challenge_complete" to {_attacker}
+				send title "&2Objective &l&nComplete!" with subtitle "&eReturn to Gabriel" to {_attacker} for 4 seconds
+				send "&7------------------------------" to {_attacker}
+				send "&8[&2Objective &l&nComplete!&8]" to {_attacker}
+				send "&7------------------------------" to {_attacker}
+				add 1 to {chatmessage::Gabriel::%{_attacker}'s uuid%}
 			
-		add 1 to {dailymobkills::%{_attacker}'s uuid%}
-		add 1 to {lifetimemobkills::%{_attacker}'s uuid%}
+	add 1 to {dailymobkills::%{_attacker}'s uuid%}
+	add 1 to {lifetimemobkills::%{_attacker}'s uuid%}
 
-		add ({expmulti::%{_attacker}'s uuid%} * {field::%{_n}%::basexp} * 100) to {exp::%{_attacker}'s uuid%}
-		send action bar "&8[&6+%abbreviateNumber({expmulti::%{_attacker}'s uuid%} * {field::%{_n}%::basexp} * 100)% Exp &8(&6&l%abbreviateNumber({exp::%{_attacker}'s uuid%})%&r&8/&6&l%abbreviateNumber({expreq::%{_attacker}'s uuid%})%&8)]" to attacker
+	add ({expmulti::%{_attacker}'s uuid%} * {field::%{_n}%::basexp} * 100) to {exp::%{_attacker}'s uuid%}
+	send action bar "&8[&6+%abbreviateNumber({expmulti::%{_attacker}'s uuid%} * {field::%{_n}%::basexp} * 100)% Exp &8(&6&l%abbreviateNumber({exp::%{_attacker}'s uuid%})%&r&8/&6&l%abbreviateNumber({expreq::%{_attacker}'s uuid%})%&8)]" to attacker
 
-		levelUp(attacker)
+	levelUp(attacker)
 
 on break:
 	if player is not an operator:
@@ -234,6 +211,21 @@ on break:
 	else if "%region at player%" is "field5 in world world and farm2 in world world":
 		set {_n} to 5
 		set {_f} to 2
+		if at least one of:
+			event-block is red_tulip
+			event-block is orange_tulip
+		then:
+			if {objective::%player's uuid%} is "Bee Bulk":
+				{objcomplete::%player's uuid%} is false
+				add 1 to {objprogress::%player's uuid%}
+				if {objprogress::%player's uuid%} = 1000:
+					play sound "ui.toast.challenge_complete" to player
+					send title "&2Objective &l&nComplete!" with subtitle "&eReturn to Brandon" to player for 4 seconds
+					send "&7------------------------------" to player
+					send "&8[&2Objective &l&nComplete!&8]" to player
+					send "&7------------------------------" to player
+					add 1 to {objprogress::%player's uuid%}
+					set {objcomplete::%player's uuid%} to true
 	else if "%region at player%" is "field6 in world world and farm2 in world world":
 		set {_n} to 6
 		set {_f} to 2
@@ -282,8 +274,9 @@ on break:
 			levelUp(player)
 			if {maxcropbagpopup::%player's uuid%} is true:
 				loadMaxCropBagGui(player)
-			cancel event
 			send "&8[&5&lCroplite&8] &cYour crop bag is full!" to player
+			cancel event
+			stop
 		else:
 			updateEXP(player, {_n}, {_f}, event-block)
 
@@ -319,6 +312,7 @@ on break:
 
 on player tool change:
 	if event-slot is 0:
+		set {holdingscythe::%player's uuid%} to true
 		set {_tags::*} to string list tag "Croplite:enchants" of custom nbt of player's tool
 		set {_tags2::*} to string list tag "Croplite:scythe-stats" of custom nbt of player's tool
 		loop {_tags::*}:
@@ -327,7 +321,9 @@ on player tool change:
 
 			if {_id} is "experience":
 				add (0.1 * {_parts::2} parsed as number) to {expmulti::%player's uuid%}
-				set {holdingscythe::%player's uuid%} to true
+
+			if {_id} is "cropmulti":
+				add (0.1 * {_parts::2} parsed as number) to {cropmulti::%player's uuid%}
 		
 		loop {_tags2::*}:
 			set {_parts::*} to loop-value split at ":"
@@ -335,9 +331,9 @@ on player tool change:
 			
 			if {_id} is "experiencemulti":
 				add ({_parts::2} parsed as number) to {expmulti::%player's uuid%}
-				set {holdingscythe::%player's uuid%} to true
 	else:
 		if {holdingscythe::%player's uuid%} is true:
+			set {holdingscythe::%player's uuid%} to false
 			set {_tags::*} to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
 			set {_tags2::*} to string list tag "Croplite:scythe-stats" of custom nbt of slot 0 of player's inventory
 			loop {_tags::*}:
@@ -346,7 +342,9 @@ on player tool change:
 
 				if {_id} is "experience":
 					remove (0.1 * {_parts::2} parsed as number) from {expmulti::%player's uuid%}
-					set {holdingscythe::%player's uuid%} to false
+
+				if {_id} is "cropmulti":
+					remove (0.1 * {_parts::2} parsed as number) from {cropmulti::%player's uuid%}
 
 			loop {_tags2::*}:
 				set {_parts::*} to loop-value split at ":"
@@ -354,4 +352,3 @@ on player tool change:
 				
 				if {_id} is "experiencemulti":
 					remove ({_parts::2} parsed as number) from {expmulti::%player's uuid%}
-					set {holdingscythe::%player's uuid%} to false

@@ -5,49 +5,49 @@ on right click:
 		if {chatmessage::Chuck::%player's uuid%} = 0:
 			if {objective::%player's uuid%} is "objectivenone":
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: Haven't seen you here before. You must be new.                                                                                                  " to player
+				send "&7[&6Chuck Woodstock&7]&f: Haven't seen you here before. You must be new.%nl%" to player
 				wait 4 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: Welcome to &d&lCroplite&r&f, unlike the other folks 'round here my respect is earned, not given.                                                                " to player
+				send "&7[&6Chuck Woodstock&7]&f: Welcome to &d&lCROPLITE&r&f, unlike the other folks 'round here my respect is earned, not given.%nl%" to player
 				wait 5 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: Tell you what, if you unlock or upgrade 2 skills from the &5&lEnchanter&f in the shop, you'll have my respect.                                                                                      " to player
+				send "&7[&6Chuck Woodstock&7]&f: Tell you what, if you unlock or upgrade 2 enchantments from the &5&lEnchanter&f in the shop, you'll have my respect.%nl%" to player
 				wait 5 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: &e&lSkill Points &r&fare earned through leveling up and completing &2&lObjectives&r&f.                                                                     " to player
+				send "&7[&6Chuck Woodstock&7]&f: &e&lEnchant Points &r&fare earned through leveling up and completing &2&lObjectives&r&f.%nl%" to player
 				wait 4 seconds 
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: Heck, I'll even throw in a little reward if you can get this done.                                                                          " to player
+				send "&7[&6Chuck Woodstock&7]&f: Heck, I'll even throw in a little reward if you can get this done.%nl%" to player
 				wait 3 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: Now get outta my face! You've been here long enough.                                                                                   " to player
+				send "&7[&6Chuck Woodstock&7]&f: Now get outta my face! You've been here long enough.%nl%" to player
 				wait 3 seconds
 				send "&7------------------------------" to player
-				send "&8[&2&lObjective&r&8] &5Some Skillz: &r&eUpgrade or                                  unlock 2 skills in the Enchanter" to player
+				send "&8[&2&lObjective&r&8] &5Enchanter: &r&eUpgrade or%nl% unlock 2 enchants in the Enchanter" to player
 				send "&7------------------------------" to player
 				play sound "block.amethyst_block.resonate" to player
 				set {objcomplete::%player's uuid%} to false
-				set {objective::%player's uuid%} to "Some Skillz"
+				set {objective::%player's uuid%} to "Enchanter"
 				set {objprogressreq::%player's uuid%} to 2
 				set {objprogress::%player's uuid%} to 0
 			else:
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: You've already got an objective, get outta my face!                                                                       " to player
+				send "&7[&6Chuck Woodstock&7]&f: You've already got an objective, get outta my face!%nl%" to player
 		else if {chatmessage::Chuck::%player's uuid%} = 1:
-			if {objective::%player's uuid%} is "Some Skillz":
+			if {objective::%player's uuid%} is "Enchanter":
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: Wow, I didn't think you would actually do it.                                                                " to player
+				send "&7[&6Chuck Woodstock&7]&f: Wow, I didn't think you would actually do it.%nl%" to player
 				wait 4 seconds
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: I guess you've earned my respect. Here's a little something for your troubles.                                                                        " to player
+				send "&7[&6Chuck Woodstock&7]&f: I guess you've earned my respect. Here's a little something for your troubles.%nl%" to player
 				wait 4 seconds
 				play sound "entity.player.levelup" to player
 				send "&7------------------------------" to player
 				send "&8[&2Objective Rewards&8]" to player
-				send "&8 - &5150 Crop Cash" to player
-				send "&8 - &6200 Experience" to player
-				send "&8 - &e1 Skill Point" to player
-				send "&8 - &6&l1x Pet Crate Key" to player
+				send "&8 - &5350 Crop Cash" to player
+				send "&8 - &6500 Experience" to player
+				send "&8 - &e1 Enchant Point" to player
+				send "&8 - &6&l1 Pet Crate Key" to player
 				send "&7------------------------------" to player
 				add 1 to {enchant-points::%player's uuid%}
 				add 150 to {cropcash::%player's uuid%}
@@ -63,13 +63,13 @@ on right click:
 				add 1 to {chatmessage::Chuck::%player's uuid%}
 			else:
 				play sound "entity.villager.ambient" to player
-				send "&7[&6Chuck Woodstock&7]&f: You've already got an objective, get outta my face!                                                                       " to player
+				send "&7[&6Chuck Woodstock&7]&f: You've already got an objective, get outta my face!" to player
 		else:
 			play sound "entity.villager.ambient" to player
-			send "&7[&6Chuck Woodstock&7]&f: Sorry, ain't got nothin for you right now                                                                " to player
+			send "&7[&6Chuck Woodstock&7]&f: Sorry, ain't got nothin for you right now." to player
 
 function checkTrackorChat(p: player):
-	if {objective::%uuid of {_p}%} is "Some Skillz":
+	if {objective::%uuid of {_p}%} is "Enchanter":
 		if {objprogress::%uuid of {_p}%} = 0 or 1:
 			add 1 to {objprogress::%uuid of {_p}%}
 			if {objprogress::%uuid of {_p}%} = 2:

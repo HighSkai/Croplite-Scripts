@@ -21,6 +21,5 @@ on block trample:
 		cancel event
 
 on drop:
-	if event-item is tagged as item tag "minecraft:hoes":
-		player is not an operator
+	if player is not an operator:
 		cancel event

@@ -1,3 +1,19 @@
+command /reset-everything [<offline player>]:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            execute console command "/clear %arg-1%"
+            execute console command "/gms %arg-1%"
+            wait 1 tick
+            initializePlayerStuff(arg-1)
+            resetStats(arg-1)
+        else:
+            execute console command "/clear %player%"
+            execute console command "/gms %player%"
+            wait 1 tick
+            initializePlayerStuff(player)
+            resetStats(player)
+
 command /gmc [<player>]:
     permission: operator
     trigger:
@@ -310,10 +326,13 @@ on tab complete:
     if event-string is "/set-rank":
         set tab completions for position 1 to "member" and "vip" and "vip+" and "mvp" and "mvp+" and "elite" and "helper" and "builder" and "developer" and "owner" and "staff" and "croplite"
 
-command /area <player>:
+command /area [<player>]:
     permission: operator
     trigger:
-        send "Region at %arg-1% is: ""%region at arg-1%""" to player
+        if arg-1 is set:
+            send "Region at %arg-1% is: ""%region at arg-1%""" to player
+        else:
+            send "Region at %player% is: ""%region at player%""" to player
 
 command /centerself:
 	permission: operator
@@ -350,3 +369,13 @@ command /clearchat:
     trigger:
         loop 200 times:
             broadcast ""
+
+command /tptest:
+    permission: operator
+    trigger:
+        teleport player to location at 9879.5, -9, 10194.5
+
+command /tpeventsarena:
+    permission: operator
+    trigger:
+        teleport player to location at 10737.5, -3, 8918.5

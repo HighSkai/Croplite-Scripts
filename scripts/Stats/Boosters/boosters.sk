@@ -1,0 +1,456 @@
+on script load:
+    setBoosters()
+
+on consume of potion:
+    if name of event-item is "&e&lExp Multi-Up":
+        if {expmultibooster-active::%player's uuid%} and {superexpmultibooster-active::%player's uuid%} are false:
+            set {expmultibooster-active::%player's uuid%} to true
+            set player's held item to air
+            add 1 to {expmulti::%player's uuid%}
+            send "&d&lCROPLITE &aYou have activated an &e&lExp Multi-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+                        
+            wait 8 minutes
+            set {expmultibooster-active::%player's uuid%} to false
+            subtract 1 from {expmulti::%player's uuid%}
+            send "&d&lCROPLITE &cYour &e&lExp Multi-Up &cbooster has ran out." to player
+            play sound "minecraft:entity.villager.no" to player
+        else:
+            if {expmultibooster-active::%player's uuid%} is true:
+                send "&d&lCROPLITE &cYou already have an active &e&lExp Multi-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &e&lSuper Exp Multi-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+    else if name of event-item is "&e&lSuper Exp Multi-Up":
+        if {expmultibooster-active::%player's uuid%} and {superexpmultibooster-active::%player's uuid%} are false:
+            set {superexpmultibooster-active::%player's uuid%} to true
+            set player's held item to air
+            set {superexpmultibooster-addition::%player's uuid%} to {expmulti::%player's uuid%}
+            add {superexpmultibooster-addition::%player's uuid%} to {expmulti::%player's uuid%}
+            send "&d&lCROPLITE &aYou have activated a &e&lSuper Exp Multi-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+            
+            wait 4 minutes
+            set {superexpmultibooster-active::%player's uuid%} to false
+            subtract {superexpmultibooster-addition::%player's uuid%} from {expmulti::%player's uuid%}
+            send "&d&lCROPLITE &cYour &e&lSuper Exp Multi-Up &cbooster has ran out." to player
+            play sound "minecraft:entity.villager.no" to player
+        else:
+            if {expmultibooster-active::%player's uuid%} is true:
+                send "&d&lCROPLITE &cYou already have an active &e&lExp Multi-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &e&lSuper Exp Multi-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+
+    else if name of event-item is "&b&lCrop Multi-Up":
+        if {cropmultibooster-active::%player's uuid%} and {supercropmultibooster-active::%player's uuid%} are false:
+            set {cropmultibooster-active::%player's uuid%} to true
+            set player's held item to air
+            add 1 to {cropmulti::%player's uuid%}
+            send "&d&lCROPLITE &aYou have activated a &b&lCrop Multi-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+
+            wait 8 minutes
+            set {cropmultibooster-active::%player's uuid%} to false
+            subtract 1 from {cropmulti::%player's uuid%}
+            send "&d&lCROPLITE &cYour &b&lCrop Multi-Up &cbooster has ran out." to player
+            play sound "minecraft:entity.villager.no" to player
+        else:
+            if {cropmultibooster-active::%player's uuid%} is true:
+                send "&d&lCROPLITE &cYou already have an active &b&lCrop Multi-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &b&lSuper Crop Multi-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+    else if name of event-item is "&b&lSuper Crop Multi-Up":
+        if {cropmultibooster-active::%player's uuid%} and {supercropmultibooster-active::%player's uuid%} are false:
+            set {supercropmultibooster-active::%player's uuid%} to true
+            set player's held item to air
+            set {supercropmultibooster-addition::%player's uuid%} to {cropmulti::%player's uuid%}
+            add {supercropmultibooster-addition::%player's uuid%} to {cropmulti::%player's uuid%}
+            send "&d&lCROPLITE &aYou have activated a &b&lSuper Crop Multi-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+
+            wait 4 minutes
+            set {supercropmultibooster-active::%player's uuid%} to false
+            subtract {supercropmultibooster-addition::%player's uuid%} from {cropmulti::%player's uuid%}
+            send "&d&lCROPLITE &cYour &b&lSuper Crop Multi-Up &cbooster has ran out." to player
+            play sound "minecraft:entity.villager.no" to player
+        else:
+            if {cropmultibooster-active::%player's uuid%} is true:
+                send "&d&lCROPLITE &cYou already have an active &b&lCrop Multi-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &b&lSuper Crop Multi-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+        
+    else if name of event-item is "&4&lDamage-Up":
+        if {damagebooster-active::%player's uuid%} and {superdamagebooster-active::%player's uuid%} are false:
+            set {damagebooster-active::%player's uuid%} to true
+            set player's held item to air
+            add 1 to {damageboost::%player's uuid%}
+            send "&d&lCROPLITE &aYou have activated a &4&lDamage-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+            
+            wait 8 minutes
+            set {damagebooster-active::%player's uuid%} to false
+            remove 1 from {damageboost::%player's uuid%}
+            send "&d&lCROPLITE &cYour &4&lDamage-Up &cbooster has ran out." to player
+            play sound "minecraft:entity.villager.no" to player
+        else:
+            if {damagebooster-active::%player's uuid%} is true:
+                send "&d&lCROPLITE &cYou already have an active &4&lDamage-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &4&lSuper Damage-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+    else if name of event-item is "&4&lSuper Damage-Up":
+        if {damagebooster-active::%player's uuid%} and {superdamagebooster-active::%player's uuid%} are false:
+            set {superdamagebooster-active::%player's uuid%} to true
+            set player's held item to air
+            add 2 to {damageboost::%player's uuid%}
+            send "&d&lCROPLITE &aYou have activated a &4&lSuper Damage-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+
+            wait 4 minutes
+            set {superdamagebooster-active::%player's uuid%} to false
+            remove 2 from {damageboost::%player's uuid%}
+            send "&d&lCROPLITE &cYour &4&lSuper Damage-Up &cbooster has ran out." to player
+            play sound "minecraft:entity.villager.no" to player
+        else:
+            if {damagebooster-active::%player's uuid%} is true:
+                send "&d&lCROPLITE &cYou already have an active &4&lDamage-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &4&lSuper Damage-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+
+    else if name of event-item is "&f&lSpeed-Up":
+        if {speedbooster-active::%player's uuid%} and {superspeedbooster-active::%player's uuid%} are false:
+            set {speedbooster-active::%player's uuid%} to true
+            set player's held item to air
+            set {speedbooster-addition::%player's uuid%} to player's walk speed / 2
+            add {speedbooster-addition::%player's uuid%} to player's walk speed 
+            send "&d&lCROPLITE &aYou have activated a &f&lSpeed-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+
+            wait 8 minutes
+            set {speedbooster-active::%player's uuid%} to false
+            subtract {speedbooster-addition::%player's uuid%} from player's walk speed
+            send "&d&lCROPLITE &cYour &f&lSpeed-Up &cbooster has ran out." to player
+            play sound "minecraft:entity.villager.no" to player
+        else:
+            if {speedbooster-active::%player's uuid%} is true:
+                send "&d&lCROPLITE &cYou already have an active &f&lSpeed-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &f&lSuper Speed-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+    else if name of event-item is "&f&lSuper Speed-Up":
+        if {speedbooster-active::%player's uuid%} and {superspeedbooster-active::%player's uuid%} are false:
+            set {superspeedbooster-active::%player's uuid%} to true
+            set player's held item to air
+            set {superspeedbooster-addition::%player's uuid%} to player's walk speed
+            add {superspeedbooster-addition::%player's uuid%} to player's walk speed
+            send "&d&lCROPLITE &aYou have activated a &f&lSuper Speed-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+
+            wait 4 minutes
+            set {superspeedbooster-active::%player's uuid%} to false
+            subtract {superspeedbooster-addition::%player's uuid%} from player's walk speed
+            send "&d&lCROPLITE &cYour &f&lSuper Speed-Up &cbooster has ran out." to player
+            play sound "minecraft:entity.villager.no" to player
+        else:
+            if {speedbooster-active::%player's uuid%} is true:
+                send "&d&lCROPLITE &cYou already have an active &f&lSpeed-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &f&lSuper Speed-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+
+    else if name of event-item is "&5&lCash-Up":
+        if {cashbooster-active::%player's uuid%} and {supercashbooster-active::%player's uuid%} = 0:
+            set {cashbooster-active::%player's uuid%} to 3
+            set player's held item to air
+            set {cashbooster-multiplier::%player's uuid%} to 1.5
+            send "&d&lCROPLITE &aYou have activated a &5&lCash-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+        else:
+            if {cashbooster-active::%player's uuid%} > 0:
+                send "&d&lCROPLITE &cYou already have an active &5&lCash-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &5&lSuper Cash-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+    else if name of event-item is "&5&lSuper Cash-Up":
+        if {cashbooster-active::%player's uuid%} and {supercashbooster-active::%player's uuid%} = 0:
+            set {supercashbooster-active::%player's uuid%} to 3
+            set player's held item to air
+            set {cashbooster-multiplier::%player's uuid%} to 2
+            send "&d&lCROPLITE &aYou have activated a &5&lSuper Cash-Up &abooster." to player
+            play sound "minecraft:block.brewing_stand.brew" with pitch 1.3 to player
+            play sound "entity.experience_orb.pickup" to player
+        else:
+            if {cashbooster-active::%player's uuid%} > 0:
+                send "&d&lCROPLITE &cYou already have an active &5&lCash-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+            else:
+                send "&d&lCROPLITE &cYou already have an active &5&lSuper Cash-Up &cbooster." to player
+                play sound "minecraft:entity.villager.no" to player
+
+on Skript stop:
+    loop all players:
+        if {expmultibooster-active::%loop-player's uuid%} is true:
+            set {expmultibooster-active::%loop-player's uuid%} to false
+            subtract 1 from {expmulti::%loop-player's uuid%}
+            
+            give loop-player {boosters::expmulti1}
+        if {superexpmultibooster-active::%loop-player's uuid%} is true:
+            set {superexpmultibooster-active::%loop-player's uuid%} to false
+            subtract {superexpmultibooster-addition::%loop-player's uuid%} from {expmulti::%loop-player's uuid%}
+
+            give loop-player {boosters::expmulti2}
+        if {cropmultibooster-active::%loop-player's uuid%} is true:
+            set {cropmultibooster-active::%loop-player's uuid%} to false
+            subtract 1 from {cropmulti::%loop-player's uuid%}
+
+            give loop-player {boosters::cropmulti1}
+        if {supercropmultibooster-active::%loop-player's uuid%} is true:
+            set {supercropmultibooster-active::%loop-player's uuid%} to false
+            subtract {supercropmultibooster-addition::%loop-player's uuid%} from {cropmulti::%loop-player's uuid%}
+
+            give loop-player {boosters::cropmulti2}
+        if {damagebooster-active::%loop-player's uuid%} is true:
+            set {damagebooster-active::%loop-player's uuid%} to false
+            remove 1 from {damageboost::%loop-player's uuid%}
+
+            give loop-player {boosters::damage1}
+        if {superdamagebooster-active::%loop-player's uuid%} is true:
+            set {superdamagebooster-active::%loop-player's uuid%} to false
+            remove 2 from {damageboost::%loop-player's uuid%}
+
+            give loop-player {boosters::damage2}
+        if {speedbooster-active::%loop-player's uuid%} is true:
+            set {speedbooster-active::%loop-player's uuid%} to false
+            subtract {speedbooster-addition::%loop-player's uuid%} from loop-player's walk speed
+
+            give loop-player {boosters::speed1}
+        if {superspeedbooster-active::%loop-player's uuid%} is true:
+            set {superspeedbooster-active::%loop-player's uuid%} to false
+            subtract {superspeedbooster-addition::%loop-player's uuid%} from loop-player's walk speed
+
+            give loop-player {boosters::speed2}
+            
+local function setBoosters():
+    set {boosters::expmulti1} to potion named "&e&lExp Multi-Up"
+    set line 1 of lore of {boosters::expmulti1} to "&7Temporarily increases gained"
+    set line 2 of lore of {boosters::expmulti1} to "&7experience when farming"
+    set line 3 of lore of {boosters::expmulti1} to "&7crops and killing mobs"
+    set line 4 of lore of {boosters::expmulti1} to "&7---------------"
+    set line 5 of lore of {boosters::expmulti1} to "&e&lExp Multi &8[&e&l+1.0&8]"
+    set line 6 of lore of {boosters::expmulti1} to "&f&lDuration &8[&f&l8m&8]"
+    set line 7 of lore of {boosters::expmulti1} to "&7---------------"
+    set line 8 of lore of {boosters::expmulti1} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::expmulti1}
+    apply potion contents to {boosters::expmulti1}:
+        custom_color: yellow
+    set {boosters::expmulti2} to potion named "&e&lSuper Exp Multi-Up"
+    set line 1 of lore of {boosters::expmulti2} to "&7Temporarily multiplies gained"
+    set line 2 of lore of {boosters::expmulti2} to "&7experience when farming"
+    set line 3 of lore of {boosters::expmulti2} to "&7crops and killing mobs"
+    set line 4 of lore of {boosters::expmulti2} to "&7---------------"
+    set line 5 of lore of {boosters::expmulti2} to "&e&lExp Multi &8[&e&lx2.0&8]"
+    set line 6 of lore of {boosters::expmulti2} to "&f&lDuration &8[&f&l4m&8]"
+    set line 7 of lore of {boosters::expmulti2} to "&7---------------"
+    set line 8 of lore of {boosters::expmulti2} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::expmulti2}
+    make {boosters::expmulti2} glint
+    apply potion contents to {boosters::expmulti2}:
+        custom_color: yellow
+
+    set {boosters::cropmulti1} to potion named "&b&lCrop Multi-Up"
+    set line 1 of lore of {boosters::cropmulti1} to "&7Temporarily increases gained"
+    set line 2 of lore of {boosters::cropmulti1} to "&7crops from farming"
+    set line 3 of lore of {boosters::cropmulti1} to "&7---------------"
+    set line 4 of lore of {boosters::cropmulti1} to "&b&lCrop Multi &8[&b&l+1.0&8]"
+    set line 5 of lore of {boosters::cropmulti1} to "&f&lDuration &8[&f&l8m&8]"
+    set line 6 of lore of {boosters::cropmulti1} to "&7---------------"
+    set line 7 of lore of {boosters::cropmulti1} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::cropmulti1}
+    apply potion contents to {boosters::cropmulti1}:
+        custom_color: light blue
+    set {boosters::cropmulti2} to potion named "&b&lSuper Crop Multi-Up"
+    set line 1 of lore of {boosters::cropmulti2} to "&7Temporarily multiplies gained"
+    set line 2 of lore of {boosters::cropmulti2} to "&7crops from farming"
+    set line 3 of lore of {boosters::cropmulti2} to "&7---------------"
+    set line 4 of lore of {boosters::cropmulti2} to "&b&lCrop Multi &8[&b&lx2.0&8]"
+    set line 5 of lore of {boosters::cropmulti2} to "&f&lDuration &8[&f&l4m&8]"
+    set line 6 of lore of {boosters::cropmulti2} to "&7---------------"
+    set line 7 of lore of {boosters::cropmulti2} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::cropmulti2}
+    make {boosters::cropmulti2} glint
+    apply potion contents to {boosters::cropmulti2}:
+        custom_color: light blue
+
+    set {boosters::damage1} to potion named "&4&lDamage-Up"
+    set line 1 of lore of {boosters::damage1} to "&7Temporarily increases"
+    set line 2 of lore of {boosters::damage1} to "&7attack damage"
+    set line 3 of lore of {boosters::damage1} to "&7---------------"
+    set line 4 of lore of {boosters::damage1} to "&4&lAttack Damage &8[&4&l+1.0&8]"
+    set line 5 of lore of {boosters::damage1} to "&f&lDuration &8[&f&l8m&8]"
+    set line 6 of lore of {boosters::damage1} to "&7---------------"
+    set line 7 of lore of {boosters::damage1} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::damage1}
+    apply potion contents to {boosters::damage1}:
+        custom_color: dark red
+    set {boosters::damage2} to potion named "&4&lSuper Damage-Up"
+    set line 1 of lore of {boosters::damage2} to "&7Temporarily increases"
+    set line 2 of lore of {boosters::damage2} to "&7attack damage"
+    set line 3 of lore of {boosters::damage2} to "&7---------------"
+    set line 4 of lore of {boosters::damage2} to "&4&lAttack Damage &8[&4&l+2.0&8]"
+    set line 5 of lore of {boosters::damage2} to "&f&lDuration &8[&f&l4m&8]"
+    set line 6 of lore of {boosters::damage2} to "&7---------------"
+    set line 7 of lore of {boosters::damage2} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::damage2}
+    make {boosters::damage2} glint
+    apply potion contents to {boosters::damage2}:
+        custom_color: dark red
+
+    set {boosters::speed1} to potion named "&f&lSpeed-Up"
+    set line 1 of lore of {boosters::speed1} to "&7Temporarily multiplies"
+    set line 2 of lore of {boosters::speed1} to "&7movement speed"
+    set line 3 of lore of {boosters::speed1} to "&7---------------"
+    set line 4 of lore of {boosters::speed1} to "&f&lSpeed &8[&f&lx1.5&8]"
+    set line 5 of lore of {boosters::speed1} to "&f&lDuration &8[&f&l8m&8]"
+    set line 6 of lore of {boosters::speed1} to "&7---------------"
+    set line 7 of lore of {boosters::speed1} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::speed1}
+    apply potion contents to {boosters::speed1}:
+        custom_color: white
+    set {boosters::speed2} to potion named "&f&lSuper Speed-Up"
+    set line 1 of lore of {boosters::speed2} to "&7Temporarily multiplies"
+    set line 2 of lore of {boosters::speed2} to "&7movement speed"
+    set line 3 of lore of {boosters::speed2} to "&7---------------"
+    set line 4 of lore of {boosters::speed2} to "&f&lSpeed &8[&f&lx2.0&8]"
+    set line 5 of lore of {boosters::speed2} to "&f&lDuration &8[&f&l4m&8]"
+    set line 6 of lore of {boosters::speed2} to "&7---------------"
+    set line 7 of lore of {boosters::speed2} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::speed2}
+    make {boosters::speed2} glint
+    apply potion contents to {boosters::speed2}:
+        custom_color: white
+
+    set {boosters::sell1} to potion named "&5&lCash-Up"
+    set line 1 of lore of {boosters::sell1} to "&7Temporarily multiplies"
+    set line 2 of lore of {boosters::sell1} to "&7crop cash earned from"
+    set line 3 of lore of {boosters::sell1} to "&7selling crops"
+    set line 4 of lore of {boosters::sell1} to "&7---------------"
+    set line 5 of lore of {boosters::sell1} to "&5&lCrop Cash &8[&5&lx1.5&8]"
+    set line 6 of lore of {boosters::sell1} to "&f&lDuration &8[&f&l3 Uses&8]"
+    set line 7 of lore of {boosters::sell1} to "&7---------------"
+    set line 8 of lore of {boosters::sell1} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::sell1}
+    apply potion contents to {boosters::sell1}:
+        custom_color: purple
+    set {boosters::sell2} to potion named "&5&lSuper Cash-Up"
+    set line 1 of lore of {boosters::sell2} to "&7Temporarily multiplies"
+    set line 2 of lore of {boosters::sell2} to "&7crop cash earned from"
+    set line 3 of lore of {boosters::sell2} to "&7selling crops"
+    set line 4 of lore of {boosters::sell2} to "&7---------------"
+    set line 5 of lore of {boosters::sell2} to "&5&lCrop Cash &8[&5&lx2.0&8]"
+    set line 6 of lore of {boosters::sell2} to "&f&lDuration &8[&f&l3 Uses&8]"
+    set line 7 of lore of {boosters::sell2} to "&7---------------"
+    set line 8 of lore of {boosters::sell2} to "&7Consume To Activate"
+    add hide additional tooltip to item flags of {boosters::sell2}
+    make {boosters::sell2} glint
+    apply potion contents to {boosters::sell2}:
+        custom_color: purple
+
+local function loadBoosterGui(p: player):
+    set {_gui} to chest inventory with 3 rows named "&d&lBoosters"
+
+    loop 27 times:
+        set {_item} to purple stained glass pane
+        hide {_item}'s tooltip
+        set slot (loop-number - 1) of {_gui} to {_item}
+
+    set slot 11 of {_gui} to air
+    set slot 12 of {_gui} to air
+    set slot 13 of {_gui} to air
+    set slot 14 of {_gui} to air
+    set slot 15 of {_gui} to air
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+        
+    open {_gui} to {_p}
+
+function resetBoosters(p: player):
+    set {expmultibooster-active::%uuid of {_p}%} to false
+    set {superexpmultibooster-active::%uuid of {_p}%} to false
+
+    set {cropmultibooster-active::%uuid of {_p}%} to false
+    set {supercropmultibooster-active::%uuid of {_p}%} to false
+
+    set {damagebooster-active::%uuid of {_p}%} to false
+    set {superdamagebooster-active::%uuid of {_p}%} to false
+
+    set {speedbooster-active::%uuid of {_p}%} to false
+    set {superspeedbooster-active::%uuid of {_p}%} to false
+
+    set {cashbooster-active::%uuid of {_p}%} to 0
+    set {supercashbooster-active::%uuid of {_p}%} to 0
+
+    if {expmultibooster-active::%uuid of {_p}%} is true:
+        set {expmultibooster-active::%uuid of {_p}%} to false
+        subtract 1 from {expmulti::%uuid of {_p}%}
+    else if {superexpmultibooster-active::%uuid of {_p}%} is true:
+        set {superexpmultibooster-active::%uuid of {_p}%} to false
+        subtract {superexpmultibooster-addition::%uuid of {_p}%} from {expmulti::%uuid of {_p}%}
+    else if {cropmultibooster-active::%uuid of {_p}%} is true:
+        set {cropmultibooster-active::%uuid of {_p}%} to false
+        subtract 1 from {cropmulti::%uuid of {_p}%}
+    else if {supercropmultibooster-active::%uuid of {_p}%} is true:
+        set {supercropmultibooster-active::%uuid of {_p}%} to false
+        subtract {supercropmultibooster-addition::%uuid of {_p}%} from {cropmulti::%uuid of {_p}%}
+    else if {damagebooster-active::%uuid of {_p}%} is true:
+        set {damagebooster-active::%uuid of {_p}%} to false
+        subtract 1 from {damageboost::%uuid of {_p}%}
+    else if {superdamagebooster-active::%uuid of {_p}%} is true:
+        set {superdamagebooster-active::%uuid of {_p}%} to false
+        subtract 2 from {damageboost::%uuid of {_p}%}
+    else if {speedbooster-active::%uuid of {_p}%} is true:
+        set {speedbooster-active::%uuid of {_p}%} to false
+        subtract {speedbooster-addition::%uuid of {_p}%} from {_p}'s walk speed
+    else if {superspeedbooster-active::%uuid of {_p}%} is true:
+        set {superspeedbooster-active::%uuid of {_p}%} to false
+        subtract {superspeedbooster-addition::%uuid of {_p}%} from {_p}'s walk speed
+    
+    set {superexpmultibooster-addition::%uuid of {_p}%} to 0
+    set {supercropmultibooster-addition::%uuid of {_p}%} to 0
+    set {speedbooster-addition::%uuid of {_p}%} to 0
+    set {superspeedbooster-addition::%uuid of {_p}%} to 0
+    set {cashbooster-multiplier::%uuid of {_p}%} to 1
+    set {damageboost::%uuid of {_p}%} to 0
+
+command /boosters:
+    trigger:
+        send "&5&lCroplite &cComing Soon..." to player
+
+command /getboosters [<player>]:
+    permission: operator
+    trigger:
+        if arg-1 is set:
+            give arg-1 {boosters::*}
+        else:
+            give player {boosters::*}

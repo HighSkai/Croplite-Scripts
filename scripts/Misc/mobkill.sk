@@ -18,6 +18,12 @@ command /resetemerald:
     trigger:
         delete {emerald::*}
 
+    
+command /resetemerald2:
+    permission: operator
+    trigger:
+        delete {emerald2::*}
+
 command /loopemerald:
     permission: operator
     trigger:

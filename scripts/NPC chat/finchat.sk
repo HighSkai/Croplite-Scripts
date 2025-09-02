@@ -1,23 +1,22 @@
 on right click:
     if name of clicked entity is "&6&lFin":
         if {npc::talking::Fin::%player's uuid%} is set:
-            send "&7[&6Fin&7]&f: Do not interrupt!" to player
             stop
         else:
             set {npc::talking::Fin::%player's uuid%} to true
             if {chatmessage::Fin::%player's uuid%} = 0:
                 if {objective::%player's uuid%} is "objectivenone":
                     play sound "entity.fox.ambient" to player
-                    send "&7[&6Fin&7]&f: Please help me, &b%player%&f!                                                                 " to player
+                    send "&7[&6Fin&7]&f: Please help me, &b%player%&f!%nl%" to player
                     wait 2 seconds
                     play sound "entity.fox.ambient" to player
-                    send "&7[&6Fin&7]&f: I lost my special emerald! I was walking around the mushrooms and must've dropped it somewhere...                                " to player
+                    send "&7[&6Fin&7]&f: I lost my special emerald! I was walking around the mushrooms and must've dropped it somewhere...%nl%" to player
                     wait 4 seconds
                     play sound "entity.fox.ambient" to player
                     send "&7[&6Fin&7]&f: I could really use some help finding it, I'll pay you back I promise!                                                                                  " to player
                     wait 3 seconds
                     send "&7------------------------------" to player
-                    send "&8[&2&lObjective&r&8] &5Lost Gem: &r&eFind &6&lFin&f's                                       emerald." to player
+                    send "&8[&2&lObjective&r&8] &5Lost Gem: &r&eFind &6&lFin&f's%nl% emerald." to player
                     send "&7------------------------------" to player
                     play sound "block.amethyst_block.resonate" to player
                     set {objective::%player's uuid%} to "Lost Gem"
@@ -28,7 +27,7 @@ on right click:
                 else:
                     send "&7[&6Fin&7]&f: Please complete your current objective before starting a new one!" to player
             else if {chatmessage::Fin::%player's uuid%} = 1:
-                send "&7[&6Fin&7]&f: You got it! Thank you so much farmer!                                                         " to player
+                send "&7[&6Fin&7]&f: You got it! Thank you so much farmer!%nl%" to player
                 play sound "entity.fox.ambient" to player
                 wait 2 seconds
                 play sound "entity.player.levelup" to player

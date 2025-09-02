@@ -1,28 +1,29 @@
-command /open-cropbagshopgui:
-	permission: operator
-	trigger:
-		loadCropBagShopGui(player)
-
 on script load:
     setGUICropBags()
 
+command /open-cropbagshopgui:
+    permission: operator
+    trigger:
+        play sound "minecraft:ui.button.click" to player
+        loadCropBagShopGui(player)
+
 function loadCropBagShopGui(p: player):
-    set {_gui} to chest inventory with 3 rows named "&2&lCrop Bag Shop"
+    set {_gui} to chest inventory with 3 rows named "&2&lCrop Bags"
 
     loop 27 times:
         set {_item} to green stained glass pane
         hide {_item}'s tooltip
         set slot (loop-number - 1) of {_gui} to {_item}
 
-    loop integers from 10 to 16:
-        set slot loop-number of {_gui} to {cropbag::%(loop-integer - 9)%::item}
+    loop integers from 11 to 15:
+        set slot loop-number of {_gui} to {cropbag::%(loop-integer - 10)%::item}
 
-    loop integers between 10 and 16:
-        set {_num} to loop-integer - 9
+    loop integers between 11 and 15:
+        set {_num} to loop-integer - 10
         set {_item} to slot loop-integer of {_gui}
 
         if {cropbag::%{_num}%::unlocked::%uuid of {_p}%} is equal to true:
-            set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+            set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
             make {_item} glint
 
         set {_lore::*} to lore of {_item}
@@ -39,38 +40,27 @@ function loadCropBagShopGui(p: player):
 
 on inventory click:
     if event-inventory is not player's inventory:
-        if event-inventory's name is "&2&lCrop Bag Shop":
+        if event-inventory's name is "&2&lCrop Bags":
             cancel event
 
-            set {_slots::*} to 10, 11, 12, 13, 14, 15, 16
+            set {_slots::*} to 11, 12, 13, 14, 15
             
             if {_slots::*} contains event-slot:
-                set {_num} to index of event-slot - 9
+                set {_num} to index of event-slot - 10
                 
-                set {_highest_tier} to 0
-                loop integers between 1 and 7:
-                    if {cropbag::%loop-integer%::unlocked::%player's uuid%} is true:
-                        if loop-integer > {_highest_tier}:
-                            set {_highest_tier} to loop-integer
-                
-                if {_num} < {_highest_tier}:
-                    send "&d&lCroplite &cYou cannot downgrade your cropbag." to player
-                    play sound "minecraft:entity.villager.no" to player
-                else if {cropbag::%{_num}%::unlocked::%player's uuid%} is false:
+                if {cropbag::%{_num}%::unlocked::%player's uuid%} is false:
                     if {cropcash::%player's uuid%} < {cropbag::%{_num}%::price}:
-                        send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this item." to player
+                        send "&2&lCade &cInsufficient &5&lCrop Cash &cfor crop bag upgrade." to player
                         play sound "minecraft:entity.villager.no" to player
                     else:
                         set {cropbag::%{_num}%::unlocked::%player's uuid%} to true
                         remove {cropbag::%{_num}%::price} from {cropcash::%player's uuid%}
+                        add {cropbag::%{_num}%::addition} to {cropbag::%player's uuid%}
                         
                         loop integers between 1 and {_num}:
                             set {cropbag::%loop-integer%::unlocked::%player's uuid%} to true
                         
-                        add {cropbag::%{_num}%::addition} to {cropbag::%player's uuid%}
                         loadCropBagShopGui(player)
-
-                        play sound "entity.experience_orb.pickup" to player
 
                         if {objective::%player's uuid%} is "Crop Carrier":
                             {objcomplete::%player's uuid%} is false
@@ -84,56 +74,60 @@ on inventory click:
                             send "&7------------------------------" to player
                             set {objcomplete::%player's uuid%} to true
 
-                        send "&d&lCroplite &aYou have upgraded your cropbag." to player
+                        send "&2&lCade &aSuccessfully purchased crop bag upgrade." to player
+                        play sound "entity.experience_orb.pickup" to player
                 else:
-                    send "&d&lCroplite &cYou have already bought this cropbag upgrade." to player
+                    send "&2&lCade &cAlready purchased this crop bag upgrade." to player
                     play sound "minecraft:entity.villager.no" to player
             else if event-slot is 22:
                 play sound "minecraft:ui.button.click" to player
                 close player's inventory
 
 local function setGUICropBags():
-    set {cropbag::1::item} to white dye named "cropbag 1"
-    set {cropbag::1::price} to 250
-    set {cropbag::1::addition} to 100
-    set line 1 of lore of {cropbag::1::item} to "line 1"
-    set line 2 of lore of {cropbag::1::item} to "adds 100 to cropbag"
+    set {cropbag::1::item} to green bundle named "&a&lApprentice Crop Bag"
+    set line 1 of lore of {cropbag::1::item} to "&7---------------"
+    set line 2 of lore of {cropbag::1::item} to "&2&lCrop Bag &8[&2&l+100&8]"
+    set line 3 of lore of {cropbag::1::item} to "&7---------------"
+    set line 4 of lore of {cropbag::1::item} to "&a&lUNCOMMON CROP BAG"
+    add hide additional tooltip to item flags of {cropbag::1::item}
+    set {cropbag::1::price} to 500
+    set {cropbag::1::addition} to 250
 
-    set {cropbag::2::item} to white dye named "cropbag 2"
-    set {cropbag::2::price} to 500
-    set {cropbag::2::addition} to 250
-    set line 1 of lore of {cropbag::2::item} to "line 1"
-    set line 2 of lore of {cropbag::2::item} to "adds 250 to cropbag"
+    set {cropbag::2::item} to blue bundle named "&9&lExperienced Crop Bag"
+    set line 1 of lore of {cropbag::2::item} to "&7---------------"
+    set line 2 of lore of {cropbag::2::item} to "&2&lCrop Bag &8[&2&l+100&8]"
+    set line 3 of lore of {cropbag::2::item} to "&7---------------"
+    set line 4 of lore of {cropbag::2::item} to "&9&lRARE CROP BAG"
+    add hide additional tooltip to item flags of {cropbag::2::item}
+    set {cropbag::2::price} to 1000
+    set {cropbag::2::addition} to 500
 
-    set {cropbag::3::item} to white dye named "cropbag 3"
-    set {cropbag::3::price} to 1000
-    set {cropbag::3::addition} to 500
-    set line 1 of lore of {cropbag::3::item} to "line 1"
-    set line 2 of lore of {cropbag::3::item} to "adds 500 to cropbag"
+    set {cropbag::3::item} to red bundle named "&c&lAdept Crop Bag"
+    set line 1 of lore of {cropbag::3::item} to "&7---------------"
+    set line 2 of lore of {cropbag::3::item} to "&2&lCrop Bag &8[&2&l+100&8]"
+    set line 3 of lore of {cropbag::3::item} to "&7---------------"
+    set line 4 of lore of {cropbag::3::item} to "&c&lREFINED CROP BAG"
+    add hide additional tooltip to item flags of {cropbag::3::item}
+    set {cropbag::3::price} to 2500
+    set {cropbag::3::addition} to 1000
 
-    set {cropbag::4::item} to white dye named "cropbag 4"
-    set {cropbag::4::price} to 2500
-    set {cropbag::4::addition} to 1000
-    set line 1 of lore of {cropbag::4::item} to "line 1"
-    set line 2 of lore of {cropbag::4::item} to "adds 1000 to cropbag"
+    set {cropbag::4::item} to purple bundle named "&5&lExpert Crop Bag"
+    set line 1 of lore of {cropbag::4::item} to "&7---------------"
+    set line 2 of lore of {cropbag::4::item} to "&2&lCrop Bag &8[&2&l+100&8]"
+    set line 3 of lore of {cropbag::4::item} to "&7---------------"
+    set line 4 of lore of {cropbag::4::item} to "&5&lEPIC CROP BAG"
+    add hide additional tooltip to item flags of {cropbag::4::item}
+    set {cropbag::4::price} to 10000
+    set {cropbag::4::addition} to 5000
 
-    set {cropbag::5::item} to white dye named "cropbag 5"
-    set {cropbag::5::price} to 10000
-    set {cropbag::5::addition} to 5000
-    set line 1 of lore of {cropbag::5::item} to "line 1"
-    set line 2 of lore of {cropbag::5::item} to "adds 5000 to cropbag"
-
-    set {cropbag::6::item} to white dye named "cropbag 6"
-    set {cropbag::6::price} to 25000
-    set {cropbag::6::addition} to 10000
-    set line 1 of lore of {cropbag::6::item} to "line 1"
-    set line 2 of lore of {cropbag::6::item} to "adds 10000 to cropbag"
-
-    set {cropbag::7::item} to white dye named "cropbag 7"
-    set {cropbag::7::price} to 50000
-    set {cropbag::7::addition} to 25000
-    set line 1 of lore of {cropbag::7::item} to "line 1"
-    set line 2 of lore of {cropbag::7::item} to "adds 25000 to cropbag"
+    set {cropbag::5::item} to orange bundle named "&6&lMaster Crop Bag"
+    set line 1 of lore of {cropbag::5::item} to "&7---------------"
+    set line 2 of lore of {cropbag::5::item} to "&2&lCrop Bag &8[&2&l+100&8]"
+    set line 3 of lore of {cropbag::5::item} to "&7---------------"
+    set line 4 of lore of {cropbag::5::item} to "&6&lLEGENDARY CROP BAG"
+    add hide additional tooltip to item flags of {cropbag::5::item}
+    set {cropbag::5::price} to 25000
+    set {cropbag::5::addition} to 10000
 
 function resetCropBags(p: player):
     set {cropbag::1::unlocked::%uuid of {_p}%} to false
@@ -141,8 +135,6 @@ function resetCropBags(p: player):
     set {cropbag::3::unlocked::%uuid of {_p}%} to false
     set {cropbag::4::unlocked::%uuid of {_p}%} to false
     set {cropbag::5::unlocked::%uuid of {_p}%} to false
-    set {cropbag::6::unlocked::%uuid of {_p}%} to false
-    set {cropbag::7::unlocked::%uuid of {_p}%} to false
 
 command /resetunlockedcropbags:
     trigger:

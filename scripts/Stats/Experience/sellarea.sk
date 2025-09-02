@@ -1,147 +1,54 @@
-on enter of region "sellarea":
-	sellCrops(player)
-	if {doubleccboost::%player's uuid%} is greater than 0:
-		set {_doubleccnum::%player's uuid%} to {crops::%player's uuid%}
-		subtract 1 from {doubleccboost::%player's uuid%}
-		send "&cYou have %{doubleccboost::%player's uuid%}% double crop boosters left!" to player
-		if {objective::%player's uuid%} is "First Harvest":
-			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
-			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-				{objcomplete::%player's uuid%} is false
-				send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
-				play sound "ui.toast.challenge_complete" to player
-				play sound "entity.player.levelup" to player
-				send "&7------------------------------" to player
-				send "&8[&2Objective &l&nComplete!&8]" to player
-				send "&7------------------------------" to player
-				add 1 to {chatmessage::Buck::%player's uuid%}
-				set {objcomplete::%player's uuid%} to true
-	else if {1point5ccboost::%player's uuid%} is greater than 0:
-		set {_1point5ccboostnum::%player's uuid%} to ({crops::%player's uuid%}*0.5)
-		subtract 1 from {1point5ccboost::%player's uuid%}
-		send "&cYou have %{1point5ccboost::%player's uuid%}% 1.5x crop boosters left!" to player
-		add {crops::%player's uuid%} to {cropcash::%player's uuid%}
-		add {_doubleccnum::%player's uuid%} to {cropcash::%player's uuid%}
-		add {_1point5ccboostnum::%player's uuid%} to {cropcash::%player's uuid%}
-		set {crops::%player's uuid%} to 0
-		send "&d&lCroplite &aCrops Sold!" to player
-		if {objective::%player's uuid%} is "First Harvest":
-			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
-			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-				{objcomplete::%player's uuid%} is false
-				send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
-				play sound "ui.toast.challenge_complete" to player
-				play sound "entity.player.levelup" to player
-				send "&7------------------------------" to player
-				send "&8[&2Objective &l&nComplete!&8]" to player
-				send "&7------------------------------" to player
-				add 1 to {chatmessage::Buck::%player's uuid%}
-				set {objcomplete::%player's uuid%} to true
-		if {rndcnt::%player's uuid%} is greater than 0:
-			stop
-		else:
-			send "&a&lYou can do /togglesellmenu to make the sell menu appear or dissapear!" to player
-			add 1 to {rndcnt::%player's uuid%}
-		close player's inventory
+on region enter:
+	wait 1 tick
+	if "%region at player%" contains "sellarea":
+		sellCrops(player)
 
-on enter of region "sellarea2":
-	sellCrops(player)
-	if {doubleccboost::%player's uuid%} is greater than 0:
-		set {_doubleccnum::%player's uuid%} to {crops::%player's uuid%}
-		subtract 1 from {doubleccboost::%player's uuid%}
-		send "&cYou have %{doubleccboost::%player's uuid%}% double crop boosters left!" to player
-	else if {1point5ccboost::%player's uuid%} is greater than 0:
-		set {_1point5ccboostnum::%player's uuid%} to ({crops::%player's uuid%}*0.5)
-		subtract 1 from {1point5ccboost::%player's uuid%}
-		send "&cYou have %{1point5ccboost::%player's uuid%}% 1.5x crop boosters left!" to player
-		add {crops::%player's uuid%} to {cropcash::%player's uuid%}
-		add {_doubleccnum::%player's uuid%} to {cropcash::%player's uuid%}
-		add {_1point5ccboostnum::%player's uuid%} to {cropcash::%player's uuid%}
-		set {crops::%player's uuid%} to 0
-		send "&d&lCroplite &aCrops Sold!" to player
-		if {objective::%player's uuid%} is "First Harvest":
-			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
-			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-				{objcomplete::%player's uuid%} is false
-				send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
-				play sound "ui.toast.challenge_complete" to player
-				play sound "entity.player.levelup" to player
-				send "&7------------------------------" to player
-				send "&8[&2Objective &l&nComplete!&8]" to player
-				send "&7------------------------------" to player
-				add 1 to {chatmessage::Buck::%player's uuid%}
-				set {objcomplete::%player's uuid%} to true
-		if {rndcnt::%player's uuid%} is greater than 0:
-			stop
-		else:
-			send "&a&lYou can do /togglesellmenu to make the sell menu appear or dissapear!" to player
-			add 1 to {rndcnt::%player's uuid%}
-		close player's inventory
+function sellCrops(p: player):
+	if {in-combat::%{_p}'s uuid%} < 1:
+		if {crops::%uuid of {_p}%} > 0:
+			play sound "block.note_block.pling" with pitch 2 to {_p}
 
-on enter of region "sellarea3":
-	sellCrops(player)
-	if {doubleccboost::%player's uuid%} is greater than 0:
-		set {_doubleccnum::%player's uuid%} to {crops::%player's uuid%}
-		subtract 1 from {doubleccboost::%player's uuid%}
-		send "&cYou have %{doubleccboost::%player's uuid%}% double crop boosters left!" to player
-	else if {1point5ccboost::%player's uuid%} is greater than 0:
-		set {_1point5ccboostnum::%player's uuid%} to ({crops::%player's uuid%}*0.5)
-		subtract 1 from {1point5ccboost::%player's uuid%}
-		send "&cYou have %{1point5ccboost::%player's uuid%}% 1.5x crop boosters left!" to player
-		add {crops::%player's uuid%} to {cropcash::%player's uuid%}
-		add {_doubleccnum::%player's uuid%} to {cropcash::%player's uuid%}
-		add {_1point5ccboostnum::%player's uuid%} to {cropcash::%player's uuid%}
-		set {crops::%player's uuid%} to 0
-		send "&d&lCroplite &aCrops Sold!" to player
-		if {objective::%player's uuid%} is "First Harvest":
-			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
-			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-				{objcomplete::%player's uuid%} is false
-				send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
-				play sound "ui.toast.challenge_complete" to player
-				play sound "entity.player.levelup" to player
-				send "&7------------------------------" to player
-				send "&8[&2Objective &l&nComplete!&8]" to player
-				send "&7------------------------------" to player
-				add 1 to {chatmessage::Buck::%player's uuid%}
-				set {objcomplete::%player's uuid%} to true
-		if {rndcnt::%player's uuid%} is greater than 0:
-			stop
-		else:
-			send "&a&lYou can do /togglesellmenu to make the sell menu appear or dissapear!" to player
-			add 1 to {rndcnt::%player's uuid%}
-		close player's inventory
+			set {_tempcrops} to {crops::%uuid of {_p}%}
+		
+			if {cashbooster-active::%uuid of {_p}%} > 0:
+				add ({cashbooster-multiplier::%uuid of {_p}%} * {crops::%uuid of {_p}%}) to {cropcash::%uuid of {_p}%}
+				subtract 1 from {cashbooster-active::%uuid of {_p}%}
+				set {crops::%uuid of {_p}%} to 0
 
-on enter of region "sellarea4":
-	sellCrops(player)
-	if {doubleccboost::%player's uuid%} is greater than 0:
-		set {_doubleccnum::%player's uuid%} to {crops::%player's uuid%}
-		subtract 1 from {doubleccboost::%player's uuid%}
-		send "&cYou have %{doubleccboost::%player's uuid%}% double crop boosters left!" to player
-	else if {1point5ccboost::%player's uuid%} is greater than 0:
-		set {_1point5ccboostnum::%player's uuid%} to ({crops::%player's uuid%}*0.5)
-		subtract 1 from {1point5ccboost::%player's uuid%}
-		send "&cYou have %{1point5ccboost::%player's uuid%}% 1.5x crop boosters left!" to player
-		add {crops::%player's uuid%} to {cropcash::%player's uuid%}
-		add {_doubleccnum::%player's uuid%} to {cropcash::%player's uuid%}
-		add {_1point5ccboostnum::%player's uuid%} to {cropcash::%player's uuid%}
-		set {crops::%player's uuid%} to 0
-		send "&d&lCroplite &aCrops Sold!" to player
-		if {objective::%player's uuid%} is "First Harvest":
-			set {objprogress::%player's uuid%} to {cropcash::%player's uuid%}
-			if {objprogress::%player's uuid%} >= {objprogressreq::%player's uuid%}:
-				{objcomplete::%player's uuid%} is false
-				send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to player for 4 seconds
-				play sound "ui.toast.challenge_complete" to player
-				play sound "entity.player.levelup" to player
-				send "&7------------------------------" to player
-				send "&8[&2Objective &l&nComplete!&8]" to player
-				send "&7------------------------------" to player
-				add 1 to {chatmessage::Buck::%player's uuid%}
-				set {objcomplete::%player's uuid%} to true
-		if {rndcnt::%player's uuid%} is greater than 0:
-			stop
+				send "&d&lCROPLITE &aSucessfully sold &8[&2&l%{_tempcrops}%&8] &2&lCrops &afor &8[&5&l%{cashbooster-multiplier::%uuid of {_p}%} * {_tempcrops}%&8] &5&lCrop Cash&a!" to {_p}
+				if {cashbooster-active::%uuid of {_p}%} = 0:
+					set {cashbooster-multiplier::%uuid of {_p}%} to 1
+			else if {supercashbooster-active::%uuid of {_p}%} > 0:
+				add ({cashbooster-multiplier::%uuid of {_p}%} * {crops::%uuid of {_p}%}) to {cropcash::%uuid of {_p}%}
+				subtract 1 from {supercashbooster-active::%uuid of {_p}%}
+				set {crops::%uuid of {_p}%} to 0
+
+				send "&d&lCROPLITE &aSucessfully sold &8[&2&l%{_tempcrops}%&8] &2&lCrops &afor &8[&5&l%{cashbooster-multiplier::%uuid of {_p}%} * {_tempcrops}%&8] &5&lCrop Cash&a!" to {_p}
+				if {supercashbooster-active::%uuid of {_p}%} = 0:
+					set {cashbooster-multiplier::%uuid of {_p}%} to 1
+			else:
+				add {crops::%uuid of {_p}%} to {cropcash::%uuid of {_p}%}
+				set {crops::%uuid of {_p}%} to 0
+				send "&d&lCROPLITE &aSucessfully sold &8[&2&l%{_tempcrops}%&8] &2&lCrops &afor &8[&5&l%{_tempcrops}%&8] &5&lCrop Cash&a!" to {_p}
+
+			if {objective::%uuid of {_p}%} is "First Harvest":
+				set {objprogress::%uuid of {_p}%} to {cropcash::%uuid of {_p}%}
+				if {objprogress::%uuid of {_p}%} >= {objprogressreq::%uuid of {_p}%}:
+					{objcomplete::%uuid of {_p}%} is false
+					send title "&2&lObjective Complete!" with subtitle "&eReturn to the Guide" to {_p} for 4 seconds
+					play sound "ui.toast.challenge_complete" to {_p}
+					play sound "entity.player.levelup" to {_p}
+					send "&7------------------------------" to {_p}
+					send "&8[&2Objective &l&nComplete!&8]" to {_p}
+					send "&7------------------------------" to {_p}
+					set {objcomplete::%uuid of {_p}%} to true
+					add 1 to {chatmessage::Buck::%uuid of {_p}%}
+
+placeholderapi placeholder with the prefix "player":
+	if the identifier is "cashbooster":
+		if {cashbooster-active::%player's uuid%} > 0:
+			set the result to "&8[&5&lx%{cashbooster-multiplier::%player's uuid%}%&8] [&f&l%{cashbooster-active::%player's uuid%}%&8]"
+		else if {supercashbooster-active::%player's uuid%} > 0:
+			set the result to "&8[&5&lx%{cashbooster-multiplier::%player's uuid%}%&8] [&f&l%{supercashbooster-active::%player's uuid%}%&8]"
 		else:
-			send "&a&lYou can do /togglesellmenu to make the sell menu appear or dissapear!" to player
-			add 1 to {rndcnt::%player's uuid%}
-		close player's inventory
+			set the result to "&8[&5&lx%{cashbooster-multiplier::%player's uuid%}%&8]"

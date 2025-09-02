@@ -1,0 +1,192 @@
+function loadCropMultiEnchantGUI(p: player):
+	set {_gui} to chest inventory with 3 rows named "&b&lCrop Multi &8| Page 1"
+	
+	loop 27 times:
+		set {_slot} to loop-number - 1
+		set {_item} to light blue stained glass pane
+		hide {_item}'s tooltip
+		set slot {_slot} of {_gui} to {_item}
+
+	set slot 10 of {_gui} to slot 0 of {_p}'s inventory
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+	set slot 26 of {_gui} to nether star named "&8[&a&lNext Page&8]"
+
+	loop integers from 12 to 16:
+		set {_slot} to loop-number
+
+		if {cropmulti::%loop-integer - 11%::unlocked::%uuid of {_p}%} is equal to true:
+			if {cropmulti::%loop-integer - 10%::unlocked::%uuid of {_p}%} is equal to true:
+				set {_item} to diamond named "&b&lCrop Multi &8[&b&l%romanNumeralConversion(loop-integer - 11)%&8] | &a&lPurchased"
+				make {_item} glint
+			else:
+				set {_item} to diamond named "&b&lCrop Multi &8[&b&l%romanNumeralConversion(loop-integer - 11)%&8]"
+				
+			loop values "Crop Multi %loop-integer - 11%" of {enchants-Json}: 
+				add loop-value-2 to {_lore::*}
+
+			add "&ePrice:" to {_lore::*}
+			add "&e&lEnchant Points &8[&e&l%{cropmulti::%loop-integer - 11%::price}%&8]" to {_lore::*}
+
+			delete {_lore::1}
+			set lore of {_item} to colored {_lore::*}
+			delete {_lore::*}
+								
+			set slot {_slot} of {_gui} to {_item}
+		else:
+			set {_item} to gray stained glass pane
+			hide {_item}'s tooltip
+			set slot {_slot} of {_gui} to {_item}
+
+	open {_gui} to {_p}
+
+function loadCropMultiEnchantGUI2(p: player):
+	set {_gui} to chest inventory with 3 rows named "&b&lCrop Multi &8| Page 2"
+	
+	loop 27 times:
+		set {_slot} to loop-number - 1
+		set {_item} to light blue stained glass pane
+		hide {_item}'s tooltip
+		set slot {_slot} of {_gui} to {_item}
+
+	set slot 10 of {_gui} to slot 0 of {_p}'s inventory
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+	set slot 18 of {_gui} to nether star named "&8[&a&lPrevious Page&8]"
+
+	loop integers from 12 to 16:
+		set {_slot} to loop-number
+
+		if {cropmulti::%loop-integer - 6%::unlocked::%uuid of {_p}%} is equal to true:
+			if {cropmulti::%loop-integer - 5%::unlocked::%uuid of {_p}%} is equal to true:
+				set {_item} to diamond named "&b&lCrop Multi &8[&b&l%romanNumeralConversion(loop-integer - 6)%&8] | &a&lPurchased"
+				make {_item} glint
+			else:
+				set {_item} to diamond named "&b&lCrop Multi &8[&b&l%romanNumeralConversion(loop-integer - 6)%&8]"
+				
+			loop values "Crop Multi %loop-integer - 6%" of {enchants-Json}: 
+				add loop-value-2 to {_lore::*}
+
+			add "&ePrice:" to {_lore::*}
+			add "&e&lEnchant Points &8[&e&l%{cropmulti::%loop-integer - 6%::price}%&8]" to {_lore::*}
+
+			delete {_lore::1}
+			set lore of {_item} to colored {_lore::*}
+			delete {_lore::*}
+								
+			set slot {_slot} of {_gui} to {_item}
+		else:
+			set {_item} to gray stained glass pane
+			hide {_item}'s tooltip
+			set slot {_slot} of {_gui} to {_item}
+
+	open {_gui} to {_p}
+
+on inventory click:
+	if event-inventory is not player's inventory:
+		if event-inventory's name contains "&b&lCrop Multi &8| Page 1":
+			cancel event
+			
+			if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
+			if event-slot is 26:
+				play sound "minecraft:ui.button.click" to player
+				loadCropMultiEnchantGUI2(player)
+
+			set {_slots::*} to 12, 13, 14, 15, and 16
+			set {_slot} to index of event-slot - 11
+
+			if {_slots::*} contains event-slot:
+				if {cropmulti::%{_slot} + 1%::unlocked::%player's uuid%} is equal to false:
+					if {cropmulti::%{_slot}%::unlocked::%player's uuid%} is equal to true:
+						if {enchant-points::%player's uuid%} >= {cropmulti::%{_slot}%::price}:
+							remove {cropmulti::%{_slot}%::price} from {enchant-points::%player's uuid%}
+							set {cropmulti::%{_slot} + 1%::unlocked::%player's uuid%} to true
+							add "cropmulti:%{_slot}%" to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
+							
+							if {holdingscythe::%player's uuid%} is true:
+								add 0.1 to {cropmulti::%player's uuid%}
+
+							addEnchantLore(player)
+							loadCropMultiEnchantGUI(player)
+
+							checkTrackorChat(player)
+
+							play sound "entity.experience_orb.pickup" to player
+							send "&5&lElliott &aSuccessfully purchased enchant." to player
+						else:
+							play sound "minecraft:entity.villager.no" to player
+							send "&5&lElliott &cInsufficient &e&lEnchant Points &cfor enchant." to player
+				else:
+					play sound "minecraft:entity.villager.no" to player
+					send "&5&lElliott &cAlready purchased enchant." to player
+
+		if event-inventory's name contains "&b&lCrop Multi &8| Page 2":
+			cancel event
+			
+			if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
+			if event-slot is 18:
+				play sound "minecraft:ui.button.click" to player
+				loadCropMultiEnchantGUI(player)
+
+			set {_slots::*} to 12, 13, 14, 15, and 16
+			set {_slot} to index of event-slot - 6
+
+			if {_slots::*} contains event-slot:
+				if {cropmulti::%{_slot} + 1%::unlocked::%player's uuid%} is equal to false:
+					if {cropmulti::%{_slot}%::unlocked::%player's uuid%} is equal to true:
+						if {enchant-points::%player's uuid%} >= {cropmulti::%{_slot}%::price}:
+							remove {cropmulti::%{_slot}%::price} from {enchant-points::%player's uuid%}
+							set {cropmulti::%{_slot} + 1%::unlocked::%player's uuid%} to true
+							add "cropmulti:%{_slot}%" to string list tag "Croplite:enchants" of custom nbt of slot 0 of player's inventory
+
+							if {holdingscythe::%player's uuid%} is true:
+								add 0.1 to {cropmulti::%player's uuid%}
+
+							addEnchantLore(player)
+							loadCropMultiEnchantGUI2(player)
+
+							checkTrackorChat(player)
+
+							play sound "entity.experience_orb.pickup" to player
+							send "&5&lElliott &aSuccessfully purchased enchant." to player
+						else:
+							play sound "minecraft:entity.villager.no" to player
+							send "&5&lElliott &cInsufficient &e&lEnchant Points &cfor enchant." to player
+				else:
+					play sound "minecraft:entity.villager.no" to player
+					send "&5&lElliott &cAlready purchased enchant." to player
+
+function setCropMultiEnchantPrices():
+    set {cropmulti::1::price} to 1
+    set {cropmulti::2::price} to 2
+    set {cropmulti::3::price} to 3
+    set {cropmulti::4::price} to 4
+    set {cropmulti::5::price} to 5
+    set {cropmulti::6::price} to 6
+    set {cropmulti::7::price} to 7
+    set {cropmulti::8::price} to 8
+    set {cropmulti::9::price} to 9
+    set {cropmulti::10::price} to 10
+
+function resetCropMultiEnchant(p: player):
+	set {cropmulti::1::unlocked::%uuid of {_p}%} to true
+	set {cropmulti::2::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::3::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::4::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::5::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::6::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::7::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::8::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::9::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::10::unlocked::%uuid of {_p}%} to false
+	set {cropmulti::11::unlocked::%uuid of {_p}%} to false
+
+command /reset-cropmultienchant [<player>]:
+	permission: operator
+	trigger:
+		if arg-1 is set:
+			resetCropMultiEnchant(arg-1)
+		else:
+			resetCropMultiEnchant(player)

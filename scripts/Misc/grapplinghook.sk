@@ -1,13 +1,15 @@
+on load:
+    setGrapplingHooks()
+
 on fishing line reel in:
-    if player's tool is unbreakable fishing rod named "&6Weak Grappling Hook":
+    if player's tool is unbreakable fishing rod named "&a&lWeak Grappling Hook":
         set item cooldown of player's tool for player to 20 seconds
         grapplingHook(player, fishing hook, 3)
-    else if player's tool is unbreakable fishing rod named "&9Developed Grappling Hook":
+    else if player's tool is unbreakable fishing rod named "&9&lDeveloped Grappling Hook":
         set item cooldown of player's tool for player to 15 seconds
-        grapplingHook(player, fishing hook, 5)
-    else if player's tool is unbreakable fishing rod named "operator Grappling hook":
-        set item cooldown of player's tool for player to 0 seconds
-        grapplingHook(player, fishing hook, 8)
+        grapplingHook(player, fishing hook, 6)
+    else if player's tool is unbreakable fishing rod named "&4&lOP Grappling Hook":
+        grapplingHook(player, fishing hook, 9)
 
 on fishing line cast:
     if player's tool's name contains "Grappling Hook":
@@ -19,33 +21,34 @@ on fishing line cast:
 
 on right click:
     if player has player's tool on cooldown:
-        send "&d&lCroplite &cYou must wait %item cooldown of player's tool for player% before grappling again." to player
+        send "&d&lCroplite &cMust wait %item cooldown of player's tool for player% before grappling again." to player
 
 local function grapplingHook(p: player, h: entity, s: integer):
     set {_direction} to vector between {_p} and {_h}
     push {_p} {_direction} with speed {_s}
 
-command /weakgrapplinghook:
-    permission: operator
-    trigger:
-        set {_weakhook} to unbreakable fishing rod named "&6Weak Grappling Hook"
-        set line 1 of lore of {_weakhook} to "&7---------------"
-        set line 2 of lore of {_weakhook} to "&9Vertical Power&f: &b+0.5" 
-        set line 3 of lore of {_weakhook} to "&9Cooldown&f: &b20 seconds"
-        set line 4 of lore of {_weakhook} to "&7---------------"
-        give player {_weakhook} 
- 
-command /developedgrapplinghook:
-    permission: operator
-    trigger:
-        set {_devhook} to unbreakable fishing rod named "&9Developed Grappling Hook"
-        set line 1 of lore of {_devhook} to "&7---------------"
-        set line 2 of lore of {_devhook} to "&9Vertical Power&f: &b+1"
-        set line 3 of lore of {_devhook} to "&9Cooldown&f: &b15 seconds"
-        set line 4 of lore of {_devhook} to "&7---------------"
-        give player {_devhook}
+function setGrapplingHooks():
+    set {grapplinghook::weakhook} to unbreakable fishing rod named "&a&lWeak Grappling Hook"
+    set line 1 of lore of {grapplinghook::weakhook} to "&7---------------"
+    set line 2 of lore of {grapplinghook::weakhook} to "&a&lVertical Power &8[&a&l3.0&8]" 
+    set line 3 of lore of {grapplinghook::weakhook} to "&f&lCooldown &8[&f&l20s&8]"
+    set line 4 of lore of {grapplinghook::weakhook} to "&7---------------"
+    set line 5 of lore of {grapplinghook::weakhook} to "&a&lUNCOMMON GRAPPLING HOOK"
+    add hide unbreakable to item flags of {grapplinghook::weakhook}
+
+    set {grapplinghook::devhook} to unbreakable fishing rod named "&9&lDeveloped Grappling Hook"
+    set line 1 of lore of {grapplinghook::devhook} to "&7---------------"
+    set line 2 of lore of {grapplinghook::devhook} to "&a&lVertical Power &8[&a&l6.0&8]" 
+    set line 3 of lore of {grapplinghook::devhook} to "&f&lCooldown &8[&f&l15s&8]"
+    set line 4 of lore of {grapplinghook::devhook} to "&7---------------"
+    set line 5 of lore of {grapplinghook::devhook} to "&9&lRARE GRAPPLING HOOK"
+    add hide unbreakable to item flags of {grapplinghook::devhook}
         
-command /opgrapplinghook:
+    set {grapplinghook::ophook} to unbreakable fishing rod named "&4&lOP Grappling Hook"
+
+command /getgrapplinghooks:
     permission: operator
     trigger:
-        give player unbreakable fishing rod named "operator Grappling hook"
+        give {grapplinghook::weakhook} to player
+        give {grapplinghook::devhook} to player
+        give {grapplinghook::ophook} to player

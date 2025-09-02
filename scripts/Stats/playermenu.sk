@@ -7,10 +7,18 @@ function initializePlayerStuff(p: player):
     set leggings of {_p} to {leggings::0}
     set boots of {_p} to {boots::0}
 
-command /getplayerstuff <offline player>:
+command /getplayerstuff [<offline player>]:
     permission: operator
     trigger:
-        initializePlayerStuff(arg-1)
+        if arg-1 is set:
+            initializePlayerStuff(arg-1)
+        else:
+            initializePlayerStuff(player)
+
+command /player-menu:
+    aliases: /pm, /playermenu
+    trigger:
+        loadPlayerMenuGUI(player)
 
 local function loadPlayerMenuGUI(p: player):
     set {_gui} to chest inventory with 3 rows named "&b&lPlayer Menu"
@@ -26,8 +34,8 @@ local function loadPlayerMenuGUI(p: player):
     set slot 11 of {_gui} to emerald named "&8[&a&lShops&8]"
     set slot 12 of {_gui} to light blue bundle named "&8[&b&lPet Bag&8]"
     set slot 13 of {_gui} to compass named "&8[&a&lNavigate&8]"
-    set slot 15 of {_gui} to book named "&8[&c&lStats&8]"
-    set slot 16 of {_gui} to slot 0 of {_p}
+    set slot 14 of {_gui} to book named "&8[&c&lStats&8]"
+    set slot 15 of {_gui} to slot 0 of {_p}
     set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
     set slot 23 of {_gui} to short grass named "&8[&a&lSell Crops&8]"
 
@@ -71,7 +79,7 @@ local function loadPlayerStatsGUI(p: player):
     open {_gui} to {_p}
 
 local function loadOtherPlayerMenuGUI(p: player, target: player):
-    set {_gui} to chest inventory with 6 rows named "&c&lPlayer Temp"
+    set {_gui} to chest inventory with 6 rows named "&7&l "
 
     loop 54 times:
         set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
@@ -81,10 +89,46 @@ local function loadOtherPlayerMenuGUI(p: player, target: player):
     set line 2 of lore of {_skull} to "&aPlaytime %{h::%uuid of {_target}%}%:%{m::%uuid of {_target}%}%:%{s::%uuid of {_target}%}%"
     set slot 4 of {_gui} to {_skull}
 
-    set slot 11 of {_gui} to helmet of {_target}
-    set slot 20 of {_gui} to chestplate of {_target}
-    set slot 29 of {_gui} to leggings of {_target}
-    set slot 38 of {_gui} to boots of {_target}
+    if helmet of {_target} is not air:
+        set slot 11 of {_gui} to {_target}'s helmet
+    else:
+        set {_helmet} to leather helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+        set name of {_helmet} to "&4&lEmpty"
+        dye {_helmet} rgb(139, 0, 0)
+        add hide dye to item flags of {_helmet}
+        set slot 11 of {_gui} to {_helmet}
+
+    if chestplate of {_target} is not air:
+        set slot 20 of {_gui} to {_target}'s chestplate
+    else:
+        set {_chestplate} to leather chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+        set name of {_chestplate} to "&4&lEmpty"
+        dye {_chestplate} rgb(139, 0, 0)
+        add hide dye to item flags of {_chestplate}
+        set slot 20 of {_gui} to {_chestplate}
+
+    if leggings of {_target} is not air:
+        set slot 29 of {_gui} to {_target}'s leggings
+    else:
+        set {_leggings} to leather leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+        set name of {_leggings} to "&4&lEmpty"
+        dye {_leggings} rgb(139, 0, 0)
+        add hide dye to item flags of {_leggings}
+        set slot 29 of {_gui} to {_leggings}
+
+    if boots of {_target} is not air:
+        set slot 38 of {_gui} to {_target}'s boots
+    else:
+        set {_boots} to leather boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
+        set name of {_boots} to "&4&lEmpty"
+        dye {_boots} rgb(139, 0, 0)
+        add hide dye to item flags of {_boots}
+        set slot 38 of {_gui} to {_boots}
+
+    # set slot 11 of {_gui} to helmet of {_target}
+    # set slot 20 of {_gui} to chestplate of {_target}
+    # set slot 29 of {_gui} to leggings of {_target}
+    # set slot 38 of {_gui} to boots of {_target}
 
     set slot 23 of {_gui} to book named "&8[&c&lStats&8]"
     set slot 21 of {_gui} to slot 0 of {_target}
@@ -116,10 +160,10 @@ local function loadFarmNavigationGUI(p: player):
     loop 27 times:
         set slot (loop-number - 1) of {_gui} to yellow stained glass pane named " "  
 
-    set slot 11 of {_gui} to paper named "&e&lFarm &8[&e&l1&8]"
-    set slot 12 of {_gui} to paper named "&e&lFarm &8[&e&l2&8]"
-    set slot 13 of {_gui} to paper named "&e&lFarm &8[&e&l3&8]"
-    set slot 14 of {_gui} to paper named "&e&lFarm &8[&e&l4&8]"
+    set slot 11 of {_gui} to wheat named "&e&lFarm &8[&e&l1&8]"
+    set slot 12 of {_gui} to spruce sapling named "&e&lFarm &8[&e&l2&8]"
+    set slot 13 of {_gui} to sand named "&e&lFarm &8[&e&l3&8]"
+    set slot 14 of {_gui} to stone named "&e&lFarm &8[&e&l4&8]"
 
     set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
 
@@ -131,10 +175,11 @@ local function loadFarm1NavigationGUI(p: player):
     loop 27 times:
         set slot (loop-number - 1) of {_gui} to yellow stained glass pane named " "  
 
-    set slot 11 of {_gui} to paper named "&e&lField &8[&e&l1&8]"
-    set slot 12 of {_gui} to paper named "&e&lField &8[&e&l2&8]"
-    set slot 13 of {_gui} to paper named "&e&lField &8[&e&l3&8]"
-    set slot 14 of {_gui} to paper named "&e&lField &8[&e&l4&8]"
+    set slot 11 of {_gui} to wheat named "&e&lFarm &8[&e&l1&8]"
+    set slot 12 of {_gui} to paper named "&e&lField &8[&e&l1&8]"
+    set slot 13 of {_gui} to paper named "&e&lField &8[&e&l2&8]"
+    set slot 14 of {_gui} to paper named "&e&lField &8[&e&l3&8]"
+    set slot 15 of {_gui} to paper named "&e&lField &8[&e&l4&8]"
 
     set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
 
@@ -191,7 +236,12 @@ on right click:
             if distance between player and target is less than 5:
                 loadOtherPlayerMenuGUI(player, target entity)
     if name of player's tool is "&8[&b&lPlayer Menu&8]":
-        loadPlayerMenuGUI(player)
+        if {in-combat::%player's uuid%} < 1:
+            loadPlayerMenuGUI(player)
+            play sound "minecraft:ui.button.click" to player
+        else:
+            play sound "minecraft:entity.villager.no" to player
+            send "&5&lCroplite &cLeave combat to open the player menu." to player
 
 on inventory click:        
     if event-inventory is not player's inventory:
@@ -199,43 +249,72 @@ on inventory click:
             cancel event
         
             if event-slot is 11:
-                loadShopsGUI(player)
+                if {ranknumber::%player's uuid%} > 0:
+                    play sound "minecraft:ui.button.click" to player
+                    loadShopsGUI(player)
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &cThis is a ranked only feature." to player
             else if event-slot is 12:
                 loadPetGUI(player)
+                play sound "minecraft:ui.button.click" to player
             else if event-slot is 13:
                 loadNavigationGUI(player)
-            else if event-slot is 15:
-                loadPlayerStatsGUI(player)
+                play sound "minecraft:ui.button.click" to player
+            else if event-slot is 14:
+                play sound "minecraft:entity.villager.no" to player
+                send "&5&lCroplite &cComing Soon..." to player
             else if event-slot is 22:
+                play sound "minecraft:ui.button.click" to player
                 close player's inventory
             else if event-slot is 23:
-                sellCrops(player)
+                if {ranknumber::%player's uuid%} > 0:
+                    if {crops::%player's uuid%} > 0:
+                        sellCrops(player)
+                        play sound "minecraft:ui.button.click" to player
+                        play sound "block.note_block.pling" with pitch 2 to player
+                    else:
+                        play sound "minecraft:entity.villager.no" to player
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &cThis is a ranked only feature." to player
 
-        else if event-inventory's name is "&c&lPlayer Temp":
+        else if event-inventory's name is "&7&l ":
             cancel event
+
+            if event-slot is 23:
+                play sound "minecraft:entity.villager.no" to player
+                send "&5&lCroplite &cComing Soon..." to player
         
-            if event-slot is 49:
+            else if event-slot is 49:
+                play sound "minecraft:ui.button.click" to player
                 close player's inventory
 
         else if event-inventory's name is "&c&lPlayer Stats":
             cancel event
         
             if event-slot is 22:
+                play sound "minecraft:ui.button.click" to player
                 close player's inventory
 
         else if event-inventory's name is "&5&lShops":
             cancel event
 
             if event-slot is 11:
+                play sound "minecraft:ui.button.click" to player
                 loadScytheShopGui(player)
             else if event-slot is 12:   
+                play sound "minecraft:ui.button.click" to player
                 loadArmorShopGUI(player)
             else if event-slot is 13:
+                play sound "minecraft:ui.button.click" to player
                 loadEnchanterGui(player)
             else if event-slot is 14:
+                play sound "minecraft:ui.button.click" to player
                 loadPetShopGui(player)
             else if event-slot is 15:
-
+                play sound "minecraft:ui.button.click" to player
+                loadCropBagShopGui(player)
             else if event-slot is 22:
                 close player's inventory
 
@@ -274,6 +353,7 @@ on inventory click:
             else if event-slot is 14:
                 loadFarm4NavigationGUI(player)
             else if event-slot is 22:
+                play sound "minecraft:ui.button.click" to player
                 close player's inventory
 
         else if event-inventory's name is "&e&lFarm &8[&e&l1&8] &e&lNavigation":
@@ -289,6 +369,7 @@ on inventory click:
                 execute player command "/field 4"
             
             else if event-slot is 22:
+                play sound "minecraft:ui.button.click" to player
                 close player's inventory
         else if event-inventory's name is "&e&lFarm &8[&e&l2&8] &e&lNavigation":
             cancel event
@@ -303,6 +384,7 @@ on inventory click:
                 execute player command "/field 8"
 
             else if event-slot is 22:
+                play sound "minecraft:ui.button.click" to player
                 close player's inventory
         else if event-inventory's name is "&e&lFarm &8[&e&l3&8] &e&lNavigation":
             cancel event
@@ -317,6 +399,7 @@ on inventory click:
                 execute player command "/field 12"
 
             else if event-slot is 22:
+                play sound "minecraft:ui.button.click" to player
                 close player's inventory
         else if event-inventory's name is "&e&lFarm &8[&e&l4&8] &e&lNavigation":
             cancel event
@@ -331,7 +414,9 @@ on inventory click:
                 execute player command "/field 16"
 
             else if event-slot is 22:
+                play sound "minecraft:ui.button.click" to player
                 close player's inventory
+                
 
 #player inventory
 on inventory click:

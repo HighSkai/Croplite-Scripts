@@ -1,13 +1,20 @@
+on script load:
+	execute console command "/setarmorprice"
+	execute console command "/setarmor"
+
 command /open-armorshopgui:
 	permission: operator
 	trigger:
+		play sound "minecraft:ui.button.click" to player
 		loadArmorShopGUI(player)
 
 function loadArmorShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&f&lArmorer"
+	set {_gui} to chest inventory with 3 rows named "&f&lArmor"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+		set {_item} to white stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	if helmet of {_p} is not air:
 		set slot 10 of {_gui} to {_p}'s helmet
@@ -50,26 +57,22 @@ function loadArmorShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadHelmetShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&f&lHelmet Shop"
+	set {_gui} to chest inventory with 3 rows named "&f&lHelmets"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+		set {_item} to white stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	loop integers from 11 to 15:
 		set slot loop-integer of {_gui} to {helmet::%loop-integer - 10%}
-
-	set {_highest_tier} to 0
-	loop integers between 1 and 5:
-		if {helmet::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
-			if loop-integer > {_highest_tier}:
-				set {_highest_tier} to loop-integer
 
 	loop integers between 11 and 15:
 		set {_num} to loop-integer - 10
 		set {_item} to slot loop-integer of {_gui}
 
 		if {helmet::%{_num}%::bought::%uuid of {_p}%} is equal to true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			make {_item} glint
 
 		set {_lore::*} to lore of {_item}
@@ -85,26 +88,22 @@ local function loadHelmetShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadChestplateShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&f&lChestplate Shop"
+	set {_gui} to chest inventory with 3 rows named "&f&lChestplates"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+		set {_item} to white stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	loop integers from 11 to 15:
 		set slot loop-integer of {_gui} to {chestplate::%loop-integer - 10%}
-
-	set {_highest_tier} to 0
-	loop integers between 1 and 5:
-		if {chestplate::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
-			if loop-integer > {_highest_tier}:
-				set {_highest_tier} to loop-integer
 
 	loop integers between 11 and 15:
 		set {_num} to loop-integer - 10
 		set {_item} to slot loop-integer of {_gui}
 
 		if {chestplate::%{_num}%::bought::%uuid of {_p}%} is equal to true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			make {_item} glint
 
 		set {_lore::*} to lore of {_item}
@@ -120,26 +119,22 @@ local function loadChestplateShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadLeggingsShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&f&lLeggings Shop"
+	set {_gui} to chest inventory with 3 rows named "&f&lLeggings"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+		set {_item} to white stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	loop integers from 11 to 15:
 		set slot loop-integer of {_gui} to {leggings::%loop-integer - 10%}
-	
-	set {_highest_tier} to 0
-	loop integers between 1 and 5:
-		if {leggings::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
-			if loop-integer > {_highest_tier}:
-				set {_highest_tier} to loop-integer
 	
 	loop integers between 11 and 15:
 		set {_num} to loop-integer - 10
 		set {_item} to slot loop-integer of {_gui}
 	
 		if {leggings::%{_num}%::bought::%uuid of {_p}%} is equal to true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			make {_item} glint
 	
 		set {_lore::*} to lore of {_item}
@@ -155,26 +150,22 @@ local function loadLeggingsShopGUI(p: player):
 	open {_gui} to {_p}
 
 local function loadBootsShopGUI(p: player):
-	set {_gui} to chest inventory with 3 rows named "&f&lBoots Shop"
+	set {_gui} to chest inventory with 3 rows named "&f&lBoots"
 
 	loop 27 times:
-		set slot (loop-number - 1) of {_gui} to white stained glass pane named " "
+		set {_item} to white stained glass pane
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
 
 	loop integers from 11 to 15:
 		set slot loop-integer of {_gui} to {boots::%loop-integer - 10%}
-	
-	set {_highest_tier} to 0
-	loop integers between 1 and 5:
-		if {boots::%loop-integer%::bought::%uuid of {_p}%} is equal to true:
-			if loop-integer > {_highest_tier}:
-				set {_highest_tier} to loop-integer
 	
 	loop integers between 11 and 15:
 		set {_num} to loop-integer - 10
 		set {_item} to slot loop-integer of {_gui}
 	
 		if {boots::%{_num}%::bought::%uuid of {_p}%} is equal to true:
-			set name of {_item} to "%{_item}'s name% &8| [&a&lUnlocked&8]"
+			set name of {_item} to "%{_item}'s name% &8| &a&lPurchased"
 			make {_item} glint
 	
 		set {_lore::*} to lore of {_item}
@@ -191,164 +182,136 @@ local function loadBootsShopGUI(p: player):
 
 on inventory click:
 	if event-inventory is not player's inventory:
-		if event-inventory's name is "&f&lArmorer":
+		if event-inventory's name is "&f&lArmor":
 			cancel event
 
 			if event-slot is 10:
+				play sound "minecraft:ui.button.click" to player
 				loadHelmetShopGUI(player)
 			else if event-slot is 12:
+				play sound "minecraft:ui.button.click" to player
 				loadChestplateShopGUI(player)
 			else if event-slot is 14:
+				play sound "minecraft:ui.button.click" to player
 				loadLeggingsShopGUI(player)
 			else if event-slot is 16:
+				play sound "minecraft:ui.button.click" to player
 				loadBootsShopGUI(player)
 			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
 				close player's inventory
 
-		else if event-inventory's name is "&f&lHelmet Shop":
+		else if event-inventory's name is "&f&lHelmets":
 			cancel event
 
 			if event-slot is between 11 and 15:
 				set {_num} to index of event-slot - 10
 				
-				set {_highest_tier} to 0
-				loop integers between 1 and 5:
-					if {helmet::%loop-integer%::bought::%player's uuid%} is equal to true:
-						if loop-integer > {_highest_tier}:
-							set {_highest_tier} to loop-integer
-				
-				if {_num} < {_highest_tier}:
-					send "&d&lCroplite &cYou cannot downgrade your armor." to player
-				else if {helmet::%{_num}%::bought::%player's uuid%} is equal to false:
+				if {helmet::%{_num}%::bought::%player's uuid%} is false:
 					if {cropcash::%player's uuid%} >= {helmet::%{_num}%::price}:
 						set {helmet::%{_num}%::bought::%player's uuid%} to true
 						remove {helmet::%{_num}%::price} from {cropcash::%player's uuid%}
-						set helmet of player to {helmet::%{_num}%}
-
-						play sound "entity.experience_orb.pickup" to player
+						give player {helmet::%{_num}%}
 							
-						loop integers between 1 and {_num}:
-							set {helmet::%loop-integer%::bought::%player's uuid%} to true
-
 						gearingUp(player)
 						
 						loadHelmetShopGUI(player)
-						send "&d&lCroplite &aYou have bought a new helmet for %abbreviateNumber({helmet::%{_num}%::price})% &5&lCrop Cash&a." to player
+						send "&f&lAndy &aSuccessfully purchased helmet upgrade." to player
+						play sound "entity.experience_orb.pickup" to player
 					else:
-						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this helmet." to player
+						send "&f&lAndy &cInsufficient &5&lCrop Cash &cfor helmet upgrade." to player
+						play sound "minecraft:entity.villager.no" to player
 				else:
-					send "&d&lCroplite &cYou have already bought this helmet." to player
+					send "&f&lAndy &cAlready purchased this helmet upgrade." to player
+					play sound "minecraft:entity.villager.no" to player
 						
 			if event-slot is 22:
-				close player's inventory
+				play sound "minecraft:ui.button.click" to player
+				loadArmorShopGUI(player)
 
-		else if event-inventory's name is "&f&lChestplate Shop":
+		else if event-inventory's name is "&f&lChestplates":
 			cancel event
 
 			if event-slot is between 11 and 15:
 				set {_num} to index of event-slot - 10
 					
-				set {_highest_tier} to 0
-				loop integers between 1 and 5:
-					if {chestplate::%loop-integer%::bought::%player's uuid%} is equal to true:
-						if loop-integer > {_highest_tier}:
-							set {_highest_tier} to loop-integer
-					
-				if {_num} < {_highest_tier}:
-					send "&d&lCroplite &cYou cannot downgrade your armor." to player
-				else if {chestplate::%{_num}%::bought::%player's uuid%} is equal to false:
+				if {chestplate::%{_num}%::bought::%player's uuid%} is equal to false:
 					if {cropcash::%player's uuid%} >= {chestplate::%{_num}%::price}:
 						set {chestplate::%{_num}%::bought::%player's uuid%} to true
 						remove {chestplate::%{_num}%::price} from {cropcash::%player's uuid%}
-						set chestplate of player to {chestplate::%{_num}%}
-
-						play sound "entity.experience_orb.pickup" to player
-							
-						loop integers between 1 and {_num}:
-							set {chestplate::%loop-integer%::bought::%player's uuid%} to true
+						give player {chestplate::%{_num}%}
 							
 						gearingUp(player)
 
 						loadChestplateShopGUI(player)
-						send "&d&lCroplite &aYou have bought a new chestplate for %abbreviateNumber({chestplate::%{_num}%::price})% &5&lCrop Cash&a." to player
+						send "&f&lAndy &aSuccessfully purchased chestplate upgrade." to player
+						play sound "entity.experience_orb.pickup" to player
 					else:
-						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this chestplate." to player
+						send "&f&lAndy &cInsufficient &5&lCrop Cash &cfor chestplate upgrade." to player
+						play sound "minecraft:entity.villager.no" to player
 				else:
-					send "&d&lCroplite &cYou have already bought this chestplate." to player
+					send "&f&lAndy &cAlready purchased this chestplate upgrade." to player
+					play sound "minecraft:entity.villager.no" to player
 			if event-slot is 22:
-				close player's inventory
+				play sound "minecraft:ui.button.click" to player
+				loadArmorShopGUI(player)
 
-		else if event-inventory's name is "&f&lLeggings Shop":
+		else if event-inventory's name is "&f&lLeggings":
 			cancel event
 
 			if event-slot is between 11 and 15:
 				set {_num} to index of event-slot - 10
 					
-				set {_highest_tier} to 0
-				loop integers between 1 and 5:
-					if {leggings::%loop-integer%::bought::%player's uuid%} is equal to true:
-						if loop-integer > {_highest_tier}:
-							set {_highest_tier} to loop-integer
-					
-				if {_num} < {_highest_tier}:
-					send "&d&lCroplite &cYou cannot downgrade your armor." to player
-				else if {leggings::%{_num}%::bought::%player's uuid%} is equal to false:
+				if {leggings::%{_num}%::bought::%player's uuid%} is equal to false:
 					if {cropcash::%player's uuid%} >= {leggings::%{_num}%::price}:
 						set {leggings::%{_num}%::bought::%player's uuid%} to true
 						remove {leggings::%{_num}%::price} from {cropcash::%player's uuid%}
-						set leggings of player to {leggings::%{_num}%}
-
-						play sound "entity.experience_orb.pickup" to player
-							
-						loop integers between 1 and {_num}:
-							set {leggings::%loop-integer%::bought::%player's uuid%} to true
+						give player {leggings::%{_num}%}
 								
 						gearingUp(player)
 						
 						loadLeggingsShopGUI(player)
-						send "&d&lCroplite &aYou have bought a new leggings for %abbreviateNumber({leggings::%{_num}%::price})% &5&lCrop Cash&a." to player
+						send "&f&lAndy &aSuccessfully purchased leggings upgrade." to player
+						play sound "entity.experience_orb.pickup" to player
 					else:
-						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this leggings." to player
+						send "&f&lAndy &cInsufficient &5&lCrop Cash &cfor leggings upgrade." to player
+						play sound "minecraft:entity.villager.no" to player
 				else:
-					send "&d&lCroplite &cYou have already bought this leggings." to player
+					send "&f&lAndy &cAlready purchased this leggings upgrade." to player
+					play sound "minecraft:entity.villager.no" to player
 			if event-slot is 22:
-				close player's inventory
+				play sound "minecraft:ui.button.click" to player
+				loadArmorShopGUI(player)
 
-		else if event-inventory's name is "&f&lBoots Shop":
+		else if event-inventory's name is "&f&lBoots":
 			cancel event
 
 			if event-slot is between 11 and 15:
 				set {_num} to index of event-slot - 10
 					
-				set {_highest_tier} to 0
-				loop integers between 1 and 5:
-					if {boots::%loop-integer%::bought::%player's uuid%} is equal to true:
-						if loop-integer > {_highest_tier}:
-							set {_highest_tier} to loop-integer
-					
-				if {_num} < {_highest_tier}:
-					send "&d&lCroplite &cYou cannot downgrade your armor." to player
-				else if {boots::%{_num}%::bought::%player's uuid%} is equal to false:
+				if {boots::%{_num}%::bought::%player's uuid%} is equal to false:
 					if {cropcash::%player's uuid%} >= {boots::%{_num}%::price}:
 						set {boots::%{_num}%::bought::%player's uuid%} to true
 						remove {boots::%{_num}%::price} from {cropcash::%player's uuid%}
-						set boots of player to {boots::%{_num}%}
+						give player {boots::%{_num}%}
 
-						play sound "entity.experience_orb.pickup" to player
-							
 						loop integers between 1 and {_num}:
 							set {boots::%loop-integer%::bought::%player's uuid%} to true
 								
 						gearingUp(player)
 						
 						loadBootsShopGUI(player)
-						send "&d&lCroplite &aYou have bought a new boots for %abbreviateNumber({boots::%{_num}%::price})% &5&lCrop Cash&a." to player
+						send "&f&lAndy &aSuccessfully purchased boots upgrade." to player
+						play sound "entity.experience_orb.pickup" to player
 					else:
-						send "&d&lCroplite &cYou don't have enough &5&lCrop Cash &cto buy this boots." to player
+						send "&f&lAndy &cInsufficient &5&lCrop Cash &cfor boots upgrade." to player
+						play sound "minecraft:entity.villager.no" to player
 				else:
-					send "&d&lCroplite &cYou have already bought this boots." to player
+					send "&f&lAndy &cAlready purchased this boots upgrade." to player
+					play sound "minecraft:entity.villager.no" to player
 			if event-slot is 22:
-				close player's inventory	
+				play sound "minecraft:ui.button.click" to player
+				loadArmorShopGUI(player)
 
 command /resetarmor:
 	permission: operator
@@ -381,34 +344,34 @@ command /setarmorprice:
 	permission: operator
 	trigger:
 		set {helmet::1::price} to 750
-		set {helmet::2::price} to 1750
-		set {helmet::3::price} to 3500
-		set {helmet::4::price} to 10000
+		set {helmet::2::price} to 3500
+		set {helmet::3::price} to 15000
+		set {helmet::4::price} to 50000
 		set {helmet::5::price} to 100000
 
-		set {chestplate::1::price} to 1000
-		set {chestplate::2::price} to 2500
-		set {chestplate::3::price} to 5000
-		set {chestplate::4::price} to 10000
+		set {chestplate::1::price} to 750
+		set {chestplate::2::price} to 3500
+		set {chestplate::3::price} to 15000
+		set {chestplate::4::price} to 50000
 		set {chestplate::5::price} to 100000
 
-		set {leggings::1::price} to 1000
-		set {leggings::2::price} to 200
-		set {leggings::3::price} to 5000
-		set {leggings::4::price} to 10000
+		set {leggings::1::price} to 750
+		set {leggings::2::price} to 3500
+		set {leggings::3::price} to 15000
+		set {leggings::4::price} to 50000
 		set {leggings::5::price} to 100000
 
-		set {boots::1::price} to 1000
-		set {boots::2::price} to 2500
-		set {boots::3::price} to 5000
-		set {boots::4::price} to 10000
+		set {boots::1::price} to 750
+		set {boots::2::price} to 3500
+		set {boots::3::price} to 15000
+		set {boots::4::price} to 50000
 		set {boots::5::price} to 100000
 
 command /setarmor:
 	permission: operator
 	trigger:
 		set {helmet::0} to unbreakable leather helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {helmet::0} to "&8Starter Farming Helmet"
+		set name of {helmet::0} to "&8Starter Helmet"
 		set line 1 of lore of {helmet::0} to "&7---------------"
 		set line 2 of lore of {helmet::0} to "&9&lDefense &8[&9&l0&8]"
 		set line 3 of lore of {helmet::0} to "&7---------------"
@@ -417,7 +380,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {helmet::0}
 
 		set {helmet::1} to unbreakable chainmail helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {helmet::1} to "&aApprentice Farming Helmet"
+		set name of {helmet::1} to "&aApprentice Helmet"
 		set line 1 of lore of {helmet::1} to "&7---------------"
 		set line 2 of lore of {helmet::1} to "&9&lDefense &8[&9&l1&8]"
 		set line 3 of lore of {helmet::1} to "&7---------------"
@@ -426,7 +389,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {helmet::1}
 
 		set {helmet::2} to unbreakable iron helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {helmet::2} to "&9Experienced Farming Helmet"
+		set name of {helmet::2} to "&9Experienced Helmet"
 		set line 1 of lore of {helmet::2} to "&7---------------"
 		set line 2 of lore of {helmet::2} to "&9&lDefense &8[&9&l2&8]"
 		set line 3 of lore of {helmet::2} to "&7---------------"
@@ -435,7 +398,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {helmet::2}
 		
 		set {helmet::3} to unbreakable golden helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {helmet::3} to "&cAdept Farming Helmet"
+		set name of {helmet::3} to "&cAdept Helmet"
 		set line 1 of lore of {helmet::3} to "&7---------------"
 		set line 2 of lore of {helmet::3} to "&9&lDefense &8[&9&l3&8]"
 		set line 3 of lore of {helmet::3} to "&7---------------"
@@ -444,7 +407,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {helmet::3}
 
 		set {helmet::4} to unbreakable diamond helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {helmet::4} to "&5Expert Farming Helmet"
+		set name of {helmet::4} to "&5Expert Helmet"
 		set line 1 of lore of {helmet::4} to "&7---------------"
 		set line 2 of lore of {helmet::4} to "&9&lDefense &8[&9&l4&8]"
 		set line 3 of lore of {helmet::4} to "&7---------------"
@@ -453,7 +416,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {helmet::4}
 
 		set {helmet::5} to unbreakable netherite helmet with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {helmet::5} to "&6Master Farming Helmet"
+		set name of {helmet::5} to "&6Master Helmet"
 		set line 1 of lore of {helmet::5} to "&7---------------"
 		set line 2 of lore of {helmet::5} to "&9&lDefense &8[&9&l5&8]"
 		set line 3 of lore of {helmet::5} to "&7---------------"
@@ -463,7 +426,7 @@ command /setarmor:
 
 		#-------------------------------------------------
 		set {chestplate::0} to unbreakable leather chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {chestplate::0} to "&8Starter Farming Chestplate"
+		set name of {chestplate::0} to "&8Starter Chestplate"
 		set line 1 of lore of {chestplate::0} to "&7---------------"
 		set line 2 of lore of {chestplate::0} to "&9&lDefense &8[&9&l0&8]"
 		set line 3 of lore of {chestplate::0} to "&7---------------"
@@ -472,7 +435,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {chestplate::0}
 
 		set {chestplate::1} to unbreakable chainmail chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {chestplate::1} to "&aApprentice Farming Chestplate"
+		set name of {chestplate::1} to "&aApprentice Chestplate"
 		set line 1 of lore of {chestplate::1} to "&7---------------"
 		set line 2 of lore of {chestplate::1} to "&9&lDefense &8[&9&l1&8]"
 		set line 3 of lore of {chestplate::1} to "&7---------------"
@@ -481,7 +444,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {chestplate::1}
 
 		set {chestplate::2} to unbreakable iron chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {chestplate::2} to "&9Experienced Farming Chestplate"
+		set name of {chestplate::2} to "&9Experienced Chestplate"
 		set line 1 of lore of {chestplate::2} to "&7---------------"
 		set line 2 of lore of {chestplate::2} to "&9&lDefense &8[&9&l2&8]"
 		set line 3 of lore of {chestplate::2} to "&7---------------"
@@ -490,7 +453,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {chestplate::2}
 		
 		set {chestplate::3} to unbreakable golden chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {chestplate::3} to "&cAdept Farming Chestplate"
+		set name of {chestplate::3} to "&cAdept Chestplate"
 		set line 1 of lore of {chestplate::3} to "&7---------------"
 		set line 2 of lore of {chestplate::3} to "&9&lDefense &8[&9&l3&8]"
 		set line 3 of lore of {chestplate::3} to "&7---------------"
@@ -499,7 +462,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {chestplate::3}
 
 		set {chestplate::4} to unbreakable diamond chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {chestplate::4} to "&5Expert Farming Chestplate"
+		set name of {chestplate::4} to "&5Expert Chestplate"
 		set line 1 of lore of {chestplate::4} to "&7---------------"
 		set line 2 of lore of {chestplate::4} to "&9&lDefense &8[&9&l4&8]"
 		set line 3 of lore of {chestplate::4} to "&7---------------"
@@ -508,7 +471,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {chestplate::4}
 
 		set {chestplate::5} to unbreakable netherite chestplate with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {chestplate::5} to "&6Master Farming Chestplate"
+		set name of {chestplate::5} to "&6Master Chestplate"
 		set line 1 of lore of {chestplate::5} to "&7---------------"
 		set line 2 of lore of {chestplate::5} to "&9&lDefense &8[&9&l5&8]"
 		set line 3 of lore of {chestplate::5} to "&7---------------"
@@ -518,7 +481,7 @@ command /setarmor:
 
 		#-------------------------------------------------
 		set {leggings::0} to unbreakable leather leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {leggings::0} to "&8Starter Farming Leggings"
+		set name of {leggings::0} to "&8Starter Leggings"
 		set line 1 of lore of {leggings::0} to "&7---------------"
 		set line 2 of lore of {leggings::0} to "&9&lDefense &8[&9&l0&8]"
 		set line 3 of lore of {leggings::0} to "&7---------------"
@@ -527,7 +490,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {leggings::0}
 		
 		set {leggings::1} to unbreakable chainmail leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {leggings::1} to "&aApprentice Farming Leggings"
+		set name of {leggings::1} to "&aApprentice Leggings"
 		set line 1 of lore of {leggings::1} to "&7---------------"
 		set line 2 of lore of {leggings::1} to "&9&lDefense &8[&9&l1&8]"
 		set line 3 of lore of {leggings::1} to "&7---------------"
@@ -536,7 +499,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {leggings::1}
 
 		set {leggings::2} to unbreakable iron leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {leggings::2} to "&9Experienced Farming Leggings"
+		set name of {leggings::2} to "&9Experienced Leggings"
 		set line 1 of lore of {leggings::2} to "&7---------------"
 		set line 2 of lore of {leggings::2} to "&9&lDefense &8[&9&l2&8]"
 		set line 3 of lore of {leggings::2} to "&7---------------"
@@ -545,7 +508,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {leggings::2}
 		
 		set {leggings::3} to unbreakable golden leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {leggings::3} to "&cAdept Farming Leggings"
+		set name of {leggings::3} to "&cAdept Leggings"
 		set line 1 of lore of {leggings::3} to "&7---------------"
 		set line 2 of lore of {leggings::3} to "&9&lDefense &8[&9&l3&8]"
 		set line 3 of lore of {leggings::3} to "&7---------------"
@@ -554,7 +517,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {leggings::3}
 
 		set {leggings::4} to unbreakable diamond leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {leggings::4} to "&5Expert Farming Leggings"
+		set name of {leggings::4} to "&5Expert Leggings"
 		set line 1 of lore of {leggings::4} to "&7---------------"
 		set line 2 of lore of {leggings::4} to "&9&lDefense &8[&9&l4&8]"
 		set line 3 of lore of {leggings::4} to "&7---------------"
@@ -563,7 +526,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {leggings::4}
 
 		set {leggings::5} to unbreakable netherite leggings with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {leggings::5} to "&6Master Farming Leggings"
+		set name of {leggings::5} to "&6Master Leggings"
 		set line 1 of lore of {leggings::5} to "&7---------------"
 		set line 2 of lore of {leggings::5} to "&9&lDefense &8[&9&l5&8]"
 		set line 3 of lore of {leggings::5} to "&7---------------"
@@ -573,7 +536,7 @@ command /setarmor:
 
 		#-------------------------------------------------
 		set {boots::0} to unbreakable leather boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {boots::0} to "&8Starter Farming Boots"
+		set name of {boots::0} to "&8Starter Boots"
 		set line 1 of lore of {boots::0} to "&7---------------"
 		set line 2 of lore of {boots::0} to "&9&lDefense &8[&9&l0&8]"
 		set line 3 of lore of {boots::0} to "&7---------------"
@@ -582,7 +545,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {boots::0}
 
 		set {boots::1} to unbreakable chainmail boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {boots::1} to "&aApprentice Farming Boots"
+		set name of {boots::1} to "&aApprentice Boots"
 		set line 1 of lore of {boots::1} to "&7---------------"
 		set line 2 of lore of {boots::1} to "&9&lDefense &8[&9&l1&8]"
 		set line 3 of lore of {boots::1} to "&7---------------"
@@ -591,7 +554,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {boots::1}
 
 		set {boots::2} to unbreakable iron boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {boots::2} to "&9Experienced Farming Boots"
+		set name of {boots::2} to "&9Experienced Boots"
 		set line 1 of lore of {boots::2} to "&7---------------"
 		set line 2 of lore of {boots::2} to "&9&lDefense &8[&9&l2&8]"
 		set line 3 of lore of {boots::2} to "&7---------------"
@@ -600,7 +563,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {boots::2}
 		
 		set {boots::3} to unbreakable golden boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {boots::3} to "&c&lAdept Farming Boots"
+		set name of {boots::3} to "&c&lAdept Boots"
 		set line 1 of lore of {boots::3} to "&7---------------"
 		set line 2 of lore of {boots::3} to "&9&lDefense &8[&9&l3&8]"
 		set line 3 of lore of {boots::3} to "&7---------------"
@@ -609,7 +572,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {boots::3}
 
 		set {boots::4} to unbreakable diamond boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {boots::4} to "&5Expert Farming Boots"
+		set name of {boots::4} to "&5Expert Boots"
 		set line 1 of lore of {boots::4} to "&7---------------"
 		set line 2 of lore of {boots::4} to "&9&lDefense &8[&9&l4&8]"
 		set line 3 of lore of {boots::4} to "&7---------------"
@@ -618,7 +581,7 @@ command /setarmor:
 		add hide unbreakable to item flags of {boots::4}
 
 		set {boots::5} to unbreakable netherite boots with nbt from "{""minecraft:attribute_modifiers"":{modifiers:[],show_in_tooltip:0}}"
-		set name of {boots::5} to "&6Master Farming Boots"
+		set name of {boots::5} to "&6Master Boots"
 		set line 1 of lore of {boots::5} to "&7---------------"
 		set line 2 of lore of {boots::5} to "&9&lDefense &8[&9&l5&8]"
 		set line 3 of lore of {boots::5} to "&7---------------"
@@ -658,3 +621,12 @@ function resetArmor(p: player):
 	set {boots::3::bought::%uuid of {_p}%} to false
 	set {boots::4::bought::%uuid of {_p}%} to false
 	set {boots::5::bought::%uuid of {_p}%} to false
+
+placeholderapi placeholder with the prefix "player":
+	if the identifier is "armor":
+		set the result to {armor::%player's uuid%}
+	if the identifier is "health":
+		set the result to player's health
+
+on armor change:
+	set {armor::%player's uuid%} to armorEnchantDamage(player)

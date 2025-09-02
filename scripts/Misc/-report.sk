@@ -1,7 +1,7 @@
 command /report <offline player> <text>:
     cooldown: 5 minutes
     cooldown storage: {report-cooldown::%player's uuid%}
-    cooldown message: &d&lCroplite &cYou must wait %remaining time% before reporting again.
+    cooldown message: &d&lCROPLITE &cYou must wait %remaining time% before reporting again.
     trigger:
         async send discord request "https://discord.com/api/webhooks/1358915177390538995/3azPbQeI6fqTmON767Px5KwAf7IkwjNDu2BNmwlhX2WIb7182oH4qUgH0BFZ3eYk7rWz":
             header: "Content-Type: application/json"

@@ -1,0 +1,109 @@
+on right click:
+	if name of clicked entity is "&f&lGabriel":
+		if {npc::talking::Gabriel::%player's uuid%} is set:
+			stop
+		else:
+			set {npc::talking::Gabriel::%player's uuid%} to true
+			if {chatmessage::Gabriel::%player's uuid%} is not set:
+				set {chatmessage::Gabriel::%player's uuid%} to 0
+			if {chatmessage::Gabriel::%player's uuid%} = 0:
+				if {level::%player's uuid%} >= 35:
+					if {objective::%player's uuid%} is "objectivenone":
+						play sound "entity.iron_golem.repair" to player
+						send "&f&lGabriel&r&f Phew! Thank goodness you're here, farmer!%nl%" to player
+						wait 3 seconds
+						play sound "entity.iron_golem.repair" to player
+						send "&f&lGabriel&r&f I've been fending off these mobs for way too long, and they just keep coming back!%nl%" to player
+						wait 4 seconds
+						play sound "entity.iron_golem.repair" to player
+						send "&f&lGabriel&r&f Let me take a break for a little, will ya? I could use a bit of a rest.%nl%" to player
+						wait 3.5 seconds
+						play sound "entity.iron_golem.repair" to player
+						send "&f&lGabriel&r&f Come back when you've killed 100 &cCrop Mobs&f!%nl%" to player
+						wait 2 seconds
+						set {gab::alreadyclicked::%player's uuid%} to false
+						startGabrielQuest(player)
+					else:
+						send "&f&lGabriel&r&f Please complete your current objective before starting a new one!" to player
+				else:
+					send "&f&lGabriel&r&f You need to be &9&lLevel 35&f or higher to take this objective!" to player
+			else if {chatmessage::Gabriel::%player's uuid%} = 2:
+				if {objective::%player's uuid%} is "Mob Massacre":
+					play sound "entity.iron_golem.repair" to player
+					send "&f&lGabriel&r&f Phew! That was a nice rest, I appreciate it farmer!%nl%" to player
+					wait 3.5 seconds
+					play sound "entity.iron_golem.repair" to player
+					send "&f&lGabriel&r&f Oh right, you want something for your troubles? Here's a little something to keep you going. Good luck!                                                                                     " to player
+					play sound "entity.player.levelup" to player
+					send "&8[&2&lObjective &nComplete!&8]" to player
+					send "&7------------------------------" to player
+					send "&8[&2Objective Rewards&8]" to player
+					send "&8 - &6&l2 Pet Crate Keys" to player
+					send "&8 - &650,000 Experience" to player
+					send "&8 - &625,000 Crop Cash" to player
+					send "&8 - &e3 Enchant Points" to player
+					send "&7------------------------------" to player
+					execute console command "/crate key give %player% pet 1"
+					add 800 to {exp::%player's uuid%}
+					add 500 to {cropcash::%player's uuid%}
+					add 1 to {enchant-points::%player's uuid%}
+					set {objective::%player's uuid%} to "objectivenone"
+					set {objprogressreq::%player's uuid%} to 0
+					set {objprogress::%player's uuid%} to 0
+					set {objdesc::%player's uuid%} to " "
+					set {objcomplete::%player's uuid%} to false
+					updateObjective(player)
+					levelUp(player)
+					set {Gabriel::alreadyclicked::%player's uuid%} to false
+					add 1 to {chatmessage::Gabriel::%player's uuid%}
+				else:
+					send "&f&lGabriel&r&f Please complete your current objective before starting a new one!" to player
+        
+		wait 1 second
+		delete {npc::talking::Gabriel::%player's uuid%}
+
+on skript start:
+	wait 10 seconds
+	execute console command "npc select 72"
+	execute console command "npc attribute max_health 1"
+	wait 1 tick
+	execute console command "npc attribute max_health 100"
+
+command /set-gabrielprogress:
+	permission: *
+	trigger:
+		add 99 to {objprogress::%player's uuid%}
+
+function startGabrielQuest(p: player):
+    set {_text} to a new text component from "&f&lGabriel&f &aDo you accept the objective?"
+
+    set {_yesgab} to a new text component from "&8[&a&lYES&8]"
+    set {_nogab} to a new text component from "&8[&c&lNO&8]"
+
+    create a callback for {_yesgab}:
+        if {gab::alreadyclicked::%uuid of {_p}%} is false:
+            yesgab({_p})
+
+    create a callback for {_nogab}:
+        if {gab::alreadyclicked::%uuid of {_p}%} is false:
+            nogab({_p})
+
+    send components (merge components {_text} and {_yesgab} and {_nogab} with " ") to {_p}
+
+
+function yesgab(p: player):
+    set {gab::alreadyclicked::%uuid of {_p}%} to true
+    send "&f&lGabriel&r&f Excellent! I am in your debt, farmer!%nl%" to {_p}
+    wait 2 seconds
+    send "&7------------------------------" to {_p}
+    send "&8[&2&lObjective&r&8] &5Mob Massacre: &r&eDefeat%nl% 100 Crop Mobs" to {_p}
+    send "&7------------------------------" to {_p}
+    play sound "block.amethyst_block.resonate" to {_p}
+    set {objective::%uuid of {_p}%} to "Mob Massacre"
+    set {objprogressreq::%uuid of {_p}%} to 100
+    set {objdesc::%uuid of {_p}%} to "Defeat 100 Crop Mobs"
+    add 1 to {chatmessage::Gabriel::%uuid of {_p}%}
+    
+function nogab(p: player):     
+    set {gab::alreadyclicked::%uuid of {_p}%} to true
+    send "&f&lGabriel&r&f Oh... maybe another time?%nl%" to {_p}

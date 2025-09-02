@@ -18,41 +18,39 @@ function loadPetGUI(p: player):
 		else:
 			set slot loop-integer of {_gui} to air
 
-	set slot 30 of {_gui} to emerald named "&8[&4&lClose&8]"
 	set slot 31 of {_gui} to barrier named "&8[&4&lClose&8]"
-	set slot 32 of {_gui} to redstone named "&8[&4&lClose&8]"
 			
 	open {_gui} to {_p}
 
-command /openpetgui:
+command /pets:
 	permission: operator
 	trigger:
 		loadPetGUI(player)
 
-command /togglepetfloat:
-	trigger:
-		if {petfloat-toggled::%uuid of player%} is true:
-			set {petfloat-toggled::%uuid of player%} to false
-			kill {pet::%uuid of player%::*}
-			delete {pet::%uuid of player%::*}
-			send "Pet floating disabled." to player
-		else:
-			set {petfloat-toggled::%uuid of player%} to true
-			send "Pet floating enabled." to player
+# command /togglepetfloat:
+# 	trigger:
+# 		if {petfloat-toggled::%uuid of player%} is true:
+# 			set {petfloat-toggled::%uuid of player%} to false
+# 			kill {pet::%uuid of player%::*}
+# 			delete {pet::%uuid of player%::*}
+# 			send "Pet floating disabled." to player
+# 		else:
+# 			set {petfloat-toggled::%uuid of player%} to true
+# 			send "Pet floating enabled." to player
 
-command /togglevisibilityoff:
-	trigger:
-		hide {pet::%player's uuid%::*} from player
-		send "Pet visibility turned off." to player
+# command /togglevisibilityoff:
+# 	trigger:
+# 		hide {pet::%player's uuid%::*} from player
+# 		send "Pet visibility turned off." to player
 
-command /togglevisibilityon:
-	trigger:
-		reveal {pet::%player's uuid%::*} to player
-		send "Pet visibility turned on." to player
+# command /togglevisibilityon:
+# 	trigger:
+# 		reveal {pet::%player's uuid%::*} to player
+# 		send "Pet visibility turned on." to player
 
-command /broadcastpets:
-	trigger:
-		broadcast {playerpets::%player's uuid%::*}
+# command /broadcastpets:
+# 	trigger:
+# 		broadcast {playerpets::%player's uuid%::*}
 
 on quit:
 	if {pet::%player's uuid%::*} is set:
@@ -65,7 +63,7 @@ on inventory click:
 
 			if inventory action is place all:
 				if string tag "Croplite:pets" of custom nbt of cursor slot of player does not contain "pet":
-					broadcast "not a pet"
+					broadcast "&5&lCroplite &cCan only put pets in the pet menu."
 					cancel event
 
 			if event-slot is 11 or 12 or 13 or 14 or 15 or 20 or 21 or 22 or 23 or 24:
@@ -100,42 +98,42 @@ on inventory click:
 			else:
 				cancel event
 
-every 1 tick: 
-	loop all players: 
-		if {petfloat-toggled::%uuid of loop-player%} is true: 
-			set {_radius} to 2.1
-			set {_height} to -0.4
+# every 1 tick: 
+# 	loop all players: 
+# 		if {petfloat-toggled::%uuid of loop-player%} is true: 
+# 			set {_radius} to 2.1
+# 			set {_height} to -0.4
 
-			loop {playerpets::%uuid of loop-player%::*}: 
-				if loop-value-2 is not "air":
-					add loop-value-2 to {_temp-pets::%uuid of loop-player%::*}
+# 			loop {playerpets::%uuid of loop-player%::*}: 
+# 				if loop-value-2 is not "air":
+# 					add loop-value-2 to {_temp-pets::%uuid of loop-player%::*}
  
-			loop {_temp-pets::%uuid of loop-player%::*}: 
-				if {petfloat-angle::%uuid of loop-player%::%loop-index%} >= 360: 
-					set {petfloat-angle::%uuid of loop-player%::%loop-index%} to 0 
+# 			loop {_temp-pets::%uuid of loop-player%::*}: 
+# 				if {petfloat-angle::%uuid of loop-player%::%loop-index%} >= 360: 
+# 					set {petfloat-angle::%uuid of loop-player%::%loop-index%} to 0 
 
-				if {pet::%uuid of loop-player%::%loop-index%} is not set: 
-					set {petfloat-angle::%uuid of loop-player%::%loop-index%} to 360 / {total-playerpets::%uuid of loop-player%} * loop-index parsed as number
-					spawn armor stand at location of loop-player 
-					set {pet::%uuid of loop-player%::%loop-index%} to last spawned entity 
+# 				if {pet::%uuid of loop-player%::%loop-index%} is not set: 
+# 					set {petfloat-angle::%uuid of loop-player%::%loop-index%} to 360 / {total-playerpets::%uuid of loop-player%} * loop-index parsed as number
+# 					spawn armor stand at location of loop-player 
+# 					set {pet::%uuid of loop-player%::%loop-index%} to last spawned entity 
 
-					apply attribute modifier to {pet::%uuid of loop-player%::%loop-index%}:
-						id: "minecraft:scale"
-						attribute: scale
-						amount: -0.2
-						operation: add_number
+# 					apply attribute modifier to {pet::%uuid of loop-player%::%loop-index%}:
+# 						id: "minecraft:scale"
+# 						attribute: scale
+# 						amount: -0.2
+# 						operation: add_number
 
-					set helmet of {pet::%uuid of loop-player%::%loop-index%} to {pets::%{_temp-pets::%uuid of loop-player%::%loop-index%}%} 
-					set name of {pet::%uuid of loop-player%::%loop-index%} to "player-pet"
-					make {pet::%uuid of loop-player%::%loop-index%} invisible 
+# 					set helmet of {pet::%uuid of loop-player%::%loop-index%} to {pets::%{_temp-pets::%uuid of loop-player%::%loop-index%}%} 
+# 					set name of {pet::%uuid of loop-player%::%loop-index%} to "player-pet"
+# 					make {pet::%uuid of loop-player%::%loop-index%} invisible 
  
-				set {_angle} to {petfloat-angle::%uuid of loop-player%::%loop-index%}
-				set {_offsetX} to {_radius} * cos({_angle})
-				set {_offsetZ} to {_radius} * sin({_angle})
+# 				set {_angle} to {petfloat-angle::%uuid of loop-player%::%loop-index%}
+# 				set {_offsetX} to {_radius} * cos({_angle})
+# 				set {_offsetZ} to {_radius} * sin({_angle})
  
-				teleport {pet::%uuid of loop-player%::%loop-index%} to location of loop-player offset by vector({_offsetX}, {_height}, {_offsetZ})
-				set yaw of {pet::%uuid of loop-player%::%loop-index%} to 0
-				add 1 to {petfloat-angle::%uuid of loop-player%::%loop-index%} 
+# 				teleport {pet::%uuid of loop-player%::%loop-index%} to location of loop-player offset by vector({_offsetX}, {_height}, {_offsetZ})
+# 				set yaw of {pet::%uuid of loop-player%::%loop-index%} to 0
+# 				add 1 to {petfloat-angle::%uuid of loop-player%::%loop-index%} 
 
 on right click:
 	if {pets::*} contains event-item:
@@ -288,8 +286,8 @@ command /setpets:
 	trigger:
 		set {pets::speedpet1} to player head with nbt from "{profile:{id:[I;-1171650357,-2028255289,-1780378138,1576325737],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvM2E2YWE0MGRiNzQxYTZjYmVkYjExOWEzZTVjYmE4YTg3ZjdlYzhmNzRkMjY4YWQ4MjgyYTQ2ZTVlMDU0ZmNiOSJ9fX0=""}]}}"
 		set name of {pets::speedpet1} to "&8&lSlow Speed Pet"
-		set line 1 of lore of {pets::speedpet1} to "&7Slightly increases the"
-		set line 2 of lore of {pets::speedpet1} to "&7player's movement speed."
+		set line 1 of lore of {pets::speedpet1} to "&7Slightly increases"
+		set line 2 of lore of {pets::speedpet1} to "&7movement speed"
 		set line 3 of lore of {pets::speedpet1} to "&7---------------"
 		set line 4 of lore of {pets::speedpet1} to "&f&lSpeed &8[&f&l+0.05&8]"
 		set line 5 of lore of {pets::speedpet1} to "&7---------------"
@@ -299,8 +297,8 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::speedpet1} to "speedpet1"
 		set {pets::speedpet2} to player head with nbt from "{profile:{id:[I;218269152,1739148954,-2122940369,1409776583],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTNjZTc2NjAyZDNmZWM3YzAyNzNkYTYwMDA5MDA3YmU0MTQwYWM5ZmFjMDM0MTQ1MGMwNzU3ZTUzZDc1MTU3NyJ9fX0=""}]}}"
 		set name of {pets::speedpet2} to "&a&lModerate Speed Pet"
-		set line 1 of lore of {pets::speedpet2} to "&7Moderately increases the"
-		set line 2 of lore of {pets::speedpet2} to "&7player's movement speed."
+		set line 1 of lore of {pets::speedpet2} to "&7Moderately increases"
+		set line 2 of lore of {pets::speedpet2} to "&7movement speed"
 		set line 3 of lore of {pets::speedpet2} to "&7---------------"
 		set line 4 of lore of {pets::speedpet2} to "&f&lSpeed &8[&f&l+0.10&8]"
 		set line 5 of lore of {pets::speedpet2} to "&7---------------"
@@ -310,8 +308,8 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::speedpet2} to "speedpet2"
 		set {pets::speedpet3} to player head with nbt from "{profile:{id:[I;-926088496,-2018752085,-1690052703,-1690592113],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYmU3YWE5ZGNlOGIyYzY3MjdkOTE4Y2I3YjJmZjY5ZDU0N2QzMjc4MWE3N2YzYmU2NDIzZDFmZjA0MDFiOGNlZiJ9fX0=""}]}}"
 		set name of {pets::speedpet3} to "&9&lQuick Speed Pet"
-		set line 1 of lore of {pets::speedpet3} to "&7Significantly increases the"
-		set line 2 of lore of {pets::speedpet3} to "&7player's movement speed."
+		set line 1 of lore of {pets::speedpet3} to "&7Significantly increases"
+		set line 2 of lore of {pets::speedpet3} to "&7movement speed"
 		set line 3 of lore of {pets::speedpet3} to "&7---------------"
 		set line 4 of lore of {pets::speedpet3} to "&f&lSpeed &8[&f&l+0.15&8]"
 		set line 5 of lore of {pets::speedpet3} to "&7---------------"
@@ -321,8 +319,8 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::speedpet3} to "speedpet3"
 		set {pets::speedpet4} to player head with nbt from "{profile:{id:[I;404700768,590365872,-1635679079,-1707570548],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjhlNWEzYTg1ZjgyZjc3MmIxMGRkZGExZTIxNjU3NmZmMWI5YTk4MzQ0ZTA3NTNiNjhkZGUwNmY3ZjIxNTdmNCJ9fX0=""}]}}"
 		set name of {pets::speedpet4} to "&c&lSwift Speed Pet"
-		set line 1 of lore of {pets::speedpet4} to "&7Greatly increases the"
-		set line 2 of lore of {pets::speedpet4} to "&7player's movement speed."
+		set line 1 of lore of {pets::speedpet4} to "&7Greatly increases"
+		set line 2 of lore of {pets::speedpet4} to "&7movement speed"
 		set line 3 of lore of {pets::speedpet4} to "&7---------------"
 		set line 4 of lore of {pets::speedpet4} to "&f&lSpeed &8[&f&l+0.25&8]"
 		set line 5 of lore of {pets::speedpet4} to "&7---------------"
@@ -332,8 +330,8 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::speedpet4} to "speedpet4"
 		set {pets::speedpet5} to player head with nbt from "{profile:{id:[I;1470323663,-368883029,-1859012556,-280864075],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWJlYzRhNGE3MWRjY2MwMDE2MTdjZWM4NjM4MDMyMWYyMzlmY2IwMWE3YWViNGJhYTU2Zjg0NzE4MzcxMzk4YiJ9fX0=""}]}}"
 		set name of {pets::speedpet5} to "&5&lHasteful Speed Pet"
-		set line 1 of lore of {pets::speedpet5} to "&7Drastically increases the"
-		set line 2 of lore of {pets::speedpet5} to "&7player's movement speed."
+		set line 1 of lore of {pets::speedpet5} to "&7Drastically increases"
+		set line 2 of lore of {pets::speedpet5} to "&7movement speed"
 		set line 3 of lore of {pets::speedpet5} to "&7---------------"
 		set line 4 of lore of {pets::speedpet5} to "&f&lSpeed &8[&f&l+0.35&8]"
 		set line 5 of lore of {pets::speedpet5} to "&7---------------"	
@@ -343,10 +341,10 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::speedpet5} to "speedpet5"
 
 		set {pets::experiencepet1} to player head with nbt from "{profile:{id:[I;-916593324,1315587059,-1357426337,609347134],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjZmZjBhYTQ4NTQ0N2JiOGRjZjQ1OTkyM2I0OWY5MWM0M2IwNDBiZDU2ZTYzMTVkYWE4YjZmODNiNGMzZWI1MSJ9fX0=""}]}}"
-		set name of {pets::experiencepet1} to "&8&lMinor Experience Pet"
-		set line 1 of lore of {pets::experiencepet1} to "&7Slightly increases exp"
-		set line 2 of lore of {pets::experiencepet1} to "&7gain when breaking crops"
-		set line 3 of lore of {pets::experiencepet1} to "&7and killing mobs."
+		set name of {pets::experiencepet1} to "&8&lMinor Exp Multi Pet"
+		set line 1 of lore of {pets::experiencepet1} to "&7Slightly increases experience"
+		set line 2 of lore of {pets::experiencepet1} to "&7gained from farming crops"
+		set line 3 of lore of {pets::experiencepet1} to "&7and killing mobs"
 		set line 4 of lore of {pets::experiencepet1} to "&7---------------"
 		set line 5 of lore of {pets::experiencepet1} to "&e&lExp Multi &8[&e&l+0.10&8]"
 		set line 6 of lore of {pets::experiencepet1} to "&7---------------"
@@ -355,10 +353,10 @@ command /setpets:
 		set max stack size component of {pets::experiencepet1} to 1
 		set string tag "Croplite:pets" of custom nbt of {pets::experiencepet1} to "experiencepet1"
 		set {pets::experiencepet2} to player head with nbt from "{profile:{id:[I;-1593823337,-461945552,-1623497202,1968361158],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzFkNTY4ZTE2YmU2Yzc5ZDY3NGY5N2FjMWU5NDlmOGE4ZjAzZTM4MzdiNmYwYjU2YTUzOWJmYzMzN2YxZWJkIn19fQ==""}]}}"
-		set name of {pets::experiencepet2} to "&a&lLesser Experience Pet"
-		set line 1 of lore of {pets::experiencepet2} to "&7Moderately increases exp"
-		set line 2 of lore of {pets::experiencepet2} to "&7gain when breaking crops"
-		set line 3 of lore of {pets::experiencepet2} to "&7and killing mobs."
+		set name of {pets::experiencepet2} to "&a&lLesser Exp Multi Pet"
+		set line 1 of lore of {pets::experiencepet2} to "&7Moderately increases experience"
+		set line 2 of lore of {pets::experiencepet2} to "&7gained from farming crops"
+		set line 3 of lore of {pets::experiencepet2} to "&7and killing mobs"
 		set line 4 of lore of {pets::experiencepet2} to "&7---------------"
 		set line 5 of lore of {pets::experiencepet2} to "&e&lExp Multi &8[&e&l+0.25&8]"
 		set line 6 of lore of {pets::experiencepet2} to "&7---------------"
@@ -367,10 +365,10 @@ command /setpets:
 		set max stack size component of {pets::experiencepet2} to 1
 		set string tag "Croplite:pets" of custom nbt of {pets::experiencepet2} to "experiencepet2"
 		set {pets::experiencepet3} to player head with nbt from "{profile:{id:[I;-1987804023,683099033,-1471895359,-284029718],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODdkODg1YjMyYjBkZDJkNmI3ZjFiNTgyYTM0MTg2ZjhhNTM3M2M0NjU4OWEyNzM0MjMxMzJiNDQ4YjgwMzQ2MiJ9fX0=""}]}}"
-		set name of {pets::experiencepet3} to "&9&lGreater Experience Pet"
-		set line 1 of lore of {pets::experiencepet3} to "&7Significantly increases exp"
-		set line 2 of lore of {pets::experiencepet3} to "&7gain when breaking crops"
-		set line 3 of lore of {pets::experiencepet3} to "&7and killing mobs." 
+		set name of {pets::experiencepet3} to "&9&lGreater Exp Multi Pet"
+		set line 1 of lore of {pets::experiencepet3} to "&7Significantly increases experience"
+		set line 2 of lore of {pets::experiencepet3} to "&7gained from farming crops"
+		set line 3 of lore of {pets::experiencepet3} to "&7and killing mobs"
 		set line 4 of lore of {pets::experiencepet3} to "&7---------------"
 		set line 5 of lore of {pets::experiencepet3} to "&e&lExp Multi &8[&e&l+0.35&8]"
 		set line 6 of lore of {pets::experiencepet3} to "&7---------------"
@@ -381,10 +379,10 @@ command /setpets:
 
 		set {pets::strengthpet1} to player head with nbt from "{profile:{id:[I;1321414112,1693338679,-1972034966,2032730445],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmZiYzdjNmNlNDkyYmMxNjlkYTEzMzM1MzdjMmE3NTVjZTU1NWRkYzJkMzdjYTE1NDI5NmYxOWJiZWExYWQxNiJ9fX0=""}]}}"
 		set name of {pets::strengthpet1} to "&9&lWeak Strength Pet"
-		set line 1 of lore of {pets::strengthpet1} to "&7Slightly increases the"
-		set line 2 of lore of {pets::strengthpet1} to "&7player's damage."
+		set line 1 of lore of {pets::strengthpet1} to "&7Slightly increases"
+		set line 2 of lore of {pets::strengthpet1} to "&7attack damage"
 		set line 3 of lore of {pets::strengthpet1} to "&7---------------"
-		set line 4 of lore of {pets::strengthpet1} to "&4&lDamage &8[&4&l+1&8]"
+		set line 4 of lore of {pets::strengthpet1} to "&4&lAttack Damage &8[&4&l+1&8]"
 		set line 5 of lore of {pets::strengthpet1} to "&7---------------"
 		set line 6 of lore of {pets::strengthpet1} to "&9&lRARE PET"
 		set line 7 of lore of {pets::strengthpet1} to "&7Right Click To Equip"
@@ -392,10 +390,10 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::strengthpet1} to "strengthpet1"
 		set {pets::strengthpet2} to player head with nbt from "{profile:{id:[I;-331820652,1904823548,-1920051838,480209844],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjE3MjM3N2ZmMjAzYjc4M2U3ODk2YjIxNTExOWJlNzA1MzczZTcwMmY0NjZiNzE1YmZlN2FiNTBlZjQyNTYxNCJ9fX0=""}]}}"
 		set name of {pets::strengthpet2} to "&c&lStrong Strength Pet"
-		set line 1 of lore of {pets::strengthpet2} to "&7Moderately increases the"
-		set line 2 of lore of {pets::strengthpet2} to "&7player's damage."
+		set line 1 of lore of {pets::strengthpet2} to "&7Moderately increases"
+		set line 2 of lore of {pets::strengthpet2} to "&7attack damage"
 		set line 3 of lore of {pets::strengthpet2} to "&7---------------"
-		set line 4 of lore of {pets::strengthpet2} to "&4&lDamage &8[&4&l+2&8]"
+		set line 4 of lore of {pets::strengthpet2} to "&4&lAttack Damage &8[&4&l+2&8]"
 		set line 5 of lore of {pets::strengthpet2} to "&7---------------"
 		set line 6 of lore of {pets::strengthpet2} to "&c&lREFINED PET"
 		set line 7 of lore of {pets::strengthpet2} to "&7Right Click To Equip"
@@ -404,8 +402,8 @@ command /setpets:
 
 		set {pets::expanderpet1} to player head with nbt from "{profile:{id:[I;1804696949,1735083680,-1716683629,-1934495154],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZGRhZjhlZGMzMmFmYjQ2MWFlZTA3MTMwNTgwMjMxMDFmOTI0ZTJhN2VmYTg4M2RhZTcyZDVkNTdkNGMwNTNkNyJ9fX0=""}]}}"
 		set name of {pets::expanderpet1} to "&8&lTiny Expander Pet"
-		set line 1 of lore of {pets::expanderpet1} to "&7Slightly expands the"
-		set line 2 of lore of {pets::expanderpet1} to "&7player's crop bag size."
+		set line 1 of lore of {pets::expanderpet1} to "&7Slightly increases"
+		set line 2 of lore of {pets::expanderpet1} to "&7crop bag size"
 		set line 3 of lore of {pets::expanderpet1} to "&7---------------"
 		set line 4 of lore of {pets::expanderpet1} to "&a&lCrop Bag &8[&a&l+500&8]"
 		set line 5 of lore of {pets::expanderpet1} to "&7---------------"
@@ -415,8 +413,8 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::expanderpet1} to "expanderpet1"
 		set {pets::expanderpet2} to player head with nbt from "{profile:{id:[I;-1865738760,-355187999,-1172757398,374987400],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNDBiMWI1MzY3NDkxODM5MWEwN2E5ZDAwNTgyYzA1OGY5MjgwYmM1MjZhNzE2Yzc5NmVlNWVhYjRiZTEwYTc2MCJ9fX0=""}]}}"
 		set name of {pets::expanderpet2} to "&a&lSmall Expander Pet"
-		set line 1 of lore of {pets::expanderpet2} to "&7Moderately expands the"
-		set line 2 of lore of {pets::expanderpet2} to "&7player's crop bag size."
+		set line 1 of lore of {pets::expanderpet2} to "&7Moderately increases"
+		set line 2 of lore of {pets::expanderpet2} to "&7crop bag size"
 		set line 3 of lore of {pets::expanderpet2} to "&7---------------"
 		set line 4 of lore of {pets::expanderpet2} to "&a&lCrop Bag &8[&a&l+1.5k&8]"
 		set line 5 of lore of {pets::expanderpet2} to "&7---------------"
@@ -426,8 +424,8 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::expanderpet2} to "expanderpet2"
 		set {pets::expanderpet3} to player head with nbt from "{profile:{id:[I;-104595003,-2052699552,-1909633784,2079891327],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTBkMWIwNzMyYmY3YTcwZGU0ZGMwMTU1OWNjNWM5ODExMDY4ZWY3YjYwOTUwMTAzODI3MDlmOTQwOTM5MjdmNiJ9fX0=""}]}}"
 		set name of {pets::expanderpet3} to "&9&lMedium Expander Pet"
-		set line 1 of lore of {pets::expanderpet3} to "&7Significantly expands the"
-		set line 2 of lore of {pets::expanderpet3} to "&7player's crop bag size."
+		set line 1 of lore of {pets::expanderpet3} to "&7Significantly increases"
+		set line 2 of lore of {pets::expanderpet3} to "&7crop bag size"
 		set line 3 of lore of {pets::expanderpet3} to "&7---------------"
 		set line 4 of lore of {pets::expanderpet3} to "&a&lCrop Bag &8[&a&l+2.5k&8]"
 		set line 5 of lore of {pets::expanderpet3} to "&7---------------"
@@ -437,8 +435,8 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::expanderpet3} to "expanderpet3"
 		set {pets::expanderpet4} to player head with nbt from "{profile:{id:[I;1162937850,1879723887,-1267568232,-499049394],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWU1ODNjYjc3MTU4MWQzYjI3YjIzZjYxN2M3YjhhNDNkY2Q3MjIwNDQ3ZmY5NWZmMTk2MDQxNGQyMzUwYmRiOSJ9fX0=""}]}}"
 		set name of {pets::expanderpet4} to "&c&lLarge Expander Pet"
-		set line 1 of lore of {pets::expanderpet4} to "&7Greatly expands the"
-		set line 2 of lore of {pets::expanderpet4} to "&7player's crop bag size."
+		set line 1 of lore of {pets::expanderpet4} to "&7Greatly increases"
+		set line 2 of lore of {pets::expanderpet4} to "&7crop bag size"
 		set line 3 of lore of {pets::expanderpet4} to "&7---------------"
 		set line 4 of lore of {pets::expanderpet4} to "&a&lCrop Bag &8[&a&l+5.5k&8]"
 		set line 5 of lore of {pets::expanderpet4} to "&7---------------"
@@ -448,8 +446,8 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::expanderpet4} to "expanderpet4"
 		set {pets::expanderpet5} to player head with nbt from "{profile:{id:[I;-814574281,-1699395768,-1993160043,-1564669232],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODM1ZDdjYzA5ZmZmYmNhM2UxYzAwZDQyMWFmYWE0MzJjZjcxZmNiMDk1NTVmNTQ1MjNlNTIyMGQxYWYwZjk3ZCJ9fX0=""}]}}"
 		set name of {pets::expanderpet5} to "&5&lGiant Expander Pet"
-		set line 1 of lore of {pets::expanderpet5} to "&7Exceptionally expands the"
-		set line 2 of lore of {pets::expanderpet5} to "&7player's crop bag size."
+		set line 1 of lore of {pets::expanderpet5} to "&7Exceptionally increases"
+		set line 2 of lore of {pets::expanderpet5} to "&7crop bag size"
 		set line 3 of lore of {pets::expanderpet5} to "&7---------------"
 		set line 4 of lore of {pets::expanderpet5} to "&a&lCrop Bag &8[&a&l+12.5k&8]"
 		set line 5 of lore of {pets::expanderpet5} to "&7---------------"
@@ -459,24 +457,23 @@ command /setpets:
 		set string tag "Croplite:pets" of custom nbt of {pets::expanderpet5} to "expanderpet5"
 		set {pets::expanderpet6} to player head with nbt from "{profile:{id:[I;1780200479,157369315,-1565115920,-961015289],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2Y4NzUyNWFkODRlZmQxNjgwNmEyNmNhMDE5ODRiMjgwZTViYTY0MDM1MDViNmY2Yzk4MDNjMjQ2NDJhYmZjNyJ9fX0=""}]}}"
 		set name of {pets::expanderpet6} to "&6&lColossal Expander Pet"
-		set line 1 of lore of {pets::expanderpet6} to "&7Provides a massive"
-		set line 2 of lore of {pets::expanderpet6} to "&7expansion to the player's"
-		set line 3 of lore of {pets::expanderpet6} to "&7crop bag size."
-		set line 4 of lore of {pets::expanderpet6} to "&7---------------"
-		set line 5 of lore of {pets::expanderpet6} to "&a&lCrop Bag &8[&a&l+25.0k&8]"
-		set line 6 of lore of {pets::expanderpet6} to "&7---------------"
-		set line 7 of lore of {pets::expanderpet6} to "&6&lLEGENDARY PET"
-		set line 8 of lore of {pets::expanderpet6} to "&7Right Click To Equip"
+		set line 1 of lore of {pets::expanderpet6} to "&7Massively increases"
+		set line 2 of lore of {pets::expanderpet6} to "&7crop bag size"
+		set line 3 of lore of {pets::expanderpet6} to "&7---------------"
+		set line 4 of lore of {pets::expanderpet6} to "&a&lCrop Bag &8[&a&l+25.0k&8]"
+		set line 5 of lore of {pets::expanderpet6} to "&7---------------"
+		set line 6 of lore of {pets::expanderpet6} to "&6&lLEGENDARY PET"
+		set line 7 of lore of {pets::expanderpet6} to "&7Right Click To Equip"
 		set max stack size component of {pets::expanderpet6} to 1
 		set string tag "Croplite:pets" of custom nbt of {pets::expanderpet6} to "expanderpet6"
 
 		set {pets::harvestpet1} to player head with nbt from "{profile:{id:[I;-1494895930,1807108708,-1453636083,1037392591],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjkyOGU0MWI3NTA5ODQ0M2Q1Y2YxZmEyZDY5NTFlYmVlNjIzMGE0NjlhNjM3YjBlZmMwNjJiMzMxOWRlOGE0MSJ9fX0=""}]}}"
 		set name of {pets::harvestpet1} to "&8&lNovice Harvest Pet"
 		set line 1 of lore of {pets::harvestpet1} to "&7Slightly increases the"
-		set line 2 of lore of {pets::harvestpet1} to "&7player's chance of"
-		set line 3 of lore of {pets::harvestpet1} to "&7farming up double crops."
+		set line 2 of lore of {pets::harvestpet1} to "&7chance of farming"
+		set line 3 of lore of {pets::harvestpet1} to "&7double crops"
 		set line 4 of lore of {pets::harvestpet1} to "&7---------------"
-		set line 5 of lore of {pets::harvestpet1} to "&a&lDouble Crop Chance &8[&a&l0.05%%&8]"
+		set line 5 of lore of {pets::harvestpet1} to "&a&lDouble Crop Chance &8[&a&l5%%&8]"
 		set line 6 of lore of {pets::harvestpet1} to "&7---------------"
 		set line 7 of lore of {pets::harvestpet1} to "&8&lCOMMON PET"
 		set line 8 of lore of {pets::harvestpet1} to "&7Right Click To Equip"
@@ -485,10 +482,10 @@ command /setpets:
 		set {pets::harvestpet2} to player head with nbt from "{profile:{id:[I;-2118952297,598100989,-2041959486,415798577],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzBlM2YwMjgyNTQ1NTcxODQ5ZjAwZWI1MTE3NmNlNjJkOWZjYzE2Y2RlZGQ4OWMzNThlMWQ2NGRiMTFiNjQ1OSJ9fX0=""}]}}"
 		set name of {pets::harvestpet2} to "&a&lImproved Harvest Pet"
 		set line 1 of lore of {pets::harvestpet2} to "&7Moderately increases the"
-		set line 2 of lore of {pets::harvestpet2} to "&7player's chance of"
-		set line 3 of lore of {pets::harvestpet2} to "&7farming up double crops."
+		set line 2 of lore of {pets::harvestpet2} to "&7chance of farming"
+		set line 3 of lore of {pets::harvestpet2} to "&7double crops"
 		set line 4 of lore of {pets::harvestpet2} to "&7---------------"
-		set line 5 of lore of {pets::harvestpet2} to "&a&lDouble Crop Chance &8[&a&l0.10%%&8]"
+		set line 5 of lore of {pets::harvestpet2} to "&a&lDouble Crop Chance &8[&a&l10%%&8]"
 		set line 6 of lore of {pets::harvestpet2} to "&7---------------"
 		set line 7 of lore of {pets::harvestpet2} to "&a&lUNCOMMON PET"
 		set line 8 of lore of {pets::harvestpet2} to "&7Right Click To Equip"
@@ -497,10 +494,10 @@ command /setpets:
 		set {pets::harvestpet3} to player head with nbt from "{profile:{id:[I;1044886480,-924561962,-1599834649,-167553078],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2NhNjk1M2MyZGJkOWYwZDBjMGNlYmI3YzE2OTdlOGM0YmY2ZjBhZWYwMjMxYjU0MTAxZjE1OGY0YjJjOGFkZiJ9fX0=""}]}}"
 		set name of {pets::harvestpet3} to "&9&lArtisan Harvest Pet"
 		set line 1 of lore of {pets::harvestpet3} to "&7Significantly increases the"
-		set line 2 of lore of {pets::harvestpet3} to "&7player's chance of"
-		set line 3 of lore of {pets::harvestpet3} to "&7farming up double crops."
+		set line 2 of lore of {pets::harvestpet3} to "&7chance of farming"
+		set line 3 of lore of {pets::harvestpet3} to "&7double crops"
 		set line 4 of lore of {pets::harvestpet3} to "&7---------------"
-		set line 5 of lore of {pets::harvestpet3} to "&a&lDouble Crop Chance &8[&a&l0.15%%&8]"
+		set line 5 of lore of {pets::harvestpet3} to "&a&lDouble Crop Chance &8[&a&l15%%&8]"
 		set line 6 of lore of {pets::harvestpet3} to "&7---------------"
 		set line 7 of lore of {pets::harvestpet3} to "&9&lRARE PET"
 		set line 8 of lore of {pets::harvestpet3} to "&7Right Click To Equip"
@@ -509,10 +506,10 @@ command /setpets:
 		set {pets::harvestpet4} to player head with nbt from "{profile:{id:[I;1365236383,-437629787,-1920280142,1276190211],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDRlZjI3YjI1MTc3ZDAyNGQ5Y2YwZjY2N2UzNTYyNWQwNGI0ODg4OTczNjI3NTI3NWZkZjNjMjgyZmQzNzU3NyJ9fX0=""}]}}"
 		set name of {pets::harvestpet4} to "&c&lMaster Harvest Pet"
 		set line 1 of lore of {pets::harvestpet4} to "&7Greatly increases the"
-		set line 2 of lore of {pets::harvestpet4} to "&7player's chance of"
-		set line 3 of lore of {pets::harvestpet4} to "&7farming up double crops."
+		set line 2 of lore of {pets::harvestpet4} to "&7chance of farming"
+		set line 3 of lore of {pets::harvestpet4} to "&7double crops"
 		set line 4 of lore of {pets::harvestpet4} to "&7---------------"
-		set line 5 of lore of {pets::harvestpet4} to "&a&lDouble Crop Chance &8[&a&l0.25%%&8]"
+		set line 5 of lore of {pets::harvestpet4} to "&a&lDouble Crop Chance &8[&a&l25%%&8]"
 		set line 6 of lore of {pets::harvestpet4} to "&7---------------"
 		set line 7 of lore of {pets::harvestpet4} to "&c&lREFINED PET"
 		set line 8 of lore of {pets::harvestpet4} to "&7Right Click To Equip"
@@ -521,10 +518,10 @@ command /setpets:
 		set {pets::harvestpet5} to player head with nbt from "{profile:{id:[I;-237658145,350374780,-1703904316,1915057958],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTJhM2U2YzBjMjY4MTY0NDQ2MGYyNTJiODI0OTlhZWVlYWRiMzIwY2IwNmJmMWNmYmNiN2IzOWM2OWMyMTEzYyJ9fX0=""}]}}"	
 		set name of {pets::harvestpet5} to "&5&lGrand Harvest Pet"
 		set line 1 of lore of {pets::harvestpet5} to "&7Exceptionally increases the"
-		set line 2 of lore of {pets::harvestpet5} to "&7player's chance of"
-		set line 3 of lore of {pets::harvestpet5} to "&7farming up double crops."
+		set line 2 of lore of {pets::harvestpet5} to "&7chance of farming"
+		set line 3 of lore of {pets::harvestpet5} to "&7double crops"
 		set line 4 of lore of {pets::harvestpet5} to "&7---------------"
-		set line 5 of lore of {pets::harvestpet5} to "&a&lDouble Crop Chance &8[&a&l0.35%%&8]"
+		set line 5 of lore of {pets::harvestpet5} to "&a&lDouble Crop Chance &8[&a&l35%%&8]"
 		set line 6 of lore of {pets::harvestpet5} to "&7---------------"
 		set line 7 of lore of {pets::harvestpet5} to "&5&lEPIC PET"
 		set line 8 of lore of {pets::harvestpet5} to "&7Right Click To Equip"
@@ -533,8 +530,8 @@ command /setpets:
 
 		set {pets::anti-gravitypet1} to player head with nbt from "{profile:{id:[I;-145706933,1177175665,-1254809007,1232731228],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmI5YzQ5ZmZkZjRjZTRjNmY1ZjA0OWVmYzhjYTBlMDhiOWI1YmJmM2M2YTg3ODNkZmFhY2NhZDc3ZGZjOTk3YSJ9fX0=""}]}}"
 		set name of {pets::anti-gravitypet1} to "&9&lAnti-Gravity Pet"
-		set line 1 of lore of {pets::anti-gravitypet1} to "&7Increases the player's"
-		set line 2 of lore of {pets::anti-gravitypet1} to "&7speed and jump height."
+		set line 1 of lore of {pets::anti-gravitypet1} to "&7Moderately increases movement"
+		set line 2 of lore of {pets::anti-gravitypet1} to "&7speed and jump height"
 		set line 3 of lore of {pets::anti-gravitypet1} to "&7---------------"
 		set line 4 of lore of {pets::anti-gravitypet1} to "&f&lSpeed &8[&f&l+0.15&8]"
 		set line 5 of lore of {pets::anti-gravitypet1} to "&a&lJump Power &8[&a&l+2&8] "
@@ -547,22 +544,26 @@ command /setpets:
 		set {pets::wheatfishpet1} to player head with nbt from "{profile:{id:[I;1851070027,96682664,-1298124440,-1624262901],properties:[{name:""textures"",value:""eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWY1ODM1YzliZWQ5Yzc0MjAwNzhlNDViYjE0YzkzZDViM2ZkOGIzMWRjYjljODdmMzlhZDU1NDI5YTcyNmQyOSJ9fX0=""}]}}"
 		set name of {pets::wheatfishpet1} to "&a&lWheat Fish Pet"
 		set line 1 of lore of {pets::wheatfishpet1} to "&7Provides a small bonus"
-		set line 2 of lore of {pets::wheatfishpet1} to "&7to experience gain."
-		set line 3 of lore of {pets::wheatfishpet1} to "&7---------------"
-		set line 4 of lore of {pets::wheatfishpet1} to "&e&lExp Multi &8[&e&l+0.05&8]"
+		set line 2 of lore of {pets::wheatfishpet1} to "&7to experience gained"
+		set line 3 of lore of {pets::wheatfishpet1} to "&7from farming and"
+		set line 4 of lore of {pets::wheatfishpet1} to "&7killing mobs"
 		set line 5 of lore of {pets::wheatfishpet1} to "&7---------------"
-		set line 6 of lore of {pets::wheatfishpet1} to "&a&lUNCOMMON PET"
-		set line 7 of lore of {pets::wheatfishpet1} to "&7Right Click To Equip"
+		set line 6 of lore of {pets::wheatfishpet1} to "&e&lExp Multi &8[&e&l+0.05&8]"
+		set line 7 of lore of {pets::wheatfishpet1} to "&7---------------"
+		set line 8 of lore of {pets::wheatfishpet1} to "&a&lUNCOMMON PET"
+		set line 9 of lore of {pets::wheatfishpet1} to "&7Right Click To Equip"
 		set max stack size component of {pets::wheatfishpet1} to 1
 		set string tag "Croplite:pets" of custom nbt of {pets::wheatfishpet1} to "wheatfishpet1"
 
 		send "pets have been set" to player
 
 command /set-pettoken:
+	permission: operator
 	trigger:
 		set {pet-token} to honeycomb named "&6&lPet Token"
 		set line 1 of lore of {pet-token} to "&7Currency used to"
-		set line 2 of lore of {pet-token} to "&7purchase pets."
+		set line 2 of lore of {pet-token} to "&7purchase pets"
+		set line 3 of lore of {pet-token} to "&7at Percy."
 		set string tag "Croplite:pet-token" of custom nbt of {pet-token} to "pet-token"
 		make {pet-token} glint
 

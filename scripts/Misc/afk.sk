@@ -1,0 +1,65 @@
+on enter of region "cropliteafk":
+    if {in-combat::%player's uuid%} = 0:
+        set {afk::%player's uuid%} to true
+        set {afk-timer::%player's uuid%} to 300
+        set {afk-bar::%player's uuid%} to boss bar with title "afkbar"
+        set bar title of {afk-bar::%player's uuid%} to "&b&lAFK &8[&b&l5:00&8]"
+        set bar color of {afk-bar::%player's uuid%} to green
+        set bar style of {afk-bar::%player's uuid%} to solid_bar
+        set bar progress of {afk-bar::%player's uuid%} to 0
+        add player to {afk-bar::%player's uuid%}
+        send "&b&lAFK &aJoined the afk pool." to player
+
+on exit of region "cropliteafk":
+    set {afk::%player's uuid%} to false
+    delete {afk-timer::%player's uuid%}
+    remove player from {afk-bar::%player's uuid%}
+    set bar progress of {afk-bar::%player's uuid%} to 0
+    send "&b&lAFK &cExited the afk pool." to player
+
+on join:
+    if "%region at player%" contains "cropliteafk":
+        set {afk::%player's uuid%} to true
+        set {afk-timer::%player's uuid%} to 300
+        set {afk-bar::%player's uuid%} to boss bar with title "afkbar"
+        set bar title of {afk-bar::%player's uuid%} to "&b&lAFK &8[&b&l5:00&8]"
+        set bar style of {afk-bar::%player's uuid%} to solid_bar
+        set bar progress of {afk-bar::%player's uuid%} to 0
+        add player to {afk-bar::%player's uuid%}
+        send "&b&lAFK &aJoined the afk pool." to player
+
+on quit:
+    if {afk::%player's uuid%} is true:
+        set {afk::%player's uuid%} to false
+        delete {afk-timer::%player's uuid%}
+        remove player from {afk-bar::%player's uuid%}
+        set bar progress of {afk-bar::%player's uuid%} to 0
+
+every second:
+    loop all players:
+        if {afk::%loop-player's uuid%} is true:
+            if {afk-timer::%loop-player's uuid%} = 0:
+                afkRewards(loop-player)
+                set {afk-timer::%loop-player's uuid%} to 300
+                set bar title of {afk-bar::%loop-player's uuid%} to "&b&lAFK &8[&b&l5:00&8]"
+                set bar progress of {afk-bar::%loop-player's uuid%} to 0
+                stop
+            subtract 1 from {afk-timer::%loop-player's uuid%}
+            set bar title of {afk-bar::%loop-player's uuid%} to "&b&lAFK &8[&b&l%secondsToMinutes({afk-timer::%loop-player's uuid%})%&8]"
+
+            set bar progress of {afk-bar::%loop-player's uuid%} to (300 - {afk-timer::%loop-player's uuid%}) / 3
+
+local function secondsToMinutes(seconds: integer):: string:
+    set {_minutes} to floor({_seconds} / 60)
+    set {_seconds} to mod({_seconds}, 60)
+    if {_seconds} < 10:
+        set {_seconds_str} to "0%{_seconds}%"
+    else:
+        set {_seconds_str} to "%{_seconds}%"
+    return "%{_minutes}%:%{_seconds_str}%"
+
+local function afkRewards(p: player):
+    execute console command "/crate giveKey afk %{_p}%"
+
+    send "&b&lAFK &aSuccessfully awarded AFK reward." to {_p}
+    play sound "entity.experience_orb.pickup" to {_p}

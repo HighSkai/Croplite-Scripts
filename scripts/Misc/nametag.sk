@@ -1,13 +1,12 @@
 on join:
-    set join message to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%&r has joined."
+    set join message to "&8[&a&l+&8] &a%player's name%"
 on quit:
-    set quit message to "&8[&9&l%{level::%player's uuid%}%&8]%colored {prefix::%player's uuid%}% %colored player's name%&r has left."
+    set quit message to "&8[&c&l-&8] &c%player's name%"
 on death of player:
-    if attacker is a player:
-        set {_messages::*} to "&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r was brutally &4&l&nslain&f by %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r was rolled by %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r was brutally slain by %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r met their demise at the hands of %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r was no match for %attacker%.","&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r got taken down by %attacker%."
-        set death message to random element out of {_messages::*}
+    if {in-combat::%victim's uuid%} > 0:
+        set death message to "&8[&4☠&8] &4%victim's name%&r has combat logged, L."
     else:
-        set death message to "&8[&9&l%{level::%victim's uuid%}%&8]%colored {prefix::%victim's uuid%}% %colored victim's name%&r has died."
+        set death message to "&8[&4☠&8] &4%victim's name%&r"
 
 on respawn:
     extinguish player

@@ -1,6 +1,6 @@
 command /rules:
     trigger:
-        send "&d&lCroplite &a&lRules." to player
+        send "&d&lCROPLITE &a&lRules." to player
         send "&a1. Be cool, kind, and respectful to one another" to player
         send "&a2. Do not spam" to player
         send "&a3. Don't bother/ping staff unless they give permission to do so" to player

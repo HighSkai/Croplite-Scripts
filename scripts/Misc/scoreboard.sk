@@ -3,28 +3,33 @@ on join:
     updateTablistHeaderandFooter(player)
 
 local function updateTablistHeaderandFooter(p: player):
-    set {_p}'s tab list header to "Thanks for playing &d&lCroplite&f!&r%nl%&8&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&r%nl%Online: &8[&a%player count%&8/&a%max players%&8]%nl%"
-    set {_p}'s tab list footer to "%nl%Are you enjoying &d&lCroplite&f?&r%nl%Consider checking out our store%nl%&c&ncroplite.craftingstore.net"
+    loop all players:
+        set {_staff} to 0
+        if {ranknumber::%loop-player's uuid%} is 999:
+            add 1 to {_staff}
+    set {_p}'s tab list header to "Thanks for playing &d&lCROPLITE&f!&r%nl%&8&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&r%nl%&dStaff Online: &8[&a%{_staff}%&8]%nl%&fOnline: &8[&a%player count%&8/&a%max players%&8]%nl%"
+    set {_p}'s tab list footer to "%nl%Are you enjoying &d&lCROPLITE&f?&r%nl%Consider checking out our store!%nl%&c&ncroplite.craftingstore.net"
 
 function updateScoreboard(p: player):
     clear fastboard of {_p}
     set title of {_p}'s fastboard to "&d&lCROPLITE"
-    set line 1 of {_p}'s fastboard to "&8&m&l━━━━━━━━━━━━━━━━━━━━"
+    set line 1 of {_p}'s fastboard to "&8&m&l━━━━━━━━━━━━━━━━━━━"
     set line 2 of {_p}'s fastboard to "&8| &9&lLevel &8[&9&l%{level::%uuid of {_p}%}%&8]"
     set line 3 of {_p}'s fastboard to "&8| &6&lExp &8[&6&l%abbreviateNumber({exp::%uuid of {_p}%})%&8/&6&l%abbreviateNumber({expreq::%uuid of {_p}%})%&8]"
     set line 4 of {_p}'s fastboard to "&8| &e&lExp Multi &8[&e&lx%{expmulti::%uuid of {_p}%}%&8]"
     set line 5 of {_p}'s fastboard to "&8|"
     set line 6 of {_p}'s fastboard to "&8| &2&lCrops &8[&2&l%abbreviateNumber({crops::%uuid of {_p}%})%&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8]"
-    set line 7 of {_p}'s fastboard to "&8| &5&lCrop Cash &8[&5&l%abbreviateNumber({cropcash::%uuid of {_p}%})%&8]"
-    set line 8 of {_p}'s fastboard to "&8|"
-    set line 9 of {_p}'s fastboard to "&8| &f&lSpeed &8[&f&lx%{_p}'s walk speed + 0.8%&8]"
-    set line 15 of {_p}'s fastboard to "&8&m&l━━━━━━━━━━━━━━━━━━━━"
+    set line 7 of {_p}'s fastboard to "&8| &b&lCrop Multi &8[&b&lx%{cropmulti::%uuid of {_p}%}%&8]"
+    set line 8 of {_p}'s fastboard to "&8| &5&lCrop Cash &8[&5&l%abbreviateNumber({cropcash::%uuid of {_p}%})%&8]"
+    set line 9 of {_p}'s fastboard to "&8|"
+    set line 10 of {_p}'s fastboard to "&8| &f&lSpeed &8[&f&lx%{_p}'s walk speed * 5%&8]"
+    set line 15 of {_p}'s fastboard to "&8&m&l━━━━━━━━━━━━━━━━━━━"
     if "%{objective::%uuid of {_p}%}%" is not equal to "objectivenone":
-        set line 10 of {_p}'s fastboard to "&8&m&l━━━━━━━━━━━━━━━━━━━━"
+        set line 10 of {_p}'s fastboard to "&8&m&l━━━━━━━━━━━━━━━━━━━"
         set line 11 of {_p}'s fastboard to "&8| &2&lObjective &5%{objective::%uuid of {_p}%}%"
         set line 12 of {_p}'s fastboard to "&8| &e&l%{objdesc::%uuid of {_p}%}%"
         set line 13 of {_p}'s fastboard to "&8|"
-        set line 14 of {_p}'s fastboard to "&8| &f&lProgress &8[&f%{objprogress::%uuid of {_p}%}%&8/&f%{objprogressreq::%uuid of {_p}%}%&8]"
+        set line 14 of {_p}'s fastboard to "&8| &f&lProgress &8[&f%{objprogress::%uuid of {_p}%}%&8/&f%{objprogressreq::%uuid of {_p}%}%&8]" 
     else:
         delete line 10 of {_p}'s fastboard
         delete line 11 of {_p}'s fastboard
@@ -44,21 +49,22 @@ function updateExpMultiplier(p: player):
 function updateCrops(p: player):
     set line 6 of {_p}'s fastboard to "&8| &2&lCrops &8[&2&l%abbreviateNumber({crops::%uuid of {_p}%})%&8/&2&l%abbreviateNumber({cropbag::%uuid of {_p}%})%&8]"
 
+function updateCropMulti(p: player):
+    set line 7 of {_p}'s fastboard to "&8| &b&lCrop Multi &8[&b&lx%{cropmulti::%uuid of {_p}%}%&8]"
+
 function updateCropCash(p: player):
-    set line 7 of {_p}'s fastboard to "&8| &5&lCrop Cash &8[&5&l%abbreviateNumber({cropcash::%uuid of {_p}%})%&8]"
+    set line 8 of {_p}'s fastboard to "&8| &5&lCrop Cash &8[&5&l%abbreviateNumber({cropcash::%uuid of {_p}%})%&8]"
 
 function updateSpeed(p: player):
-    set line 9 of {_p}'s fastboard to "&8| &f&lSpeed &8[&f&lx%{_p}'s walk speed * 5%&8]"
+    set line 10 of {_p}'s fastboard to "&8| &f&lSpeed &8[&f&lx%{_p}'s walk speed * 5%&8]"
 
 function updateObjective(p: player):
     if "%{objective::%uuid of {_p}%}%" is not equal to "objectivenone":
-        set line 10 of {_p}'s fastboard to "&8&m&l━━━━━━━━━━━━━━━━━━━━"
         set line 11 of {_p}'s fastboard to "&8| &2&lObjective &5%{objective::%uuid of {_p}%}%"
         set line 12 of {_p}'s fastboard to "&8| &e&l%{objdesc::%uuid of {_p}%}%"
         set line 13 of {_p}'s fastboard to "&8|"
         set line 14 of {_p}'s fastboard to "&8| &f&lProgress &8[&f%{objprogress::%uuid of {_p}%}%&8/&f%{objprogressreq::%uuid of {_p}%}%&8]"
     else:
-        delete line 10 of {_p}'s fastboard
         delete line 11 of {_p}'s fastboard
         delete line 12 of {_p}'s fastboard
         delete line 13 of {_p}'s fastboard
@@ -71,6 +77,7 @@ every tick:
         updateExp(loop-value)
         updateExpMultiplier(loop-value)
         updateCrops(loop-value) 
+        updateCropMulti(loop-value)
         updateCropCash(loop-value)  
         updateSpeed(loop-value)
         updateObjective(loop-value)

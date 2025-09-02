@@ -1,0 +1,122 @@
+on right click:
+    if name of clicked entity is "&b&lPaul":
+        if {npc::talking::Paul::%player's uuid%} is set:
+            stop
+        else:
+            set {npc::talking::Paul::%player's uuid%} to true
+            if {chatmessage::Paul::%player's uuid%} is not set:
+                set {chatmessage::Paul::%player's uuid%} to 0
+            if {chatmessage::Paul::%player's uuid%} = 0:
+                if {objective::%player's uuid%} is "objectivenone":
+                    play sound "entity.polar_bear.ambient" to player
+                    send "&b&lPaul&r&f Ah! It is way too hot around here for my taste.%nl%" to player
+                    wait 2.5 seconds
+                    play sound "entity.polar_bear.ambient" to player
+                    send "&b&lPaul&r&f You might be wondering what a polar bear is doing in the desert. Long story short: I got lost.%nl%" to player
+                    wait 4.5 seconds
+                    play sound "entity.polar_bear.ambient" to player
+                    send "&b&lPaul&r&f If you could help me find my way home, like I don't know, an &bIce Portal&f or something...%nl%" to player
+                    wait 4 seconds
+                    play sound "entity.polar_bear.ambient" to player
+                    send "&b&lPaul&r&f It could be a 'I help you, you help me' sorta thing, ya know?%nl%" to player
+                    wait 3 seconds
+                    set {paul::alreadyclicked::%player's uuid%} to false
+                    startPaulQuest(player)
+
+                    # OBJECTIVE NAME: Polar Passage
+
+
+
+                else:
+                    send "&b&lPaul&r&f Please complete your current objective before starting a new one!" to player
+
+            else if {chatmessage::Paul::%player's uuid%} = 1:
+                if {objective::%player's uuid%} is "Polar Passage":
+                    if {objcomplete::%player's uuid%} is true:
+                        play sound "entity.polar_bear.ambient" to player
+                        send "&b&lPaul&r&f You found it!%nl%" to player
+                        wait 2.5 seconds
+                        play sound "entity.polar_bear.ambient" to player
+                        send "&b&lPaul&r&f Just gonna finish up my tan then head right back home, thanks farmer!%nl%" to player
+                        play sound "entity.player.levelup" to player
+                        wait 3.5 seconds
+                        send "&8[&2&lObjective &nComplete!&8]" to player
+                        send "&7------------------------------" to player
+                        send "&8[&2Objective Rewards&8]" to player
+                        send "&8 - &6&l2x Pet Crate Key" to player
+                        send "&8 - &675,000 Experience" to player
+                        send "&8 - &650,000 Crop Cash" to player
+                        send "&8 - &e3 Enchant Points" to player
+                        send "&7------------------------------" to player
+                        execute console command "/crate key give %player% pet 1"
+                        add 75000 to {exp::%player's uuid%}
+                        add 50000 to {cropcash::%player's uuid%}
+                        add 3 to {enchant-points::%player's uuid%}
+                        set {objective::%player's uuid%} to "objectivenone"
+                        set {objprogressreq::%player's uuid%} to 0
+                        set {objprogress::%player's uuid%} to 0
+                        set {objdesc::%player's uuid%} to " "
+                        set {objcomplete::%player's uuid%} to false
+                        updateObjective(player)
+                        levelUp(player)
+                        give player 1 blaze rod named "&cFlawless Fishing Pole"
+                        add 1 to {chatmessage::Paul::%player's uuid%}
+                    else:
+                        send "&b&lPaul&r&f Why are you here if you haven't found the &bIce Portal&f? Were my instructions really that complicated?%nl%" to player
+
+            else:
+                send "&b&lPaul&r&f Sorry boss, don't have anything for you right now." to player
+
+        wait 1 second
+        delete {npc::talking::Paul::%player's uuid%}
+
+function startPaulQuest(p: player):
+    set {_text} to a new text component from "&b&lPaul&f &aDo you accept the objective?"
+
+    set {_yespaul} to a new text component from "&8[&a&lYES&8]"
+    set {_nopaul} to a new text component from "&8[&c&lNO&8]"
+
+    create a callback for {_yespaul}:
+        if {paul::alreadyclicked::%uuid of {_p}%} is false:
+            yespaul({_p})
+
+    create a callback for {_nopaul}:
+        if {paul::alreadyclicked::%uuid of {_p}%} is false:
+            nopaul({_p})
+
+    send components (merge components {_text} and {_yespaul} and {_nopaul} with " ") to {_p}
+
+
+function yespaul(p: player):
+    set {paul::alreadyclicked::%uuid of {_p}%} to true
+    send "&b&lPaul&r&f You the man, man! Or woman or... whoever you are!%nl%" to {_p}
+    wait 2 seconds
+    send "&7------------------------------" to {_p}
+    send "&8[&2&lObjective&r&8] &5Polar Passage: &r&eFind the%nl% &bIce Portal" to {_p}
+    send "&7------------------------------" to {_p}
+    play sound "block.amethyst_block.resonate" to {_p}
+    set {objective::%uuid of {_p}%} to "Polar Passage"
+    set {objprogressreq::%uuid of {_p}%} to 1
+    set {objdesc::%uuid of {_p}%} to "Find the Ice Portal"
+    add 1 to {chatmessage::Paul::%uuid of {_p}%}
+    
+function nopaul(p: player):     
+    set {paul::alreadyclicked::%uuid of {_p}%} to true
+    send "&b&lPaul&r&f Awesome, guess I'll just stay lost then.%nl%" to {_p}
+
+on enter of region "toice":
+    wait 1 tick
+    teleport player to location(1849.5, -61, 1422.5, world "world", 90, 0)
+    if {objective::%player's uuid%} is "Polar Passage":
+        if {objcomplete::%player's uuid%} is false:
+            play sound "ui.toast.challenge_complete" to player
+            send title "&2Objective &l&nComplete!" with subtitle "&eReturn to Paul" to player for 4 seconds
+            send "&7------------------------------" to player
+            send "&8[&2Objective &l&nComplete!&8]" to player
+            send "&7------------------------------" to player
+            add 1 to {objprogress::%player's uuid%}
+            set {objcomplete::%player's uuid%} to true
+
+on enter of region "todesert":
+    wait 1 tick
+    teleport player to location(226.5, 98, 1037.5, world "world", -36.5, 0)

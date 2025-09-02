@@ -1,20 +1,26 @@
 on right click:
 	if name of clicked entity is "&d&lCarlo":
-		if {chatmessage::Carlo::%player's uuid%} is not set:
-			set {chatmessage::Carlo::%player's uuid%} to 0
-		if {chatmessage::Carlo::%player's uuid%} = 0:
-			add 1 to {chatmessage::Carlo::%player's uuid%}
-			add 1 to {chatmessage::Mackerel::%player's uuid%}
-			set {objprogress::%player's uuid%} to 1
-			send "&7[&dCarlo&7]&f: Mrrrow?" to player
-			wait 2 seconds
-			play sound "ui.toast.challenge_complete" to player
-			send title "&2Objective &l&nComplete!" with subtitle "&eReturn to the Fisherman" to player for 4 seconds
-			send "&7------------------------------" to player
-			send "&8[&2Objective &l&nComplete!&8]" to player
-			send "&7------------------------------" to player
+		if {npc::talking::Carlo::%player's uuid%} is set:
+			stop
 		else:
-			send "&7[&dCarlo&7]&f: Meoww!" to player
+			set {npc::talking::Carlo::%player's uuid%} to true
+			if {objective::%player's uuid%} is "Cat Catcher":
+				{objcomplete::%player's uuid%} is false
+				add 1 to {chatmessage::Mackerel::%player's uuid%}
+				set {objprogress::%player's uuid%} to 1
+				send "&7[&dCarlo&7]&f: Mrrrow?" to player
+				wait 2 seconds
+				play sound "ui.toast.challenge_complete" to player
+				send title "&2Objective &l&nComplete!" with subtitle "&eReturn to the Fisherman" to player for 4 seconds
+				send "&7------------------------------" to player
+				send "&8[&2Objective &l&nComplete!&8]" to player
+				send "&7------------------------------" to player
+				set {objcomplete::%player's uuid%} to true
+			else:
+				send "&7[&dCarlo&7]&f: Meoww!" to player
+
+		wait 1 second
+		delete {npc::talking::Carlo::%player's uuid%}
 		
 command /resetcarlomessage:
 	permission: operator

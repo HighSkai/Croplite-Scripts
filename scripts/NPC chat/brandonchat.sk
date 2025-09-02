@@ -1,0 +1,97 @@
+on right click:
+    if name of clicked entity is "&6&lBrandon":
+        if {npc::talking::Brandon::%player's uuid%} is set:
+            stop
+        else:
+            set {npc::talking::Brandon::%player's uuid%} to true
+            if {chatmessage::Brandon::%player's uuid%} is not set:
+                set {chatmessage::Brandon::%player's uuid%} to 0
+            if {bran::alreadyclicked::%player's uuid%} is not set:
+                set {bran::alreadyclicked::%player's uuid%} to false
+            if {chatmessage::Brandon::%player's uuid%} = 0:
+                if {objective::%player's uuid%} is "objectivenone":
+                    play sound "entity.bee.hurt" to player
+                    send "&6&lBrandon &fOh hey, are you new here?%nl%" to player
+                    wait 2 seconds
+                    play sound "entity.bee.hurt" to player
+                    send "&6&lBrandon &fI'm &6&lBrandon&r&f, welcome to &2&lFarm 2&r&f! Always nice to see a new face.%nl%" to player
+                    wait 3 seconds
+                    play sound "entity.bee.hurt" to player
+                    send "&6&lBrandon &fListen, it's getting colder these days, I'm worried Demeter's power is waning.%nl%" to player
+                    wait 4 seconds
+                    play sound "entity.bee.hurt" to player
+                    send "&6&lBrandon &fWhatever the case, I need to gain some mass. With my build now I'll freeze in a few mins.%nl%" to player
+                    wait 4 seconds
+                    play sound "entity.bee.hurt" to player
+                    send "&6&lBrandon &fCould you collect pollen for me?%nl%" to player
+                    wait 3 seconds
+                    set {bran::alreadyclicked::%player's uuid%} to false
+                    startBrandonQuest(player)
+                else:
+                    send "&6&lBrandon &fPlease complete your current objective before asking for a new one!%nl%" to player
+
+            else if {chatmessage::Brandon::%player's uuid%} = 1:
+                send "&6&lBrandon &fBee-utiful farmer! You have a good rest of your day now, toodles!%nl%" to player
+                wait 3 seconds
+                play sound "entity.player.levelup" to player
+                send "&8[&2&lObjective &nComplete!&8]" to player
+                send "&7------------------------------" to player
+                send "&8[&2Objective Rewards&8]" to player
+                send "&8 - &6&l2x Pet Crate Key" to player
+                send "&8 - &620000 Experience" to player
+                send "&8 - &612000 Crop Cash" to player
+                send "&8 - &e1 Enchant Point" to player
+                send "&7------------------------------" to player
+                execute console command "/crate key give %player% pet 1"
+                add 20000 to {exp::%player's uuid%}
+                add 12000 to {cropcash::%player's uuid%}
+                add 1 to {enchant-points::%player's uuid%}
+                set {objective::%player's uuid%} to "objectivenone"
+                set {objprogressreq::%player's uuid%} to 0
+                set {objprogress::%player's uuid%} to 0
+                set {objdesc::%player's uuid%} to " "
+                set {objcomplete::%player's uuid%} to false
+                updateObjective(player)
+                levelUp(player)
+                add 1 to {chatmessage::Brandon::%player's uuid%}
+            else:
+                send "&6&lBrandon &fNot so chilly out anymore, huh!%nl%" to player
+
+
+
+            wait 1 second
+            delete {npc::talking::Brandon::%player's uuid%}
+
+function startBrandonQuest(p: player):
+    set {_text} to a new text component from "&6&lBrandon&f &aDo you accept the objective?"
+
+    set {_yesbran} to a new text component from "&8[&a&lYES&8]"
+    set {_nobran} to a new text component from "&8[&c&lNO&8]"
+
+    create a callback for {_yesbran}:
+        if {bran::alreadyclicked::%uuid of {_p}%} is false:
+            yesbran({_p})
+
+    create a callback for {_nobran}:
+        if {bran::alreadyclicked::%uuid of {_p}%} is false:
+            nobran({_p})
+
+    send components (merge components {_text} and {_yesbran} and {_nobran} with " ") to {_p}
+
+
+function yesbran(p: player):
+    set {bran::alreadyclicked::%uuid of {_p}%} to true
+    send "&6&lBrandon&r&f I knew it! Thank you, I'll see to your reward right away!%nl%" to {_p}
+    wait 2 seconds
+    send "&7------------------------------" to {_p}
+    send "&8[&2&lObjective&r&8] &5Bee Bulk: &r&eCollect%nl% 1000 tulips" to {_p}
+    send "&7------------------------------" to {_p}
+    play sound "block.amethyst_block.resonate" to {_p}
+    set {objective::%uuid of {_p}%} to "Bee Bulk"
+    set {objprogressreq::%uuid of {_p}%} to 1000
+    set {objdesc::%uuid of {_p}%} to "Collect 1000 tulips"
+    add 1 to {chatmessage::Brandon::%uuid of {_p}%}
+    
+function nobran(p: player):     
+    set {bran::alreadyclicked::%uuid of {_p}%} to true
+    send "&6&lBrandon&r&f Totally fine! That was sarcasm by the way.%nl%" to {_p}
