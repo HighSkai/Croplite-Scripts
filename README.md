@@ -1,1 +1,1 @@
-trash server 
+yay croplite
