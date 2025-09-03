@@ -11,6 +11,51 @@ function loadStoreGui(p: player):
 		hide {_item}'s tooltip
 		set slot (loop-number - 1) of {_gui} to {_item}
 
+	set slot 10 of {_gui} to nether star named "&8[&c&lRanks&8]"
+
+	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+     
+	open {_gui} to {_p}
+
+function loadRanksGui(p: player):
+	set {_gui} to chest inventory with 3 rows named "&c&lRanks"
+
+	loop 27 times:
+		set {_item} to red stained glass pane #quartz, topaz, ruby, sapphire, amethyst
+		hide {_item}'s tooltip
+		set slot (loop-number - 1) of {_gui} to {_item}
+
+	set {_quartz} to stone named "&8[%{quartz-Prefix}%&8]"
+	set line 1 of lore of {_quartz} to "&7---------------"
+	set line 2 of lore of {_quartz} to "&f&lCommands"
+	set line 3 of lore of {_quartz} to "&f&l- &f/"
+
+	set {_topaz} to stone named "&8[%{topaz-Prefix}%&8]"
+	set line 1 of lore of {_topaz} to "&7---------------"
+	set line 2 of lore of {_topaz} to "&6&lCommands"
+	set line 3 of lore of {_topaz} to "&6&l- &f/"
+
+	set {_ruby} to stone named "&8[%{ruby-Prefix}%&8]"
+	set line 1 of lore of {_ruby} to "&7---------------"
+	set line 2 of lore of {_ruby} to "&c&lCommands"
+	set line 3 of lore of {_ruby} to "&c&l- &f/"
+
+	set {_sapphire} to stone named "&8[%{sapphire-Prefix}%&8]"
+	set line 1 of lore of {_sapphire} to "&7---------------"
+	set line 2 of lore of {_sapphire} to "&9&lCommands"
+	set line 3 of lore of {_sapphire} to "&9&l- &f/"
+
+	set {_amethyst} to stone named "&8[%{amethyst-Prefix}%&8]"
+	set line 1 of lore of {_amethyst} to "&7---------------"
+	set line 2 of lore of {_amethyst} to "&d&lCommands"
+	set line 3 of lore of {_amethyst} to "&d&l- &f/"
+
+	set slot 11 of {_gui} to {_quartz}
+	set slot 12 of {_gui} to {_topaz}
+	set slot 13 of {_gui} to {_ruby}
+	set slot 14 of {_gui} to {_sapphire}
+	set slot 15 of {_gui} to {_amethyst}
+
 	set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
      
 	open {_gui} to {_p}
@@ -18,6 +63,16 @@ function loadStoreGui(p: player):
 on inventory click:
 	if event-inventory is not player's inventory:
 		if event-inventory's name is "&a&lStore":
+			cancel event
+
+			if event-slot is 10: 
+				play sound "minecraft:ui.button.click" to player
+				loadRanksGui(player)
+
+			else if event-slot is 22:
+				play sound "minecraft:ui.button.click" to player
+				close player's inventory
+		else if event-inventory's name is "&c&lRanks":
 			cancel event
 
 			if event-slot is 22:

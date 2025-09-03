@@ -6,7 +6,34 @@ command /togglekilleffect:
 	trigger:
 		if {killeffect-active::%player's uuid%} is true:
 			set {killeffect-active::%player's uuid%} to false
-			broadcast "deactive"
+			broadcast " &ckill effects will no longer be played."
 		else:
 			set {killeffect-active::%player's uuid%} to true
-			broadcast "active"
+			broadcast " &akill effects will be played."
+
+function stoneKillEffect(loc: location):
+
+function quartzKillEffect(loc: location):
+
+function topazKillEffect(loc: location):
+
+function rubyKillEffect(loc: location):
+
+function sapphireKillEffect(loc: location):
+
+function amethystKillEffect(loc: location):
+
+function skaiKillEffect(loc: location):
+	set {_star} to a star with 5 points, inner radius 1, and outer radius 2	
+	set particle of {_star} to electric spark 
+	loop 40 times:
+		draw shape {_star} at {_loc}
+		rotate shape {_star} around y axis by 9 degrees
+		wait 2 ticks
+
+command /testkilleffect <integer>:
+	trigger:
+		set {_loc} to player's location
+
+		if arg-1 is 1:
+			killEffect({_loc})
