@@ -20,6 +20,11 @@ command /player-menu:
     trigger:
         loadPlayerMenuGUI(player)
 
+command /navigation:
+    aliases: /nav, /warp
+    trigger:
+        loadNavigationGUI(player)
+
 local function loadPlayerMenuGUI(p: player):
     set {_gui} to chest inventory with 3 rows named "&b&lPlayer Menu"
 
@@ -27,20 +32,36 @@ local function loadPlayerMenuGUI(p: player):
         set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
 
     set {_skull} to {_p}'s skull named "%{prefix::%uuid of {_p}%}% %{_p}'s name%"
-    set line 1 of lore of {_skull} to "&eRank %{rank::%uuid of {_p}%}%"
-    set line 2 of lore of {_skull} to "&aPlaytime %{h::%uuid of {_p}%}%:%{m::%uuid of {_p}%}%:%{s::%uuid of {_p}%}%"
+    set line 1 of lore of {_skull} to "&eRank: %{rank::%uuid of {_p}%}%"
+    set line 2 of lore of {_skull} to "&aPlaytime: %{h::%uuid of {_p}%}%:%{m::%uuid of {_p}%}%:%{s::%uuid of {_p}%}%"
     set slot 4 of {_gui} to {_skull}
 
     set slot 11 of {_gui} to emerald named "&8[&a&lShops&8]"
+    set line 1 of lore of slot 11 of {_gui} to "&7Open the shops menu to buy"
+    set line 2 of lore of slot 11 of {_gui} to "&7scythes, armor, enchants, and more."
     set slot 12 of {_gui} to light blue bundle named "&8[&b&lPet Bag&8]"
+    set line 1 of lore of slot 12 of {_gui} to "&7View and manage your pets." 
     set slot 13 of {_gui} to compass named "&8[&a&lNavigate&8]"
+    set line 1 of lore of slot 13 of {_gui} to "&7Open the navigation menu to explore"
+    set line 2 of lore of slot 13 of {_gui} to "&7farms, shops, and more."
     set slot 14 of {_gui} to book named "&8[&c&lStats&8]"
+    set line 1 of lore of slot 14 of {_gui} to "&7View detailed stats including"
+    set line 2 of lore of slot 14 of {_gui} to "&7level, playtime, crops, and more."
+    set line 3 of lore of slot 14 of {_gui} to "&cComing soon..."
     set slot 15 of {_gui} to slot 0 of {_p}
     set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
     set slot 23 of {_gui} to short grass named "&8[&a&lSell Crops&8]"
 
-    open {_gui} to {_p}
+    if {cashbooster-active::%uuid of {_p}%} > 0:
+        set line 2 of lore of slot 23 of {_gui} to "&8[&5&lx%{cashbooster-multiplier::%uuid of {_p}%}%&8] [&f&l%{cashbooster-active::%uuid of {_p}%}%&8]"
+    else if {supercashbooster-active::%uuid of {_p}%} > 0:
+        set line 2 of lore of slot 23 of {_gui} to "&8[&5&lx%{cashbooster-multiplier::%uuid of {_p}%}%&8] [&f&l%{supercashbooster-active::%uuid of {_p}%}%&8]"
+    else:
+        set line 2 of lore of slot 23 of {_gui} to "&8[&5&lx%{cashbooster-multiplier::%uuid of {_p}%}%&8]"
+    set line 1 of lore of slot 23 of {_gui} to "&7Sell all your crops for crop cash."
 
+    open {_gui} to {_p} 
+ 
 local function loadShopsGUI(p: player):
     set {_gui} to chest inventory with 3 rows named "&5&lShops"
 
@@ -85,8 +106,8 @@ local function loadOtherPlayerMenuGUI(p: player, target: player):
         set slot (loop-number - 1) of {_gui} to light blue stained glass pane named " "
 
     set {_skull} to {_target}'s skull named "%{prefix::%uuid of {_target}%}% %{_target}'s name%"
-    set line 1 of lore of {_skull} to "&eRank %{rank::%uuid of {_target}%}%"
-    set line 2 of lore of {_skull} to "&aPlaytime %{h::%uuid of {_target}%}%:%{m::%uuid of {_target}%}%:%{s::%uuid of {_target}%}%"
+    set line 1 of lore of {_skull} to "&eRank: %{rank::%uuid of {_target}%}%"
+    set line 2 of lore of {_skull} to "&aPlaytime: %{h::%uuid of {_target}%}%:%{m::%uuid of {_target}%}%:%{s::%uuid of {_target}%}%"
     set slot 4 of {_gui} to {_skull}
 
     if helmet of {_target} is not air:
@@ -164,6 +185,7 @@ local function loadFarmNavigationGUI(p: player):
     set slot 12 of {_gui} to spruce sapling named "&e&lFarm &8[&e&l2&8]"
     set slot 13 of {_gui} to sand named "&e&lFarm &8[&e&l3&8]"
     set slot 14 of {_gui} to stone named "&e&lFarm &8[&e&l4&8]"
+    set slot 15 of {_gui} to redstone block named "&e&l&kFarm &8[&e&l&k5&8]"
 
     set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
 
@@ -216,6 +238,25 @@ local function loadFarm3NavigationGUI(p: player):
     open {_gui} to {_p}
 
 local function loadFarm4NavigationGUI(p: player):
+    set {_gui} to chest inventory with 3 rows named "&e&lFarm &8[&e&l4&8] &e&lNavigation"
+
+    loop 27 times:
+        set slot (loop-number - 1) of {_gui} to yellow stained glass pane named " "  
+
+    set slot 11 of {_gui} to paper named "&e&lField &8[&e&l13&8]"
+    set slot 12 of {_gui} to paper named "&e&lField &8[&e&l14&8]"
+    set slot 13 of {_gui} to paper named "&e&lField &8[&e&l15&8]"
+    set slot 14 of {_gui} to paper named "&e&lField &8[&e&l16&8]"
+
+    set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
+
+    open {_gui} to {_p}
+
+command /stash:
+    trigger:
+
+
+local function loadStashGui(p: player):
     set {_gui} to chest inventory with 3 rows named "&e&lFarm &8[&e&l4&8] &e&lNavigation"
 
     loop 27 times:
@@ -347,11 +388,23 @@ on inventory click:
             if event-slot is 11:
                 loadFarm1NavigationGUI(player)
             else if event-slot is 12:
-                loadFarm2NavigationGUI(player)
+                if {farmunlocked::2::%player's uuid%} is true:
+                    loadFarm2NavigationGUI(player)
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lFarm &8[&e&l2&8] &cis not unlocked." to player
             else if event-slot is 13:
-                loadFarm3NavigationGUI(player)
+                if {farmunlocked::3::%player's uuid%} is true:
+                    loadFarm3NavigationGUI(player)
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lFarm &8[&e&l3&8] &cis not unlocked." to player
             else if event-slot is 14:
-                loadFarm4NavigationGUI(player)
+                if {farmunlocked::4::%player's uuid%} is true:
+                    loadFarm4NavigationGUI(player)
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lFarm &8[&e&l4&8] &cis not unlocked." to player
             else if event-slot is 22:
                 play sound "minecraft:ui.button.click" to player
                 close player's inventory
@@ -360,13 +413,31 @@ on inventory click:
             cancel event
 
             if event-slot is 11:
-                execute player command "/field 1"
+                execute player command "/farm 1"
             else if event-slot is 12:
-                execute player command "/field 2"
+                if {fieldunlocked::1::%player's uuid%} is true:
+                    execute player command "/field 1"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l1&8] &cis not unlocked." to player
             else if event-slot is 13:
-                execute player command "/field 3" 
+                if {fieldunlocked::2::%player's uuid%} is true:
+                    execute player command "/field 2"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l2&8] &cis not unlocked." to player
             else if event-slot is 14:
-                execute player command "/field 4"
+                if {fieldunlocked::3::%player's uuid%} is true:
+                    execute player command "/field 3"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l3&8] &cis not unlocked." to player
+            else if event-slot is 15:
+                if {fieldunlocked::4::%player's uuid%} is true:
+                    execute player command "/field 4"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l4&8] &cis not unlocked." to player
             
             else if event-slot is 22:
                 play sound "minecraft:ui.button.click" to player
@@ -375,13 +446,31 @@ on inventory click:
             cancel event
 
             if event-slot is 11:
-                execute player command "/field 5"
+                execute player command "/farm 2"
             else if event-slot is 12:
-                execute player command "/field 6"
+                if {fieldunlocked::5::%player's uuid%} is true:
+                    execute player command "/field 5"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l5&8] &cis not unlocked." to player
             else if event-slot is 13:
-                execute player command "/field 7" 
+                if {fieldunlocked::6::%player's uuid%} is true:
+                    execute player command "/field 6"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l6&8] &cis not unlocked." to player
             else if event-slot is 14:
-                execute player command "/field 8"
+                if {fieldunlocked::7::%player's uuid%} is true:
+                    execute player command "/field 7"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l7&8] &cis not unlocked." to player
+            else if event-slot is 15:
+                if {fieldunlocked::8::%player's uuid%} is true:
+                    execute player command "/field 8"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l8&8] &cis not unlocked." to player
 
             else if event-slot is 22:
                 play sound "minecraft:ui.button.click" to player
@@ -390,13 +479,31 @@ on inventory click:
             cancel event
 
             if event-slot is 11:
-                execute player command "/field 9"
+                execute player command "/farm 3"
             else if event-slot is 12:
-                execute player command "/field 10"
+                if {fieldunlocked::9::%player's uuid%} is true:
+                    execute player command "/field 9"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l9&8] &cis not unlocked." to player
             else if event-slot is 13:
-                execute player command "/field 11" 
+                if {fieldunlocked::10::%player's uuid%} is true:
+                    execute player command "/field 10"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l10&8] &cis not unlocked." to player
             else if event-slot is 14:
-                execute player command "/field 12"
+                if {fieldunlocked::11::%player's uuid%} is true:
+                    execute player command "/field 11"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l11&8] &cis not unlocked." to player
+            else if event-slot is 15:
+                if {fieldunlocked::12::%player's uuid%} is true:
+                    execute player command "/field 12"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l12&8] &cis not unlocked." to player
 
             else if event-slot is 22:
                 play sound "minecraft:ui.button.click" to player
@@ -405,13 +512,31 @@ on inventory click:
             cancel event
 
             if event-slot is 11:
-                execute player command "/field 13"
+                execute player command "/farm 4"
             else if event-slot is 12:
-                execute player command "/field 14"
+                if {fieldunlocked::13::%player's uuid%} is true:
+                    execute player command "/field 13"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l13&8] &cis not unlocked." to player
             else if event-slot is 13:
-                execute player command "/field 15" 
+                if {fieldunlocked::14::%player's uuid%} is true:
+                    execute player command "/field 14"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l14&8] &cis not unlocked." to player
             else if event-slot is 14:
-                execute player command "/field 16"
+                if {fieldunlocked::15::%player's uuid%} is true:
+                    execute player command "/field 15"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l15&8] &cis not unlocked." to player
+            else if event-slot is 15:
+                if {fieldunlocked::16::%player's uuid%} is true:
+                    execute player command "/field 16"
+                else:
+                    play sound "minecraft:entity.villager.no" to player
+                    send "&5&lCroplite &e&lField &8[&e&l16&8] &cis not unlocked." to player
 
             else if event-slot is 22:
                 play sound "minecraft:ui.button.click" to player

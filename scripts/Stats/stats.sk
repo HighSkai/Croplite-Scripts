@@ -131,11 +131,6 @@ on player pickup of wheat seeds:
 	wait 1 tick
 	remove all wheat seeds from player's inventory
 
-#needs to be removed when we release / test the server
-command /makeoperator:
-	trigger:
-		op player
-
 on script load:
 	set {field::1::crops::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper]
 	set {field::2::crops::*} to short_grass and tall_grass[half=lower] and tall_grass[half=upper] and type of fern and large_fern[half=lower] and large_fern[half=upper]

@@ -4,12 +4,14 @@ command /reset-everything [<offline player>]:
         if arg-1 is set:
             execute console command "/clear %arg-1%"
             execute console command "/gms %arg-1%"
+            execute console command "/deop %arg-1%"
             wait 1 tick
             initializePlayerStuff(arg-1)
             resetStats(arg-1)
         else:
             execute console command "/clear %player%"
             execute console command "/gms %player%"
+            execute console command "/deop %player%"
             wait 1 tick
             initializePlayerStuff(player)
             resetStats(player)
@@ -157,22 +159,22 @@ command /set-rank <text> [<offline player>]:
         else if arg-1 is "helper":
             set {rank::%uuid of {_player}%} to "Helper"
             set {prefix::%uuid of {_player}%} to {helper-Prefix}
-            set {ranknumber::%uuid of {_player}%} to 999
+            set {ranknumber::%uuid of {_player}%} to 900
             set {rankexpmulti::%{_player}'s uuid%} to 1
         else if arg-1 is "builder":
             set {rank::%uuid of {_player}%} to "Builder"
             set {prefix::%uuid of {_player}%} to {builder-Prefix}
-            set {ranknumber::%uuid of {_player}%} to 999
+            set {ranknumber::%uuid of {_player}%} to 901
             set {rankexpmulti::%{_player}'s uuid%} to 1
         else if arg-1 is "developer":
             set {rank::%uuid of {_player}%} to "Developer"
             set {prefix::%uuid of {_player}%} to {developer-Prefix}
-            set {ranknumber::%uuid of {_player}%} to 999
+            set {ranknumber::%uuid of {_player}%} to 902
             set {rankexpmulti::%{_player}'s uuid%} to 1
         else if arg-1 is "owner":
             set {rank::%uuid of {_player}%} to "Owner"
             set {prefix::%uuid of {_player}%} to {owner-Prefix}
-            set {ranknumber::%uuid of {_player}%} to 999
+            set {ranknumber::%uuid of {_player}%} to 903
             set {rankexpmulti::%{_player}'s uuid%} to 1
 
         else if arg-1 is "staff":
@@ -193,6 +195,10 @@ command /set-rank <text> [<offline player>]:
 
         setPrefix({_player})
         send "done" to {_player}
+
+placeholderapi placeholder with the prefix "player":
+	if the identifier is "rank":
+		set the result to {ranknumber::%player's uuid%}
 
 command /set-level [<offline player>] <number>:
     permission: operator
