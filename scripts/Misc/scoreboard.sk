@@ -5,7 +5,7 @@ on join:
 local function updateTablistHeaderandFooter(p: player):
     loop all players:
         set {_staff} to 0
-        if {ranknumber::%loop-player's uuid%} is 999:
+        if {ranknumber::%loop-player's uuid%} >= 900:
             add 1 to {_staff}
     set {_p}'s tab list header to "Thanks for playing &d&lCROPLITE&f!&r%nl%&8&m&l━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━&r%nl%&dStaff Online: &8[&a%{_staff}%&8]%nl%&fOnline: &8[&a%player count%&8/&a%max players%&8]%nl%"
     set {_p}'s tab list footer to "%nl%Are you enjoying &d&lCROPLITE&f?&r%nl%Consider checking out our store!%nl%&c&ncroplite.craftingstore.net"

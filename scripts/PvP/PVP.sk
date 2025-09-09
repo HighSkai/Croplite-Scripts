@@ -7,10 +7,10 @@ command /toggle-pvp:
 		
 		if {pvpstatus::%player's uuid%} is true:
 			add 0.25 to {expmulti::%player's uuid%}
-			send "&8[&dCroplite&8] &aPvP enabled. Enjoy your &e&lExp Multi &8[&e&l+0.25&8] &abonus." to player
+			send "&d&lCroplite &aPvP enabled. Enjoy your &e&lExp Multi &8[&e&l+0.25&8] &abonus." to player
 		if {pvpstatus::%player's uuid%} is false:
 			subtract 0.25 from {expmulti::%player's uuid%}
-			send "&8[&dCroplite&8] &cPvP disabled. Farm in peace without the &e&lExp Multi &8[&e&l+0.25&8] &cbonus." to player
+			send "&d&lCroplite &cPvP disabled. Farm in peace without the &e&lExp Multi &8[&e&l+0.25&8] &cbonus." to player
 
 command /optoggle-pvp <player>:
 	permission: operator
@@ -71,7 +71,12 @@ every 1 second:
             remove 1 from {in-combat::%loop-player's uuid%}
 
 on death:
-	if attacker is a player:
+	if name of victim is "attack_dummy":
+		if attacker is a player:
+			cancel event
+		else if damage cause is burning:
+			cancel event
+	else if attacker is a player:
 		if victim is a player:
 			if {cropreap::%attacker's uuid%} > 0:
 				if {crops::%victim's uuid%} > 0:
@@ -104,13 +109,6 @@ command /spawnattackdummy:
 on entity move:
     if name of event-entity is "attack_dummy":
         cancel event
-
-on death:
-	if name of victim is "attack_dummy":
-		if attacker is a player:
-			cancel event
-		else if damage cause is burning:
-			cancel event
 
 on disconnect:
 	if {in-combat::%player's uuid%} > 0:

@@ -1,6 +1,5 @@
-on death:
-	if {killeffect-active::%victim's uuid%} is true:
-		killEffect(location of victim)
+on death of player:
+	killEffect(attacker, location of victim)
 
 command /togglekilleffect:
 	trigger:
@@ -11,19 +10,27 @@ command /togglekilleffect:
 			set {killeffect-active::%player's uuid%} to true
 			broadcast " &akill effects will be played."
 
-function stoneKillEffect(loc: location):
+local function killEffect(attacker: player, loc: location):
+	if {stoneKillEffect1::%uuid of {_attacker}%} is true:
+		stoneKillEffect1({_loc})
+	else if {stoneKillEffect2::%uuid of {_attacker}%} is true:
+		stoneKillEffect2({_loc})
 
-function quartzKillEffect(loc: location):
+local function stoneKillEffect1(loc: location):
 
-function topazKillEffect(loc: location):
+local function stoneKillEffect2(loc: location):
 
-function rubyKillEffect(loc: location):
+local function quartzKillEffect(loc: location):
 
-function sapphireKillEffect(loc: location):
+local function topazKillEffect(loc: location):
 
-function amethystKillEffect(loc: location):
+local function rubyKillEffect(loc: location):
 
-function skaiKillEffect(loc: location):
+local function sapphireKillEffect(loc: location):
+
+local function amethystKillEffect(loc: location):
+
+local function skaiKillEffect(loc: location):
 	set {_star} to a star with 5 points, inner radius 1, and outer radius 2	
 	set particle of {_star} to electric spark 
 	loop 40 times:
@@ -36,4 +43,4 @@ command /testkilleffect <integer>:
 		set {_loc} to player's location
 
 		if arg-1 is 1:
-			killEffect({_loc})
+			killEffect(player, {_loc})

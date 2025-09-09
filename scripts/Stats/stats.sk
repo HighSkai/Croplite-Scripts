@@ -221,7 +221,7 @@ on script load:
 	set {helper-Prefix} to "&x&E&0&D&A&3&9&lH&x&E&4&D&F&6&4&lE&x&E&8&E&5&9&0&lL&x&E&C&E&A&B&B&lP&x&E&B&E&6&7&C&lE&x&E&9&E&2&3&D&lR&e"
 	set {builder-Prefix} to "&x&3&9&6&6&E&0&lB&x&5&0&7&6&D&D&lU&x&6&7&8&6&D&B&lI&x&7&E&9&6&D&8&lL&x&6&7&8&6&D&B&lD&x&5&0&7&6&D&D&lE&x&3&9&6&6&E&0&lR&9"
 	set {developer-Prefix} to "&x&E&0&3&9&3&9&lD&x&D&D&4&6&4&6&lE&x&D&B&5&3&5&3&lV&x&D&8&6&0&6&0&lE&x&D&5&6&D&6&D&lL&x&D&3&5&C&5&C&lO&x&D&1&4&A&4&A&lP&x&C&F&3&9&3&9&lE&x&C&D&2&7&2&7&lR&4"
-	set {owner-Prefix} to "3rdstorm sucks"
+	set {owner-Prefix} to "&x&2&7&A&7&D&7&lO&x&3&3&B&C&D&1&lW&x&3&E&D&0&C&B&lN&x&4&A&E&5&C&5&lE&x&5&5&F&9&B&F&lR<#55F9BF>"
 
 	set {staff-Prefix} to "&1&lStaff"
 	set {croplite-Prefix} to "&5&lCROPLITE&r&5"
@@ -243,4 +243,4 @@ command /listranks:
 		broadcast "&x&E&0&D&A&3&9&lH&x&E&4&D&F&6&4&lE&x&E&8&E&5&9&0&lL&x&E&C&E&A&B&B&lP&x&E&B&E&6&7&C&lE&x&E&9&E&2&3&D&lR&e %player%"
 		broadcast "&x&3&9&6&6&E&0&lB&x&5&0&7&6&D&D&lU&x&6&7&8&6&D&B&lI&x&7&E&9&6&D&8&lL&x&6&7&8&6&D&B&lD&x&5&0&7&6&D&D&lE&x&3&9&6&6&E&0&lR&9 %player%"
 		broadcast "&x&E&0&3&9&3&9&lD&x&D&D&4&6&4&6&lE&x&D&B&5&3&5&3&lV&x&D&8&6&0&6&0&lE&x&D&5&6&D&6&D&lL&x&D&3&5&C&5&C&lO&x&D&1&4&A&4&A&lP&x&C&F&3&9&3&9&lE&x&C&D&2&7&2&7&lR&4 %player%"
-		broadcast "&x&2&2&3&3&F&F&lO&x&3&C&9&6&D&F&lW&x&5&5&F&9&B&F&lN&x&3&C&9&6&D&F&lE&x&2&2&3&3&F&F&lR&9 %player%"
+		broadcast "&x&2&7&A&7&D&7&lO&x&3&3&B&C&D&1&lW&x&3&E&D&0&C&B&lN&x&4&A&E&5&C&5&lE&x&5&5&F&9&B&F&lR<#55F9BF> %player%"
