@@ -26,7 +26,7 @@ function loadRanksGui(p: player):
 		hide {_item}'s tooltip
 		set slot (loop-number - 1) of {_gui} to {_item}
 
-	set {_quartz} to stone named "&8[%{quartz-Prefix}%&8]"
+	set {_quartz} to {headdb::heads::1} named "&8[%{quartz-Prefix}%&8]"
 	set line 1 of lore of {_quartz} to "&7---------------"
 	set line 2 of lore of {_quartz} to "&f&lCommands"
 	set line 3 of lore of {_quartz} to "&7● &f/ender-chest"
@@ -47,7 +47,7 @@ function loadRanksGui(p: player):
 	set line 18 of lore of {_quartz} to "&7---------------"
 	set line 19 of lore of {_quartz} to "&fPrice: &2$4.99"
 
-	set {_topaz} to stone named "&8[%{topaz-Prefix}%&8]"
+	set {_topaz} to {headdb::heads::2} named "&8[%{topaz-Prefix}%&8]"
 	set line 1 of lore of {_topaz} to "&7---------------"
 	set line 2 of lore of {_topaz} to "&6&lCommands"
 	set line 3 of lore of {_topaz} to "&7● &f/shop"
@@ -73,7 +73,7 @@ function loadRanksGui(p: player):
 	set line 23 of lore of {_topaz} to "&7---------------"
 	set line 24 of lore of {_topaz} to "&fPrice: &2$8.99"
 
-	set {_ruby} to stone named "&8[%{ruby-Prefix}%&8]"
+	set {_ruby} to {headdb::heads::3} named "&8[%{ruby-Prefix}%&8]"
 	set line 1 of lore of {_ruby} to "&7---------------"
 	set line 2 of lore of {_ruby} to "&c&lCommands"
 	set line 3 of lore of {_ruby} to "&7● &f/shop"
@@ -108,7 +108,7 @@ function loadRanksGui(p: player):
 	set line 32 of lore of {_ruby} to "&7---------------"
 	set line 33 of lore of {_ruby} to "&fPrice: &2$14.99"
 
-	set {_sapphire} to stone named "&8[%{sapphire-Prefix}%&8]"
+	set {_sapphire} to {headdb::heads::4} named "&8[%{sapphire-Prefix}%&8]"
 	set line 1 of lore of {_sapphire} to "&7---------------"
 	set line 2 of lore of {_sapphire} to "&9&lCommands"
 	set line 3 of lore of {_sapphire} to "&7● &f/shop"
@@ -152,7 +152,7 @@ function loadRanksGui(p: player):
 	set line 41 of lore of {_sapphire} to "&7---------------"
 	set line 42 of lore of {_sapphire} to "&fPrice: &2$24.99"
 
-	set {_amethyst} to stone named "&8[%{amethyst-Prefix}%&8]"
+	set {_amethyst} to {headdb::heads::5} named "&8[%{amethyst-Prefix}%&8]"
 	set line 1 of lore of {_amethyst} to "&7---------------"
 	set line 2 of lore of {_amethyst} to "&d&lCommands"
 	set line 3 of lore of {_amethyst} to "&7● &f/shop"

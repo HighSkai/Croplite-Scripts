@@ -36,21 +36,22 @@ local function loadPlayerMenuGUI(p: player):
     set line 2 of lore of {_skull} to "&aPlaytime: %{h::%uuid of {_p}%}%:%{m::%uuid of {_p}%}%:%{s::%uuid of {_p}%}%"
     set slot 4 of {_gui} to {_skull}
 
-    set slot 11 of {_gui} to emerald named "&8[&a&lShops&8]"
+    set slot 11 of {_gui} to {headdb::heads::17} named "&8[&a&lShops&8]"
     set line 1 of lore of slot 11 of {_gui} to "&7Open the shops menu to buy"
     set line 2 of lore of slot 11 of {_gui} to "&7scythes, armor, enchants, and more."
-    set slot 12 of {_gui} to light blue bundle named "&8[&b&lPet Bag&8]"
+    set slot 12 of {_gui} to {headdb::heads::9} named "&8[&b&lPet Bag&8]"
+    set lore of slot 12 of {_gui} to ""
     set line 1 of lore of slot 12 of {_gui} to "&7View and manage your pets." 
     set slot 13 of {_gui} to compass named "&8[&a&lNavigate&8]"
     set line 1 of lore of slot 13 of {_gui} to "&7Open the navigation menu to explore"
     set line 2 of lore of slot 13 of {_gui} to "&7farms, shops, and more."
-    set slot 14 of {_gui} to book named "&8[&c&lStats&8]"
+    set slot 14 of {_gui} to {headdb::heads::10} named "&8[&c&lStats&8]"
     set line 1 of lore of slot 14 of {_gui} to "&7View detailed stats including"
     set line 2 of lore of slot 14 of {_gui} to "&7level, playtime, crops, and more."
     set line 3 of lore of slot 14 of {_gui} to "&cComing soon..."
     set slot 15 of {_gui} to slot 0 of {_p}
     set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
-    set slot 23 of {_gui} to short grass named "&8[&a&lSell Crops&8]"
+    set slot 23 of {_gui} to {headdb::heads::18} named "&8[&a&lSell Crops&8]"
 
     if {cashbooster-active::%uuid of {_p}%} > 0:
         set line 2 of lore of slot 23 of {_gui} to "&8[&5&lx%{cashbooster-multiplier::%uuid of {_p}%}%&8] [&f&l%{cashbooster-active::%uuid of {_p}%}%&8]"
@@ -68,11 +69,11 @@ local function loadShopsGUI(p: player):
     loop 27 times:
         set slot (loop-number - 1) of {_gui} to purple stained glass pane named " "
 
-    set slot 11 of {_gui} to iron hoe named "&8[&b&lScythe Shop&8]"
-    set slot 12 of {_gui} to diamond chestplate named "&8[&f&lArmorer&8]"
-    set slot 13 of {_gui} to enchanted book named "&8[&5&lEnchanter&8]"
-    set slot 14 of {_gui} to gold ingot named "&8[&6&lPet Token Shop&8]"
-    set slot 15 of {_gui} to short grass named "&8[&c&lCrop Bag Shop&8]"
+    set slot 11 of {_gui} to {headdb::heads::12} named "&8[&b&lScythe Shop&8]"
+    set slot 12 of {_gui} to {headdb::heads::13} named "&8[&f&lArmorer&8]"
+    set slot 13 of {_gui} to {headdb::heads::14} named "&8[&5&lEnchanter&8]"
+    set slot 14 of {_gui} to {headdb::heads::15} named "&8[&6&lPet Token Shop&8]"
+    set slot 15 of {_gui} to {headdb::heads::16} named "&8[&c&lCrop Bag Shop&8]"
 
     set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
 
@@ -163,13 +164,13 @@ local function loadNavigationGUI(p: player):
     loop 27 times:
         set slot (loop-number - 1) of {_gui} to green stained glass pane named " "
 
-    set slot 10 of {_gui} to nether star named "&c&lSpawn"
-    set slot 11 of {_gui} to paper named "&5&lAFK"
-    set slot 12 of {_gui} to emerald named "&e&lShop"
-    set slot 13 of {_gui} to paper named "&e&lFarms"
-    set slot 14 of {_gui} to white shulker box named "&f&lCrates"
-    set slot 15 of {_gui} to paper named "&9&lLeaderboards"
-    set slot 16 of {_gui} to paper named "&6&lEvents"
+    set slot 10 of {_gui} to {headdb::heads::6} named "&8[&c&lSpawn&8]"
+    set slot 11 of {_gui} to paper named "&8[&5&lAFK&8]"
+    set slot 12 of {_gui} to {headdb::heads::17} named "&8[&a&lShops&8]"
+    set slot 13 of {_gui} to paper named "&8[&e&lFarms&8]"
+    set slot 14 of {_gui} to {headdb::heads::7} named "&8[&f&lCrates&8]"
+    set slot 15 of {_gui} to {headdb::heads::8} named "&8[&6&lLeaderboards&8]"
+    set slot 16 of {_gui} to paper named "&8[&9&lEvents&8]"
 
     set slot 22 of {_gui} to barrier named "&8[&4&lClose&8]"
 

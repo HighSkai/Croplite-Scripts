@@ -146,8 +146,6 @@ on right click:
 			updatePetStats(player, string tag "Croplite:pets" of custom nbt of player's held item, "add")
 
 			delete player's held item
-	if name of target entity is "player-pet":
-		cancel event
 
 local function updatePetStats(p: player, pet: text, action: text):
 	switch {_pet}:

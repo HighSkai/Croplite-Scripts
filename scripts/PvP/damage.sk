@@ -1,11 +1,10 @@
 on damage:
-    if "%region at attacker%" does not contain "field":
-        if name of victim contains "attack_dummy":
-            broadcast "1"
-        else:
-            broadcast "2"
-            cancel event
-            stop
+    if attacker is not an operator:
+        if damage cause is not kill:
+            if "%region at attacker%" does not contain "field":
+                if name of victim does not contain "attack_dummy":
+                    cancel event
+                    stop
     if attacker is a player:
         if victim is a player:
             if {pvpstatus::%victim's uuid%} is false:
@@ -91,7 +90,7 @@ on damage:
 
                     set damage to {_damage}
 
-                    spawnDamageDisplay(attacker, victim, {_damage})
+                    spawnDamageDisplay(attacker, victim, {_damage}, "scythe")
                     
                     if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
                         set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health - damage%&8]"
@@ -105,7 +104,7 @@ on damage:
                     add {damageboost::%attacker's uuid%} to {_damage}
                     set damage to {_damage}
 
-                    spawnDamageDisplay(attacker, victim, {_damage})
+                    spawnDamageDisplay(attacker, victim, {_damage}, "fist")
                             
                     if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
                         set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health - damage%&8]"
@@ -135,7 +134,7 @@ on damage:
                 
         if {dont-fire-damage::%{_victim}%} < 1:                                
             set damage to 1
-            spawnDamageDisplay({last-fire-attacker::%{_victim}%}, victim, 1)
+            spawnDamageDisplay({last-fire-attacker::%{_victim}%}, victim, 1, "fire")
 
             if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
                 set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health - damage%&8]"
@@ -145,7 +144,7 @@ on damage:
         if boolean tag "Croplite:crop-mob" of custom nbt of victim is true:
             set victim's name to "%string tag "Croplite:crop-mob-name" of custom nbt of victim% &8[&c&l%victim's health - damage%&8]"
         
-local function spawnDamageDisplay(attacker: entity, victim: entity, damage: number):
+local function spawnDamageDisplay(attacker: entity, victim: entity, damage: number, type: text):
     set {_attacker-to-victim} to vector between {_victim} and {_attacker}
     set standard length of {_attacker-to-victim} to 0.7
 
@@ -163,7 +162,12 @@ local function spawnDamageDisplay(attacker: entity, victim: entity, damage: numb
     summon text display at {_victim}'s head offset by {_attacker-to-victim}
     set {_damageDisplay} to last spawned entity
 
-    set display text of {_damageDisplay} to "&8[&4&l%{_damage}%&8] [&9&l%armorEnchantDamage({_victim})%&8]"
+    if {_type} is "scythe":
+        set display text of {_damageDisplay} to "&8[&4&l⚔%{_damage}%&8]"
+    else if {_type} is "fire":
+        set display text of {_damageDisplay} to "&8[&6&l🔥%{_damage}%&8]"
+    else:
+        set display text of {_damageDisplay} to "&8[&4&l✊%{_damage}%&8]"
     apply drop shadow to {_damageDisplay}
 
     set display billboard of {_damageDisplay} to center

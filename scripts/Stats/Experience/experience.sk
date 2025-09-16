@@ -190,6 +190,11 @@ on death of mob:
 
 	levelUp(attacker)
 
+on place:
+	if player is not an operator:
+		broadcast "you cannot place this"
+		cancel event
+
 on break:
 	if player is not an operator:
 		if "%region at location of player%" is not "%region at location of event-block%":
@@ -308,6 +313,7 @@ on break:
 					set event-block to {_crop-replacement}
 	else:
 		if player is not an operator:
+			broadcast "you cannot break this"
 			cancel event
 
 on player tool change:

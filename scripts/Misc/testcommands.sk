@@ -1,0 +1,11 @@
+command /listscoreboard:
+    trigger:
+        broadcast "&d&lCROPLITE"
+        broadcast "&8Level &910"
+        broadcast "&8Experience &6100&8/&61k"
+        broadcast "&8Exp. Mutli &e100&8/&e1k"
+
+        broadcast "&8Crops &2100&8/&21k"
+        broadcast "&8Experience &6100&8/&61k"
+
+        broadcast "&8Experience &6100&8/&61k"

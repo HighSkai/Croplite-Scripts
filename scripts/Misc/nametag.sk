@@ -1,12 +1,19 @@
 on join:
     set join message to "&8[&a&l+&8] &a%player's name%"
+
 on quit:
-    set quit message to "&8[&c&l-&8] &c%player's name%"
-on death of player:
-    if {in-combat::%victim's uuid%} > 0:
-        set death message to "&8[&4☠&8] &4%victim's name%&r has combat logged, L."
+    if {in-combat::%player's uuid%} > 0:
+        kill player
+        set quit message to "this is my quit message penis"
     else:
-        set death message to "&8[&4☠&8] &4%victim's name%&r"
+        set quit message to "&8[&c&l-&8] &c%player's name%"
+
+on death of player:
+    set death message to "&8[&4☠&8] &4%victim's name%&r"
+
+command /killplayerplease:
+    trigger:
+        kill player
 
 on respawn:
     extinguish player

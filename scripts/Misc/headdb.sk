@@ -1,0 +1,42 @@
+command /open-headdb:
+    permission: operator
+    trigger:
+        loadHeadDBGui(player)
+
+command /get-headdb <integer>:
+    permission: operator
+    trigger:
+        give player {headdb::heads::%arg-1%}
+
+command /add-headdb:
+    permission: operator
+    trigger:
+        if player's tool is player head:
+            delete lore of player's tool
+            add player's tool to {headdb::heads::*}
+            send "&aSuccessfully added head to the database!"
+        else:
+            send "&cYou must be holding a player head!"
+
+local function loadHeadDBGui(p: player):
+    set {_gui} to chest inventory with 6 rows named "&c&lHeadDB"
+
+    loop 54 times:
+        set {_item} to light blue stained glass pane
+        hide {_item}'s tooltip
+        set slot (loop-number - 1) of {_gui} to {_item}
+        if loop-number <= size of {headdb::heads::*}:
+            set slot (loop-number - 1) of {_gui} to {headdb::heads::%loop-number%}
+            set lore of slot (loop-number - 1) of {_gui} to ""
+            set line 1 of lore of slot (loop-number - 1) of {_gui} to "&7Position: &f%loop-number%"
+
+    open {_gui} to {_p}
+
+on inventory click:
+    if event-inventory is not player's inventory:
+        if event-inventory's name is "&c&lHeadDB":
+            cancel event
+            if clicked slot is player head:
+                give player event-slot
+                play sound "block.note_block.pling" with volume 1 at player
+                send "&aGave you the selected head!"

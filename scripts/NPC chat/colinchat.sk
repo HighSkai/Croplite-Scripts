@@ -111,3 +111,27 @@ command /testpenis:
     trigger:
         loop entities in radius 5 of player:
             kill loop-entity
+
+# Debug / raytrace approach
+
+on right click with air:
+    # 1) Try core Skript's targeted entity first (if available)
+    if target entity of player is set:
+        set {_e} to target entity of player
+        send "&7[DEBUG] target entity type: %type of {_e}%" to player
+        if "%type of {_e}%" contains "item_display":
+            broadcast "jack"
+            stop
+
+    # 2) Fallback: SkBee raytrace (if you have SkBee)
+    # NOTE: SkBee raytrace syntax can vary by version — if this errors, use your SkBee docs' raytrace syntax.
+    set {_ray} to raytrace entity from player for 6 # raytrace 6 blocks ahead
+    if {_ray} is set:
+        set {_hit} to raytraced entity of {_ray}
+        if {_hit} is set:
+            send "&7[DEBUG] raytrace hit type: %type of {_hit}%" to player
+            if "%type of {_hit}%" contains "item_display":
+                broadcast "jack"
+
+
+
